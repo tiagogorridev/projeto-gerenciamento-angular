@@ -9,6 +9,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ReportsComponent } from './reports/reports.component';
 import { HelpPageComponent } from './help-page/help-page.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -20,6 +22,8 @@ const routes: Routes = [
   { path: 'projects', component: ProjectsComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'help-page', component: HelpPageComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'signup', component: SignupComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];
 
