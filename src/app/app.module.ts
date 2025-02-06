@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ProjectsComponent } from './projects/projects.component';
+import { ActivitiesComponent } from './activities/activities.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { ProjectsComponent } from './projects/projects.component';
     DashboardComponent,
     SidebarComponent,
     ProjectsComponent,
+    ActivitiesComponent,
   ],
   imports: [
     BrowserModule,
