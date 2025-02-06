@@ -13,10 +13,8 @@ $hover: rgba(255, 255, 255, 0.05);
   flex-direction: column;
   position: fixed;
   left: 0;
-  top: 60px; /* Ajusta a posição da sidebar para começar abaixo do header */
+  top: 0;
   overflow-y: auto;
-  z-index: 10; /* A sidebar deve ficar abaixo do header */
-
 
   .section-title {
     font-size: 11px;
@@ -163,4 +161,7 @@ $hover: rgba(255, 255, 255, 0.05);
       }
     }
   }
+}
+.sidebar {
+  padding-top: 80px; /* Adiciona um pouco de espaço no topo do item */
 }
