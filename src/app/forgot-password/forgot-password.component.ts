@@ -12,7 +12,6 @@ export class ForgotPasswordComponent {
   constructor(private router: Router) {}
 
   onSubmit() {
-    // Lógica de Login
     console.log('Email', this.email);
 
     this.router.navigate(['/login']);

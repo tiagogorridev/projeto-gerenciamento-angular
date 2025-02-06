@@ -13,8 +13,10 @@ $hover: rgba(255, 255, 255, 0.05);
   flex-direction: column;
   position: fixed;
   left: 0;
-  top: 0;
+  top: 60px; /* Ajusta a posição da sidebar para começar abaixo do header */
   overflow-y: auto;
+  z-index: 10; /* A sidebar deve ficar abaixo do header */
+
 
   .section-title {
     font-size: 11px;
