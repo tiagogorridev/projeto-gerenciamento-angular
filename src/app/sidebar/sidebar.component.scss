@@ -1,15 +1,14 @@
-$sidebar-bg: #1e1f26;
-$text-color: #a9b0bb;
-$accent-color: #8b5cf6;
-$section-title-color: #6b7280;
-$hover-bg: rgba(255, 255, 255, 0.05);
-$submenu-bg: darken($sidebar-bg, 3%);
+$dark: #1e1f26;
+$light-gray: #a9b0bb;
+$strong-purple: #8b5cf6;
+$gray: #6b7280;
+$hover: rgba(255, 255, 255, 0.05);
 
 .sidebar {
   width: 260px;
   min-height: 100vh;
-  background-color: $sidebar-bg;
-  color: $text-color;
+  background-color: $dark;
+  color: $light-gray;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -20,7 +19,7 @@ $submenu-bg: darken($sidebar-bg, 3%);
   .section-title {
     font-size: 11px;
     text-transform: uppercase;
-    color: $section-title-color;
+    color: $gray;
     padding: 16px 16px 8px;
     letter-spacing: 0.05em;
     font-weight: 600;
@@ -39,24 +38,24 @@ $submenu-bg: darken($sidebar-bg, 3%);
           display: flex;
           align-items: center;
           padding: 12px 16px;
-          color: $text-color;
+          color: $light-gray;
           text-decoration: none;
           transition: all 0.2s ease;
           font-size: 14px;
           position: relative;
 
           &:hover {
-            background-color: $hover-bg;
+            background-color: $hover;
             color: white;
           }
 
           &.active {
             color: white;
-            background-color: $hover-bg;
-            border-left: 2px solid $accent-color;
+            background-color: $hover;
+            border-left: 2px solid $strong-purple;
 
             i {
-              color: $accent-color;
+              color: $strong-purple;
             }
           }
 
@@ -82,7 +81,7 @@ $submenu-bg: darken($sidebar-bg, 3%);
         }
 
         .submenu {
-          background-color: $submenu-bg;
+          background-color:  darken($dark, 3%);
           overflow: hidden;
           max-height: 0;
           transition: max-height 0.3s ease-out;
@@ -122,14 +121,14 @@ $submenu-bg: darken($sidebar-bg, 3%);
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background-color: $hover-bg;
+      background-color: $hover;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-right: 12px;
 
       i {
-        color: $text-color;
+        color: $light-gray;
         font-size: 18px;
       }
     }
@@ -147,7 +146,7 @@ $submenu-bg: darken($sidebar-bg, 3%);
       .logout-link {
         display: flex;
         align-items: center;
-        color: $text-color;
+        color: $light-gray;
         font-size: 12px;
         text-decoration: none;
 

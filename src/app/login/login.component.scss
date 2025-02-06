@@ -1,3 +1,9 @@
+$dark: #1e1f26;
+$light-gray: #a9b0bb;
+$strong-purple: #8b5cf6;
+$gray: #6b7280;
+$hover: rgba(255, 255, 255, 0.05);
+
 .signup-container {
   display: flex;
   height: 100vh;
@@ -34,13 +40,13 @@
   font-size: 32px;
   font-weight: 600;
   margin-bottom: 10px;
-  color: #323338;
+  color: $gray;
 }
 
 .welcome-message h2 {
   font-size: 18px;
   font-weight: 400;
-  color: #665;
+  color: $light-gray;
 }
 
 .divider {
@@ -55,13 +61,13 @@
   content: "";
   flex: 1;
   height: 1px;
-  background-color: #ccc;
+  background-color: $light-gray;
 }
 
 .divider span {
   padding: 0 10px;
   font-size: 14px;
-  color: #666;
+  color: $gray;
 }
 
 .signup-form {
@@ -87,7 +93,7 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 14px;
-  color: #888;
+  color: $gray;
   transition: all 0.3s ease;
   pointer-events: none;
 }
@@ -96,7 +102,7 @@
   width: 100%;
   font-size: 16px;
   padding: 10px 150px 10px 10px;
-  border: 1px solid #ccc;
+  border: 1px solid $light-gray;
   border-radius: 5px;
   text-align: left;
 }
@@ -105,7 +111,7 @@
 .input-field:not(:placeholder-shown) + label {
   top: 5px;
   font-size: 12px;
-  color: #555;
+  color: $gray;
 }
 
 .error-text {
@@ -114,7 +120,7 @@
 }
 
 button:hover {
-  background-color: #357ae8;
+  background-color: $strong-purple;
 }
 
 h3 {
@@ -126,7 +132,7 @@ h3 {
 .login-btn button {
   width: 100%;
   padding: 10px 80px;
-  background-color: #4285f4;
+  background-color: $strong-purple;
   color: white;
   border: none;
   border-radius: 5px;
@@ -142,5 +148,5 @@ h3 {
 }
 
 .login-btn button:hover {
-  background-color: #357ae8;
+  background-color: $strong-purple;
 }
