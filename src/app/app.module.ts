@@ -16,6 +16,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ContactComponent } from './contact/contact.component';
+import { HelpPageComponent } from './help-page/help-page.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { ContactComponent } from './contact/contact.component';
     TimesheetComponent,
     ProfileComponent,
     ContactComponent,
+    HelpPageComponent,
   ],
   imports: [
     BrowserModule,
