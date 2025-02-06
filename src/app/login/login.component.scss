@@ -151,3 +151,22 @@ h3 {
 .login-btn button:hover {
   background-color: $dark-purple;
 }
+
+.extra-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+
+  a {
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    margin: 5px 0;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $dark-purple;
+    }
+  }
+}
