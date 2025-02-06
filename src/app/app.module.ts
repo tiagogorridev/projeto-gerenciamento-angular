@@ -10,6 +10,7 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { ProjectsComponent } from './projects/projects.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     LoginComponent,
     DashboardComponent,
     SidebarComponent,
+    ProjectsComponent,
   ],
   imports: [
     BrowserModule,
