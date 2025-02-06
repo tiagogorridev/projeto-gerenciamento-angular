@@ -17,6 +17,8 @@ import { TimesheetComponent } from './timesheet/timesheet.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ContactComponent } from './contact/contact.component';
 import { HelpPageComponent } from './help-page/help-page.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { SignupComponent } from './signup/signup.component';
 
 
 @NgModule({
@@ -32,6 +34,8 @@ import { HelpPageComponent } from './help-page/help-page.component';
     ProfileComponent,
     ContactComponent,
     HelpPageComponent,
+    ForgotPasswordComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
