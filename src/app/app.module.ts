@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ActivitiesComponent } from './activities/activities.component';
+import { ReportsComponent } from './reports/reports.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { ActivitiesComponent } from './activities/activities.component';
     SidebarComponent,
     ProjectsComponent,
     ActivitiesComponent,
+    ReportsComponent,
   ],
   imports: [
     BrowserModule,
