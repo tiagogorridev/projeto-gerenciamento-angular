@@ -9,13 +9,13 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'dashboard', // CORRETO ✅
+    path: 'dashboard',
     component: DashboardComponent,
   },
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full', // Melhor prática: usar redirectTo para evitar duplicação
+    pathMatch: 'full',
   },
 ];
 

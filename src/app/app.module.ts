@@ -9,7 +9,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    HeaderComponent,
     SidebarComponent,
   ],
   imports: [
