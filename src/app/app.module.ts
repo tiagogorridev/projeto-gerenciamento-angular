@@ -15,6 +15,7 @@ import { ActivitiesComponent } from './activities/activities.component';
 import { ReportsComponent } from './reports/reports.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ContactComponent } from './contact/contact.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { ProfileComponent } from './profile/profile.component';
     ReportsComponent,
     TimesheetComponent,
     ProfileComponent,
+    ContactComponent,
   ],
   imports: [
     BrowserModule,
