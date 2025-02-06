@@ -1,8 +1,8 @@
 <div class="signup-container">
   <div class="signup-content">
     <div class="welcome-message">
-      <h1>Boas-vindas à Wise</h1>
-      <h2>Comece a lançar suas horas de projeto agora mesmo!</h2>
+      <h1>Boas-vindas à timetracker.com</h1>
+      <h2>Comece a gerenciar suas horas de projeto agora!</h2>
     </div>
 
     <div class="signup-form">
@@ -19,7 +19,7 @@
       <form (ngSubmit)="onSubmit()" #signupForm="ngForm" novalidate>
         <div class="form-group">
           <label for="email"></label>
-          <input type="email" id="email" [(ngModel)]="email" name="email" required placeholder="nome@wise.com.br" class="input-field">
+          <input type="email" id="email" [(ngModel)]="email" name="email" required placeholder="nome@empresa.com.br" class="input-field">
           <small *ngIf="signupForm.submitted && !email" class="error-text">O email é obrigatório.</small>
         </div>
 

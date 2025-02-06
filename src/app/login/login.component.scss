@@ -1,6 +1,7 @@
 $dark: #1e1f26;
 $light-gray: #a9b0bb;
-$strong-purple: #8b5cf6;
+$strong-purple: #6e38ec;
+$dark-purple: #2a1263;
 $gray: #6b7280;
 $hover: rgba(255, 255, 255, 0.05);
 
@@ -148,5 +149,5 @@ h3 {
 }
 
 .login-btn button:hover {
-  background-color: $strong-purple;
+  background-color: $dark-purple;
 }
