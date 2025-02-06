@@ -19,6 +19,7 @@ import { ContactComponent } from './contact/contact.component';
 import { HelpPageComponent } from './help-page/help-page.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { SignupComponent } from './signup/signup.component';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { SignupComponent } from './signup/signup.component';
     HelpPageComponent,
     ForgotPasswordComponent,
     SignupComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
