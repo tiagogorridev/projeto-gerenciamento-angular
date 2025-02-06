@@ -1,1 +1,54 @@
-<p>signup works!</p>
+<div class="signup-container">
+  <div class="signup-content">
+    <div class="welcome-message">
+      <h1>Boas-vindas à timetracker.com</h1>
+      <h2>Comece a gerenciar suas horas de projeto agora!</h2>
+    </div>
+
+    <div class="signup-form">
+      <form (ngSubmit)="onSubmit()" #signupForm="ngForm" novalidate>
+        <!-- Nome Completo -->
+        <div class="form-group">
+          <label for="fullName"></label>
+          <input type="text" id="fullName" [(ngModel)]="fullName" name="fullName" required placeholder="Nome completo" class="input-field">
+          <small *ngIf="signupForm.submitted && !fullName" class="error-text">O nome completo é obrigatório.</small>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email"></label>
+          <input type="email" id="email" [(ngModel)]="email" name="email" required placeholder="nome@empresa.com.br" class="input-field">
+          <small *ngIf="signupForm.submitted && !email" class="error-text">O email é obrigatório.</small>
+        </div>
+
+        <!-- Senha -->
+        <div class="form-group">
+          <label for="password"></label>
+          <input type="password" id="password" [(ngModel)]="password" name="password" required placeholder="Senha" class="input-field">
+          <small *ngIf="signupForm.submitted && !password" class="error-text">A senha é obrigatória.</small>
+        </div>
+
+        <!-- Confirmação de Senha -->
+        <div class="form-group">
+          <label for="confirmPassword"></label>
+          <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" required placeholder="Confirme sua senha" class="input-field">
+          <small *ngIf="signupForm.submitted && !confirmPassword" class="error-text">A confirmação de senha é obrigatória.</small>
+          <small *ngIf="signupForm.submitted && confirmPassword !== password" class="error-text">As senhas não coincidem.</small>
+        </div>
+
+        <!-- Botão de Submissão -->
+        <div class="login-btn">
+          <button pButton label="Criar Conta" type="submit" [disabled]="!signupForm.valid" class="signup-btn"></button>
+        </div>
+
+        <!-- Links Extras -->
+        <div class="extra-links">
+          <a [routerLink]="'/login'" class="signup">Já tenho uma conta</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="signup-background"></div>
+</div>
