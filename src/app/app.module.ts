@@ -14,6 +14,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { ReportsComponent } from './reports/reports.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { TimesheetComponent } from './timesheet/timesheet.component';
     ActivitiesComponent,
     ReportsComponent,
     TimesheetComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
