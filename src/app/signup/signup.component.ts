@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../services/usuario.service';
+import { Usuario } from '../services/usuario.model';
 
 @Component({
   selector: 'app-signup',
@@ -12,7 +14,10 @@ export class SignupComponent {
   password: string = '';
   confirmPassword: string = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private usuarioService: UsuarioService
+  ) {}
 
   onSubmit() {
     if (this.password !== this.confirmPassword) {
@@ -20,11 +25,21 @@ export class SignupComponent {
       return;
     }
 
-    console.log('Nome Completo:', this.fullName);
-    console.log('Email:', this.email);
-    console.log('Senha:', this.password);
+    const novoUsuario: Usuario = {
+      nome: this.fullName,
+      email: this.email,
+      senha: this.password,
+      confirmPassword: this.confirmPassword
+    };
 
-
-    this.router.navigate(['/login']);
+    this.usuarioService.cadastrarUsuario(novoUsuario).subscribe(
+      (response) => {
+        console.log('Usuário cadastrado com sucesso:', response);
+        this.router.navigate(['/login']);  
+      },
+      (error) => {
+        console.error('Erro ao cadastrar usuário:', error);
+      }
+    );
   }
 }
