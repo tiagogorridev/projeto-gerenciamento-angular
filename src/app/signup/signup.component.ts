@@ -19,27 +19,30 @@ export class SignupComponent {
     private usuarioService: UsuarioService
   ) {}
 
-  onSubmit() {
-    if (this.password !== this.confirmPassword) {
+  // signup.component.ts
+// signup.component.ts
+onSubmit() {
+  if (this.password !== this.confirmPassword) {
       console.error('As senhas não coincidem!');
       return;
-    }
+  }
 
-    const novoUsuario: Usuario = {
+  const novoUsuario: Usuario = {
       nome: this.fullName,
       email: this.email,
       senha: this.password,
+      perfil: 'ROLE_USER', // Define o perfil padrão
       confirmPassword: this.confirmPassword
-    };
+  };
 
-    this.usuarioService.cadastrarUsuario(novoUsuario).subscribe(
-      (response) => {
-        console.log('Usuário cadastrado com sucesso:', response);
-        this.router.navigate(['/login']);  
+  this.usuarioService.cadastrarUsuario(novoUsuario).subscribe({
+      next: (response) => {
+          console.log('Usuário cadastrado com sucesso:', response);
+          this.router.navigate(['/login']);
       },
-      (error) => {
-        console.error('Erro ao cadastrar usuário:', error);
+      error: (error) => {
+          console.error('Erro ao cadastrar usuário:', error);
       }
-    );
-  }
+  });
+}
 }
