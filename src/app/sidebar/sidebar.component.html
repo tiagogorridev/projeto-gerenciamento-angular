@@ -151,7 +151,7 @@
       <span class="user-name">Nome do Usuário</span>
       <a routerLink="/logout" class="logout-link">
         <i class="pi pi-sign-out"></i>
-        <span>Sair</span>
+        <button *ngIf="isAuthenticated$ | async" (click)="logout()">Logout</button>
       </a>
     </div>
   </div>
