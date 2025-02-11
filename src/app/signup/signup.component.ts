@@ -13,36 +13,40 @@ export class SignupComponent {
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
+  perfil: 'ADMIN' | 'USUARIO' = 'USUARIO'; 
 
   constructor(
     private router: Router,
     private usuarioService: UsuarioService
   ) {}
 
-  // signup.component.ts
-// signup.component.ts
-onSubmit() {
-  if (this.password !== this.confirmPassword) {
+  onSubmit() {
+    if (this.password !== this.confirmPassword) {
       console.error('As senhas não coincidem!');
       return;
-  }
+    }
 
-  const novoUsuario: Usuario = {
+    if (!this.perfil) {
+      console.error("O campo 'perfil' não pode ser vazio");
+      return;
+    }
+
+    const novoUsuario: Usuario = {
       nome: this.fullName,
       email: this.email,
       senha: this.password,
-      perfil: 'ROLE_USER', // Define o perfil padrão
+      perfil: this.perfil, 
       confirmPassword: this.confirmPassword
-  };
+    };
 
-  this.usuarioService.cadastrarUsuario(novoUsuario).subscribe({
+    this.usuarioService.cadastrarUsuario(novoUsuario).subscribe({
       next: (response) => {
-          console.log('Usuário cadastrado com sucesso:', response);
-          this.router.navigate(['/login']);
+        console.log('Usuário cadastrado com sucesso:', response);
+        this.router.navigate(['/login']);
       },
       error: (error) => {
-          console.error('Erro ao cadastrar usuário:', error);
+        console.error('Erro ao cadastrar usuário:', error);
       }
-  });
-}
+    });
+  }
 }
