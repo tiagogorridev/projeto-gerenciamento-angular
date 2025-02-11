@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators'; 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
+import { catchError, tap, finalize } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,14 +10,20 @@ import { catchError, tap } from 'rxjs/operators';
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
 
-  constructor(private http: HttpClient) { }
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) { }
 
   login(email: string, senha: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, senha })
       .pipe(
         tap((response: LoginResponse) => {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('perfil', response.perfil);  
+          this.saveSession(response.token, response.perfil);
+          this.isAuthenticatedSubject.next(true);
         }),
         catchError(error => {
           console.error('Erro no login:', error);
@@ -29,13 +36,44 @@ export class AuthService {
       );
   }
 
-  logout(): void {
+  logout(): Observable<any> {
+    const token = this.getToken();
+
+    if (!token) {
+      this.clearSession();
+      this.router.navigate(['/login']);
+      return of(null);
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<any>(`${this.apiUrl}/logout`, {}, { headers }).pipe(
+      tap(() => this.clearSession()),
+      finalize(() => {
+        this.router.navigate(['/login']);
+      }),
+      catchError((error) => {
+        console.error('Erro no logout:', error);
+        this.clearSession();
+        return of(null);
+      })
+    );
+  }
+
+  private saveSession(token: string, perfil: string): void {
+    localStorage.setItem('token', token);
+    localStorage.setItem('perfil', perfil);
+  }
+
+  private clearSession(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('perfil');
+    sessionStorage.removeItem('token');
+    this.isAuthenticatedSubject.next(false);
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return !!this.getToken();
   }
 
   getToken(): string | null {
@@ -45,5 +83,5 @@ export class AuthService {
 
 export interface LoginResponse {
   token: string;
-  perfil: string; 
+  perfil: string;
 }
