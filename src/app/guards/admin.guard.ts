@@ -11,7 +11,7 @@ export class AdminGuard implements CanActivate {
     const perfil = localStorage.getItem('perfil');
     if (perfil !== 'ADMIN') {
       console.log('Acesso negado: Redirecionando para a página de login ou página inicial');
-      this.router.navigate(['/login']);  // Redireciona para a página de login ou para uma página inicial
+      this.router.navigate(['/login']);
       return false;
     }
     return true;
