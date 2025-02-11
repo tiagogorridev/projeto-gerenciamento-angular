@@ -13,6 +13,10 @@ export class UsuarioService {
   constructor(private http: HttpClient) { }
 
   cadastrarUsuario(usuario: Usuario): Observable<any> {
+    if (!usuario.perfil) {
+      throw new Error("O campo 'perfil' é obrigatório");
+    }
+
     return this.http.post<any>(`${this.apiUrl}/cadastro`, usuario)
       .pipe(
         catchError(this.handleError)
@@ -23,10 +27,8 @@ export class UsuarioService {
     let errorMessage = 'Ocorreu um erro desconhecido';
 
     if (error.error instanceof ErrorEvent) {
-      // Erro do lado do cliente
       errorMessage = `Erro: ${error.error.message}`;
     } else {
-      // Erro do lado do servidor
       errorMessage = `Código do erro: ${error.status}, ` +
                     `mensagem: ${error.error?.message || error.message}`;
     }

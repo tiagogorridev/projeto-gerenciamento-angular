@@ -15,7 +15,6 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();
 
-    // Evitar adicionar o Authorization header para requisições de login ou cadastro
     if (token && !request.url.includes('/auth/login') && !request.url.includes('/usuarios/cadastro')) {
       request = request.clone({
         setHeaders: {
