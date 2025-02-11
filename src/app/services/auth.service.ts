@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators'; 
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +14,10 @@ export class AuthService {
   login(email: string, senha: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, senha })
       .pipe(
+        tap((response: LoginResponse) => {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('perfil', response.perfil);  
+        }),
         catchError(error => {
           console.error('Erro no login:', error);
           let message = 'Erro ao realizar login';
@@ -24,27 +27,23 @@ export class AuthService {
           return throwError(() => new Error(message));
         })
       );
-}
+  }
 
   logout(): void {
-    // Remover o token do localStorage ao fazer logout
     localStorage.removeItem('token');
+    localStorage.removeItem('perfil');
   }
 
   isLoggedIn(): boolean {
-    // Verifica se há um token no localStorage
     return !!localStorage.getItem('token');
   }
 
   getToken(): string | null {
-    // Retorna o token armazenado no localStorage
     return localStorage.getItem('token');
   }
 }
 
-// 🔹 Interface deve ser declarada FORA da classe
 export interface LoginResponse {
-  token: string; // Token JWT retornado após o login
-  message?: string; // Mensagem de erro ou sucesso (se houver)
-  statusCode?: number; // Código de status HTTP, caso seja necessário
+  token: string;
+  perfil: string; 
 }
