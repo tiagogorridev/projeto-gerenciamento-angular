@@ -15,18 +15,17 @@ export class AuthService {
     // Certifique-se de que o backend espera 'senha' ou 'password' no corpo da requisição
     return this.http.post<LoginResponse>(`${this.baseUrl}/login`, {
         email: email,
-        senha: password // Alterar se o backend esperar 'password'
+        senha: password // Certifique-se de que o backend espera 'senha' ou 'password'
     }).pipe(
         tap((response: LoginResponse) => {
-            console.log("Resposta da API:", response); // Log para depuração
+            console.log("Resposta da API:", response);
 
             if (response && response.token) {
-                // Armazenando o token no localStorage
                 localStorage.setItem('token', response.token);
             }
         })
     );
-  }
+}
 
   logout(): void {
     // Remover o token do localStorage ao fazer logout
