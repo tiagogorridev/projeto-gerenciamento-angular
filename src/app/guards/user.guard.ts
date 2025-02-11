@@ -12,11 +12,10 @@ export class UserGuard implements CanActivate {
 
     if (perfil === 'ADMIN') {
       console.log('Acesso negado: Redirecionando administrador');
-      this.router.navigate(['/dashboard']); // Redireciona admin para o dashboard
+      this.router.navigate(['/dashboard']);
       return false;
     }
 
-    // Se o perfil for "USUARIO", permite o acesso à página de perfil
     return true;
   }
 }
