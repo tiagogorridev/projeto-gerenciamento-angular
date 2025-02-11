@@ -26,7 +26,18 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
         console.log('Login bem sucedido', response);
-        this.router.navigate(['/dashboard']);
+
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('perfil', response.perfil);
+
+        if (response.perfil === 'ADMIN') {
+          this.router.navigate(['/admin/dashboard']);
+        } else if (response.perfil === 'USUARIO') {
+          this.router.navigate(['/user/profile']);
+        } else {
+          console.warn('Perfil não reconhecido:', response.perfil);
+          this.router.navigate(['/login']);
+        }
       },
       error: (error) => {
         console.error('Erro no login', error);
