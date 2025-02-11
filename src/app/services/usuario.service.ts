@@ -21,7 +21,7 @@ export class UsuarioService {
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocorreu um erro desconhecido';
-    
+
     if (error.error instanceof ErrorEvent) {
       // Erro do lado do cliente
       errorMessage = `Erro: ${error.error.message}`;
@@ -30,7 +30,7 @@ export class UsuarioService {
       errorMessage = `Código do erro: ${error.status}, ` +
                     `mensagem: ${error.error?.message || error.message}`;
     }
-    
+
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
