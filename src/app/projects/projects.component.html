@@ -31,12 +31,6 @@
       </select>
       <i class="fas fa-chevron-down dropdown-icon"></i>
     </div>
-
-    <div class="input-group">
-      <input type="text" placeholder="Buscar cliente..." class="input-field">
-      <i class="fas fa-chevron-down dropdown-icon"></i>
-    </div>
-
     <button class="new-project-btn" (click)="openNewProjectModal()">
       Novo Projeto
     </button>
@@ -48,80 +42,108 @@
       <p class="empty-text">Nenhum projeto disponível</p>
     </div>
   </div>
-</div>
 
-<!-- Modal -->
-<div class="modal" *ngIf="showNewProjectModal">
-  <div class="modal-content">
-    <h2>Novo Projeto</h2>
+  <div class="projects-list" *ngIf="hasProjects">
+    <div class="project-row headers">
+      <div class="project-name">Nome</div>
+      <div class="project-client">Cliente</div>
+      <div class="project-progress">Progresso</div>
+      <div class="project-cost">Custo</div>
+      <div class="project-status">Status</div>
+      <div class="project-priority">Prioridade</div>
+      <div class="project-start">Data de Início</div>
+      <div class="project-end">Data de Fim</div>
+    </div>
 
-    <!-- Formulário de Projeto -->
-    <form (ngSubmit)="onSubmit(projectForm)" #projectForm="ngForm">
-      <div class="form-group">
-        <label>Nome</label>
-        <input type="text" class="input-field" [(ngModel)]="project.nome" name="nome" required>
-        <div *ngIf="projectForm.submitted && !project.nome" class="error-text">Nome é obrigatório</div>
+    <div class="project-row" *ngFor="let projeto of projects">
+      <div class="project-name">{{ projeto.nome }}</div>
+      <div class="project-client">{{ projeto.cliente }}</div>
+      <div class="project-progress">{{ projeto.horasTrabalhadas || 0 }}h de {{ projeto.horasEstimadas || 0 }}h</div>
+      <div class="project-cost">
+        {{ projeto.custoTrabalhado || 0 | currency:'BRL' }} de
+        {{ projeto.custoEstimado || 0 | currency:'BRL' }}
       </div>
+      <div class="project-status">{{ projeto.status }}</div>
+      <div class="project-priority">{{ projeto.prioridade }}</div>
+      <div class="project-start">{{ projeto.dataInicio | date:'dd/MM/yyyy' }}</div>
+      <div class="project-end">{{ projeto.dataFim | date:'dd/MM/yyyy' }}</div>
+    </div>
+  </div>
 
-      <div class="form-group">
-        <label>Descrição</label>
-        <input type="text" class="input-field" [(ngModel)]="project.descricao" name="descricao" required>
-      </div>
+  <div class="modal" *ngIf="showNewProjectModal">
+    <div class="modal-content">
+      <h2>Novo Projeto</h2>
 
-      <div class="form-group">
-        <label>Cliente</label>
-        <select class="input-field" [(ngModel)]="project.cliente" name="cliente" required>
-          <option value="" disabled selected>Selecione o cliente</option>
-          <option>Cliente 1</option>
-          <option>Cliente 2</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Horas estimadas</label>
-        <input type="number" class="input-field" [(ngModel)]="project.horasEstimadas" name="horasEstimadas" required>
-      </div>
-
-      <div class="form-group">
-        <label>Custo estimado</label>
-        <input type="number" class="input-field" [(ngModel)]="project.custoEstimado" name="custoEstimado" required>
-      </div>
-
-      <div class="form-row">
+      <form (ngSubmit)="onSubmit(projectForm)" #projectForm="ngForm">
         <div class="form-group">
-          <label>Data de Início</label>
-          <p-calendar [(ngModel)]="startDate" name="dataInicio" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
+          <label>Nome</label>
+          <input type="text" class="input-field" [(ngModel)]="project.nome" name="nome" required>
+          <div *ngIf="projectForm.submitted && !project.nome" class="error-text">Nome é obrigatório</div>
         </div>
 
         <div class="form-group">
-          <label>Data de Fim</label>
-          <p-calendar [(ngModel)]="endDate" name="dataFim" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
+          <label>Descrição</label>
+          <input type="text" class="input-field" [(ngModel)]="project.descricao" name="descricao" required>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label>Status</label>
-        <select class="input-field" [(ngModel)]="project.status" name="status" required>
-          <option value="PLANEJADO">Planejado</option>
-          <option value="EM_ANDAMENTO">Em Andamento</option>
-          <option value="CONCLUIDO">Concluído</option>
-          <option value="CANCELADO">Cancelado</option>
-        </select>
-      </div>
+        <div class="form-group">
+          <label>Cliente</label>
+          <select class="input-field" [(ngModel)]="project.cliente" name="cliente" required>
+            <option value="" disabled selected>Selecione o cliente</option>
+            <option value="1">Cliente A</option>
+            <option value="2">Cliente B</option>
+            <option value="3">Cliente C</option>
+            <option value="4">Cliente D</option>
+            <option value="5">Cliente E</option>
+          </select>
+        </div>
 
-      <div class="form-group">
-        <label>Prioridade</label>
-        <select class="input-field" [(ngModel)]="project.prioridade" name="prioridade" required>
-          <option value="ALTA">Alta</option>
-          <option value="MEDIA">Média</option>
-          <option value="BAIXA">Baixa</option>
-        </select>
-      </div>
+        <div class="form-group">
+          <label>Horas estimadas</label>
+          <input type="number" class="input-field" [(ngModel)]="project.horasEstimadas" name="horasEstimadas" required>
+        </div>
 
-      <div class="modal-actions">
-        <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
-        <button type="submit" class="create-btn" [disabled]="!projectForm.form.valid">Criar</button>
-      </div>
-    </form>
+        <div class="form-group">
+          <label>Custo estimado</label>
+          <input type="number" class="input-field" [(ngModel)]="project.custoEstimado" name="custoEstimado" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Data de Início</label>
+            <p-calendar [(ngModel)]="startDate" name="dataInicio" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
+          </div>
+
+          <div class="form-group">
+            <label>Data de Fim</label>
+            <p-calendar [(ngModel)]="endDate" name="dataFim" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select class="input-field" [(ngModel)]="project.status" name="status" required>
+            <option value="PLANEJADO">Planejado</option>
+            <option value="EM_ANDAMENTO">Em Andamento</option>
+            <option value="CONCLUIDO">Concluído</option>
+            <option value="CANCELADO">Cancelado</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Prioridade</label>
+          <select class="input-field" [(ngModel)]="project.prioridade" name="prioridade" required>
+            <option value="ALTA">Alta</option>
+            <option value="MEDIA">Média</option>
+            <option value="BAIXA">Baixa</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="create-btn" [disabled]="!projectForm.form.valid">Criar</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

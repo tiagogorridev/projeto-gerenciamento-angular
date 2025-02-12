@@ -181,7 +181,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 
   .input-field {
     padding-left: 40px;
-    height: 36px; /* Ajustado para reduzir a altura */
+    height: 36px;
   }
 
   .currency {
@@ -203,7 +203,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     min-width: 200px;
 
     .input-field {
-      height: 36px; /* Reduz a altura para um visual mais compacto */
+      height: 36px;
     }
 
     .currency-input .input-field {
@@ -244,4 +244,70 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
       }
     }
   }
+}
+
+.projects-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid $border-color;
+  justify-content: space-between;
+}
+
+.headers {
+  font-weight: bold;
+  background-color: #f3f4f6;
+  border-bottom: 2px solid $border-color;
+}
+
+.project-name,
+.project-description,
+.project-client,
+.project-progress,
+.project-cost,
+.project-status,
+.project-priority,
+.project-start,
+.project-end {
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 8px;
+  font-size: 14px;
+  color: $text-gray;
+}
+
+.project-name {
+  font-weight: bold;
+  max-width: 150px;
+}
+
+.project-description {
+  max-width: 200px;
+}
+
+.project-client {
+  max-width: 200px;
+}
+
+.project-progress,
+.project-cost,
+.project-status,
+.project-priority {
+  max-width: none;
+}
+
+.project-start,
+.project-end {
+  max-width: 100px;
+}
+
+.project-row:hover {
+  background-color: #f9fafb;
 }

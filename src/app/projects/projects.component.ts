@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../services/projects.service';
 
 @Component({
@@ -6,9 +6,11 @@ import { ProjectsService } from '../services/projects.service';
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
 })
-export class ProjectsComponent {
+export class ProjectsComponent implements OnInit {
   hasProjects: boolean = false;
   showNewProjectModal: boolean = false;
+
+  projects: any[] = [];
 
   project = {
     nome: '',
@@ -16,21 +18,20 @@ export class ProjectsComponent {
     cliente: '',
     horasEstimadas: 0,
     custoEstimado: 0,
-    dataInicio: null as Date | null,  // Aceitar tanto Date quanto null
-    dataFim: null as Date | null,    // Aceitar tanto Date quanto null
+    dataInicio: null as Date | null,
+    dataFim: null as Date | null,
     status: 'PLANEJADO',
     prioridade: 'ALTA'
   };
 
-  startDate: Date | null = new Date();  // Data de início
-  endDate: Date | null = new Date();    // Data de fim
+  startDate: Date | null = new Date();
+  endDate: Date | null = new Date();
 
-  constructor(private projectsService: ProjectsService) {}
+  constructor(
+    private projectsService: ProjectsService
+  ) {}
 
-  onlyNumbers(event: any): void {
-    const input = event.target;
-    input.value = input.value.replace(/[^0-9]/g, '');
-  }
+  ngOnInit(): void {}
 
   openNewProjectModal(): void {
     this.showNewProjectModal = true;
@@ -45,7 +46,7 @@ export class ProjectsComponent {
       this.project.dataInicio = this.startDate || null;
       this.project.dataFim = this.endDate || null;
 
-      const usuarioResponsavel = { id: 1 };  // Substitua pelo usuário logado dinamicamente
+      const usuarioResponsavel = { id: 1 };
 
       const projetoParaEnviar = {
         ...this.project,
@@ -55,7 +56,9 @@ export class ProjectsComponent {
       this.projectsService.createProjeto(projetoParaEnviar).subscribe({
         next: (resposta) => {
           console.log('Projeto criado com sucesso:', resposta);
-          this.closeModal();  // Fechar o modal após o envio
+          this.closeModal();
+          this.hasProjects = true;
+          this.projects.push(resposta);
         },
         error: (erro) => {
           console.error('Erro ao criar projeto:', erro);
