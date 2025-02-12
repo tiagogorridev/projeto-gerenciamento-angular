@@ -42,12 +42,12 @@
     </button>
   </div>
 
-    <div class="empty-state" *ngIf="!hasProjects">
-      <div class="empty-state-content">
-        <img src="assets/no-project.png" alt="Nenhum projeto disponível" class="empty-image">
-        <p class="empty-text">Nenhum projeto disponível</p>
-      </div>
+  <div class="empty-state" *ngIf="!hasProjects">
+    <div class="empty-state-content">
+      <img src="assets/no-project.png" alt="Nenhum projeto disponível" class="empty-image">
+      <p class="empty-text">Nenhum projeto disponível</p>
     </div>
+  </div>
 </div>
 
 <div class="modal" *ngIf="showNewProjectModal">
@@ -83,27 +83,31 @@
       </select>
     </div>
 
-    <div class="form-group">
-      <label>Horas estimadas</label>
-      <input type="number" class="input-field" value="0">
-    </div>
-
-    <div class="form-group">
-      <label>Custo estimado</label>
-      <div class="currency-input">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Horas estimadas</label>
         <input type="number" class="input-field" value="0">
-        <span class="currency">R$</span>
+      </div>
+
+      <div class="form-group">
+        <label>Custo estimado</label>
+        <div class="currency-input">
+          <input type="number" class="input-field" value="0">
+          <span class="currency">R$</span>
+        </div>
       </div>
     </div>
 
-    <div class="form-group">
-      <label>Data de Início</label>
-      <p-calendar [(ngModel)]="startDate" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy"></p-calendar>
-    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Data de Início</label>
+        <p-calendar [(ngModel)]="startDate" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy"></p-calendar>
+      </div>
 
-    <div class="form-group">
-      <label>Data de Fim</label>
-      <p-calendar [(ngModel)]="endDate" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy"></p-calendar>
+      <div class="form-group">
+        <label>Data de Fim</label>
+        <p-calendar [(ngModel)]="endDate" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy"></p-calendar>
+      </div>
     </div>
 
     <div class="modal-actions">
