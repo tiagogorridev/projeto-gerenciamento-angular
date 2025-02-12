@@ -9,6 +9,9 @@ export class ProjectsComponent {
   hasProjects: boolean = false;
   showNewProjectModal: boolean = false;
 
+  startDate: Date | null = null;
+  endDate: Date | null = null;
+
   onlyNumbers(event: any): void {
     const input = event.target;
     input.value = input.value.replace(/[^0-9]/g, '');
