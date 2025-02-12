@@ -1,2 +1,44 @@
 <app-sidebar></app-sidebar>
 <app-header></app-header>
+
+<div class="projetos-container">
+  <div class="projetos-header">
+    <h1>Projetos</h1>
+  </div>
+
+  <div class="projetos-search-filter">
+    <input type="text" placeholder="Pesquisar projetos..." class="search-input">
+    <select class="filter-select">
+      <option value="">Status</option>
+      <option>Ativo</option>
+      <option>Arquivado</option>
+      <option>Todos</option>
+    </select>
+    <select class="filter-select">
+      <option value="">Prioridade</option>
+      <option>Alta</option>
+      <option>Média</option>
+      <option>Baixa</option>
+    </select>
+
+    <div class="filter-select" id="cliente-select" (click)="toggleClientList()">
+      <input type="text" id="cliente-search" [value]="selectedClient || 'Buscar cliente...'" class="search-input" (keyup)="filterClients($event)">
+      <div *ngIf="showClientList" class="client-list">
+        <div *ngFor="let cliente of filteredClientes" class="client-option" (click)="selectClient(cliente)">
+          {{ cliente }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Botão Novo Projeto dentro da div de filtro para alinhamento -->
+    <button class="novo-projeto-btn">
+      <i class="fas fa-plus"></i>
+      Novo Projeto
+    </button>
+  </div>
+
+  <div class="projetos-no-projects">
+    <img src="../../assets/no-project.png" alt="Nenhum projeto disponível" class="empty-image">
+    <p>Nenhum projeto disponível</p>
+  </div>
+</div>
