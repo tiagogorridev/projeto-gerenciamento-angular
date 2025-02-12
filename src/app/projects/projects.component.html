@@ -1,44 +1,99 @@
 <app-sidebar></app-sidebar>
 <app-header></app-header>
 
-<div class="projetos-container">
-  <div class="projetos-header">
+<div class="projects-container">
+  <div class="projects-header">
     <h1>Projetos</h1>
   </div>
 
-  <div class="projetos-search-filter">
-    <input type="text" placeholder="Pesquisar projetos..." class="search-input">
-    <select class="filter-select">
-      <option value="">Status</option>
-      <option>Ativo</option>
-      <option>Arquivado</option>
-      <option>Todos</option>
-    </select>
-    <select class="filter-select">
-      <option value="">Prioridade</option>
-      <option>Alta</option>
-      <option>Média</option>
-      <option>Baixa</option>
-    </select>
-
-    <div class="filter-select" id="cliente-select" (click)="toggleClientList()">
-      <input type="text" id="cliente-search" [value]="selectedClient || 'Buscar cliente...'" class="search-input" (keyup)="filterClients($event)">
-      <div *ngIf="showClientList" class="client-list">
-        <div *ngFor="let cliente of filteredClientes" class="client-option" (click)="selectClient(cliente)">
-          {{ cliente }}
-        </div>
-      </div>
+  <div class="search-filter-container">
+    <div class="input-group">
+      <input type="text" placeholder="Pesquisar projetos..." class="input-field">
+      <i class="fas fa-search search-icon"></i>
     </div>
 
-    <!-- Botão Novo Projeto dentro da div de filtro para alinhamento -->
-    <button class="novo-projeto-btn">
-      <i class="fas fa-plus"></i>
+    <div class="input-group">
+      <select class="input-field">
+        <option value="" disabled selected>Status</option>
+        <option>Ativo</option>
+        <option>Arquivado</option>
+        <option>Todos</option>
+      </select>
+      <i class="fas fa-chevron-down dropdown-icon"></i>
+    </div>
+
+    <div class="input-group">
+      <select class="input-field">
+        <option value="" disabled selected>Prioridade</option>
+        <option>Alta</option>
+        <option>Média</option>
+        <option>Baixa</option>
+      </select>
+      <i class="fas fa-chevron-down dropdown-icon"></i>
+    </div>
+
+    <div class="input-group">
+      <input type="text" placeholder="Buscar cliente..." class="input-field">
+      <i class="fas fa-chevron-down dropdown-icon"></i>
+    </div>
+
+    <button class="new-project-btn" (click)="openNewProjectModal()">
       Novo Projeto
     </button>
   </div>
 
-  <div class="projetos-no-projects">
-    <img src="../../assets/no-project.png" alt="Nenhum projeto disponível" class="empty-image">
-    <p>Nenhum projeto disponível</p>
+    <div class="empty-state" *ngIf="!hasProjects">
+      <div class="empty-state-content">
+        <img src="assets/no-project.png" alt="Nenhum projeto disponível" class="empty-image">
+        <p class="empty-text">Nenhum projeto disponível</p>
+      </div>
+    </div>
+</div>
+
+<div class="modal" *ngIf="showNewProjectModal">
+  <div class="modal-content">
+    <h2>Novo Projeto</h2>
+
+    <div class="form-group">
+      <label>ID</label>
+      <input type="number" class="input-field" (input)="onlyNumbers($event)">
+    </div>
+
+    <div class="form-group">
+      <label>Nome</label>
+      <input type="text" class="input-field">
+    </div>
+
+    <div class="form-group checkbox">
+      <input type="checkbox" id="publicProject">
+      <label for="publicProject">Projeto público</label>
+    </div>
+
+    <div class="form-group">
+      <label>Cliente</label>
+      <select class="input-field">
+        <option value="" disabled selected>Cliente</option>
+        <option>Cliente 1</option>
+        <option>Cliente 2</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Horas estimadas</label>
+      <input type="number" class="input-field" value="0">
+    </div>
+
+    <div class="form-group">
+      <label>Custo estimado</label>
+      <div class="currency-input">
+        <input type="number" class="input-field" value="0">
+        <span class="currency">R$</span>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="cancel-btn">Cancelar</button>
+      <button class="create-btn">Criar</button>
+    </div>
   </div>
 </div>
