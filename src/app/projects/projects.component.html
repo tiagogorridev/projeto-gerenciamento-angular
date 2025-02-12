@@ -50,88 +50,78 @@
   </div>
 </div>
 
+<!-- Modal -->
 <div class="modal" *ngIf="showNewProjectModal">
   <div class="modal-content">
     <h2>Novo Projeto</h2>
 
-    <div class="form-group">
-      <label>ID</label>
-      <input type="number" class="input-field" (input)="onlyNumbers($event)">
-    </div>
+    <!-- Formulário de Projeto -->
+    <form (ngSubmit)="onSubmit(projectForm)" #projectForm="ngForm">
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" class="input-field" [(ngModel)]="project.nome" name="nome" required>
+        <div *ngIf="projectForm.submitted && !project.nome" class="error-text">Nome é obrigatório</div>
+      </div>
 
-    <div class="form-group">
-      <label>Nome</label>
-      <input type="text" class="input-field">
-    </div>
+      <div class="form-group">
+        <label>Descrição</label>
+        <input type="text" class="input-field" [(ngModel)]="project.descricao" name="descricao" required>
+      </div>
 
-    <div class="form-group">
-      <label>Descrição</label>
-      <input type="text" class="input-field">
-    </div>
+      <div class="form-group">
+        <label>Cliente</label>
+        <select class="input-field" [(ngModel)]="project.cliente" name="cliente" required>
+          <option value="" disabled selected>Selecione o cliente</option>
+          <option>Cliente 1</option>
+          <option>Cliente 2</option>
+        </select>
+      </div>
 
-    <div class="form-group checkbox">
-      <input type="checkbox" id="publicProject">
-      <label for="publicProject">Projeto público</label>
-    </div>
-
-    <div class="form-group">
-      <label>Cliente</label>
-      <select class="input-field">
-        <option value="" disabled selected>Cliente</option>
-        <option>Cliente 1</option>
-        <option>Cliente 2</option>
-      </select>
-    </div>
-
-    <div class="form-row">
       <div class="form-group">
         <label>Horas estimadas</label>
-        <input type="number" class="input-field" value="0">
+        <input type="number" class="input-field" [(ngModel)]="project.horasEstimadas" name="horasEstimadas" required>
       </div>
 
       <div class="form-group">
         <label>Custo estimado</label>
-        <div class="currency-input">
-          <input type="number" class="input-field" value="0">
-          <span class="currency">R$</span>
+        <input type="number" class="input-field" [(ngModel)]="project.custoEstimado" name="custoEstimado" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data de Início</label>
+          <p-calendar [(ngModel)]="startDate" name="dataInicio" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
+        </div>
+
+        <div class="form-group">
+          <label>Data de Fim</label>
+          <p-calendar [(ngModel)]="endDate" name="dataFim" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
         </div>
       </div>
-    </div>
 
-    <div class="form-row">
       <div class="form-group">
-        <label>Data de Início</label>
-        <p-calendar [(ngModel)]="startDate" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy"></p-calendar>
+        <label>Status</label>
+        <select class="input-field" [(ngModel)]="project.status" name="status" required>
+          <option value="PLANEJADO">Planejado</option>
+          <option value="EM_ANDAMENTO">Em Andamento</option>
+          <option value="CONCLUIDO">Concluído</option>
+          <option value="CANCELADO">Cancelado</option>
+        </select>
       </div>
 
       <div class="form-group">
-        <label>Data de Fim</label>
-        <p-calendar [(ngModel)]="endDate" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy"></p-calendar>
+        <label>Prioridade</label>
+        <select class="input-field" [(ngModel)]="project.prioridade" name="prioridade" required>
+          <option value="ALTA">Alta</option>
+          <option value="MEDIA">Média</option>
+          <option value="BAIXA">Baixa</option>
+        </select>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Status</label>
-      <select class="input-field">
-        <option value="PLANEJADO">Planejado</option>
-        <option value="EM_ANDAMENTO">Em Andamento</option>
-        <option value="CONCLUIDO">Concluído</option>
-        <option value="CANCELADO">Cancelado</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Prioridade</label>
-      <select class="input-field">
-        <option value="ALTA">Alta</option>
-        <option value="MEDIA">Média</option>
-        <option value="BAIXA">Baixa</option>
-      </select>
-    </div>
-
-    <div class="modal-actions">
-      <button class="cancel-btn">Cancelar</button>
-      <button class="create-btn">Criar</button>
-    </div>
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
+        <button type="submit" class="create-btn" [disabled]="!projectForm.form.valid">Criar</button>
+      </div>
+    </form>
   </div>
 </div>

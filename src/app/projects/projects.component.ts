@@ -9,8 +9,20 @@ export class ProjectsComponent {
   hasProjects: boolean = false;
   showNewProjectModal: boolean = false;
 
-  startDate: Date | null = null;
-  endDate: Date | null = null;
+project = {
+  nome: '',
+  descricao: '',
+  cliente: '',
+  horasEstimadas: 0,
+  custoEstimado: 0,
+  dataInicio: null as Date | null,  // Aceitar tanto Date quanto null
+  dataFim: null as Date | null,    // Aceitar tanto Date quanto null
+  status: 'PLANEJADO',
+  prioridade: 'ALTA'
+};
+
+  startDate: Date | null = new Date();  // Data de início
+  endDate: Date | null = new Date();    // Data de fim
 
   onlyNumbers(event: any): void {
     const input = event.target;
@@ -21,7 +33,19 @@ export class ProjectsComponent {
     this.showNewProjectModal = true;
   }
 
-  closeNewProjectModal(): void {
+  closeModal(): void {
     this.showNewProjectModal = false;
+  }
+
+  onSubmit(projectForm: any): void {
+    if (projectForm.valid) {
+      // Verificar se as datas não são nulas antes de atribuir
+      this.project.dataInicio = this.startDate || null;
+      this.project.dataFim = this.endDate || null;
+
+      // Enviar o projeto (chamada de API ou lógica de negócio)
+      console.log('Projeto criado:', this.project);
+      this.closeModal(); // Fechar o modal após o envio
+    }
   }
 }
