@@ -19,7 +19,7 @@ import { HelpPageComponent } from './user/help-page/help-page.component';
 // Guards
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
-import { UserGuard } from './guards/user.guard'; 
+import { UserGuard } from './guards/user.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -41,11 +41,11 @@ const routes: Routes = [
   // Rotas do Usuário Comum
   {
     path: 'user',
-    canActivate: [AuthGuard, UserGuard],  
+    canActivate: [AuthGuard, UserGuard],
     children: [
       { path: 'profile', component: ProfileComponent },
       { path: 'help-page', component: HelpPageComponent },
-      { path: '', redirectTo: 'profile', pathMatch: 'full' }, 
+      { path: '', redirectTo: 'profile', pathMatch: 'full' },
     ],
   },
 
