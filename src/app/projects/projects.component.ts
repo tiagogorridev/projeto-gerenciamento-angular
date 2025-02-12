@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProjectsService } from '../services/projects.service';
 
 @Component({
   selector: 'app-projects',
@@ -9,20 +10,22 @@ export class ProjectsComponent {
   hasProjects: boolean = false;
   showNewProjectModal: boolean = false;
 
-project = {
-  nome: '',
-  descricao: '',
-  cliente: '',
-  horasEstimadas: 0,
-  custoEstimado: 0,
-  dataInicio: null as Date | null,  // Aceitar tanto Date quanto null
-  dataFim: null as Date | null,    // Aceitar tanto Date quanto null
-  status: 'PLANEJADO',
-  prioridade: 'ALTA'
-};
+  project = {
+    nome: '',
+    descricao: '',
+    cliente: '',
+    horasEstimadas: 0,
+    custoEstimado: 0,
+    dataInicio: null as Date | null,  // Aceitar tanto Date quanto null
+    dataFim: null as Date | null,    // Aceitar tanto Date quanto null
+    status: 'PLANEJADO',
+    prioridade: 'ALTA'
+  };
 
   startDate: Date | null = new Date();  // Data de início
   endDate: Date | null = new Date();    // Data de fim
+
+  constructor(private projectsService: ProjectsService) {}
 
   onlyNumbers(event: any): void {
     const input = event.target;
@@ -39,13 +42,25 @@ project = {
 
   onSubmit(projectForm: any): void {
     if (projectForm.valid) {
-      // Verificar se as datas não são nulas antes de atribuir
       this.project.dataInicio = this.startDate || null;
       this.project.dataFim = this.endDate || null;
 
-      // Enviar o projeto (chamada de API ou lógica de negócio)
-      console.log('Projeto criado:', this.project);
-      this.closeModal(); // Fechar o modal após o envio
+      const usuarioResponsavel = { id: 1 };  // Substitua pelo usuário logado dinamicamente
+
+      const projetoParaEnviar = {
+        ...this.project,
+        usuarioResponsavel: usuarioResponsavel
+      };
+
+      this.projectsService.createProjeto(projetoParaEnviar).subscribe({
+        next: (resposta) => {
+          console.log('Projeto criado com sucesso:', resposta);
+          this.closeModal();  // Fechar o modal após o envio
+        },
+        error: (erro) => {
+          console.error('Erro ao criar projeto:', erro);
+        }
+      });
     }
   }
 }
