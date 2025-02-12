@@ -13,7 +13,7 @@ export class SignupComponent {
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
-  perfil: 'ADMIN' | 'USUARIO' = 'USUARIO'; 
+  perfil: 'ADMIN' | 'USUARIO' = 'USUARIO';
 
   constructor(
     private router: Router,
@@ -35,7 +35,7 @@ export class SignupComponent {
       nome: this.fullName,
       email: this.email,
       senha: this.password,
-      perfil: this.perfil, 
+      perfil: this.perfil,
       confirmPassword: this.confirmPassword
     };
 
