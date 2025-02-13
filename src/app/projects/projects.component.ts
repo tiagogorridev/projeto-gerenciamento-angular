@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../services/projects.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-projects',
@@ -28,7 +29,8 @@ export class ProjectsComponent implements OnInit {
   endDate: Date | null = new Date();
 
   constructor(
-    private projectsService: ProjectsService
+    private projectsService: ProjectsService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -58,6 +60,10 @@ export class ProjectsComponent implements OnInit {
 
   closeModal(): void {
     this.showNewProjectModal = false;
+  }
+
+  navegarParaEdicao(projetoId: number): void {
+    this.router.navigate(['/projects/edit', projetoId]);
   }
 
   onSubmit(projectForm: any): void {
