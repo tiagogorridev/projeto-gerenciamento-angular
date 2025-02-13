@@ -19,6 +19,7 @@ import { DashboardComponent as AdminDashboardComponent } from './features/admin/
 import { HourApprovalComponent } from './features/admin/hour-approval/hour-approval.component';
 import { AdminReportsComponent } from './features/admin/admin-reports/admin-reports.component';
 import { UserManagementComponent } from './features/admin/user-management/user-management.component';
+import { AdminSidebarComponent } from './features/admin/admin-sidebar/admin-sidebar.component';
 
 // Componentes de Usuário Comum
 import { ActivitiesComponent } from './features/users/activities/activities.component';
@@ -50,6 +51,7 @@ const routes: Routes = [
       { path: 'hour-approval', component: HourApprovalComponent },
       { path: 'admin-reports', component: AdminReportsComponent },
       { path: 'user-management', component: UserManagementComponent },
+      { path: 'admin-sidebar', component: AdminSidebarComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redireciona para o dashboard por padrão
     ],
   },

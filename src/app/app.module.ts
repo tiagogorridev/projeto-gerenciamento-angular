@@ -17,6 +17,7 @@ import { HourApprovalComponent } from './features/admin/hour-approval/hour-appro
 import { AdminReportsComponent } from './features/admin/admin-reports/admin-reports.component';
 import { SignupComponent } from './features/admin/signup/signup.component';
 import { UserManagementComponent } from './features/admin/user-management/user-management.component';
+import { AdminSidebarComponent } from './features/admin/admin-sidebar/admin-sidebar.component';
 
 // Features -> Profile
 import { ProfileComponent } from './features/profile/profile.component';
@@ -74,6 +75,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AdminReportsComponent,
     UserManagementComponent,
     TimeHistoryComponent,
+    AdminSidebarComponent,
   ],
   imports: [
     BrowserModule,
