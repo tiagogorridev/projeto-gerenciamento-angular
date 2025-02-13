@@ -22,7 +22,7 @@ import { AdminSidebarComponent } from './features/admin/admin-sidebar/admin-side
 import { ActivitiesComponent } from './features/users/activities/activities.component';
 import { UsersDashboardComponent } from './features/users/users-dashboard/users-dashboard.component';
 import { ProjectsComponent } from './features/users/projects/projects.component';
-import { EditProjectsComponent } from './features/users/projects/edit-projects/edit-projects.component';
+import { EditProjectsComponent } from './features/admin/edit-projects/edit-projects.component';
 import { TimeHistoryComponent } from './features/users/time-history/time-history.component';
 import { TimeTrackingComponent } from './features/users/time-tracking/time-tracking.component';
 

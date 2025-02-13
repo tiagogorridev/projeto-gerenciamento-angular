@@ -27,7 +27,7 @@ import { AdminAtividadesComponent } from './features/admin/admin-atividades/admi
 import { ActivitiesComponent } from './features/users/activities/activities.component';
 import { UsersDashboardComponent } from './features/users/users-dashboard/users-dashboard.component';
 import { ProjectsComponent } from './features/users/projects/projects.component';
-import { EditProjectsComponent } from './features/users/projects/edit-projects/edit-projects.component';
+import { EditProjectsComponent } from './features/admin/edit-projects/edit-projects.component';
 import { TimeHistoryComponent } from './features/users/time-history/time-history.component';
 import { TimeTrackingComponent } from './features/users/time-tracking/time-tracking.component';
 import { UsersRelatoriosComponent } from './features/users/users-relatorios/users-relatorios.component';
@@ -62,6 +62,7 @@ const routes: Routes = [
       { path: 'admin-projetos', component: AdminProjetosComponent },
       { path: 'admin-relatorios', component: AdminRelatoriosComponent },
       { path: 'admin-profile', component: AdminProfileComponent },
+      { path: 'edit-projects/:nome', component: EditProjectsComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redireciona para o dashboard por padrão
     ],
   },
@@ -74,7 +75,6 @@ const routes: Routes = [
       { path: 'dashboard', component: UsersDashboardComponent },
       { path: 'activities', component: ActivitiesComponent },
       { path: 'projects', component: ProjectsComponent },
-      { path: 'edit-projects/:nome', component: EditProjectsComponent },
       { path: 'time-history', component: TimeHistoryComponent },
       { path: 'time-tracking', component: TimeTrackingComponent },
       { path: 'timetracking', component: TimeTrackingComponent, canActivate: [AuthGuard] },
