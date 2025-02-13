@@ -3,43 +3,65 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+
+// Core -> Auth -> Interceptors
+import { AuthInterceptor } from './core/auth/interceptors/auth.interceptor';
+
+// Core -> Layout
+import { HeaderComponent } from './core/layout/header/header.component';
+import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
+
+// Features -> Admin
+import { DashboardComponent } from './features/admin/dashboard/dashboard.component';
+import { HourApprovalComponent } from './features/admin/hour-approval/hour-approval.component';
+import { AdminReportsComponent } from './features/admin/admin-reports/admin-reports.component';
+import { SignupComponent } from './features/admin/signup/signup.component';
+import { UserManagementComponent } from './features/admin/user-management/user-management.component';
+
+// Features -> Profile
+import { ProfileComponent } from './features/profile/profile.component';
+
+// Features -> Users
+import { ActivitiesComponent } from './features/users/activities/activities.component';
+import { UsersDashboardComponent } from './features/users/users-dashboard/users-dashboard.component';
+import { ProjectsComponent } from './features/users/projects/projects.component';
+import { EditProjectsComponent } from './features/users/projects/edit-projects/edit-projects.component';
+import { TimeHistoryComponent } from './features/users/time-history/time-history.component';
+import { TimeTrackingComponent } from './features/users/time-tracking/time-tracking.component';
+
+// Pages
+import { ContactComponent } from './pages/contact/contact.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { HelpPageComponent } from './pages/help-page/help-page.component';
+import { LoginComponent } from './pages/login/login.component';
+import { LogoutComponent } from './pages/logout/logout.component';
+
+// Reports
+import { ReportsComponent } from './reports/reports.component';
+
+// HTTP
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
 
-
+// PrimeNG
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { DashboardComponent } from './admin/dashboard/dashboard.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { ProjectsComponent } from './projects/projects.component';
-import { ActivitiesComponent } from './admin/activities/activities.component';
-import { ReportsComponent } from './reports/reports.component';
-import { TimesheetComponent } from './timesheet/timesheet.component';
-import { ProfileComponent } from './user/profile/profile.component';
-import { ContactComponent } from './contact/contact.component';
-import { HelpPageComponent } from './user/help-page/help-page.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { SignupComponent } from './signup/signup.component';
-import { HeaderComponent } from './header/header.component';
-import { EditProjectsComponent } from './projects/edit-projects/edit-projects.component';
-
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    LogoutComponent,
     DashboardComponent,
+    UsersDashboardComponent,
     SidebarComponent,
     ProjectsComponent,
     ActivitiesComponent,
     ReportsComponent,
-    TimesheetComponent,
     ProfileComponent,
     ContactComponent,
     HelpPageComponent,
@@ -47,6 +69,11 @@ import { EditProjectsComponent } from './projects/edit-projects/edit-projects.co
     SignupComponent,
     HeaderComponent,
     EditProjectsComponent,
+    TimeTrackingComponent,
+    HourApprovalComponent,
+    AdminReportsComponent,
+    UserManagementComponent,
+    TimeHistoryComponent,
   ],
   imports: [
     BrowserModule,
