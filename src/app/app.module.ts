@@ -14,7 +14,6 @@ import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
 // Features -> Admin
 import { DashboardComponent } from './features/admin/dashboard/dashboard.component';
 import { HourApprovalComponent } from './features/admin/hour-approval/hour-approval.component';
-import { AdminReportsComponent } from './features/admin/admin-reports/admin-reports.component';
 import { SignupComponent } from './features/admin/signup/signup.component';
 import { UserManagementComponent } from './features/admin/user-management/user-management.component';
 import { AdminSidebarComponent } from './features/admin/admin-sidebar/admin-sidebar.component';
@@ -50,6 +49,10 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AdminAtividadesComponent } from './features/admin/admin-atividades/admin-atividades.component';
+import { AdminRelatoriosComponent } from './features/admin/admin-relatorios/admin-relatorios.component';
+import { AdminProjetosComponent } from './features/admin/admin-projetos/admin-projetos.component';
+import { UsersRelatoriosComponent } from './features/users/users-relatorios/users-relatorios.component';
 
 
 @NgModule({
@@ -72,10 +75,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     EditProjectsComponent,
     TimeTrackingComponent,
     HourApprovalComponent,
-    AdminReportsComponent,
     UserManagementComponent,
     TimeHistoryComponent,
     AdminSidebarComponent,
+    AdminAtividadesComponent,
+    AdminRelatoriosComponent,
+    AdminProjetosComponent,
+    UsersRelatoriosComponent,
   ],
   imports: [
     BrowserModule,

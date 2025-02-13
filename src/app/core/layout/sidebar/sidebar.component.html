@@ -4,115 +4,50 @@
     <nav>
       <ul>
         <li>
-          <a routerLink="/dashboard" routerLinkActive="active">
+          <a routerLink="/user/users-dashboard" routerLinkActive="active">
             <i class="pi pi-home"></i>
             <span>Dashboard</span>
           </a>
         </li>
 
         <li>
-          <a routerLink="/projects" routerLinkActive="active" class="has-submenu">
+          <a routerLink="/user/projects" routerLinkActive="active" class="has-submenu">
             <i class="pi pi-folder"></i>
             <span>Projetos</span>
             <i class="pi pi-chevron-right submenu-arrow"></i>
           </a>
-          <ul class="submenu">
-            <li>
-              <a routerLink="/projects/list" routerLinkActive="active">
-                <i class="pi pi-list"></i>
-                <span>Listar Todos</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/projects/create" routerLinkActive="active">
-                <i class="pi pi-plus"></i>
-                <span>Criar Novo</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/projects/edit" routerLinkActive="active">
-                <i class="pi pi-pencil"></i>
-                <span>Gerenciar</span>
-              </a>
-            </li>
-          </ul>
         </li>
 
         <li>
-          <a routerLink="/activities" routerLinkActive="active" class="has-submenu">
+          <a routerLink="/user/activities" routerLinkActive="active" class="has-submenu">
             <i class="pi pi-check-square"></i>
             <span>Atividades</span>
             <i class="pi pi-chevron-right submenu-arrow"></i>
           </a>
-          <ul class="submenu">
-            <li>
-              <a routerLink="/activities/list" routerLinkActive="active">
-                <i class="pi pi-list"></i>
-                <span>Listar Todas</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/activities/create" routerLinkActive="active">
-                <i class="pi pi-plus"></i>
-                <span>Criar Nova</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/activities/edit" routerLinkActive="active">
-                <i class="pi pi-pencil"></i>
-                <span>Gerenciar</span>
-              </a>
-            </li>
-          </ul>
         </li>
 
         <li>
-          <a routerLink="/reports" routerLinkActive="active" class="has-submenu">
+          <a routerLink="/user/users-relatorios" routerLinkActive="active" class="has-submenu">
             <i class="pi pi-chart-bar"></i>
             <span>Relatórios</span>
             <i class="pi pi-chevron-right submenu-arrow"></i>
           </a>
-          <ul class="submenu">
-            <li>
-              <a routerLink="/reports/projects" routerLinkActive="active">
-                <i class="pi pi-folder"></i>
-                <span>Por Projeto</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/reports/activities" routerLinkActive="active">
-                <i class="pi pi-check-square"></i>
-                <span>Por Atividade</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/reports/period" routerLinkActive="active">
-                <i class="pi pi-calendar"></i>
-                <span>Por Período</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/reports/user" routerLinkActive="active">
-                <i class="pi pi-user"></i>
-                <span>Por Usuário</span>
-              </a>
-            </li>
-          </ul>
         </li>
 
         <li>
-          <a routerLink="/timesheet" routerLinkActive="active">
+          <a routerLink="/user/time-tracking" routerLinkActive="active">
             <i class="pi pi-clock"></i>
             <span>Lançamento de Horas</span>
           </a>
         </li>
 
         <li>
-          <a routerLink="/signup" routerLinkActive="active">
-            <i class="pi pi-user"></i>
-            <span>Adicionar Usuário</span>
+          <a routerLink="/user/time-history" routerLinkActive="active">
+            <i class="pi pi-clock"></i>
+            <span>Histórico de Horas</span>
           </a>
         </li>
+
       </ul>
     </nav>
   </div>

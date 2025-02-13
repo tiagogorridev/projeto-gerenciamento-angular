@@ -17,9 +17,11 @@ import { UserGuard } from './core/auth/guards/user.guard';
 // Componentes de Admin
 import { DashboardComponent as AdminDashboardComponent } from './features/admin/dashboard/dashboard.component';
 import { HourApprovalComponent } from './features/admin/hour-approval/hour-approval.component';
-import { AdminReportsComponent } from './features/admin/admin-reports/admin-reports.component';
 import { UserManagementComponent } from './features/admin/user-management/user-management.component';
 import { AdminSidebarComponent } from './features/admin/admin-sidebar/admin-sidebar.component';
+import { AdminRelatoriosComponent } from './features/admin/admin-relatorios/admin-relatorios.component';
+import { AdminProjetosComponent } from './features/admin/admin-projetos/admin-projetos.component';
+import { AdminAtividadesComponent } from './features/admin/admin-atividades/admin-atividades.component';
 
 // Componentes de Usuário Comum
 import { ActivitiesComponent } from './features/users/activities/activities.component';
@@ -29,6 +31,7 @@ import { EditProjectsComponent } from './features/users/projects/edit-projects/e
 import { TimeHistoryComponent } from './features/users/time-history/time-history.component';
 import { TimeTrackingComponent } from './features/users/time-tracking/time-tracking.component';
 import { ProfileComponent } from './features/profile/profile.component';
+import { UsersRelatoriosComponent } from './features/users/users-relatorios/users-relatorios.component';
 
 // Rotas
 const routes: Routes = [
@@ -49,9 +52,11 @@ const routes: Routes = [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'signup', component: SignupComponent },
       { path: 'hour-approval', component: HourApprovalComponent },
-      { path: 'admin-reports', component: AdminReportsComponent },
       { path: 'user-management', component: UserManagementComponent },
       { path: 'admin-sidebar', component: AdminSidebarComponent },
+      { path: 'admin-atividades', component: AdminAtividadesComponent },
+      { path: 'admin-projetos', component: AdminProjetosComponent },
+      { path: 'admin-relatorios', component: AdminRelatoriosComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redireciona para o dashboard por padrão
     ],
   },
@@ -69,6 +74,10 @@ const routes: Routes = [
       { path: 'time-tracking', component: TimeTrackingComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'timetracking', component: TimeTrackingComponent, canActivate: [AuthGuard] },
+      { path: 'users-relatorios', component: UsersRelatoriosComponent, canActivate: [AuthGuard] },
+      { path: 'users-dashboard', component: UsersDashboardComponent, canActivate: [AuthGuard] },
+
+
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redireciona para o dashboard por padrão
     ],
   },
