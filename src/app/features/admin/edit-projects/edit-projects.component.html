@@ -1,4 +1,66 @@
-<app-sidebar></app-sidebar>
-<app-header></app-header>
+<app-admin-sidebar></app-admin-sidebar>
+<app-admin-header></app-admin-header>
+<div class="activities-container">
+  <div class="activities-header">
+    <h1>Atividades</h1>
+  </div>
 
-<p>edit-projects works!</p>
+  <div class="search-filter-container">
+    <div class="input-group">
+      <input type="text" placeholder="Pesquisar atividades..." class="input-field">
+      <i class="fas fa-search search-icon"></i>
+    </div>
+
+    <button class="new-activity-btn" (click)="openNewActivityModal()">
+      Nova Atividade
+    </button>
+  </div>
+
+  <div class="empty-state" *ngIf="!hasActivities">
+    <div class="empty-state-content">
+      <img src="assets/no-activities.png" alt="Nenhuma atividade disponível" class="empty-image">
+      <p class="empty-text">Nenhuma atividade disponível</p>
+    </div>
+  </div>
+
+  <div class="activities" *ngIf="hasActivities">
+    <div class="activities headers">
+      <div class="activity-name">Nome</div>
+      <div class="activity-config">Configuração</div>
+    </div>
+
+    <div class="activities" *ngFor="let activity of activities" (click)="navigateToEditActivity(activity.nome)">
+      <div class="activity-name">{{ activity.nome }}</div>
+      <div class="activity-config">{{ activity.config }}</div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showNewActivityModal">
+    <div class="modal-content">
+      <h2>Nova Atividade</h2>
+
+      <form (ngSubmit)="onSubmit(activityForm)" #activityForm="ngForm">
+        <div class="form-group">
+          <label>Nome da Atividade</label>
+          <input type="text" class="input-field" [(ngModel)]="activity.nome" name="nome" required>
+          <div *ngIf="activityForm.submitted && !activity.nome" class="error-text">Nome é obrigatório</div>
+        </div>
+
+        <div class="form-group">
+          <label>Membros</label>
+          <input type="text" class="input-field" [(ngModel)]="activity.membros" name="membros" required>
+        </div>
+
+        <div class="form-group">
+          <label>Configurações</label>
+          <input type="text" class="input-field" [(ngModel)]="activity.config" name="config" required>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="create-btn" [disabled]="!activityForm.form.valid">Criar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
