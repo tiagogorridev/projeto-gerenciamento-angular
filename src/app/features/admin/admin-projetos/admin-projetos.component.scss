@@ -155,7 +155,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 
     &:focus {
       outline: none;
-      border-color: #60a5fa;
+      border-color: $primary-color;
     }
   }
 
@@ -235,12 +235,12 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     }
 
     &.create-btn {
-      background: #60a5fa;
+      background: $primary-color;
       border: none;
       color: white;
 
       &:hover {
-        background: #3b82f6;
+        background: $hover-color;
       }
     }
   }

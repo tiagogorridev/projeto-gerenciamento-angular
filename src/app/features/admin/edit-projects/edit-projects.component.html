@@ -1,66 +1,157 @@
 <app-admin-sidebar></app-admin-sidebar>
 <app-admin-header></app-admin-header>
-<div class="activities-container">
-  <div class="activities-header">
-    <h1>Atividades</h1>
-  </div>
 
-  <div class="search-filter-container">
-    <div class="input-group">
-      <input type="text" placeholder="Pesquisar atividades..." class="input-field">
-      <i class="fas fa-search search-icon"></i>
+<div class="project-page">
+  <header class="project-header">
+    <div class="breadcrumb">
+      <span>Projetos</span>
+      <span class="separator">/</span>
+      <h1>Teste</h1>
     </div>
+  </header>
 
-    <button class="new-activity-btn" (click)="openNewActivityModal()">
-      Nova Atividade
+  <nav class="tab-navigation">
+    <button class="tab-button" [class.active]="activeTab === 'tasks'" (click)="switchTab('tasks')">
+      Tarefas
     </button>
-  </div>
+    <button class="tab-button" [class.active]="activeTab === 'time'" (click)="switchTab('time')">
+      Time
+    </button>
+    <button class="tab-button" [class.active]="activeTab === 'details'" (click)="switchTab('details')">
+      Detalhes
+    </button>
+  </nav>
 
-  <div class="empty-state" *ngIf="!hasActivities">
-    <div class="empty-state-content">
-      <img src="assets/no-activities.png" alt="Nenhuma atividade disponível" class="empty-image">
-      <p class="empty-text">Nenhuma atividade disponível</p>
-    </div>
-  </div>
+  <main class="content">
+    <!-- Tarefas Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'tasks'">
+      <div class="actions-bar">
+        <div class="search-container">
+          <input type="text" placeholder="Pesquisar tarefas.." class="search-input" [(ngModel)]="searchTerm">
+        </div>
+        <button class="new-task-button" (click)="openModal()">+ Nova Tarefa</button>
+      </div>
 
-  <div class="activities" *ngIf="hasActivities">
-    <div class="activities headers">
-      <div class="activity-name">Nome</div>
-      <div class="activity-config">Configuração</div>
-    </div>
+      <div class="modal" *ngIf="showNewTarefaModal">
+        <div class="modal-content">
+          <h2>Nova Tarefa</h2>
+          <form (ngSubmit)="onSubmit()" #tarefaForm="ngForm">
+            <div class="form-group">
+              <label>Nome</label>
+              <input type="text" class="input-field" [(ngModel)]="tarefa.nome" name="nome" required>
+              <div *ngIf="tarefaForm.submitted && !tarefa.nome" class="error-text">
+                Nome é obrigatório
+              </div>
+            </div>
 
-    <div class="activities" *ngFor="let activity of activities" (click)="navigateToEditActivity(activity.nome)">
-      <div class="activity-name">{{ activity.nome }}</div>
-      <div class="activity-config">{{ activity.config }}</div>
-    </div>
-  </div>
+            <div class="modal-actions">
+              <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
+              <button type="submit" class="create-btn" [disabled]="!tarefaForm.form.valid">Criar</button>
+            </div>
+          </form>
+        </div>
+      </div>
 
-  <div class="modal" *ngIf="showNewActivityModal">
-    <div class="modal-content">
-      <h2>Nova Atividade</h2>
-
-      <form (ngSubmit)="onSubmit(activityForm)" #activityForm="ngForm">
-        <div class="form-group">
-          <label>Nome da Atividade</label>
-          <input type="text" class="input-field" [(ngModel)]="activity.nome" name="nome" required>
-          <div *ngIf="activityForm.submitted && !activity.nome" class="error-text">Nome é obrigatório</div>
+      <div class="tasks-table">
+        <div class="table-header">
+          <div class="header-name">Tarefas</div>
+          <div class="header-assigned">ATRIBUÍDOS</div>
         </div>
 
-        <div class="form-group">
-          <label>Membros</label>
-          <input type="text" class="input-field" [(ngModel)]="activity.membros" name="membros" required>
+        <div class="empty-state">
+          <p class="empty-title">Nenhuma tarefa disponível</p>
+          <p class="empty-subtitle">Crie uma nova tarefa para começar</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'time'">
+      <div class="actions-bar">
+        <div class="search-container">
+          <input type="text" placeholder="Pesquisar membros..." class="search-input" [(ngModel)]="searchTerm">
+        </div>
+        <button class="new-task-button" (click)="openAddMemberModal()">+ Adicionar Membro</button>
+      </div>
+
+      <div class="modal" *ngIf="showAddMemberModal">
+        <div class="modal-content">
+          <h2>Adicionar Membro ao Projeto</h2>
+          <form (ngSubmit)="onAddMemberSubmit()" #addMemberForm="ngForm">
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email" class="input-field" [(ngModel)]="newMember.email" name="email" required>
+              <div *ngIf="addMemberForm.submitted && !newMember.email" class="error-text">
+                E-mail é obrigatório
+              </div>
+            </div>
+
+            <div class="modal-actions">
+              <button type="button" class="cancel-btn" (click)="closeAddMemberModal()">Cancelar</button>
+              <button type="submit" class="create-btn" [disabled]="!addMemberForm.form.valid">Adicionar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="members-table">
+        <div class="table-header">
+          <div class="header-email">Membros</div>
         </div>
 
-        <div class="form-group">
-          <label>Configurações</label>
-          <input type="text" class="input-field" [(ngModel)]="activity.config" name="config" required>
+        <div *ngIf="members.length === 0" class="empty-state">
+          <p class="empty-title">Nenhum membro atribuído</p>
+          <p class="empty-subtitle">Adicione membros ao projeto</p>
         </div>
 
-        <div class="modal-actions">
-          <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
-          <button type="submit" class="create-btn" [disabled]="!activityForm.form.valid">Criar</button>
+        <div *ngFor="let member of members" class="table-row">
+          <div class="table-cell">{{ member.email }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalhes Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'details'">
+      <form class="details-form">
+        <div class="form-section">
+          <h3>Detalhes</h3>
+
+          <div class="form-group">
+            <label>ID</label>
+            <input type="text" value="01" disabled class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" class="form-input" [(ngModel)]="projectDetails.name" name="name">
+          </div>
+
+          <div class="form-group">
+            <label>Cliente</label>
+            <select class="form-select" [(ngModel)]="projectDetails.client" name="client">
+              <option value="">Selecione um cliente</option>
+              <option value="teste">teste</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Estimativa</h3>
+
+          <div class="form-group">
+            <label>Horas estimadas</label>
+            <input type="number" class="form-input" [(ngModel)]="projectDetails.estimatedHours" name="estimatedHours">
+          </div>
+
+          <div class="form-group">
+            <label>Custo estimado</label>
+            <div class="input-currency">
+              <input type="number" class="form-input" [(ngModel)]="projectDetails.estimatedCost" name="estimatedCost">
+              <span class="currency-symbol">R$</span>
+            </div>
+          </div>
         </div>
       </form>
     </div>
-  </div>
+  </main>
 </div>
