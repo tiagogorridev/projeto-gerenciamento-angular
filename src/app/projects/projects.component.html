@@ -58,7 +58,9 @@
     <div class="project-row" *ngFor="let projeto of projects">
       <div class="project-name">{{ projeto.nome }}</div>
       <div class="project-client">{{ projeto.cliente }}</div>
-      <div class="project-progress">{{ projeto.horasTrabalhadas || 0 }}h de {{ projeto.horasEstimadas || 0 }}h</div>
+      <div class="project-progress">
+        {{ projeto.horasTrabalhadas || 0 }}h de {{ projeto.horasEstimadas || 0 }}h
+      </div>
       <div class="project-cost">
         {{ projeto.custoTrabalhado || 0 | currency:'BRL' }} de
         {{ projeto.custoEstimado || 0 | currency:'BRL' }}
