@@ -18,9 +18,6 @@ import { SignupComponent } from './features/admin/signup/signup.component';
 import { UserManagementComponent } from './features/admin/user-management/user-management.component';
 import { AdminSidebarComponent } from './features/admin/admin-sidebar/admin-sidebar.component';
 
-// Features -> Profile
-import { ProfileComponent } from './features/profile/profile.component';
-
 // Features -> Users
 import { ActivitiesComponent } from './features/users/activities/activities.component';
 import { UsersDashboardComponent } from './features/users/users-dashboard/users-dashboard.component';
@@ -53,6 +50,9 @@ import { AdminAtividadesComponent } from './features/admin/admin-atividades/admi
 import { AdminRelatoriosComponent } from './features/admin/admin-relatorios/admin-relatorios.component';
 import { AdminProjetosComponent } from './features/admin/admin-projetos/admin-projetos.component';
 import { UsersRelatoriosComponent } from './features/users/users-relatorios/users-relatorios.component';
+import { AdminProfileComponent } from './features/admin/admin-profile/admin-profile.component';
+import { ProfileComponent } from './features/profile/profile.component';
+import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
 
 
 @NgModule({
@@ -66,7 +66,6 @@ import { UsersRelatoriosComponent } from './features/users/users-relatorios/user
     ProjectsComponent,
     ActivitiesComponent,
     ReportsComponent,
-    ProfileComponent,
     ContactComponent,
     HelpPageComponent,
     ForgotPasswordComponent,
@@ -82,6 +81,9 @@ import { UsersRelatoriosComponent } from './features/users/users-relatorios/user
     AdminRelatoriosComponent,
     AdminProjetosComponent,
     UsersRelatoriosComponent,
+    AdminProfileComponent,
+    ProfileComponent,
+    AdminHeaderComponent,
   ],
   imports: [
     BrowserModule,

@@ -30,8 +30,11 @@ import { ProjectsComponent } from './features/users/projects/projects.component'
 import { EditProjectsComponent } from './features/users/projects/edit-projects/edit-projects.component';
 import { TimeHistoryComponent } from './features/users/time-history/time-history.component';
 import { TimeTrackingComponent } from './features/users/time-tracking/time-tracking.component';
-import { ProfileComponent } from './features/profile/profile.component';
 import { UsersRelatoriosComponent } from './features/users/users-relatorios/users-relatorios.component';
+import { AdminProfileComponent } from './features/admin/admin-profile/admin-profile.component';
+import { ProfileComponent } from './features/profile/profile.component';
+import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
+import { Header } from 'primeng/api';
 
 // Rotas
 const routes: Routes = [
@@ -54,9 +57,11 @@ const routes: Routes = [
       { path: 'hour-approval', component: HourApprovalComponent },
       { path: 'user-management', component: UserManagementComponent },
       { path: 'admin-sidebar', component: AdminSidebarComponent },
+      { path: 'admin-header', component: AdminHeaderComponent },
       { path: 'admin-atividades', component: AdminAtividadesComponent },
       { path: 'admin-projetos', component: AdminProjetosComponent },
       { path: 'admin-relatorios', component: AdminRelatoriosComponent },
+      { path: 'admin-profile', component: AdminProfileComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redireciona para o dashboard por padrão
     ],
   },
@@ -72,12 +77,11 @@ const routes: Routes = [
       { path: 'edit-projects/:nome', component: EditProjectsComponent },
       { path: 'time-history', component: TimeHistoryComponent },
       { path: 'time-tracking', component: TimeTrackingComponent },
-      { path: 'profile', component: ProfileComponent },
       { path: 'timetracking', component: TimeTrackingComponent, canActivate: [AuthGuard] },
       { path: 'users-relatorios', component: UsersRelatoriosComponent, canActivate: [AuthGuard] },
       { path: 'users-dashboard', component: UsersDashboardComponent, canActivate: [AuthGuard] },
-
-
+      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+      { path: 'header', component: Header, canActivate: [AuthGuard] },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redireciona para o dashboard por padrão
     ],
   },

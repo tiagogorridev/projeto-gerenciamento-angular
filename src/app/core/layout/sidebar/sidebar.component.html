@@ -57,13 +57,13 @@
     <nav>
       <ul>
         <li>
-          <a routerLink="/profile" routerLinkActive="active">
+          <a routerLink="/user/profile" routerLinkActive="active">
             <i class="pi pi-user"></i>
             <span>Meu Perfil</span>
           </a>
         </li>
         <li>
-          <a routerLink="/help" routerLinkActive="active">
+          <a routerLink="/help-page" routerLinkActive="active">
             <i class="pi pi-question-circle"></i>
             <span>Central de Ajuda</span>
           </a>
@@ -80,7 +80,9 @@
 
   <div class="user-info">
     <div class="user-avatar">
-      <i class="pi pi-user"></i>
+      <a routerLink="/user/profile" routerLinkActive="active">
+        <i class="pi pi-user"></i>
+      </a>
     </div>
     <div class="user-details">
       <span class="user-name">Nome do Usuário</span>
