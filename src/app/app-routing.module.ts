@@ -7,6 +7,8 @@ import { ContactComponent } from './contact/contact.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ReportsComponent } from './reports/reports.component';
+import { EditProjectsComponent } from './projects/edit-projects/edit-projects.component';
+
 
 // Componentes do Administrador
 import { DashboardComponent as AdminDashboardComponent } from './admin/dashboard/dashboard.component';
@@ -26,6 +28,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'edit-projects/:nome', component: EditProjectsComponent },
 
   // Rotas do Administrador
   {

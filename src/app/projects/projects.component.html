@@ -55,7 +55,7 @@
       <div class="project-end">Data de Fim</div>
     </div>
 
-    <div class="project-row" *ngFor="let projeto of projects" (click)="navegarParaEdicao(projeto.id)">
+    <div class="project-row" *ngFor="let projeto of projects" (click)="navegarParaEdicao(projeto.nome)">
       <div class="project-name">{{ projeto.nome }}</div>
       <div class="project-client">{{ projeto.cliente }}</div>
       <div class="project-progress">

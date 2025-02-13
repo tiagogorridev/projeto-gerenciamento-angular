@@ -27,6 +27,7 @@ import { HelpPageComponent } from './user/help-page/help-page.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { SignupComponent } from './signup/signup.component';
 import { HeaderComponent } from './header/header.component';
+import { EditProjectsComponent } from './projects/edit-projects/edit-projects.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { HeaderComponent } from './header/header.component';
     ForgotPasswordComponent,
     SignupComponent,
     HeaderComponent,
+    EditProjectsComponent,
   ],
   imports: [
     BrowserModule,

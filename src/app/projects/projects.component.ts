@@ -62,8 +62,8 @@ export class ProjectsComponent implements OnInit {
     this.showNewProjectModal = false;
   }
 
-  navegarParaEdicao(projetoId: number): void {
-    this.router.navigate(['/projects/edit', projetoId]);
+  navegarParaEdicao(projetoNome: string): void {
+    this.router.navigate(['/edit-projects', projetoNome]);
   }
 
   onSubmit(projectForm: any): void {
