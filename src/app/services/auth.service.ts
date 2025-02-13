@@ -22,7 +22,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, senha })
       .pipe(
         tap((response: LoginResponse) => {
-          this.saveSession(response.token, response.perfil);
+          this.saveSession(response.token, response.perfil, response.id); // Passando o ID do usuário aqui
           this.isAuthenticatedSubject.next(true);
         }),
         catchError(error => {
@@ -60,14 +60,16 @@ export class AuthService {
     );
   }
 
-  private saveSession(token: string, perfil: string): void {
+  private saveSession(token: string, perfil: string, id: number): void {
     localStorage.setItem('token', token);
     localStorage.setItem('perfil', perfil);
+    localStorage.setItem('usuario_id', id.toString()); // Armazenando o ID do usuário
   }
 
   private clearSession(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('perfil');
+    localStorage.removeItem('usuario_id'); // Removendo o ID do usuário
     sessionStorage.removeItem('token');
     this.isAuthenticatedSubject.next(false);
   }
@@ -84,4 +86,5 @@ export class AuthService {
 export interface LoginResponse {
   token: string;
   perfil: string;
+  id: number; // Adicionando o campo 'id' na interface de resposta
 }
