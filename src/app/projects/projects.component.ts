@@ -32,19 +32,25 @@ export class ProjectsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0'); // Recupera o ID do usuário logado
+    const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0');
     if (usuarioId) {
-        this.projectsService.getProjetosDoUsuario(usuarioId).subscribe({
-            next: (projetos) => {
-                this.projects = projetos;
-                this.hasProjects = this.projects.length > 0;
-            },
-            error: (erro) => {
-                console.error('Erro ao carregar os projetos:', erro);
-            }
-        });
+      this.projectsService.getProjetosDoUsuario(usuarioId).subscribe({
+        next: (projetos) => {
+          this.projects = projetos.map(projeto => {
+            return {
+              ...projeto,
+              horasTrabalhadas: projeto.horasTrabalhadas || 0,
+              custoTrabalhado: projeto.custoTrabalhado || 0
+            };
+          });
+          this.hasProjects = this.projects.length > 0;
+        },
+        error: (erro) => {
+          console.error('Erro ao carregar os projetos:', erro);
+        }
+      });
     }
-}
+  }
 
   openNewProjectModal(): void {
     this.showNewProjectModal = true;
@@ -56,15 +62,23 @@ export class ProjectsComponent implements OnInit {
 
   onSubmit(projectForm: any): void {
     if (projectForm.valid) {
+      console.log('Dados do projeto antes de enviar para o backend:', this.project);
+
       this.project.dataInicio = this.startDate || null;
       this.project.dataFim = this.endDate || null;
 
-      // Recupera o ID do usuário logado
-      const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0'); // Supondo que o ID do usuário esteja armazenado no localStorage
+      const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0');
 
       const projetoParaEnviar = {
-        ...this.project,
-        usuarioResponsavel: { id: usuarioId }  // Passando o ID do usuário logado
+        nome: this.project.nome,
+        descricao: this.project.descricao,
+        horasEstimadas: this.project.horasEstimadas,
+        custoEstimado: this.project.custoEstimado,
+        status: this.project.status,
+        prioridade: this.project.prioridade,
+        dataInicio: this.project.dataInicio,
+        dataFim: this.project.dataFim,
+        usuarioResponsavel: { id: usuarioId }
       };
 
       this.projectsService.createProjeto(projetoParaEnviar).subscribe({
@@ -73,11 +87,16 @@ export class ProjectsComponent implements OnInit {
           this.closeModal();
           this.hasProjects = true;
           this.projects.push(resposta);
+
+          this.projects = this.projects.map(projeto => ({
+            ...projeto,
+            custoEstimado: projeto.custoEstimado || 0,
+            custoTrabalhado: projeto.custoTrabalhado || 0
+          }));
         },
         error: (erro) => {
           console.error('Erro ao criar projeto:', erro);
         }
       });
     }
-  }
-}
+  }}
