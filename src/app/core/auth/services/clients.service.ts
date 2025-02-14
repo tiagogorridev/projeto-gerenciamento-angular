@@ -5,13 +5,13 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ClientesService {
+export class ClienteService {
 
-  private apiUrl = 'http://localhost:8080/api/clientes'; 
+  private apiUrl = 'http://localhost:8080/api/clientes';
 
   constructor(private http: HttpClient) {}
 
-  getClientes(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  cadastrarCliente(cliente: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, cliente);
   }
 }
