@@ -91,11 +91,7 @@
           <label>Cliente</label>
           <select class="input-field" [(ngModel)]="project.cliente" name="cliente" required>
             <option value="" disabled selected>Selecione o cliente</option>
-            <option value="1">Cliente A</option>
-            <option value="2">Cliente B</option>
-            <option value="3">Cliente C</option>
-            <option value="4">Cliente D</option>
-            <option value="5">Cliente E</option>
+            <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
           </select>
         </div>
 
