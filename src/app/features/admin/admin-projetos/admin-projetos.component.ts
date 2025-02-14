@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
+import { ClienteService } from '../../../core/auth/services/clients.service'; // Import the ClienteService
 import { Router } from '@angular/router';
+import { Cliente } from '../../../core/auth/services/clients.service'; // Import the Cliente interface
 
 @Component({
   selector: 'app-admin-projetos',
@@ -10,8 +12,8 @@ import { Router } from '@angular/router';
 export class AdminProjetosComponent implements OnInit {
   hasProjects: boolean = false;
   showNewProjectModal: boolean = false;
-
   projects: any[] = [];
+  clientes: Cliente[] = []; // Add clientes property to hold the list of clients
 
   project = {
     nome: '',
@@ -30,21 +32,20 @@ export class AdminProjetosComponent implements OnInit {
 
   constructor(
     private projectsService: ProjectsService,
+    private clienteService: ClienteService, // Inject ClienteService
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0');
+    const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0', 10);
     if (usuarioId) {
       this.projectsService.getProjetosDoUsuario(usuarioId).subscribe({
         next: (projetos) => {
-          this.projects = projetos.map(projeto => {
-            return {
-              ...projeto,
-              horasTrabalhadas: projeto.horasTrabalhadas || 0,
-              custoTrabalhado: projeto.custoTrabalhado || 0
-            };
-          });
+          this.projects = projetos.map(projeto => ({
+            ...projeto,
+            horasTrabalhadas: projeto.horasTrabalhadas || 0,
+            custoTrabalhado: projeto.custoTrabalhado || 0
+          }));
           this.hasProjects = this.projects.length > 0;
         },
         error: (erro) => {
@@ -52,6 +53,15 @@ export class AdminProjetosComponent implements OnInit {
         }
       });
     }
+
+    this.clienteService.listarClientes().subscribe({
+      next: (clientes) => {
+        this.clientes = clientes; // Populate clientes array with data
+      },
+      error: (erro) => {
+        console.error('Erro ao carregar os clientes:', erro);
+      }
+    });
   }
 
   openNewProjectModal(): void {
@@ -68,41 +78,25 @@ export class AdminProjetosComponent implements OnInit {
 
   onSubmit(projectForm: any): void {
     if (projectForm.valid) {
-      console.log('Dados do projeto antes de enviar para o backend:', this.project);
+      this.project.dataInicio = this.startDate;
+      this.project.dataFim = this.endDate;
 
-      this.project.dataInicio = this.startDate || null;
-      this.project.dataFim = this.endDate || null;
-
-      const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0');
-
+      const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0', 10);
       const projetoParaEnviar = {
-        nome: this.project.nome,
-        descricao: this.project.descricao,
-        horasEstimadas: this.project.horasEstimadas,
-        custoEstimado: this.project.custoEstimado,
-        status: this.project.status,
-        prioridade: this.project.prioridade,
-        dataInicio: this.project.dataInicio,
-        dataFim: this.project.dataFim,
+        ...this.project,
         usuarioResponsavel: { id: usuarioId }
       };
 
       this.projectsService.createProjeto(projetoParaEnviar).subscribe({
         next: (resposta) => {
-          console.log('Projeto criado com sucesso:', resposta);
           this.closeModal();
-          this.hasProjects = true;
           this.projects.push(resposta);
-
-          this.projects = this.projects.map(projeto => ({
-            ...projeto,
-            custoEstimado: projeto.custoEstimado || 0,
-            custoTrabalhado: projeto.custoTrabalhado || 0
-          }));
+          this.hasProjects = this.projects.length > 0;
         },
         error: (erro) => {
           console.error('Erro ao criar projeto:', erro);
         }
       });
     }
-  }}
+  }
+}
