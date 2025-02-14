@@ -16,7 +16,7 @@ export interface Cliente {
   providedIn: 'root'
 })
 export class ClienteService {
-  private apiUrl = 'http://localhost:8080/api'; // ajuste para sua URL base
+  private apiUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 

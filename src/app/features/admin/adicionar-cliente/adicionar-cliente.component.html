@@ -1,25 +1,80 @@
-<div class="adicionar-cliente-container">
-  <div class="adicionar-cliente-content">
-    <div class="welcome-message">
-      <h1>Adicionar Cliente</h1>
-      <h2>Adicione clientes para facilitar os seus projetos!</h2>
+<app-admin-sidebar></app-admin-sidebar>
+<app-admin-header></app-admin-header>
+<div class="clientes-container">
+  <div class="clientes-header">
+    <h1>Clientes</h1>
+  </div>
+
+  <div class="search-filter-container">
+    <div class="input-group">
+      <input type="text" placeholder="Pesquisar clientes..." class="input-field" [(ngModel)]="searchTerm">
+      <i class="fas fa-search search-icon"></i>
     </div>
 
-    <form (ngSubmit)="onSubmit()" #signupForm="ngForm" novalidate>
-      <label for="nome">Nome:</label>
-      <input type="text" id="nome" [(ngModel)]="fullName" name="fullName" required>
-      <div *ngIf="signupForm.controls['fullName']?.invalid && signupForm.controls['fullName']?.touched" class="error-message">
-        O nome é obrigatório.
-      </div>
+    <div class="input-group">
+      <select class="input-field" [(ngModel)]="statusFilter">
+        <option value="" disabled selected>Status</option>
+        <option>Ativo</option>
+        <option>Inativo</option>
+        <option>Todos</option>
+      </select>
+      <i class="fas fa-chevron-down dropdown-icon"></i>
+    </div>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" [(ngModel)]="email" name="email" required>
-      <div *ngIf="signupForm.controls['email']?.invalid && signupForm.controls['email']?.touched" class="error-message">
-        O email deve ser válido.
-      </div>
+    <button class="new-client-btn" (click)="openNewClientModal()">
+      Novo Cliente
+    </button>
+  </div>
 
-      <button type="submit" [disabled]="!signupForm.valid">Cadastrar</button>
-    </form>
+  <div class="empty-state" *ngIf="!hasClients">
+    <div class="empty-state-content">
+      <img src="assets/no-client.png" alt="Nenhum cliente disponível" class="empty-image">
+      <p class="empty-text">Nenhum cliente disponível</p>
+    </div>
+  </div>
 
-  <div class="signup-background"></div>
+  <div class="clients-list" *ngIf="hasClients">
+    <div class="client-row headers">
+      <div class="client-name">Nome</div>
+      <div class="client-email">Email</div>
+    </div>
+
+    <div class="client-row" *ngFor="let cliente of filteredClients" (click)="navegarParaEdicao(cliente.id)">
+      <div class="client-name">{{ cliente.nome }}</div>
+      <div class="client-email">{{ cliente.email }}</div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showNewClientModal">
+    <div class="modal-content">
+      <h2>Novo Cliente</h2>
+
+      <form (ngSubmit)="onSubmit(clientForm)" #clientForm="ngForm">
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text" class="input-field" [(ngModel)]="client.nome" name="nome" required>
+          <div *ngIf="clientForm.submitted && !client.nome" class="error-text">Nome é obrigatório</div>
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="input-field" [(ngModel)]="client.email" name="email" required>
+          <div *ngIf="clientForm.submitted && !client.email" class="error-text">Email é obrigatório</div>
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select class="input-field" [(ngModel)]="client.status" name="status" required>
+            <option value="ATIVO">Ativo</option>
+            <option value="INATIVO">Inativo</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="create-btn" [disabled]="!clientForm.form.valid">Criar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
