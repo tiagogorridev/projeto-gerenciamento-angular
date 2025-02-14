@@ -1,0 +1,268 @@
+// Reutiliza as mesmas variáveis de cor
+$primary-color: #8b5cf6;
+$border-color: #e2e8f0;
+$text-gray: #64748b;
+$gray: #6b7280;
+$white: #ffffff;
+$hover-color: #7c3aed;
+$input-bg: #f8fafc;
+$modal-overlay: rgba(0, 0, 0, 0.5);
+
+// Reutiliza os mesmos estilos do container principal
+.clientes-container {
+  margin: 0 24px;
+  padding: 60px 24px 0 260px;
+}
+
+// Mesmo estilo de cabeçalho
+.clientes-container h1 {
+  color: $gray;
+  font-weight: 400;
+}
+
+// Reutiliza os mesmos estilos de estado vazio
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+
+  .empty-state-content {
+    text-align: center;
+  }
+
+  .empty-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+  }
+
+  .empty-text {
+    color: $gray;
+    font-size: 1.2rem;
+  }
+}
+
+// Reutiliza os mesmos estilos de pesquisa e filtros
+.search-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+// Mesmo estilo para grupos de input
+.input-group {
+  position: relative;
+  min-width: 180px;
+  flex: 1;
+  max-width: 250px;
+
+  .input-field {
+    width: 100%;
+    height: 40px;
+    padding: 8px 35px 8px 12px;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: $input-bg;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+    }
+
+    &::placeholder {
+      color: $text-gray;
+    }
+  }
+
+  .search-icon,
+  .dropdown-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $text-gray;
+    pointer-events: none;
+  }
+
+  select {
+    appearance: none;
+    cursor: pointer;
+  }
+}
+
+// Mesmo estilo de botão, apenas mudando o nome da classe
+.new-client-btn {
+  height: 40px;
+  padding: 0 24px;
+  background-color: $primary-color;
+  color: $white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-left: auto;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: $hover-color;
+  }
+}
+
+// Reutiliza os mesmos estilos de modal
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .modal-content {
+    background: white;
+    padding: 24px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      margin-bottom: 24px;
+      font-size: 18px;
+      color: #1f2937;
+    }
+  }
+}
+
+// Reutiliza os mesmos estilos de formulário
+.form-group {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+}
+
+// Reutiliza os mesmos estilos de ações do modal
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+
+  button {
+    padding: 8px 24px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+
+    &.cancel-btn {
+      background: white;
+      border: 1px solid #e5e7eb;
+      color: #6b7280;
+
+      &:hover {
+        background: #f9fafb;
+      }
+    }
+
+    &.create-btn {
+      background: $primary-color;
+      border: none;
+      color: white;
+
+      &:hover {
+        background: $hover-color;
+      }
+    }
+  }
+}
+
+// Adapta os estilos da lista de projetos para clientes
+.clients-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.client-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid $border-color;
+  justify-content: space-between;
+}
+
+.headers {
+  font-weight: bold;
+  background-color: #f3f4f6;
+  border-bottom: 2px solid $border-color;
+}
+
+// Ajusta as larguras das colunas para os dados de clientes
+.client-name,
+.client-email,
+.client-projects,
+.client-status,
+.client-created,
+.client-updated {
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 8px;
+  font-size: 14px;
+  color: $text-gray;
+}
+
+.client-name {
+  font-weight: bold;
+  max-width: 200px;
+}
+
+.client-email {
+  max-width: 250px;
+}
+
+.client-projects {
+  max-width: 100px;
+}
+
+.client-status {
+  max-width: 100px;
+}
+
+.client-created,
+.client-updated {
+  max-width: 120px;
+}
+
+.client-row:hover {
+  background-color: #f9fafb;
+  cursor: pointer;
+}
