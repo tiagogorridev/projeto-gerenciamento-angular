@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClienteService } from '../../../core/auth/services/clients.service';  // Novo serviço para clientes
+import { ClienteService } from '../../../core/auth/services/clients.service';
 
 @Component({
   selector: 'app-adicionar-cliente',
@@ -25,14 +25,14 @@ export class AdicionarClienteComponent {
     console.log('Dados do cliente:', { nome_cliente: this.fullName, email_cliente: this.email });
 
     const novoCliente = {
-      nomeCliente: this.fullName,  // Alterado para nomeCliente
-      emailCliente: this.email     // Alterado para emailCliente
+      nomeCliente: this.fullName,
+      emailCliente: this.email
     };
 
     this.clienteService.cadastrarCliente(novoCliente).subscribe({
       next: (response) => {
         console.log('Cliente criado com sucesso:', response);
-        this.router.navigate(['admin/projects']);
+        this.router.navigate(['/admin/admin-projetos']);
       },
       error: (err) => {
         console.error('Erro ao criar cliente:', err);
