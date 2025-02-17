@@ -25,6 +25,27 @@ export class EditProjectsComponent implements OnInit {
   activeTab: 'tasks' | 'time' | 'details' = 'tasks';
   projectId: string | null = null;
   searchTerm: string = '';
+  projectName: string | null = null; // Variável para armazenar o nome do projeto
+
+  constructor(
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    // Acessando o nome do projeto via history.state
+    const navigation = history.state;
+    if (navigation && navigation['projectName']) {
+      this.projectName = navigation['projectName']; // Atribuindo o nome do projeto
+    }
+
+    // Acessando o ID do projeto através do parâmetro da URL
+    this.route.paramMap.subscribe(params => {
+      this.projectId = params.get('id');
+      if (this.projectId) {
+        this.loadProjectData();
+      }
+    });
+  }
 
   projectDetails: ProjectDetails = {
     name: '',
@@ -38,19 +59,6 @@ export class EditProjectsComponent implements OnInit {
   tarefa: Tarefa = { nome: '' };
   newMember: Member = { email: '' };
   members: Member[] = [];
-
-  constructor(
-    private route: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.projectId = params.get('id');
-      if (this.projectId) {
-        this.loadProjectData();
-      }
-    });
-  }
 
   switchTab(tab: 'tasks' | 'time' | 'details'): void {
     this.activeTab = tab;

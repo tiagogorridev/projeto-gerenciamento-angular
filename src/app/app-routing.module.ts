@@ -77,6 +77,7 @@ const routes: Routes = [
       { path: 'dashboard', component: UsersDashboardComponent },
       { path: 'activities', component: ActivitiesComponent },
       { path: 'projects', component: ProjectsComponent },
+      { path: 'edit-projects/:nome', component: EditProjectsComponent },
       { path: 'time-history', component: TimeHistoryComponent },
       { path: 'time-tracking', component: TimeTrackingComponent },
       { path: 'timetracking', component: TimeTrackingComponent, canActivate: [AuthGuard] },

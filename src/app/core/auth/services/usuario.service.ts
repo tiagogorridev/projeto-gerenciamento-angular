@@ -12,6 +12,7 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) { }
 
+  // Método para cadastrar um usuário
   cadastrarUsuario(usuario: Usuario): Observable<any> {
     if (!usuario.perfil) {
       throw new Error("O campo 'perfil' é obrigatório");
@@ -23,14 +24,21 @@ export class UsuarioService {
       );
   }
 
+  // Método para listar todos os usuários
+  getUsuarios(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(this.apiUrl)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocorreu um erro desconhecido';
 
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Erro: ${error.error.message}`;
     } else {
-      errorMessage = `Código do erro: ${error.status}, ` +
-                    `mensagem: ${error.error?.message || error.message}`;
+      errorMessage = `Código do erro: ${error.status}, mensagem: ${error.error?.message || error.message}`;
     }
 
     console.error(errorMessage);

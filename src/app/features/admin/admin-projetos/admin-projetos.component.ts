@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
-import { ClienteService } from '../../../core/auth/services/clients.service'; // Import the ClienteService
+import { ClienteService } from '../../../core/auth/services/clients.service';
 import { Router } from '@angular/router';
-import { Cliente } from '../../../core/auth/services/clients.service'; // Import the Cliente interface
+import { Cliente } from '../../../core/auth/services/clients.service';
 
 @Component({
   selector: 'app-admin-projetos',
@@ -13,7 +13,7 @@ export class AdminProjetosComponent implements OnInit {
   hasProjects: boolean = false;
   showNewProjectModal: boolean = false;
   projects: any[] = [];
-  clientes: Cliente[] = []; // Add clientes property to hold the list of clients
+  clientes: Cliente[] = [];
 
   project = {
     nome: '',
@@ -32,7 +32,7 @@ export class AdminProjetosComponent implements OnInit {
 
   constructor(
     private projectsService: ProjectsService,
-    private clienteService: ClienteService, // Inject ClienteService
+    private clienteService: ClienteService,
     private router: Router
   ) {}
 
@@ -56,7 +56,7 @@ export class AdminProjetosComponent implements OnInit {
 
     this.clienteService.listarClientes().subscribe({
       next: (clientes) => {
-        this.clientes = clientes; // Populate clientes array with data
+        this.clientes = clientes;
       },
       error: (erro) => {
         console.error('Erro ao carregar os clientes:', erro);
@@ -72,8 +72,10 @@ export class AdminProjetosComponent implements OnInit {
     this.showNewProjectModal = false;
   }
 
-  navegarParaEdicao(projetoNome: string): void {
-    this.router.navigate(['/admin/edit-projects', projetoNome]);
+  navegarParaEdicao(projetoId: string, projetoNome: string): void {
+    this.router.navigate(['/admin/edit-projects', projetoId], {
+      state: { projectName: projetoNome }  // Passando o nome do projeto via state
+    });
   }
 
   onSubmit(projectForm: any): void {
