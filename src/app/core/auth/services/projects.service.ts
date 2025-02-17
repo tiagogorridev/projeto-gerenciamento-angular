@@ -13,17 +13,23 @@ export class ProjectsService {
 
   createProjeto(projeto: any): Observable<any> {
     const token = localStorage.getItem('auth_token') || '';
-
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
     return this.http.post(this.baseUrl, projeto, { headers });
   }
 
   getProjetosDoUsuario(usuarioId: number): Observable<any[]> {
     const token = localStorage.getItem('auth_token') || '';
-
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
     return this.http.get<any[]>(`${this.baseUrl}/usuario/${usuarioId}`, { headers });
-}
+  }
+
+  updateProjeto(id: string, projeto: any): Observable<any> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put(`${this.baseUrl}/${id}`, projeto, { headers });
+  }
+
+    getProjetoById(id: number): Observable<any> {
+      return this.http.get(`${this.baseUrl}/${id}`);
+    }
 }

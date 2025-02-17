@@ -63,9 +63,9 @@ const routes: Routes = [
       { path: 'admin-projetos', component: AdminProjetosComponent },
       { path: 'admin-relatorios', component: AdminRelatoriosComponent },
       { path: 'admin-profile', component: AdminProfileComponent },
-      { path: 'edit-projects/:nome', component: EditProjectsComponent },
+      { path: 'edit-projects/:id', component: EditProjectsComponent },
       { path: 'adicionar-cliente', component: AdicionarClienteComponent },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redireciona para o dashboard por padrão
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
 
@@ -85,7 +85,7 @@ const routes: Routes = [
       { path: 'users-dashboard', component: UsersDashboardComponent, canActivate: [AuthGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: 'header', component: Header, canActivate: [AuthGuard] },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redireciona para o dashboard por padrão
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
 

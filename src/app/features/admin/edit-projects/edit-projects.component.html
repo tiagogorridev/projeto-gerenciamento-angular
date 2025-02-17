@@ -118,7 +118,7 @@
 
           <div class="form-group">
             <label>ID</label>
-            <input type="text" value="01" disabled class="form-input">
+            <input type="text" [value]="projectId || 'ID não disponível'" disabled class="form-input">
           </div>
 
           <div class="form-group">
@@ -150,6 +150,11 @@
               <span class="currency-symbol">R$</span>
             </div>
           </div>
+        </div>
+
+        <!-- Botão de Salvar -->
+        <div class="form-actions">
+          <button type="button" class="save-btn" (click)="saveProjectDetails()">Salvar alterações</button>
         </div>
       </form>
     </div>

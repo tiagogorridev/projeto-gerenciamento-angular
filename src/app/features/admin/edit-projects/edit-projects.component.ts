@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ProjectsService } from '../../../core/auth/services/projects.service';
 
 interface ProjectDetails {
   name: string;
@@ -25,27 +26,7 @@ export class EditProjectsComponent implements OnInit {
   activeTab: 'tasks' | 'time' | 'details' = 'tasks';
   projectId: string | null = null;
   searchTerm: string = '';
-  projectName: string | null = null; // Variável para armazenar o nome do projeto
-
-  constructor(
-    private route: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
-    // Acessando o nome do projeto via history.state
-    const navigation = history.state;
-    if (navigation && navigation['projectName']) {
-      this.projectName = navigation['projectName']; // Atribuindo o nome do projeto
-    }
-
-    // Acessando o ID do projeto através do parâmetro da URL
-    this.route.paramMap.subscribe(params => {
-      this.projectId = params.get('id');
-      if (this.projectId) {
-        this.loadProjectData();
-      }
-    });
-  }
+  projectName: string | null = null;
 
   projectDetails: ProjectDetails = {
     name: '',
@@ -56,25 +37,74 @@ export class EditProjectsComponent implements OnInit {
 
   showNewTarefaModal: boolean = false;
   showAddMemberModal: boolean = false;
+
   tarefa: Tarefa = { nome: '' };
   newMember: Member = { email: '' };
   members: Member[] = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private projectsService: ProjectsService
+  ) {}
+
+  ngOnInit(): void {
+    const navigation = history.state;
+    if (navigation && navigation['projectName']) {
+      this.projectName = navigation['projectName'];
+    }
+
+    this.route.paramMap.subscribe(params => {
+      this.projectId = params.get('id');
+      if (this.projectId) {
+        this.loadProjectData();
+      }
+    });
+  }
 
   switchTab(tab: 'tasks' | 'time' | 'details'): void {
     this.activeTab = tab;
   }
 
   loadProjectData(): void {
-    this.projectDetails = {
-      name: 'Teste',
-      client: 'teste',
-      estimatedHours: 100,
-      estimatedCost: 100000,
-    };
+    if (this.projectId) {
+      this.projectsService.getProjetoById(Number(this.projectId)).subscribe(
+        (response: any) => {
+          this.projectDetails = {
+            name: response.nome || 'Projeto Desconhecido',
+            client: response.cliente?.nome || 'Cliente Desconhecido',
+            estimatedHours: response.horasEstimadas || 0,
+            estimatedCost: response.custoEstimado || 0
+          };
+        },
+        (error) => {
+          console.error('Erro ao carregar os detalhes do projeto:', error);
+        }
+      );
+    }
   }
 
   saveProjectDetails(): void {
-    console.log('Salvando detalhes:', this.projectDetails);
+    if (this.projectId) {
+      const projectIdNumber = Number(this.projectId);
+
+      if (!isNaN(projectIdNumber)) {
+        if (this.projectDetails.name && this.projectDetails.client) {
+          this.projectsService.updateProjeto(this.projectId, {
+            name: this.projectDetails.name,
+            client: { name: this.projectDetails.client },
+            estimatedHours: this.projectDetails.estimatedHours,
+            estimatedCost: this.projectDetails.estimatedCost
+          }).subscribe(
+            response => {
+              console.log('Projeto atualizado com sucesso!', response);
+            },
+            error => {
+              console.error('Erro ao atualizar projeto', error);
+            }
+          );
+        }
+      }
+    }
   }
 
   openModal(): void {
@@ -94,14 +124,14 @@ export class EditProjectsComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('Nova tarefa:', this.tarefa);
-    this.closeModal();
+    if (this.tarefa.nome) {
+      this.closeModal();
+    }
   }
 
   onAddMemberSubmit(): void {
     if (this.newMember.email) {
       this.members.push({ ...this.newMember });
-      console.log('Novo membro adicionado:', this.newMember);
       this.newMember = { email: '' };
       this.closeAddMemberModal();
     }
