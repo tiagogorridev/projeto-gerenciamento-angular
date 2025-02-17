@@ -108,6 +108,7 @@ export class EditProjectsComponent implements OnInit {
           this.projectsService.updateProjeto(this.projectId, updatedProject).subscribe(
             response => {
               console.log('Projeto atualizado com sucesso!', response);
+              this.projectName = this.projectDetails.name;
             },
             error => {
               console.error('Erro ao atualizar projeto', error);
