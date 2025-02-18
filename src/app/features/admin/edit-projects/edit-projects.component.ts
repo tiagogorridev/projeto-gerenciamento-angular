@@ -18,6 +18,7 @@ interface Tarefa {
   dataFim: string;
   responsavel: string;
   status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA';
+  projeto: { id: number };  // Adicionando a referência ao projeto
 }
 
 interface Member {
@@ -53,7 +54,8 @@ export class EditProjectsComponent implements OnInit {
     dataInicio: '',
     dataFim: '',
     responsavel: '',
-    status: 'ABERTA'
+    status: 'ABERTA',
+    projeto: { id: 0 }  // Adicionando a referência ao projeto com um id inicial
   };
 
   newMember: Member = { email: '' };
@@ -159,6 +161,8 @@ export class EditProjectsComponent implements OnInit {
 
   onSubmit(): void {
     console.log('Tarefa Criada:', this.tarefa);
+    this.tarefa.projeto = { id: Number(this.projectId) };  // Associando o projeto à tarefa
+
     this.projectsService.createTarefa(this.tarefa).subscribe(
       response => {
         console.log('Tarefa salva com sucesso:', response);
