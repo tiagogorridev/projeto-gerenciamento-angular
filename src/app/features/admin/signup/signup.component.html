@@ -1,56 +1,96 @@
-<div class="signup-container">
-  <div class="signup-content">
-    <div class="welcome-message">
-      <h1>Boas-vindas à timetracker.com</h1>
-      <h2>Comece a gerenciar suas horas de projeto agora!</h2>
+<app-admin-sidebar></app-admin-sidebar>
+<app-admin-header></app-admin-header>
+<div class="clientes-container">
+  <div class="clientes-header">
+    <h1>Adicionar Usuário</h1>
+  </div>
+
+  <div class="search-filter-container">
+    <div class="input-group">
+      <input type="text" placeholder="Pesquisar usuários..." class="input-field" [(ngModel)]="searchTerm" (ngModelChange)="aplicarFiltros()">
+      <i class="fas fa-search search-icon"></i>
     </div>
 
-    <div class="signup-form">
-      <form (ngSubmit)="onSubmit()" #signupForm="ngForm" novalidate>
+    <div class="input-group">
+      <select class="input-field" [(ngModel)]="perfilFilter" (ngModelChange)="aplicarFiltros()">
+        <option value="" disabled selected>Perfil</option>
+        <option>Administrador</option>
+        <option>Usuário</option>
+        <option>Todos</option>
+      </select>
+      <i class="fas fa-chevron-down dropdown-icon"></i>
+    </div>
+
+    <button class="new-client-btn" (click)="openNewUserModal()">
+      Novo Usuário
+    </button>
+  </div>
+
+  <div class="empty-state" *ngIf="!hasUsers">
+    <div class="empty-state-content">
+      <img src="assets/no-user.png" alt="Nenhum usuário disponível" class="empty-image">
+      <p class="empty-text">Nenhum usuário disponível</p>
+    </div>
+  </div>
+
+  <div class="clients-list" *ngIf="hasUsers">
+    <div class="client-row headers">
+      <div class="client-name">Nome</div>
+      <div class="client-email">Email</div>
+      <div class="client-status">Perfil</div>
+    </div>
+
+    <div class="client-row" *ngFor="let usuario of filteredUsers" (click)="navegarParaEdicao(usuario.id)">
+      <div class="client-name">{{ usuario.nome }}</div>
+      <div class="client-email">{{ usuario.email }}</div>
+      <div class="client-status">{{ usuario.perfil === 'ADMIN' ? 'Administrador' : 'Usuário' }}</div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showNewUserModal">
+    <div class="modal-content">
+      <h2>Novo Usuário</h2>
+
+      <form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm">
         <div class="form-group">
-          <label for="fullName"></label>
-          <input type="text" id="fullName" [(ngModel)]="fullName" name="fullName" required placeholder="Nome completo" class="input-field">
-          <small *ngIf="signupForm.submitted && !fullName" class="error-text">O nome completo é obrigatório.</small>
+          <label>Nome Completo</label>
+          <input type="text" class="input-field" [(ngModel)]="user.nome" name="nome" required>
+          <div *ngIf="userForm.submitted && !user.nome" class="error-text">Nome é obrigatório</div>
         </div>
 
         <div class="form-group">
-          <label for="email"></label>
-          <input type="email" id="email" [(ngModel)]="email" name="email" required placeholder="nome@empresa.com.br" class="input-field">
-          <small *ngIf="signupForm.submitted && !email" class="error-text">O email é obrigatório.</small>
+          <label>Email</label>
+          <input type="email" class="input-field" [(ngModel)]="user.email" name="email" required>
+          <div *ngIf="userForm.submitted && !user.email" class="error-text">Email é obrigatório</div>
         </div>
 
         <div class="form-group">
-          <label for="password"></label>
-          <input type="password" id="password" [(ngModel)]="password" name="password" required placeholder="Senha" class="input-field">
-          <small *ngIf="signupForm.submitted && !password" class="error-text">A senha é obrigatória.</small>
+          <label>Senha</label>
+          <input type="password" class="input-field" [(ngModel)]="user.senha" name="senha" required>
+          <div *ngIf="userForm.submitted && !user.senha" class="error-text">Senha é obrigatória</div>
         </div>
 
         <div class="form-group">
-          <label for="confirmPassword"></label>
-          <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" required placeholder="Confirme sua senha" class="input-field">
-          <small *ngIf="signupForm.submitted && !confirmPassword" class="error-text">A confirmação de senha é obrigatória.</small>
-          <small *ngIf="signupForm.submitted && confirmPassword !== password" class="error-text">As senhas não coincidem.</small>
+          <label>Confirme sua senha</label>
+          <input type="password" class="input-field" [(ngModel)]="user.confirmPassword" name="confirmPassword" required>
+          <div *ngIf="userForm.submitted && !user.confirmPassword" class="error-text">Confirmação de senha é obrigatória</div>
+          <div *ngIf="userForm.submitted && user.senha !== user.confirmPassword" class="error-text">As senhas não coincidem</div>
         </div>
 
         <div class="form-group">
-          <label for="perfil"></label>
-          <select id="perfil" [(ngModel)]="perfil" name="perfil" required class="input-field">
+          <label>Perfil</label>
+          <select class="input-field" [(ngModel)]="user.perfil" name="perfil" required>
             <option value="USUARIO">Usuário</option>
             <option value="ADMIN">Administrador</option>
           </select>
-          <small *ngIf="signupForm.submitted && !perfil" class="error-text">O perfil é obrigatório.</small>
+          <div *ngIf="userForm.submitted && !user.perfil" class="error-text">Perfil é obrigatório</div>
         </div>
 
-        <div class="login-btn">
-          <button pButton label="Criar Conta" type="submit" [disabled]="!signupForm.valid" class="signup-btn"></button>
-        </div>
-
-        <div class="extra-links">
-          <a [routerLink]="'/login'" class="signup">Já tenho uma conta</a>
+        <div class="modal-actions">
+          <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="create-btn" [disabled]="!userForm.form.valid">Criar</button>
         </div>
       </form>
     </div>
   </div>
-
-  <div class="signup-background"></div>
 </div>
