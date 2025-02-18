@@ -32,6 +32,14 @@ export class UsuarioService {
       );
   }
 
+  // Método para listar apenas os e-mails dos usuários
+  getEmails(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/emails`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocorreu um erro desconhecido';
 
