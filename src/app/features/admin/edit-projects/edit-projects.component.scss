@@ -336,6 +336,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 
 /* Modal */
 
+/* Modal de Novo Projeto */
 .modal {
   position: fixed;
   top: 0;
@@ -347,23 +348,103 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
   z-index: 1000;
-}
 
-.modal-content {
-  background: white;
-  padding: 24px;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  .modal-content {
+    background: white;
+    padding: 24px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-  h2 {
-    margin-bottom: 24px;
-    font-size: 18px;
-    color: #1f2937;
+    h2 {
+      margin-bottom: 24px;
+      font-size: 18px;
+      color: #1f2937;
+    }
   }
 }
 
+/* Campos do Formulário */
+.form-group {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+
+  &.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+    }
+
+    label {
+      margin: 0;
+      color: #374151;
+    }
+  }
+}
+
+/* Campo de Entrada de Moeda */
+.currency-input {
+  position: relative;
+
+  .input-field {
+    padding-left: 40px;
+    height: 36px;
+  }
+
+  .currency {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+  }
+}
+
+/* Linhas do Formulário */
+.form-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .form-group {
+    flex: 1;
+    min-width: 200px;
+
+    .input-field {
+      height: 36px;
+    }
+
+    .currency-input .input-field {
+      height: 36px;
+    }
+  }
+}
+
+/* Ações do Modal */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -572,4 +653,98 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   margin-top: 8px;
   font-size: 14px;
   color: $text-gray;
+}
+/* Modal para Adicionar Membro */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $modal-overlay;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: $white;
+  padding: 32px;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: $text-gray;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 500;
+  color: $text-gray;
+  margin-bottom: 8px;
+}
+
+.mat-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  background-color: $input-bg;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
+}
+
+.cancel-btn {
+  background-color: #e0e0e0;
+  color: $text-gray;
+  margin-right: 12px;
+}
+
+.create-btn {
+  background-color: $primary-color;
+  color: $white;
+}
+
+.cancel-btn:hover {
+  background-color: #c7c7c7;
+}
+
+.create-btn:hover {
+  background-color: $hover-color;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.mat-select-trigger {
+  padding: 8px 16px;
+  background-color: $input-bg;
+}
+
+.mat-option {
+  font-size: 14px;
 }

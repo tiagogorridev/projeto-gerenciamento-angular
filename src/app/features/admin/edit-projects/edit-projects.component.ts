@@ -27,6 +27,8 @@ interface Member {
   email: string;
 }
 
+
+
 @Component({
   selector: 'app-edit-projects',
   templateUrl: './edit-projects.component.html',
@@ -64,6 +66,9 @@ export class EditProjectsComponent implements OnInit {
 
   newMember: Member = { email: '' };
   members: Member[] = [];
+
+  startDate: Date | null = new Date();
+  endDate: Date | null = new Date();
 
   // Array para armazenar os e-mails dos usuários
   usuariosEmails: string[] = [];
@@ -202,6 +207,7 @@ export class EditProjectsComponent implements OnInit {
   closeAddMemberModal(): void {
     this.showAddMemberModal = false;
   }
+
   onAddMemberSubmit(): void {
     const token = localStorage.getItem('auth_token');
     if (!token) {
@@ -232,6 +238,12 @@ export class EditProjectsComponent implements OnInit {
   onSubmit(): void {
     console.log('Tarefa Criada:', this.tarefa);
     this.tarefa.projeto = { id: Number(this.projectId) };
+
+    // Definir as datas de início e fim da tarefa
+    if (this.startDate && this.endDate) {
+      this.tarefa.dataInicio = this.startDate.toISOString();
+      this.tarefa.dataFim = this.endDate.toISOString();
+    }
 
     this.projectsService.createTarefa(this.tarefa).subscribe(
       response => {

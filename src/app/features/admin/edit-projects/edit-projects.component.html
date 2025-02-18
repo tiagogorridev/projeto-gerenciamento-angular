@@ -45,13 +45,16 @@
               <label>Descrição</label>
               <textarea class="input-field" [(ngModel)]="tarefa.descricao" name="descricao" required></textarea>
             </div>
-            <div class="form-group">
-              <label>Data de Início</label>
-              <input type="date" class="input-field" [(ngModel)]="tarefa.dataInicio" name="dataInicio" required>
-            </div>
-            <div class="form-group">
-              <label>Data de Fim</label>
-              <input type="date" class="input-field" [(ngModel)]="tarefa.dataFim" name="dataFim" required>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Data de Início</label>
+                <p-calendar [(ngModel)]="startDate" name="dataInicio" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
+              </div>
+
+              <div class="form-group">
+                <label>Data de Fim</label>
+                <p-calendar [(ngModel)]="endDate" name="dataFim" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
+              </div>
             </div>
             <div class="form-group">
               <label>Responsável</label>
@@ -129,6 +132,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
 
       <div class="modal-actions">
         <button type="button" class="cancel-btn" (click)="closeAddMemberModal()">Cancelar</button>
