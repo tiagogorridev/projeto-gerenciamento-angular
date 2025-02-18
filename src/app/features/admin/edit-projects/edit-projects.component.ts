@@ -13,6 +13,11 @@ interface ProjectDetails {
 
 interface Tarefa {
   nome: string;
+  descricao: string;
+  dataInicio: string;
+  dataFim: string;
+  responsavel: string;
+  status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA'; // Alinhando com a tabela
 }
 
 interface Member {
@@ -42,7 +47,15 @@ export class EditProjectsComponent implements OnInit {
   showNewTarefaModal: boolean = false;
   showAddMemberModal: boolean = false;
 
-  tarefa: Tarefa = { nome: '' };
+  tarefa: Tarefa = {
+    nome: '',
+    descricao: '',
+    dataInicio: '',
+    dataFim: '',
+    responsavel: '',
+    status: 'ABERTA'  // Inicializando o campo status com um valor válido
+  };
+
   newMember: Member = { email: '' };
   members: Member[] = [];
 
@@ -64,6 +77,7 @@ export class EditProjectsComponent implements OnInit {
       console.log('Project ID recuperado:', this.projectId);
       if (this.projectId) {
         this.loadProjectData();
+        this.loadProjectMembers();
       } else {
         console.log('ID do projeto não encontrado na URL');
       }
@@ -93,6 +107,20 @@ export class EditProjectsComponent implements OnInit {
         },
         (error) => {
           console.error('Erro ao carregar os detalhes do projeto:', error);
+        }
+      );
+    }
+  }
+
+  loadProjectMembers(): void {
+    if (this.projectId) {
+      this.projectsService.getProjetoById(Number(this.projectId)).subscribe(
+        (response: any) => {
+          this.members = response || [];
+          console.log('Membros do projeto carregados:', this.members);
+        },
+        (error) => {
+          console.error('Erro ao carregar membros do projeto:', error);
         }
       );
     }
@@ -152,11 +180,11 @@ export class EditProjectsComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.tarefa.nome) {
+    if (this.tarefa.nome && this.tarefa.descricao && this.tarefa.dataInicio && this.tarefa.dataFim && this.tarefa.responsavel) {
       console.log('Nova tarefa:', this.tarefa);
       this.closeModal();
     } else {
-      console.log('Nome da tarefa não pode estar vazio');
+      console.log('Preencha todos os campos obrigatórios da tarefa');
     }
   }
 

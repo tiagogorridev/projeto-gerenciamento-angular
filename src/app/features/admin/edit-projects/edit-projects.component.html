@@ -7,7 +7,7 @@
       <span>Projetos</span>
       <span class="separator">/</span>
       <h1>{{ projectName || 'Projeto Não Encontrado' }}</h1>
-      </div>
+    </div>
   </header>
 
   <nav class="tab-navigation">
@@ -32,25 +32,81 @@
         <button class="new-task-button" (click)="openModal()">+ Nova Tarefa</button>
       </div>
 
-      <div class="modal" *ngIf="showNewTarefaModal">
-        <div class="modal-content">
-          <h2>Nova Tarefa</h2>
-          <form (ngSubmit)="onSubmit()" #tarefaForm="ngForm">
-            <div class="form-group">
-              <label>Nome</label>
-              <input type="text" class="input-field" [(ngModel)]="tarefa.nome" name="nome" required>
-              <div *ngIf="tarefaForm.submitted && !tarefa.nome" class="error-text">
-                Nome é obrigatório
-              </div>
-            </div>
+ <!-- Modal de Nova Tarefa -->
+<div class="modal" *ngIf="showNewTarefaModal">
+  <div class="modal-content">
+    <h2>Nova Tarefa</h2>
+    <form (ngSubmit)="onSubmit()" #tarefaForm="ngForm">
 
-            <div class="modal-actions">
-              <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
-              <button type="submit" class="create-btn" [disabled]="!tarefaForm.form.valid">Criar</button>
-            </div>
-          </form>
+      <!-- Nome da Tarefa -->
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" class="input-field" [(ngModel)]="tarefa.nome" name="nome" required>
+        <div *ngIf="tarefaForm.submitted && !tarefa.nome" class="error-text">
+          Nome é obrigatório
         </div>
       </div>
+
+      <!-- Descrição da Tarefa -->
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea class="input-field" [(ngModel)]="tarefa.descricao" name="descricao" required></textarea>
+        <div *ngIf="tarefaForm.submitted && !tarefa.descricao" class="error-text">
+          Descrição é obrigatória
+        </div>
+      </div>
+
+      <!-- Data de Início -->
+      <div class="form-group">
+        <label>Data de Início</label>
+        <input type="date" class="input-field" [(ngModel)]="tarefa.dataInicio" name="dataInicio" required>
+        <div *ngIf="tarefaForm.submitted && !tarefa.dataInicio" class="error-text">
+          Data de início é obrigatória
+        </div>
+      </div>
+
+      <!-- Data de Fim -->
+      <div class="form-group">
+        <label>Data de Fim</label>
+        <input type="date" class="input-field" [(ngModel)]="tarefa.dataFim" name="dataFim" required>
+        <div *ngIf="tarefaForm.submitted && !tarefa.dataFim" class="error-text">
+          Data de fim é obrigatória
+        </div>
+      </div>
+
+      <!-- Status da Tarefa -->
+      <div class="form-group">
+        <label>Status</label>
+        <select class="input-field" [(ngModel)]="tarefa.status" name="status" required>
+          <option value="ABERTA">ABERTA</option>
+          <option value="EM_ANDAMENTO">EM ANDAMENTO</option>
+          <option value="CONCLUIDA">CONCLUÍDA</option>
+          <option value="PAUSADA">PAUSADA</option>
+        </select>
+        <div *ngIf="tarefaForm.submitted && !tarefa.status" class="error-text">
+          Status é obrigatório
+        </div>
+      </div>
+
+      <!-- Responsável pela Tarefa -->
+      <div class="form-group">
+        <label>Responsável</label>
+        <select class="input-field" [(ngModel)]="tarefa.responsavel" name="responsavel" required>
+          <option *ngFor="let member of members" [value]="member.email">{{ member.email }}</option>
+        </select>
+        <div *ngIf="tarefaForm.submitted && !tarefa.responsavel" class="error-text">
+          Responsável é obrigatório
+        </div>
+      </div>
+
+      <!-- Botões do Modal -->
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
+        <button type="submit" class="create-btn" [disabled]="!tarefaForm.form.valid">Criar</button>
+      </div>
+    </form>
+  </div>
+</div>
 
       <div class="tasks-table">
         <div class="table-header">
