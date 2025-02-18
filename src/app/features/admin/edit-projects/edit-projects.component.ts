@@ -17,7 +17,7 @@ interface Tarefa {
   dataInicio: string;
   dataFim: string;
   responsavel: string;
-  status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA'; // Alinhando com a tabela
+  status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA';
 }
 
 interface Member {
@@ -53,7 +53,7 @@ export class EditProjectsComponent implements OnInit {
     dataInicio: '',
     dataFim: '',
     responsavel: '',
-    status: 'ABERTA'  // Inicializando o campo status com um valor válido
+    status: 'ABERTA'
   };
 
   newMember: Member = { email: '' };
@@ -93,7 +93,6 @@ export class EditProjectsComponent implements OnInit {
       this.projectsService.getProjetoById(Number(this.projectId)).subscribe(
         (response: any) => {
           console.log('Resposta do servidor:', response);
-
           this.projectDetails = {
             name: response.nome || 'Projeto Desconhecido',
             client: response.cliente?.nome || 'Cliente Desconhecido',
@@ -102,11 +101,9 @@ export class EditProjectsComponent implements OnInit {
             status: response.status || 'EM_ANDAMENTO',
             priority: response.prioridade || 'ALTA',
           };
-
-          console.log('Detalhes do projeto carregados:', this.projectDetails);
         },
-        (error) => {
-          console.error('Erro ao carregar os detalhes do projeto:', error);
+        error => {
+          console.error('Erro ao carregar dados do projeto', error);
         }
       );
     }
@@ -114,13 +111,13 @@ export class EditProjectsComponent implements OnInit {
 
   loadProjectMembers(): void {
     if (this.projectId) {
-      this.projectsService.getProjetoById(Number(this.projectId)).subscribe(
-        (response: any) => {
-          this.members = response || [];
-          console.log('Membros do projeto carregados:', this.members);
+      this.projectsService.getTarefasByProjeto(this.projectId).subscribe(
+        (response: any[]) => {
+          console.log('Membros carregados:', response);
+          this.members = response;
         },
-        (error) => {
-          console.error('Erro ao carregar membros do projeto:', error);
+        error => {
+          console.error('Erro ao carregar membros', error);
         }
       );
     }
@@ -128,38 +125,14 @@ export class EditProjectsComponent implements OnInit {
 
   saveProjectDetails(): void {
     if (this.projectId) {
-      const projectIdNumber = Number(this.projectId);
-
-      if (!isNaN(projectIdNumber)) {
-        if (this.projectDetails.name && this.projectDetails.client) {
-          const updatedProject = {
-            nome: this.projectDetails.name,
-            cliente: { nome: this.projectDetails.client },
-            horasEstimadas: this.projectDetails.estimatedHours,
-            custoEstimado: this.projectDetails.estimatedCost,
-            status: this.projectDetails.status,
-            prioridade: this.projectDetails.priority,
-          };
-
-          console.log('Projeto a ser salvo:', updatedProject);
-
-          this.projectsService.updateProjeto(this.projectId, updatedProject).subscribe(
-            response => {
-              console.log('Projeto atualizado com sucesso!', response);
-              this.projectName = this.projectDetails.name;
-            },
-            error => {
-              console.error('Erro ao atualizar projeto', error);
-            }
-          );
-        } else {
-          console.error('Campos obrigatórios não preenchidos');
+      this.projectsService.updateProjeto(this.projectId, this.projectDetails).subscribe(
+        (response: any) => {
+          console.log('Projeto atualizado com sucesso', response);
+        },
+        error => {
+          console.error('Erro ao atualizar projeto', error);
         }
-      } else {
-        console.error('ID do projeto inválido');
-      }
-    } else {
-      console.error('ID do projeto não encontrado');
+      );
     }
   }
 
@@ -179,23 +152,21 @@ export class EditProjectsComponent implements OnInit {
     this.showAddMemberModal = false;
   }
 
-  onSubmit(): void {
-    if (this.tarefa.nome && this.tarefa.descricao && this.tarefa.dataInicio && this.tarefa.dataFim && this.tarefa.responsavel) {
-      console.log('Nova tarefa:', this.tarefa);
-      this.closeModal();
-    } else {
-      console.log('Preencha todos os campos obrigatórios da tarefa');
-    }
+  onAddMemberSubmit(): void {
+    console.log('Membro Adicionado:', this.newMember);
+    this.closeAddMemberModal();
   }
 
-  onAddMemberSubmit(): void {
-    if (this.newMember.email) {
-      this.members.push({ ...this.newMember });
-      console.log('Novo membro adicionado:', this.newMember);
-      this.newMember = { email: '' };
-      this.closeAddMemberModal();
-    } else {
-      console.log('Email do membro não pode estar vazio');
-    }
+  onSubmit(): void {
+    console.log('Tarefa Criada:', this.tarefa);
+    this.projectsService.createTarefa(this.tarefa).subscribe(
+      response => {
+        console.log('Tarefa salva com sucesso:', response);
+        this.closeModal();
+      },
+      error => {
+        console.error('Erro ao salvar tarefa:', error);
+      }
+    );
   }
 }

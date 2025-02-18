@@ -11,25 +11,41 @@ export class ProjectsService {
 
   constructor(private http: HttpClient) { }
 
+  // Método para criar projeto
   createProjeto(projeto: any): Observable<any> {
     const token = localStorage.getItem('auth_token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.post(this.baseUrl, projeto, { headers });
   }
 
+  // Método para buscar projetos de um usuário
   getProjetosDoUsuario(usuarioId: number): Observable<any[]> {
     const token = localStorage.getItem('auth_token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<any[]>(`${this.baseUrl}/usuario/${usuarioId}`, { headers });
   }
 
+  // Método para atualizar um projeto
   updateProjeto(id: string, projeto: any): Observable<any> {
     const token = localStorage.getItem('auth_token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.put(`${this.baseUrl}/${id}`, projeto, { headers });
   }
 
-    getProjetoById(id: number): Observable<any> {
-      return this.http.get(`${this.baseUrl}/${id}`);
-    }
+  // Método para buscar um projeto por ID
+  getProjetoById(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${id}`);
+  }
+
+  // Método para criar uma nova tarefa
+  createTarefa(tarefa: any): Observable<any> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post('http://localhost:8080/api/tarefas', tarefa, { headers });
+  }
+
+  // Método para buscar as tarefas de um projeto
+  getTarefasByProjeto(projectId: string): Observable<any[]> {
+    return this.http.get<any[]>(`/api/tarefas?projectId=${projectId}`);
+  }
 }
