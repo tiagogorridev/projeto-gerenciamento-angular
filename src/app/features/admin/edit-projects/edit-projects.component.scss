@@ -748,3 +748,39 @@ mat-form-field {
 .mat-option {
   font-size: 14px;
 }
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+select:focus {
+  border-color: #007bff;
+  outline: none;
+  background-color: #ffffff;
+}
+
+select:invalid {
+  color: #888;
+}
+
+option {
+  padding: 10px;
+  font-size: 1rem;
+}

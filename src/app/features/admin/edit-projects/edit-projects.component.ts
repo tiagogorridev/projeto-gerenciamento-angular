@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
-import { UsuarioService } from '../../../core/auth/services/usuario.service';  // Importe o UsuarioService
+import { UsuarioService } from '../../../core/auth/services/usuario.service';
+import { ClienteService } from '../../../core/auth/services/clients.service';
+import { HttpErrorResponse } from '@angular/common/http';
+interface Cliente {
+  id: number;
+  nome: string;
+}
 
 interface ProjectDetails {
   name: string;
@@ -35,7 +41,6 @@ interface Member {
 export class EditProjectsComponent implements OnInit {
   activeTab: 'tasks' | 'time' | 'details' = 'tasks';
   projectId: string | null = null;
-  searchTerm: string = '';
   projectName: string | null = null;
 
   projectDetails: ProjectDetails = {
@@ -46,6 +51,8 @@ export class EditProjectsComponent implements OnInit {
     status: 'EM_ANDAMENTO',
     priority: 'ALTA',
   };
+
+  clients: Cliente[] = [];
 
   showNewTarefaModal: boolean = false;
   showAddMemberModal: boolean = false;
@@ -68,15 +75,16 @@ export class EditProjectsComponent implements OnInit {
   startDate: Date | null = new Date();
   endDate: Date | null = new Date();
 
-  // Array para armazenar os e-mails dos usuários
   usuariosEmails: string[] = [];
 
-  clients: string[] = ['Cliente 1', 'Cliente 2', 'Cliente 3'];
+  searchTerm: string = '';
+  selectedEmails: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private projectsService: ProjectsService,
-    private usuarioService: UsuarioService  // Injetando o UsuarioService
+    private usuarioService: UsuarioService,
+    private clienteService: ClienteService  // Adicione o ClienteService aqui
   ) {}
 
   ngOnInit(): void {
@@ -87,65 +95,39 @@ export class EditProjectsComponent implements OnInit {
 
     this.route.paramMap.subscribe(params => {
       this.projectId = params.get('id');
-      console.log('Project ID recuperado:', this.projectId);
       if (this.projectId) {
         this.loadProjectData();
         this.loadProjectMembers();
         this.loadProjectTarefas();
-      } else {
-        console.log('ID do projeto não encontrado na URL');
       }
     });
 
-    // Carregar os e-mails dos usuários ao iniciar
-    this.loadUsuariosEmails();
+    this.loadClients();
   }
 
-  loadUsuariosEmails(): void {
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      console.error('Token não encontrado!');
-      return;
-    }
-
-    console.log('Token JWT encontrado:', token); // Imprimir o token
-    this.usuarioService.getEmails().subscribe(
-      (emails: string[]) => {
-        this.usuariosEmails = emails;
-        console.log('E-mails dos usuários carregados:', this.usuariosEmails);
+  loadClients(): void {
+    this.clienteService.listarClientes().subscribe(
+      (clients: Cliente[]) => {
+        this.clients = clients;
       },
-      error => {
-        console.error('Erro ao carregar e-mails', error);
+      (error: HttpErrorResponse) => {
+        console.error('Erro ao carregar clientes', error);
       }
     );
   }
-
-  switchTab(tab: 'tasks' | 'time' | 'details'): void {
-    this.activeTab = tab;
-  }
-
-  selectEmail(email: string): void {
-    this.newMember.email = email;
-  }
-
-  selectedEmails: string[] = [];  // Array para armazenar os e-mails selecionados
-
 
   loadProjectData(): void {
     if (this.projectId) {
       this.projectsService.getProjetoById(Number(this.projectId)).subscribe(
         (response: any) => {
-          console.log('Resposta do projeto:', response); // Verifique a resposta completa aqui
-          console.log('Cliente do Projeto:', response.cliente); // Verifique se o cliente existe na resposta
           this.projectDetails = {
             name: response.nome || 'Projeto Desconhecido',
-            client: response.cliente?.nome || 'Cliente Desconhecido', // Aqui você já obtém o nome do cliente
+            client: response.cliente?.nome || 'Cliente Desconhecido',
             estimatedHours: response.horasEstimadas || 0,
             estimatedCost: response.custoEstimado || 0,
             status: response.status || 'EM_ANDAMENTO',
             priority: response.prioridade || 'ALTA',
           };
-          console.log('Dados do projeto carregados:', this.projectDetails);
         },
         error => {
           console.error('Erro ao carregar dados do projeto', error);
@@ -182,27 +164,28 @@ export class EditProjectsComponent implements OnInit {
 
   saveProjectDetails(): void {
     const projectData = {
-      nome: this.projectDetails.name,  // Envia 'nome' ao invés de 'name'
+      nome: this.projectDetails.name,
       cliente: this.projectDetails.client,
       horasEstimadas: this.projectDetails.estimatedHours,
       custoEstimado: this.projectDetails.estimatedCost,
       status: this.projectDetails.status,
-      // outros campos aqui
     };
-
-    console.log('Valores antes de salvar:', projectData);  // Verifique os dados que estão sendo enviados
 
     if (this.projectId) {
       this.projectsService.updateProjeto(this.projectId, projectData).subscribe(
         (response: any) => {
           console.log('Projeto atualizado com sucesso', response);
-          this.loadProjectData();  // Recarrega os dados atualizados
+          this.loadProjectData();
         },
         error => {
           console.error('Erro ao atualizar projeto', error);
         }
       );
     }
+  }
+
+  switchTab(tab: 'tasks' | 'time' | 'details'): void {
+    this.activeTab = tab;
   }
 
   openModal(): void {
@@ -229,12 +212,11 @@ export class EditProjectsComponent implements OnInit {
     }
 
     if (this.selectedEmails.length > 0) {
-      // Envie todos os e-mails selecionados para o backend
       this.selectedEmails.forEach(email => {
         this.projectsService.addMembroToProjeto(this.projectId!, email).subscribe(
           response => {
             console.log('Membro Adicionado:', response);
-            this.loadProjectMembers(); // Recarrega a lista de membros
+            this.loadProjectMembers();
           },
           error => {
             console.error('Erro ao adicionar membro', error);
@@ -252,7 +234,6 @@ export class EditProjectsComponent implements OnInit {
     console.log('Tarefa Criada:', this.tarefa);
     this.tarefa.projeto = { id: Number(this.projectId) };
 
-    // Definir as datas de início e fim da tarefa
     if (this.startDate && this.endDate) {
       this.tarefa.dataInicio = this.startDate.toISOString();
       this.tarefa.dataFim = this.endDate.toISOString();
