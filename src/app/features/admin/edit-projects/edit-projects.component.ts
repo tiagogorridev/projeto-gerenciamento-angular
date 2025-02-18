@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
+import { UsuarioService } from '../../../core/auth/services/usuario.service';  // Importe o UsuarioService
 
 interface ProjectDetails {
   name: string;
@@ -59,17 +60,20 @@ export class EditProjectsComponent implements OnInit {
     projeto: { id: 0 }
   };
 
-  // Array para armazenar as tarefas carregadas
   tarefas: Tarefa[] = [];
 
   newMember: Member = { email: '' };
   members: Member[] = [];
 
+  // Array para armazenar os e-mails dos usuários
+  usuariosEmails: string[] = [];
+
   clients: string[] = ['Cliente 1', 'Cliente 2', 'Cliente 3'];
 
   constructor(
     private route: ActivatedRoute,
-    private projectsService: ProjectsService
+    private projectsService: ProjectsService,
+    private usuarioService: UsuarioService  // Injetando o UsuarioService
   ) {}
 
   ngOnInit(): void {
@@ -84,22 +88,50 @@ export class EditProjectsComponent implements OnInit {
       if (this.projectId) {
         this.loadProjectData();
         this.loadProjectMembers();
-        this.loadProjectTarefas(); // Carrega as tarefas do projeto
+        this.loadProjectTarefas();
       } else {
         console.log('ID do projeto não encontrado na URL');
       }
     });
+
+    // Carregar os e-mails dos usuários ao iniciar
+    this.loadUsuariosEmails();
+  }
+
+  loadUsuariosEmails(): void {
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      console.error('Token não encontrado!');
+      return;
+    }
+
+    console.log('Token JWT encontrado:', token); // Imprimir o token
+    this.usuarioService.getEmails().subscribe(
+      (emails: string[]) => {
+        this.usuariosEmails = emails;
+        console.log('E-mails dos usuários carregados:', this.usuariosEmails);
+      },
+      error => {
+        console.error('Erro ao carregar e-mails', error);
+      }
+    );
   }
 
   switchTab(tab: 'tasks' | 'time' | 'details'): void {
     this.activeTab = tab;
   }
 
+  selectEmail(email: string): void {
+    this.newMember.email = email;
+  }
+
+  selectedEmails: string[] = [];  // Array para armazenar os e-mails selecionados
+
+
   loadProjectData(): void {
     if (this.projectId) {
       this.projectsService.getProjetoById(Number(this.projectId)).subscribe(
         (response: any) => {
-          console.log('Resposta do servidor:', response);
           this.projectDetails = {
             name: response.nome || 'Projeto Desconhecido',
             client: response.cliente?.nome || 'Cliente Desconhecido',
@@ -116,12 +148,10 @@ export class EditProjectsComponent implements OnInit {
     }
   }
 
-  // Carrega os membros do projeto (caso a API retorne membros)
   loadProjectMembers(): void {
     if (this.projectId) {
       this.projectsService.getMembrosByProjeto(this.projectId).subscribe(
         (response: any[]) => {
-          console.log('Membros carregados:', response);
           this.members = response;
         },
         error => {
@@ -131,12 +161,10 @@ export class EditProjectsComponent implements OnInit {
     }
   }
 
-  // Carrega as tarefas do projeto
   loadProjectTarefas(): void {
     if (this.projectId) {
       this.projectsService.getTarefasByProjeto(this.projectId).subscribe(
         (response: Tarefa[]) => {
-          console.log('Tarefas carregadas:', response);
           this.tarefas = response;
         },
         error => {
@@ -174,22 +202,41 @@ export class EditProjectsComponent implements OnInit {
   closeAddMemberModal(): void {
     this.showAddMemberModal = false;
   }
-
   onAddMemberSubmit(): void {
-    console.log('Membro Adicionado:', this.newMember);
-    this.closeAddMemberModal();
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      console.error('Token não encontrado!');
+      return;
+    }
+
+    if (this.selectedEmails.length > 0) {
+      // Envie todos os e-mails selecionados para o backend
+      this.selectedEmails.forEach(email => {
+        this.projectsService.addMembroToProjeto(this.projectId!, email).subscribe(
+          response => {
+            console.log('Membro Adicionado:', response);
+            this.loadProjectMembers(); // Recarrega a lista de membros
+          },
+          error => {
+            console.error('Erro ao adicionar membro', error);
+          }
+        );
+      });
+
+      this.closeAddMemberModal();
+    } else {
+      console.error('Nenhum e-mail selecionado.');
+    }
   }
 
   onSubmit(): void {
     console.log('Tarefa Criada:', this.tarefa);
-    // Certifica que o id do projeto está definido
     this.tarefa.projeto = { id: Number(this.projectId) };
 
     this.projectsService.createTarefa(this.tarefa).subscribe(
       response => {
         console.log('Tarefa salva com sucesso:', response);
         this.closeModal();
-        // Atualiza a lista de tarefas após a criação
         this.loadProjectTarefas();
       },
       error => {
