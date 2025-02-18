@@ -7,6 +7,8 @@ interface ProjectDetails {
   client: string;
   estimatedHours: number;
   estimatedCost: number;
+  status: 'PLANEJADO' | 'EM_ANDAMENTO' | 'CONCLUIDO' | 'CANCELADO';
+  priority: 'BAIXA' | 'MEDIA' | 'ALTA';
 }
 
 interface Tarefa {
@@ -33,6 +35,8 @@ export class EditProjectsComponent implements OnInit {
     client: '',
     estimatedHours: 0,
     estimatedCost: 0,
+    status: 'EM_ANDAMENTO',
+    priority: 'ALTA',
   };
 
   showNewTarefaModal: boolean = false;
@@ -80,7 +84,9 @@ export class EditProjectsComponent implements OnInit {
             name: response.nome || 'Projeto Desconhecido',
             client: response.cliente?.nome || 'Cliente Desconhecido',
             estimatedHours: response.horasEstimadas || 0,
-            estimatedCost: response.custoEstimado || 0
+            estimatedCost: response.custoEstimado || 0,
+            status: response.status || 'EM_ANDAMENTO',
+            priority: response.prioridade || 'ALTA',
           };
 
           console.log('Detalhes do projeto carregados:', this.projectDetails);
@@ -102,8 +108,12 @@ export class EditProjectsComponent implements OnInit {
             nome: this.projectDetails.name,
             cliente: { nome: this.projectDetails.client },
             horasEstimadas: this.projectDetails.estimatedHours,
-            custoEstimado: this.projectDetails.estimatedCost
+            custoEstimado: this.projectDetails.estimatedCost,
+            status: this.projectDetails.status,
+            prioridade: this.projectDetails.priority,
           };
+
+          console.log('Projeto a ser salvo:', updatedProject);
 
           this.projectsService.updateProjeto(this.projectId, updatedProject).subscribe(
             response => {
@@ -112,9 +122,6 @@ export class EditProjectsComponent implements OnInit {
             },
             error => {
               console.error('Erro ao atualizar projeto', error);
-              if (error.error) {
-                console.error('Erro detalhado do servidor:', error.error);
-              }
             }
           );
         } else {

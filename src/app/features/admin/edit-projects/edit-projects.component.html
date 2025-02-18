@@ -152,6 +152,27 @@
           </div>
         </div>
 
+        <div class="form-section">
+          <div class="form-group">
+            <label>Status</label>
+            <select class="form-select" [(ngModel)]="projectDetails.status" name="status">
+              <option value="PLANEJADO">Planejado</option>
+              <option value="EM_ANDAMENTO">Em Andamento</option>
+              <option value="CONCLUIDO">Concluído</option>
+              <option value="CANCELADO">Cancelado</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Prioridade</label>
+            <select class="form-select" [(ngModel)]="projectDetails.priority" name="priority">
+              <option value="BAIXA">Baixa</option>
+              <option value="MEDIA">Média</option>
+              <option value="ALTA">Alta</option>
+            </select>
+          </div>
+        </div>
+
         <!-- Botão de Salvar -->
         <div class="form-actions">
           <button type="button" class="save-btn" (click)="saveProjectDetails()">Salvar alterações</button>
