@@ -119,13 +119,6 @@
   <div class="modal-content">
     <h2>Adicionar Membro ao Projeto</h2>
     <form (ngSubmit)="onAddMemberSubmit()" #addMemberForm="ngForm">
-      <div class="form-group">
-        <label>E-mail</label>
-        <input type="email" class="input-field" [(ngModel)]="newMember.email" name="email" required>
-        <div *ngIf="addMemberForm.submitted && !newMember.email" class="error-text">
-          E-mail é obrigatório
-        </div>
-      </div>
 
       <!-- Lista de E-mails dos Usuários -->
       <mat-form-field appearance="fill">
