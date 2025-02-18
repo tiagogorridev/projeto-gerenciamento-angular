@@ -70,8 +70,8 @@
               </select>
             </div>
             <div class="modal-actions">
-              <button type="button" (click)="closeModal()">Cancelar</button>
-              <button type="submit" [disabled]="!tarefaForm.form.valid">Salvar</button>
+              <button type="button" (click)="closeModal()" class="cancel-btn">Cancelar</button>
+              <button type="submit" [disabled]="!tarefaForm.form.valid" class="submit-btn">Salvar</button>
             </div>
           </form>
         </div>
