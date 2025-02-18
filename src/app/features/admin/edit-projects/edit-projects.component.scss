@@ -485,3 +485,91 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 .save-btn:hover {
   background-color: $hover-color;
 }
+/* Tarefas Table */
+.tasks-table {
+  width: 100%;
+  border-collapse: collapse; /* Garante que as bordas não se sobreponham */
+  margin-top: 16px; /* Distância entre o conteúdo e a tabela */
+}
+
+/* Table Header */
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid $border-color;
+  font-size: 14px;
+  color: $gray;
+}
+
+.header-name,
+.header-assigned {
+  flex: 1;
+  font-weight: 600;
+}
+
+.header-assigned {
+  text-align: right;
+}
+
+/* Tarefa Rows */
+.tarefas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tarefa-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid $border-color;
+  font-size: 14px;
+  color: $gray;
+}
+
+.tarefa-name,
+.tarefa-client,
+.tarefa-status {
+  flex: 1;
+}
+
+/* Tarefa Row (Responsive) */
+.tarefas-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid $border-color;
+  font-size: 14px;
+}
+
+.tarefa-name,
+.tarefa-client,
+.tarefa-status {
+  flex: 1;
+}
+
+.tarefa-status {
+  text-align: center;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 0;
+  text-align: center;
+}
+
+.empty-title {
+  font-size: 18px;
+  color: $gray;
+}
+
+.empty-subtitle {
+  margin-top: 8px;
+  font-size: 14px;
+  color: $text-gray;
+}
