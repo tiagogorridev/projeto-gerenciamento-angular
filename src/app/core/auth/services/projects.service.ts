@@ -54,4 +54,12 @@ export class ProjectsService {
     // Ajuste a URL conforme a sua API para buscar os membros do projeto
     return this.http.get<any[]>(`http://localhost:8080/api/projetos/${projectId}/membros`);
   }
+
+  addMembroToProjeto(projectId: string, email: string): Observable<any> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    // Chamando o endpoint de adicionar membro
+    return this.http.post(`${this.baseUrl}/${projectId}/membros`, { email }, { headers });
+  }
 }
