@@ -72,18 +72,30 @@
             </div>
           </form>
         </div>
-</div>
+      </div>
 
+      <!-- Tabela de Tarefas -->
       <div class="tasks-table">
         <div class="table-header">
           <div class="header-name">Tarefas</div>
           <div class="header-assigned">ATRIBUÍDOS</div>
         </div>
 
-        <div class="empty-state">
-          <p class="empty-title">Nenhuma tarefa disponível</p>
-          <p class="empty-subtitle">Crie uma nova tarefa para começar</p>
+        <!-- Se houver tarefas, lista-as -->
+        <div *ngIf="tarefas && tarefas.length > 0; else emptyTasks">
+          <div *ngFor="let tarefa of tarefas" class="table-row">
+            <div class="table-cell">{{ tarefa.nome }}</div>
+            <div class="table-cell">{{ tarefa.responsavel }}</div>
+          </div>
         </div>
+
+        <!-- Estado vazio -->
+        <ng-template #emptyTasks>
+          <div class="empty-state">
+            <p class="empty-title">Nenhuma tarefa disponível</p>
+            <p class="empty-subtitle">Crie uma nova tarefa para começar</p>
+          </div>
+        </ng-template>
       </div>
     </div>
 
@@ -107,7 +119,6 @@
                 E-mail é obrigatório
               </div>
             </div>
-
             <div class="modal-actions">
               <button type="button" class="cancel-btn" (click)="closeAddMemberModal()">Cancelar</button>
               <button type="submit" class="create-btn" [disabled]="!addMemberForm.form.valid">Adicionar</button>
@@ -120,12 +131,10 @@
         <div class="table-header">
           <div class="header-email">Membros</div>
         </div>
-
         <div *ngIf="members.length === 0" class="empty-state">
           <p class="empty-title">Nenhum membro atribuído</p>
           <p class="empty-subtitle">Adicione membros ao projeto</p>
         </div>
-
         <div *ngFor="let member of members" class="table-row">
           <div class="table-cell">{{ member.email }}</div>
         </div>
@@ -137,34 +146,28 @@
       <form class="details-form">
         <div class="form-section">
           <h3>Detalhes</h3>
-
           <div class="form-group">
             <label>ID</label>
             <input type="text" [value]="projectId || 'ID não disponível'" disabled class="form-input">
           </div>
-
           <div class="form-group">
             <label>Nome</label>
             <input type="text" class="form-input" [(ngModel)]="projectDetails.name" name="name">
           </div>
-
           <div class="form-group">
             <label>Cliente</label>
             <select class="form-select" [(ngModel)]="projectDetails.client" name="client">
               <option value="">Selecione um cliente</option>
-              <option value="teste">teste</option>
+              <option *ngFor="let client of clients" [value]="client">{{ client }}</option>
             </select>
           </div>
         </div>
-
         <div class="form-section">
           <h3>Estimativa</h3>
-
           <div class="form-group">
             <label>Horas estimadas</label>
             <input type="number" class="form-input" [(ngModel)]="projectDetails.estimatedHours" name="estimatedHours">
           </div>
-
           <div class="form-group">
             <label>Custo estimado</label>
             <div class="input-currency">
@@ -173,7 +176,6 @@
             </div>
           </div>
         </div>
-
         <div class="form-section">
           <div class="form-group">
             <label>Status</label>
@@ -184,7 +186,6 @@
               <option value="CANCELADO">Cancelado</option>
             </select>
           </div>
-
           <div class="form-group">
             <label>Prioridade</label>
             <select class="form-select" [(ngModel)]="projectDetails.priority" name="priority">
@@ -194,8 +195,6 @@
             </select>
           </div>
         </div>
-
-        <!-- Botão de Salvar -->
         <div class="form-actions">
           <button type="button" class="save-btn" (click)="saveProjectDetails()">Salvar alterações</button>
         </div>

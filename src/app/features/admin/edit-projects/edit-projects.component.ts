@@ -11,14 +11,15 @@ interface ProjectDetails {
   priority: 'BAIXA' | 'MEDIA' | 'ALTA';
 }
 
-interface Tarefa {
+export interface Tarefa {
+  id?: number;
   nome: string;
   descricao: string;
   dataInicio: string;
   dataFim: string;
   responsavel: string;
   status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA';
-  projeto: { id: number };  // Adicionando a referência ao projeto
+  projeto: { id: number };
 }
 
 interface Member {
@@ -55,8 +56,11 @@ export class EditProjectsComponent implements OnInit {
     dataFim: '',
     responsavel: '',
     status: 'ABERTA',
-    projeto: { id: 0 }  // Adicionando a referência ao projeto com um id inicial
+    projeto: { id: 0 }
   };
+
+  // Array para armazenar as tarefas carregadas
+  tarefas: Tarefa[] = [];
 
   newMember: Member = { email: '' };
   members: Member[] = [];
@@ -80,6 +84,7 @@ export class EditProjectsComponent implements OnInit {
       if (this.projectId) {
         this.loadProjectData();
         this.loadProjectMembers();
+        this.loadProjectTarefas(); // Carrega as tarefas do projeto
       } else {
         console.log('ID do projeto não encontrado na URL');
       }
@@ -111,15 +116,31 @@ export class EditProjectsComponent implements OnInit {
     }
   }
 
+  // Carrega os membros do projeto (caso a API retorne membros)
   loadProjectMembers(): void {
     if (this.projectId) {
-      this.projectsService.getTarefasByProjeto(this.projectId).subscribe(
+      this.projectsService.getMembrosByProjeto(this.projectId).subscribe(
         (response: any[]) => {
           console.log('Membros carregados:', response);
           this.members = response;
         },
         error => {
           console.error('Erro ao carregar membros', error);
+        }
+      );
+    }
+  }
+
+  // Carrega as tarefas do projeto
+  loadProjectTarefas(): void {
+    if (this.projectId) {
+      this.projectsService.getTarefasByProjeto(this.projectId).subscribe(
+        (response: Tarefa[]) => {
+          console.log('Tarefas carregadas:', response);
+          this.tarefas = response;
+        },
+        error => {
+          console.error('Erro ao carregar tarefas', error);
         }
       );
     }
@@ -161,12 +182,15 @@ export class EditProjectsComponent implements OnInit {
 
   onSubmit(): void {
     console.log('Tarefa Criada:', this.tarefa);
-    this.tarefa.projeto = { id: Number(this.projectId) };  // Associando o projeto à tarefa
+    // Certifica que o id do projeto está definido
+    this.tarefa.projeto = { id: Number(this.projectId) };
 
     this.projectsService.createTarefa(this.tarefa).subscribe(
       response => {
         console.log('Tarefa salva com sucesso:', response);
         this.closeModal();
+        // Atualiza a lista de tarefas após a criação
+        this.loadProjectTarefas();
       },
       error => {
         console.error('Erro ao salvar tarefa:', error);

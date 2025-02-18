@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Tarefa } from './tarefa.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectsService {
-
   private baseUrl: string = 'http://localhost:8080/api/projetos';
 
   constructor(private http: HttpClient) { }
@@ -44,8 +44,14 @@ export class ProjectsService {
     return this.http.post('http://localhost:8080/api/tarefas', tarefa, { headers });
   }
 
-  // Método para buscar as tarefas de um projeto
-  getTarefasByProjeto(projectId: string): Observable<any[]> {
-    return this.http.get<any[]>(`/api/tarefas?projectId=${projectId}`);
+  // Método para buscar as tarefas de um projeto (ajustado para chamar o endpoint correto)
+  getTarefasByProjeto(projectId: string): Observable<Tarefa[]> {
+    return this.http.get<Tarefa[]>(`http://localhost:8080/api/tarefas/projeto/${projectId}`);
+  }
+
+  // Exemplo de método para buscar membros do projeto (se houver endpoint específico)
+  getMembrosByProjeto(projectId: string): Observable<any[]> {
+    // Ajuste a URL conforme a sua API para buscar os membros do projeto
+    return this.http.get<any[]>(`http://localhost:8080/api/projetos/${projectId}/membros`);
   }
 }
