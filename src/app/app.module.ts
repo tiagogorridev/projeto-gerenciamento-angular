@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 // Core -> Auth -> Interceptors
 import { AuthInterceptor } from './core/auth/interceptors/auth.interceptor';
@@ -97,7 +99,9 @@ import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/ad
     ButtonModule,
     HttpClientModule,
     CalendarModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatSelectModule,
+    MatFormFieldModule
   ],
   providers: [
     {
