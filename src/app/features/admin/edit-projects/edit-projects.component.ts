@@ -27,8 +27,6 @@ interface Member {
   email: string;
 }
 
-
-
 @Component({
   selector: 'app-edit-projects',
   templateUrl: './edit-projects.component.html',
@@ -137,14 +135,17 @@ export class EditProjectsComponent implements OnInit {
     if (this.projectId) {
       this.projectsService.getProjetoById(Number(this.projectId)).subscribe(
         (response: any) => {
+          console.log('Resposta do projeto:', response); // Verifique a resposta completa aqui
+          console.log('Cliente do Projeto:', response.cliente); // Verifique se o cliente existe na resposta
           this.projectDetails = {
             name: response.nome || 'Projeto Desconhecido',
-            client: response.cliente?.nome || 'Cliente Desconhecido',
+            client: response.cliente?.nome || 'Cliente Desconhecido', // Aqui você já obtém o nome do cliente
             estimatedHours: response.horasEstimadas || 0,
             estimatedCost: response.custoEstimado || 0,
             status: response.status || 'EM_ANDAMENTO',
             priority: response.prioridade || 'ALTA',
           };
+          console.log('Dados do projeto carregados:', this.projectDetails);
         },
         error => {
           console.error('Erro ao carregar dados do projeto', error);
@@ -180,10 +181,22 @@ export class EditProjectsComponent implements OnInit {
   }
 
   saveProjectDetails(): void {
+    const projectData = {
+      nome: this.projectDetails.name,  // Envia 'nome' ao invés de 'name'
+      cliente: this.projectDetails.client,
+      horasEstimadas: this.projectDetails.estimatedHours,
+      custoEstimado: this.projectDetails.estimatedCost,
+      status: this.projectDetails.status,
+      // outros campos aqui
+    };
+
+    console.log('Valores antes de salvar:', projectData);  // Verifique os dados que estão sendo enviados
+
     if (this.projectId) {
-      this.projectsService.updateProjeto(this.projectId, this.projectDetails).subscribe(
+      this.projectsService.updateProjeto(this.projectId, projectData).subscribe(
         (response: any) => {
           console.log('Projeto atualizado com sucesso', response);
+          this.loadProjectData();  // Recarrega os dados atualizados
         },
         error => {
           console.error('Erro ao atualizar projeto', error);

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Tarefa } from './tarefa.model';
 
 @Injectable({
@@ -35,6 +35,15 @@ export class ProjectsService {
   // Método para buscar um projeto por ID
   getProjetoById(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
+  }
+
+  getNomeClienteById(clienteId: number): Observable<string> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<{ nome: string }>(`http://localhost:8080/api/clientes/${clienteId}`, { headers })
+      .pipe(
+        map(response => response.nome)  // Supondo que a resposta tenha um campo "nome"
+      );
   }
 
   // Método para criar uma nova tarefa
