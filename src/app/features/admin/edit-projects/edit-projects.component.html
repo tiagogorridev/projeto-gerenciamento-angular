@@ -105,46 +105,59 @@
     </div>
 
     <!-- Time Tab -->
-    <div class="tab-content" *ngIf="activeTab === 'time'">
-      <div class="actions-bar">
-        <div class="search-container">
-          <input type="text" placeholder="Pesquisar membros..." class="search-input" [(ngModel)]="searchTerm">
-        </div>
-        <button class="new-task-button" (click)="openAddMemberModal()">+ Adicionar Membro</button>
-      </div>
-
-      <div class="modal" *ngIf="showAddMemberModal">
-        <div class="modal-content">
-          <h2>Adicionar Membro ao Projeto</h2>
-          <form (ngSubmit)="onAddMemberSubmit()" #addMemberForm="ngForm">
-            <div class="form-group">
-              <label>E-mail</label>
-              <input type="email" class="input-field" [(ngModel)]="newMember.email" name="email" required>
-              <div *ngIf="addMemberForm.submitted && !newMember.email" class="error-text">
-                E-mail é obrigatório
-              </div>
-            </div>
-            <div class="modal-actions">
-              <button type="button" class="cancel-btn" (click)="closeAddMemberModal()">Cancelar</button>
-              <button type="submit" class="create-btn" [disabled]="!addMemberForm.form.valid">Adicionar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="members-table">
-        <div class="table-header">
-          <div class="header-email">Membros</div>
-        </div>
-        <div *ngIf="members.length === 0" class="empty-state">
-          <p class="empty-title">Nenhum membro atribuído</p>
-          <p class="empty-subtitle">Adicione membros ao projeto</p>
-        </div>
-        <div *ngFor="let member of members" class="table-row">
-          <div class="table-cell">{{ member.email }}</div>
-        </div>
-      </div>
+<!-- Time Tab -->
+<div class="tab-content" *ngIf="activeTab === 'time'">
+  <div class="actions-bar">
+    <div class="search-container">
+      <input type="text" placeholder="Pesquisar membros..." class="search-input" [(ngModel)]="searchTerm">
     </div>
+    <button class="new-task-button" (click)="openAddMemberModal()">+ Adicionar Membro</button>
+  </div>
+
+<!-- Modal para Adicionar Membro -->
+<div class="modal" *ngIf="showAddMemberModal">
+  <div class="modal-content">
+    <h2>Adicionar Membro ao Projeto</h2>
+    <form (ngSubmit)="onAddMemberSubmit()" #addMemberForm="ngForm">
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" class="input-field" [(ngModel)]="newMember.email" name="email" required>
+        <div *ngIf="addMemberForm.submitted && !newMember.email" class="error-text">
+          E-mail é obrigatório
+        </div>
+      </div>
+
+      <!-- Lista de E-mails dos Usuários -->
+      <mat-form-field appearance="fill">
+        <mat-label>Selecione membros</mat-label>
+        <mat-select [(ngModel)]="selectedEmails" multiple>
+          <mat-option *ngFor="let email of usuariosEmails" [value]="email">
+            {{ email }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeAddMemberModal()">Cancelar</button>
+        <button type="submit" class="create-btn" [disabled]="!addMemberForm.form.valid">Adicionar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <div class="members-table">
+    <div class="table-header">
+      <div class="header-email">Membros</div>
+    </div>
+    <div *ngIf="members.length === 0" class="empty-state">
+      <p class="empty-title">Nenhum membro atribuído</p>
+      <p class="empty-subtitle">Adicione membros ao projeto</p>
+    </div>
+    <div *ngFor="let member of members" class="table-row">
+      <div class="table-cell">{{ member.email }}</div>
+    </div>
+  </div>
+</div>
 
     <!-- Detalhes Tab -->
     <div class="tab-content" *ngIf="activeTab === 'details'">
