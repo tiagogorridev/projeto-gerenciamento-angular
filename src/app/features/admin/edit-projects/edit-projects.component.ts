@@ -9,13 +9,14 @@ interface Cliente {
   nome: string;
 }
 
-interface ProjectDetails {
+export interface ProjectDetails {
   name: string;
-  client: string;
+  client: string | Cliente;
+  clientId?: number;
   estimatedHours: number;
   estimatedCost: number;
-  status: 'PLANEJADO' | 'EM_ANDAMENTO' | 'CONCLUIDO' | 'CANCELADO';
-  priority: 'BAIXA' | 'MEDIA' | 'ALTA';
+  status: string;
+  priority: string;
 }
 
 export interface Tarefa {
@@ -28,6 +29,7 @@ export interface Tarefa {
   status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA';
   projeto: { id: number };
 }
+
 
 interface Member {
   email: string;
@@ -84,7 +86,7 @@ export class EditProjectsComponent implements OnInit {
     private route: ActivatedRoute,
     private projectsService: ProjectsService,
     private usuarioService: UsuarioService,
-    private clienteService: ClienteService  // Adicione o ClienteService aqui
+    private clienteService: ClienteService
   ) {}
 
   ngOnInit(): void {
@@ -119,9 +121,12 @@ export class EditProjectsComponent implements OnInit {
     if (this.projectId) {
       this.projectsService.getProjetoById(Number(this.projectId)).subscribe(
         (response: any) => {
+          console.log('Dados do projeto:', response);
+
           this.projectDetails = {
             name: response.nome || 'Projeto Desconhecido',
-            client: response.cliente?.nome || 'Cliente Desconhecido',
+            client: response.cliente || 'Nome do Cliente não disponível',
+            clientId: response.id_cliente || null,
             estimatedHours: response.horasEstimadas || 0,
             estimatedCost: response.custoEstimado || 0,
             status: response.status || 'EM_ANDAMENTO',
@@ -134,7 +139,6 @@ export class EditProjectsComponent implements OnInit {
       );
     }
   }
-
 
   loadProjectTarefas(): void {
     if (this.projectId) {
@@ -162,6 +166,7 @@ export class EditProjectsComponent implements OnInit {
       this.projectsService.updateProjeto(this.projectId, projectData).subscribe(
         (response: any) => {
           console.log('Projeto atualizado com sucesso', response);
+          this.projectName = this.projectDetails.name;
           this.loadProjectData();
         },
         error => {
@@ -191,7 +196,6 @@ export class EditProjectsComponent implements OnInit {
       },
       (error) => {
         console.error('Erro ao carregar emails dos usuários:', error);
-        // Você pode adicionar uma notificação de erro aqui se desejar
       }
     );
   }

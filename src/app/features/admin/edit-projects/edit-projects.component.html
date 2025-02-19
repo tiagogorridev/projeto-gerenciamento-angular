@@ -169,9 +169,7 @@
             <input type="text" class="form-input" [(ngModel)]="projectDetails.name" name="name">
           </div>
             <label for="client">Cliente</label>
-            <select id="client" [(ngModel)]="projectDetails.client" name="client">
-              <option *ngFor="let client of clients" [value]="client.nome">{{ client.nome }}</option>
-            </select>
+            <input type="text" class="form-input" [value]="projectDetails.clientId || projectDetails.client" disabled>
         </div>
         <div class="form-section">
           <h3>Estimativa</h3>

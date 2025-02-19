@@ -29,7 +29,8 @@ export class ProjectsService {
   updateProjeto(id: string, projeto: any): Observable<any> {
     const token = localStorage.getItem('auth_token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.put(`${this.baseUrl}/${id}`, projeto, { headers });
+    const { cliente, ...projetoSemCliente } = projeto;
+    return this.http.put(`${this.baseUrl}/${id}`, projetoSemCliente, { headers });
   }
 
   // Método para buscar um projeto por ID
@@ -42,7 +43,7 @@ export class ProjectsService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<{ nome: string }>(`http://localhost:8080/api/clientes/${clienteId}`, { headers })
       .pipe(
-        map(response => response.nome)  // Supondo que a resposta tenha um campo "nome"
+        map(response => response.nome)
       );
   }
 
@@ -60,7 +61,6 @@ export class ProjectsService {
 
   // Exemplo de método para buscar membros do projeto (se houver endpoint específico)
   getMembrosByProjeto(projectId: string): Observable<any[]> {
-    // Ajuste a URL conforme a sua API para buscar os membros do projeto
     return this.http.get<any[]>(`http://localhost:8080/api/projetos/${projectId}/membros`);
   }
 
@@ -68,7 +68,6 @@ export class ProjectsService {
     const token = localStorage.getItem('auth_token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    // Chamando o endpoint de adicionar membro
     return this.http.post(`${this.baseUrl}/${projectId}/membros`, { email }, { headers });
   }
 }
