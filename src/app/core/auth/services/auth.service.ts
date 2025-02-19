@@ -24,7 +24,6 @@ export class AuthService {
     return this.userRole === 'admin';
   }
 
-  // Outros métodos de autenticação que você possa precisar
   getUserRole(): string {
     return this.userRole;
   }
@@ -38,7 +37,8 @@ export class AuthService {
       .pipe(
         tap((response: LoginResponse) => {
           console.log('Resposta do Login:', response);
-          this.saveSession(response.token, response.perfil, response.id);
+          const userEmail = response.email || email;
+          this.saveSession(response.token, response.perfil, response.id, userEmail);
           this.isAuthenticatedSubject.next(true);
         }),
         catchError(error => {
@@ -76,16 +76,18 @@ export class AuthService {
     );
   }
 
-  private saveSession(token: string, perfil: string, usuarioId: string): void {
+  private saveSession(token: string, perfil: string, usuarioId: string, email: string): void {
     localStorage.setItem('token', token);
     localStorage.setItem('perfil', perfil);
-    localStorage.setItem('usuario_id', usuarioId);  // Armazenando usuario_id
+    localStorage.setItem('usuario_id', usuarioId);
+    localStorage.setItem('usuario', email);
   }
 
   private clearSession(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('perfil');
     sessionStorage.removeItem('token');
+    localStorage.removeItem('usuario');
     this.isAuthenticatedSubject.next(false);
   }
 
@@ -102,4 +104,5 @@ export interface LoginResponse {
   token: string;
   perfil: string;
   id: string;
+  email: string;
 }

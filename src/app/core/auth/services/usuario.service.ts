@@ -9,10 +9,8 @@ import { Usuario } from './usuario.model';
 })
 export class UsuarioService {
   private apiUrl = 'http://localhost:8080/api/usuarios';
-
   constructor(private http: HttpClient) { }
 
-  // Método para cadastrar um usuário
   cadastrarUsuario(usuario: Usuario): Observable<any> {
     if (!usuario.perfil) {
       throw new Error("O campo 'perfil' é obrigatório");
@@ -24,7 +22,6 @@ export class UsuarioService {
       );
   }
 
-  // Método para listar todos os usuários
   getUsuarios(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(this.apiUrl)
       .pipe(
@@ -32,12 +29,15 @@ export class UsuarioService {
       );
   }
 
-  // Método para listar apenas os e-mails dos usuários
   getEmails(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/emails`)
       .pipe(
         catchError(this.handleError)
       );
+  }
+
+  getUserEmail(): string | null {
+    return localStorage.getItem('usuario');
   }
 
   private handleError(error: HttpErrorResponse) {
