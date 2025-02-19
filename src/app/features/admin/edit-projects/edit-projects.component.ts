@@ -197,7 +197,16 @@ export class EditProjectsComponent implements OnInit {
   }
 
   openAddMemberModal(): void {
-    this.showAddMemberModal = true;
+    this.usuarioService.getEmails().subscribe(
+      (emails: string[]) => {
+        this.usuariosEmails = emails;
+        this.showAddMemberModal = true;
+      },
+      (error) => {
+        console.error('Erro ao carregar emails dos usuários:', error);
+        // Você pode adicionar uma notificação de erro aqui se desejar
+      }
+    );
   }
 
   closeAddMemberModal(): void {
