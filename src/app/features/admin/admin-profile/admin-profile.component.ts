@@ -18,6 +18,8 @@ export class AdminProfileComponent implements OnInit {
   currentUser: Usuario | null = null;
   errorMessage: string = '';
   successMessage: string = '';
+  senhaAtualInvalida: boolean = false;
+  mensagemErroSenha: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -133,26 +135,33 @@ export class AdminProfileComponent implements OnInit {
   private onChangePassword(): void {
     if (this.securityForm.valid && this.currentUser) {
       this.saving = true;
-      const updatedUser: Usuario = {
-        ...this.currentUser,
+      this.senhaAtualInvalida = false;
+      this.mensagemErroSenha = '';
+
+      const updatedUser = {
+        id: this.currentUser.id,
         senha: this.securityForm.get('novaSenha')?.value,
-        confirmPassword: this.securityForm.get('confirmPassword')?.value
+        senhaAtual: this.securityForm.get('senhaAtual')?.value
       };
 
-      this.usuarioService.cadastrarUsuario(updatedUser)
+      this.usuarioService.updateUsuario(updatedUser)
         .pipe(finalize(() => this.saving = false))
         .subscribe({
           next: () => {
             this.successMessage = 'Senha atualizada com sucesso!';
             this.securityForm.reset();
+            this.senhaAtualInvalida = false;
+            this.mensagemErroSenha = '';
           },
           error: (error) => {
-            this.errorMessage = 'Erro ao atualizar senha: ' + error.message;
             console.error('Erro na atualização da senha:', error);
+            this.senhaAtualInvalida = true;
+            this.mensagemErroSenha = 'Senha atual incorreta';
           }
         });
     }
   }
+
 
   private passwordMatchValidator(group: FormGroup): null | { passwordMismatch: true } {
     const novaSenha = group.get('novaSenha')?.value;
@@ -166,10 +175,14 @@ export class AdminProfileComponent implements OnInit {
     return control ? control.hasError(errorName) && control.touched : false;
   }
 
-  private clearMessages(): void {
-    this.errorMessage = '';
-    this.successMessage = '';
-  }
+    // Método para limpar os erros quando mudar de aba
+    private clearMessages(): void {
+      this.errorMessage = '';
+      this.successMessage = '';
+      this.senhaAtualInvalida = false;
+      this.mensagemErroSenha = '';
+    }
+
 
   get isPersonalFormDirty(): boolean {
     return this.personalForm.dirty;
