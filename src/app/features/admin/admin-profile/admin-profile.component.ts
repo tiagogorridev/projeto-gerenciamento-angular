@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../core/auth/services/usuario.service';
+import { AuthService } from '../../../core/auth/services/auth.service';
 import { Usuario } from '../../../core/auth/services/usuario.model';
 import { finalize } from 'rxjs/operators';
-
 @Component({
   selector: 'app-admin-profile',
   templateUrl: './admin-profile.component.html',
@@ -21,22 +21,19 @@ export class AdminProfileComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
     this.loadUserData();
-    const userEmail = this.usuarioService.getUserEmail();
-    if (userEmail) {
-      this.personalForm.get('email')?.setValue(userEmail);
-    }
   }
 
   private initializePersonalForm(): FormGroup {
     return this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(3)]],
-      email: [{ value: this.usuarioService.getUserEmail(), disabled: true }, [Validators.required, Validators.email]],
-      perfil: ['ADMIN', [Validators.required]]
+      nome: [''],
+      email: { value: '', disabled: true },
+      perfil: { value: '', disabled: true }
     });
   }
 
@@ -52,20 +49,30 @@ export class AdminProfileComponent implements OnInit {
 
   private loadUserData(): void {
     this.loading = true;
-    this.usuarioService.getUsuarios()
-      .pipe(finalize(() => this.loading = false))
-      .subscribe({
-        next: (usuarios) => {
-          if (usuarios.length > 0) {
-            this.currentUser = usuarios[0];
+
+    const userId = this.authService.getUserId();
+    console.log('ID do usuário:', userId);
+
+    if (userId) {
+      this.usuarioService.getUsuarioById(Number(userId))
+        .subscribe({
+          next: (usuario) => {
+            this.currentUser = usuario;
             this.updatePersonalForm(this.currentUser);
+          },
+          error: (error) => {
+            this.errorMessage = 'Erro ao carregar dados do usuário: ' + (error?.message || 'Desconhecido');
+            console.error('Erro ao carregar usuário:', error);
+          },
+          complete: () => {
+            this.loading = false;
           }
-        },
-        error: (error) => {
-          this.errorMessage = 'Erro ao carregar dados do usuário: ' + error.message;
-          console.error('Erro ao carregar usuário:', error);
-        }
-      });
+        });
+    } else {
+      this.errorMessage = 'ID do usuário não encontrado.';
+      console.error('ID do usuário não encontrado.');
+      this.loading = false;
+    }
   }
 
   private updatePersonalForm(usuario: Usuario): void {
@@ -88,28 +95,38 @@ export class AdminProfileComponent implements OnInit {
       this.onChangePassword();
     }
   }
-
   private onSavePersonal(): void {
     if (this.personalForm.valid && this.currentUser) {
       this.saving = true;
+      this.personalForm.get('email')?.enable();
+      this.personalForm.get('perfil')?.enable();
+
       const updatedUser: Usuario = {
         ...this.currentUser,
-        ...this.personalForm.value,
+        nome: this.personalForm.get('nome')?.value,
+        email: this.currentUser.email,
+        perfil: this.currentUser.perfil,
         senha: this.currentUser.senha
       };
 
-      this.usuarioService.cadastrarUsuario(updatedUser)
-        .pipe(finalize(() => this.saving = false))
+      this.usuarioService.updateUsuario(updatedUser)
+        .pipe(finalize(() => {
+          this.saving = false;
+          this.personalForm.get('email')?.disable();
+          this.personalForm.get('perfil')?.disable();
+        }))
         .subscribe({
           next: (response) => {
             this.successMessage = 'Informações pessoais atualizadas com sucesso!';
             this.currentUser = response;
+            this.updatePersonalForm(this.currentUser);
           },
           error: (error) => {
             this.errorMessage = 'Erro ao atualizar informações: ' + error.message;
             console.error('Erro na atualização:', error);
           }
         });
+
     }
   }
 
