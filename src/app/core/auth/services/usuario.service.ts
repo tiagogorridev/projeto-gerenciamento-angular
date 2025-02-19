@@ -45,10 +45,7 @@ export class UsuarioService {
   }
 
   getEmails(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/emails`)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http.get<string[]>(`${this.apiUrl}/emails`);
   }
 
   getUserEmail(): string | null {
