@@ -13,23 +13,22 @@ export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  private userRole: string = 'admin';
-
   constructor(
     private http: HttpClient,
     private router: Router
   ) { }
 
   isAdmin(): boolean {
-    return this.userRole === 'admin';
+    return this.getUserRole() === 'ADMIN';
   }
 
-  getUserRole(): string {
-    return this.userRole;
+  getUserRole(): string | null {
+    return localStorage.getItem('perfil');
   }
 
-  setUserRole(role: string): void {
-    this.userRole = role;
+  // Método para pegar o ID do usuário logado
+  getUserId(): string | null {
+    return localStorage.getItem('usuario_id');
   }
 
   login(email: string, senha: string): Observable<any> {
@@ -86,8 +85,9 @@ export class AuthService {
   private clearSession(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('perfil');
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('usuario_id');
     localStorage.removeItem('usuario');
+    sessionStorage.removeItem('token');
     this.isAuthenticatedSubject.next(false);
   }
 
