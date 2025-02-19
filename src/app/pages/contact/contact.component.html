@@ -32,11 +32,8 @@
             id="email"
             type="email"
             formControlName="email"
-            [class.error]="contactForm.get('email')?.touched && contactForm.get('email')?.invalid"
-            placeholder="seu.email@exemplo.com">
-          <span class="error-message" *ngIf="contactForm.get('email')?.touched && contactForm.get('email')?.invalid">
-            {{ getErrorMessage('email') }}
-          </span>
+            class="disabled-input"
+            readonly>
         </div>
 
         <div class="form-group">

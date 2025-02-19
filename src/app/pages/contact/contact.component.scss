@@ -213,6 +213,11 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
+.disabled-input {
+  background-color: #f3f3f3;
+  cursor: not-allowed;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
