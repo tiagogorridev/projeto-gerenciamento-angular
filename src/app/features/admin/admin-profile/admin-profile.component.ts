@@ -26,12 +26,16 @@ export class AdminProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserData();
+    const userEmail = this.usuarioService.getUserEmail();
+    if (userEmail) {
+      this.personalForm.get('email')?.setValue(userEmail);
+    }
   }
 
   private initializePersonalForm(): FormGroup {
     return this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
+      email: [{ value: this.usuarioService.getUserEmail(), disabled: true }, [Validators.required, Validators.email]],
       perfil: ['ADMIN', [Validators.required]]
     });
   }
