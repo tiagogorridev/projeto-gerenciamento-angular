@@ -26,7 +26,6 @@
         <form [formGroup]="personalForm">
           <div class="form-group">
             <label>Nome Completo</label>
-            <!-- Usando formControlName ao invés de [value] -->
             <input type="text" class="input-field" formControlName="nome">
           </div>
           <div class="form-group">
@@ -42,20 +41,54 @@
       </div>
 
       <div *ngIf="activeTab === 'security'" class="tab-content">
-        <div class="form-group">
-          <label>Senha Atual</label>
-          <input type="password" class="input-field">
-        </div>
+        <form [formGroup]="securityForm">
+          <div class="form-group">
+            <label>Senha Atual</label>
+            <input
+              type="password"
+              class="input-field"
+              formControlName="senhaAtual"
+              [class.error]="senhaAtualInvalida || (hasError(securityForm, 'senhaAtual', 'required') && securityForm.get('senhaAtual')?.touched)">
 
-        <div class="form-group">
-          <label>Nova Senha</label>
-          <input type="password" class="input-field">
-        </div>
+            <div class="error-message" *ngIf="hasError(securityForm, 'senhaAtual', 'required') && securityForm.get('senhaAtual')?.touched">
+              Senha atual é obrigatória
+            </div>
 
-        <div class="form-group">
-          <label>Confirmar Nova Senha</label>
-          <input type="password" class="input-field">
-        </div>
+            <div class="error-message" *ngIf="mensagemErroSenha">
+              {{mensagemErroSenha}}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Nova Senha</label>
+            <input
+              type="password"
+              class="input-field"
+              formControlName="novaSenha"
+              [class.error]="hasError(securityForm, 'novaSenha', 'required') || hasError(securityForm, 'novaSenha', 'minlength')">
+            <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'required')">
+              Nova senha é obrigatória
+            </div>
+            <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'minlength')">
+              A senha deve ter pelo menos 6 caracteres
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Confirmar Nova Senha</label>
+            <input
+              type="password"
+              class="input-field"
+              formControlName="confirmPassword"
+              [class.error]="hasError(securityForm, 'confirmPassword', 'required') || securityForm.hasError('passwordMismatch')">
+            <div class="error-message" *ngIf="hasError(securityForm, 'confirmPassword', 'required')">
+              Confirmação de senha é obrigatória
+            </div>
+            <div class="error-message" *ngIf="securityForm.hasError('passwordMismatch') && !hasError(securityForm, 'confirmPassword', 'required')">
+              As senhas não coincidem
+            </div>
+          </div>
+        </form>
       </div>
 
       <div class="form-actions">
