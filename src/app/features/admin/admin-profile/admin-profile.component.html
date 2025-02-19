@@ -23,22 +23,22 @@
 
     <div class="settings-form">
       <div *ngIf="activeTab === 'personal'" class="tab-content">
-        <div class="form-group">
-          <label>Nome Completo</label>
-          <input type="text" class="input-field" placeholder="Seu nome completo">
-        </div>
-
         <form [formGroup]="personalForm">
           <div class="form-group">
+            <label>Nome Completo</label>
+            <!-- Usando formControlName ao invés de [value] -->
+            <input type="text" class="input-field" formControlName="nome">
+          </div>
+          <div class="form-group">
             <label>Email</label>
-            <input type="email" class="input-field disabled-input" formControlName="email" readonly>
+            <input type="email" class="input-field" formControlName="email" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>Perfil</label>
+            <input type="text" class="input-field" formControlName="perfil" readonly>
           </div>
         </form>
-
-        <div class="form-group">
-          <label>Cargo</label>
-          <input type="text" class="input-field" placeholder="Seu cargo">
-        </div>
       </div>
 
       <div *ngIf="activeTab === 'security'" class="tab-content">
@@ -57,6 +57,7 @@
           <input type="password" class="input-field">
         </div>
       </div>
+
       <div class="form-actions">
         <button class="cancel-btn">Cancelar</button>
         <button class="save-btn" (click)="onSaveChanges()">Salvar Alterações</button>
