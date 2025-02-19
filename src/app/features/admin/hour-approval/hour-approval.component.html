@@ -1,2 +1,58 @@
 <app-admin-sidebar></app-admin-sidebar>
 <app-admin-header></app-admin-header>
+<div class="approval-container">
+  <h1 class="page-title">Aprovação de Horas</h1>
+
+  <div class="filters-section">
+    <div class="filters-grid">
+      <div class="filter-item">
+        <label>Projeto</label>
+        <select>
+          <option value="">Todos os Projetos</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Data Início</label>
+        <p-calendar
+          [(ngModel)]="startDate"
+          name="dataInicio"
+          [showIcon]="true"
+          [showButtonBar]="true"
+          [touchUI]="false"
+          dateFormat="dd/mm/yy"
+          [required]="true"
+          placeholder="Selecione a data"
+        ></p-calendar>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-entries-container">
+    <div class="time-entry-card">
+      <div class="entry-header">
+        <div class="user-info">
+          <h3>Nome do Usuário</h3>
+          <span class="user-email">usuario@exemplo.com</span>
+        </div>
+        <span class="time-logged">8 horas</span>
+      </div>
+
+      <div class="project-details">
+        <div class="project-name">Nome do Projeto</div>
+        <div class="task-description">Descrição da tarefa...</div>
+      </div>
+
+      <div class="entry-actions">
+        <button class="approve-btn">
+          <i class="pi pi-check"></i>
+          Aprovar
+        </button>
+        <button class="reject-btn">
+          <i class="pi pi-times"></i>
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
