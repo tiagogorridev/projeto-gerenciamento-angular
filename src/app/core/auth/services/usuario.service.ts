@@ -31,8 +31,17 @@ export class UsuarioService {
       );
   }
 
-  updateUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.http.put<Usuario>(`${this.apiUrl}/usuarios/${usuario.id}`, usuario);
+  updateUsuario(usuario: any): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.apiUrl}/usuarios/${usuario.id}`, usuario)
+      .pipe(
+        catchError(error => {
+          let errorMessage = 'Ocorreu um erro ao atualizar o usuário';
+          if (error.error && error.error.message) {
+            errorMessage = error.error.message;
+          }
+          return throwError(() => new Error(errorMessage));
+        })
+      );
   }
 
   getEmails(): Observable<string[]> {
@@ -68,4 +77,12 @@ export class UsuarioService {
       catchError(this.handleError)
     );
   }
+
+  verifyCurrentPassword(userId: number, currentPassword: string): Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/usuarios/${userId}/verify-password`, { senha: currentPassword })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 }
+
