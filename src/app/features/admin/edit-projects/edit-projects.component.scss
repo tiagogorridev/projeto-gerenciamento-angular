@@ -784,3 +784,16 @@ option {
   padding: 10px;
   font-size: 1rem;
 }
+.modal-content {
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
