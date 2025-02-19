@@ -119,7 +119,7 @@
       <div class="modal" *ngIf="showAddMemberModal">
         <div class="modal-content">
           <h2>Adicionar Membro ao Projeto</h2>
-          <form (ngSubmit)="onAddMemberSubmit()" #addMemberForm="ngForm">
+          <form #addMemberForm="ngForm">
             <mat-form-field appearance="fill" class="w-full">
               <mat-label>Selecione membros</mat-label>
               <mat-select [(ngModel)]="selectedEmails" multiple name="emails">

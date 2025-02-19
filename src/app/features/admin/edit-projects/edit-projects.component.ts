@@ -97,7 +97,6 @@ export class EditProjectsComponent implements OnInit {
       this.projectId = params.get('id');
       if (this.projectId) {
         this.loadProjectData();
-        this.loadProjectMembers();
         this.loadProjectTarefas();
       }
     });
@@ -136,18 +135,6 @@ export class EditProjectsComponent implements OnInit {
     }
   }
 
-  loadProjectMembers(): void {
-    if (this.projectId) {
-      this.projectsService.getMembrosByProjeto(this.projectId).subscribe(
-        (response: any[]) => {
-          this.members = response;
-        },
-        error => {
-          console.error('Erro ao carregar membros', error);
-        }
-      );
-    }
-  }
 
   loadProjectTarefas(): void {
     if (this.projectId) {
@@ -213,31 +200,7 @@ export class EditProjectsComponent implements OnInit {
     this.showAddMemberModal = false;
   }
 
-  onAddMemberSubmit(): void {
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      console.error('Token não encontrado!');
-      return;
-    }
 
-    if (this.selectedEmails.length > 0) {
-      this.selectedEmails.forEach(email => {
-        this.projectsService.addMembroToProjeto(this.projectId!, email).subscribe(
-          response => {
-            console.log('Membro Adicionado:', response);
-            this.loadProjectMembers();
-          },
-          error => {
-            console.error('Erro ao adicionar membro', error);
-          }
-        );
-      });
-
-      this.closeAddMemberModal();
-    } else {
-      console.error('Nenhum e-mail selecionado.');
-    }
-  }
 
   onSubmit(): void {
     console.log('Tarefa Criada:', this.tarefa);
