@@ -13,17 +13,32 @@ export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
+  private userRole: string = 'admin';
+
   constructor(
     private http: HttpClient,
     private router: Router
   ) { }
 
+  isAdmin(): boolean {
+    return this.userRole === 'admin';
+  }
+
+  // Outros métodos de autenticação que você possa precisar
+  getUserRole(): string {
+    return this.userRole;
+  }
+
+  setUserRole(role: string): void {
+    this.userRole = role;
+  }
+
   login(email: string, senha: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, senha })
       .pipe(
         tap((response: LoginResponse) => {
-          console.log('Resposta do Login:', response);  // Verifique aqui se id está na resposta
-          this.saveSession(response.token, response.perfil, response.id);  // Armazenando id
+          console.log('Resposta do Login:', response);
+          this.saveSession(response.token, response.perfil, response.id);
           this.isAuthenticatedSubject.next(true);
         }),
         catchError(error => {
