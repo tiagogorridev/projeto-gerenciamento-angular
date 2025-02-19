@@ -1,0 +1,255 @@
+$primary-color: #8b5cf6;
+$secondary-color: #f3f4f6;
+$border-color: #e2e8f0;
+$text-gray: #64748b;
+$gray: #6b7280;
+$white: #ffffff;
+$hover-color: #7c3aed;
+$input-bg: #f8fafc;
+$success-color: #10b981;
+$danger-color: #ef4444;
+
+.approval-container {
+  margin: 0 24px;
+  padding: 60px 24px 0 260px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.page-title {
+  color: $gray;
+  font-weight: 500;
+  font-size: 24px;
+  margin-bottom: 32px;
+}
+
+.time-entries-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.time-entry-card {
+  background: $white;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid $border-color;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+
+  .user-info {
+    h3 {
+      color: #374151;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .user-email {
+      color: $text-gray;
+      font-size: 14px;
+    }
+  }
+
+  .time-logged {
+    background: lighten($primary-color, 35%);
+    color: $primary-color;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+}
+
+.project-details {
+  margin-bottom: 16px;
+
+  .project-name {
+    color: #374151;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .task-description {
+    color: $text-gray;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+.entry-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 16px;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  .approve-btn {
+    background: $primary-color;
+    color: $white;
+    border: none;
+
+    &:hover:not(:disabled) {
+      background: $hover-color;
+    }
+  }
+
+  .reject-btn {
+    background: $white;
+    color: $gray;
+    border: 1px solid $border-color;
+
+    &:hover:not(:disabled) {
+      background: $secondary-color;
+    }
+  }
+}
+
+.filters-section {
+  background: $white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid $border-color;
+
+  .filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+
+    .filter-item {
+      label {
+        display: block;
+        color: $text-gray;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+    }
+
+    select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      background: $input-bg;
+      color: $text-gray;
+      font-size: 14px;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+      }
+    }
+  }
+}
+:host ::ng-deep {
+  .p-calendar {
+    width: 100%;
+
+    .p-inputtext {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      background: $input-bg;
+      color: $text-gray;
+      font-size: 14px;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+      }
+    }
+
+    .p-button {
+      background: $white;
+      border: 1px solid $border-color;
+      color: $gray;
+
+      &:hover {
+        background: $secondary-color;
+      }
+    }
+  }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+
+  &.pendente {
+    background: #fef3c7;
+    color: #d97706;
+  }
+
+  &.aprovado {
+    background: #d1fae5;
+    color: #059669;
+  }
+
+  &.reprovado {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+}
+
+@media (max-width: 1024px) {
+  .approval-container {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .entry-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .entry-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+}
