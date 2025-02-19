@@ -1,2 +1,134 @@
-<app-sidebar></app-sidebar>
-<app-header></app-header>
+<ng-container *ngIf="isAdmin; else regularUser">
+  <app-admin-sidebar></app-admin-sidebar>
+  <app-admin-header></app-admin-header>
+</ng-container>
+<ng-template #regularUser>
+  <app-sidebar></app-sidebar>
+  <app-header></app-header>
+</ng-template>
+
+<div class="settings-container" @fadeInOut>
+  <h1 class="page-title">Fale Conosco</h1>
+
+  <div class="contact-container">
+    <div class="contact-form-wrapper">
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+        <div class="form-group">
+          <label for="name">Nome Completo</label>
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            [class.error]="contactForm.get('name')?.touched && contactForm.get('name')?.invalid"
+            placeholder="Seu nome completo">
+          <span class="error-message" *ngIf="contactForm.get('name')?.touched && contactForm.get('name')?.invalid">
+            {{ getErrorMessage('name') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            [class.error]="contactForm.get('email')?.touched && contactForm.get('email')?.invalid"
+            placeholder="seu.email@exemplo.com">
+          <span class="error-message" *ngIf="contactForm.get('email')?.touched && contactForm.get('email')?.invalid">
+            {{ getErrorMessage('email') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Assunto</label>
+          <input
+            id="subject"
+            type="text"
+            formControlName="subject"
+            [class.error]="contactForm.get('subject')?.touched && contactForm.get('subject')?.invalid"
+            placeholder="Assunto da mensagem">
+          <span class="error-message" *ngIf="contactForm.get('subject')?.touched && contactForm.get('subject')?.invalid">
+            {{ getErrorMessage('subject') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Mensagem</label>
+          <textarea
+            id="message"
+            formControlName="message"
+            [class.error]="contactForm.get('message')?.touched && contactForm.get('message')?.invalid"
+            placeholder="Digite sua mensagem"></textarea>
+          <span class="error-message" *ngIf="contactForm.get('message')?.touched && contactForm.get('message')?.invalid">
+            {{ getErrorMessage('message') }}
+          </span>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="cancel-btn" (click)="onCancel()">
+            <i class="fas fa-times"></i>
+            Cancelar
+          </button>
+          <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+            <i class="fas" [class.fa-paper-plane]="!isSubmitting" [class.fa-spinner]="isSubmitting" [class.fa-spin]="isSubmitting"></i>
+            {{ isSubmitting ? 'Enviando...' : 'Enviar Mensagem' }}
+          </button>
+        </div>
+      </form>
+
+      <div class="success-message" *ngIf="showSuccessMessage" @fadeInOut>
+        <i class="fas fa-check-circle"></i>
+        Mensagem enviada com sucesso!
+      </div>
+    </div>
+
+    <div class="contact-info">
+      <h2>Outras formas de contato</h2>
+
+      <div class="contact-methods">
+        <div class="contact-method">
+          <div class="icon-wrapper">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="method-details">
+            <h3>Email</h3>
+            <a href="mailto:contato@timetracker.com">contato@timetracker.com</a>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <div class="icon-wrapper">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <div class="method-details">
+            <h3>WhatsApp</h3>
+            <a href="https://wa.me/5541999999999" target="_blank">(41) 99999-9999</a>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <div class="icon-wrapper">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="method-details">
+            <h3>Telefone</h3>
+            <a href="tel:+554133333333">(41) 3333-3333</a>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <div class="icon-wrapper">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="method-details">
+            <h3>Endereço</h3>
+            <a href="https://maps.google.com/?q=Av.Jardins,+100+-+Curitiba" target="_blank">
+              Av. Jardins, 100 - Jardim<br>
+              Curitiba - PR, 10000-000
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

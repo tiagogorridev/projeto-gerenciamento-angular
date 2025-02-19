@@ -1,0 +1,256 @@
+$primary-color: #8b5cf6;
+$border-color: #e2e8f0;
+$text-gray: #64748b;
+$gray: #6b7280;
+$white: #ffffff;
+$hover-color: #7c3aed;
+$input-bg: #f8fafc;
+$modal-overlay: rgba(0, 0, 0, 0.5);
+
+
+.settings-container {
+  margin: 0 24px;
+  padding: 60px 24px 0 260px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.page-title {
+  color: #6b7280;
+  font-weight: 400;
+  margin-bottom: 32px;
+}
+
+.contact-container {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  min-height: calc(100vh - 200px);
+}
+
+.contact-form-wrapper {
+  position: relative;
+}
+
+.contact-form {
+  background: $white;
+  border-radius: 12px;
+  padding: 32px;
+  border: 1px solid $border-color;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+  margin-bottom: 24px;
+
+  label {
+    display: block;
+    color: $text-gray;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    background: $input-bg;
+    color: $text-gray;
+    font-size: 14px;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: lighten($text-gray, 20%);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+    }
+
+    &.error {
+      border-color: #ef4444;
+      background-color: #fff5f5;
+    }
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+}
+
+.error-message {
+  display: block;
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 16px;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  .cancel-btn {
+    background: transparent;
+    color: $gray;
+    border: 1px solid $border-color;
+
+    &:hover:not(:disabled) {
+      background: $input-bg;
+    }
+  }
+
+  .submit-btn {
+    background: $primary-color;
+    color: $white;
+    border: none;
+
+    &:hover:not(:disabled) {
+      background: $hover-color;
+    }
+  }
+}
+
+.success-message {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #10b981;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s ease-out;
+
+  i {
+    font-size: 20px;
+  }
+}
+
+.contact-info {
+  h2 {
+    color: #374151;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+}
+
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contact-method {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+
+  .icon-wrapper {
+    width: 44px;
+    height: 44px;
+    background: lighten($primary-color, 35%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary-color;
+    font-size: 20px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05);
+      background: lighten($primary-color, 32%);
+    }
+  }
+
+  .method-details {
+    h3 {
+      color: #374151;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    a {
+      color: $gray;
+      font-size: 14px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .contact-container {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-container {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .form-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
