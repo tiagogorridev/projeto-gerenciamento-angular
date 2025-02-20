@@ -17,11 +17,13 @@
     </div>
 
     <div class="input-group">
-      <select class="input-field">
+      <select class="input-field" [(ngModel)]="selectedStatus" (change)="filterProjects()">
         <option value="" disabled selected>Status</option>
-        <option>Ativo</option>
-        <option>Arquivado</option>
-        <option>Todos</option>
+        <option value="PLANEJADO">Planejado</option>
+        <option value="EM_ANDAMENTO">Em Andamento</option>
+        <option value="CONCLUIDO">Concluído</option>
+        <option value="CANCELADO">Cancelado</option>
+        <option value="TODOS">Todos</option>
       </select>
       <i class="fas fa-chevron-down dropdown-icon"></i>
     </div>
