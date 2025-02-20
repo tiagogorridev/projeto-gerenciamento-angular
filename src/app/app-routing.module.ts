@@ -36,6 +36,7 @@ import { ProfileComponent } from './features/users/profile/profile.component';
 import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
 import { Header } from 'primeng/api';
 import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
+import { AboutProjectsComponent } from './features/users/about-projects/about-projects.component';
 
 // Rotas
 const routes: Routes = [
@@ -77,6 +78,7 @@ const routes: Routes = [
       { path: 'dashboard', component: UsersDashboardComponent },
       { path: 'activities', component: ActivitiesComponent },
       { path: 'projects', component: ProjectsComponent },
+      { path: 'about-projects/:id', component: AboutProjectsComponent },
       { path: 'edit-projects/:nome', component: EditProjectsComponent },
       { path: 'time-history', component: TimeHistoryComponent },
       { path: 'time-tracking', component: TimeTrackingComponent },

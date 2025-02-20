@@ -57,6 +57,7 @@ import { AdminProfileComponent } from './features/admin/admin-profile/admin-prof
 import { ProfileComponent } from './features/users/profile/profile.component';
 import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
 import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
+import { AboutProjectsComponent } from './features/users/about-projects/about-projects.component';
 
 
 @NgModule({
@@ -89,6 +90,7 @@ import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/ad
     ProfileComponent,
     AdminHeaderComponent,
     AdicionarClienteComponent,
+    AboutProjectsComponent,
   ],
   imports: [
     BrowserModule,
