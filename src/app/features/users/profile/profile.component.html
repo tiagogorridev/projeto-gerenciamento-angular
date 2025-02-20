@@ -1,0 +1,100 @@
+<app-sidebar></app-sidebar>
+<app-header></app-header>
+<div class="settings-container">
+  <h1>Configurações do Perfil</h1>
+
+  <div class="settings-content">
+    <div class="settings-nav">
+      <button
+        class="nav-item"
+        [class.active]="activeTab === 'personal'"
+        (click)="setActiveTab('personal')">
+        <i class="fas fa-user"></i>
+        Informações Pessoais
+      </button>
+      <button
+        class="nav-item"
+        [class.active]="activeTab === 'security'"
+        (click)="setActiveTab('security')">
+        <i class="fas fa-lock"></i>
+        Segurança
+      </button>
+    </div>
+
+    <div class="settings-form">
+      <div *ngIf="activeTab === 'personal'" class="tab-content">
+        <form [formGroup]="personalForm">
+          <div class="form-group">
+            <label>Nome Completo</label>
+            <input type="text" class="input-field" formControlName="nome">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="input-field" formControlName="email" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>Perfil</label>
+            <input type="text" class="input-field" formControlName="perfil" readonly>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="activeTab === 'security'" class="tab-content">
+        <form [formGroup]="securityForm">
+          <div class="form-group">
+            <label>Senha Atual</label>
+            <input
+              type="password"
+              class="input-field"
+              formControlName="senhaAtual"
+              [class.error]="senhaAtualInvalida || (hasError(securityForm, 'senhaAtual', 'required') && securityForm.get('senhaAtual')?.touched)">
+
+            <div class="error-message" *ngIf="hasError(securityForm, 'senhaAtual', 'required') && securityForm.get('senhaAtual')?.touched">
+              Senha atual é obrigatória
+            </div>
+
+            <div class="error-message" *ngIf="mensagemErroSenha">
+              {{mensagemErroSenha}}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Nova Senha</label>
+            <input
+              type="password"
+              class="input-field"
+              formControlName="novaSenha"
+              [class.error]="hasError(securityForm, 'novaSenha', 'required') || hasError(securityForm, 'novaSenha', 'minlength')">
+            <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'required')">
+              Nova senha é obrigatória
+            </div>
+            <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'minlength')">
+              A senha deve ter pelo menos 6 caracteres
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Confirmar Nova Senha</label>
+            <input
+              type="password"
+              class="input-field"
+              formControlName="confirmPassword"
+              [class.error]="hasError(securityForm, 'confirmPassword', 'required') || securityForm.hasError('passwordMismatch')">
+            <div class="error-message" *ngIf="hasError(securityForm, 'confirmPassword', 'required')">
+              Confirmação de senha é obrigatória
+            </div>
+            <div class="error-message" *ngIf="securityForm.hasError('passwordMismatch') && !hasError(securityForm, 'confirmPassword', 'required')">
+              As senhas não coincidem
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="form-actions">
+        <button class="cancel-btn">Cancelar</button>
+        <button class="save-btn" (click)="onSaveChanges()">Salvar Alterações</button>
+      </div>
+    </div>
+  </div>
+</div>
