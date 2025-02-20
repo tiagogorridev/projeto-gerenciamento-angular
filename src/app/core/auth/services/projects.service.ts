@@ -64,10 +64,7 @@ export class ProjectsService {
     return this.http.get<any[]>(`http://localhost:8080/api/projetos/${projectId}/membros`);
   }
 
-  addMembroToProjeto(projectId: string, email: string): Observable<any> {
-    const token = localStorage.getItem('auth_token') || '';
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    return this.http.post(`${this.baseUrl}/${projectId}/membros`, { email }, { headers });
+  addMemberToProject(userId: number, projectId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${projectId}/associar-usuario/${userId}`, {});
   }
 }

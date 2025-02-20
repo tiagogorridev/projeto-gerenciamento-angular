@@ -6,26 +6,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ProjectMemberService {
-  private baseUrl = '/api/associacoes';
+  // Update base URL to point to the backend server
+  private baseUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
-  addMemberToProject(userId: number, projectId: number): Observable<any> {
-    return this.http.post(`${this.baseUrl}/usuario-projeto`, null, {
-      params: {
-        idUsuario: userId.toString(),
-        idProjeto: projectId.toString()
-      }
-    });
-  }
-
   getUserIdByEmail(email: string): Observable<number> {
-    return this.http.get<number>('/api/usuarios/by-email', {
+    // Update to use the correct endpoint that exists in UsuarioController
+    return this.http.get<number>(`${this.baseUrl}/usuarios/by-email`, {
       params: { email }
     });
   }
 
   getProjectMembers(projectId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/projeto/${projectId}/membros`);
+    // Update to use the correct endpoint
+    return this.http.get<any[]>(`${this.baseUrl}/projetos/${projectId}/membros`);
   }
 }

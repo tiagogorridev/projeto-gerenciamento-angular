@@ -133,9 +133,7 @@
               <button type="button" class="cancel-btn" (click)="closeAddMemberModal()">
                 Cancelar
               </button>
-              <button type="submit" class="submit-btn" [disabled]="!selectedEmails.length">
-                Adicionar
-              </button>
+              <button (click)="addUserToProject()">Adicionar Membro</button>
             </div>
           </form>
         </div>

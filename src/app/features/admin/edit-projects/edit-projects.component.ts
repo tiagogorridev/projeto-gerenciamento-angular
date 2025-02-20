@@ -47,7 +47,7 @@ export class EditProjectsComponent implements OnInit {
   activeTab: 'tasks' | 'time' | 'details' = 'tasks';
   projectId: string | null = null;
   projectName: string | null = null;
-
+  selectedUserId: number | null = null;  // O id do usuário a ser adicionado
   projectDetails: ProjectDetails = {
     name: '',
     client: '',
@@ -156,6 +156,7 @@ export class EditProjectsComponent implements OnInit {
     if (this.projectId) {
       this.projectMemberService.getProjectMembers(Number(this.projectId)).subscribe(
         members => {
+          console.log('Membros do projeto:', members);  // Verifique o que está sendo retornado
           this.members = members;
         },
         error => {
@@ -230,7 +231,7 @@ export class EditProjectsComponent implements OnInit {
         this.projectMemberService.getUserIdByEmail(email).toPromise()
           .then(userId => {
             if (userId) {
-              return this.projectMemberService.addMemberToProject(userId, projectId).toPromise();
+              return this.projectsService.addMemberToProject(userId, projectId).toPromise();
             }
             throw new Error(`Usuário não encontrado para o email: ${email}`);
           })
@@ -263,7 +264,26 @@ export class EditProjectsComponent implements OnInit {
       },
       error => {
         console.error('Erro ao salvar tarefa:', error);
+        if (error instanceof HttpErrorResponse) {
+          console.error('Erro HTTP:', error.message);
+          console.error('Detalhes do erro:', error.error);
+        }
       }
     );
+  }
+
+  addUserToProject(): void {
+    if (this.projectId && this.selectedUserId) {
+      this.projectsService.addMemberToProject(Number(this.projectId), this.selectedUserId).subscribe(
+          (response) => {
+            console.log('Usuário adicionado ao projeto com sucesso', response);
+            // Atualiza a lista de membros após adicionar
+            this.loadProjectMembers();
+          },
+          (error) => {
+            console.error('Erro ao adicionar usuário ao projeto', error);
+          }
+        );
+    }
   }
 }
