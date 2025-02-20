@@ -1,2 +1,18 @@
 <app-sidebar></app-sidebar>
 <app-header></app-header>
+<div class="projects-container">
+  <div *ngIf="projetos.length > 0">
+    <h3>Projetos dos quais você faz parte:</h3>
+    <ul>
+      <li *ngFor="let projeto of projetos">
+        <h3>{{ projeto.nome }}</h3>
+        <p>{{ projeto.descricao }}</p>
+        <p>Cliente: {{ projeto.cliente.nome }}</p>
+        <p>Responsável: {{ projeto.usuarioResponsavel.nome }}</p>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="projetos.length === 0">
+    <p>Você não está associado a nenhum projeto.</p>
+  </div>
+</div>
