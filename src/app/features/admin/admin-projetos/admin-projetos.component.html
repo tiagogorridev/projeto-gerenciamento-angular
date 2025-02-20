@@ -29,11 +29,12 @@
     </div>
 
     <div class="input-group">
-      <select class="input-field">
+      <select class="input-field" [(ngModel)]="selectedPriority" (change)="filterProjects()">
         <option value="" disabled selected>Prioridade</option>
-        <option>Alta</option>
-        <option>Média</option>
-        <option>Baixa</option>
+        <option value="ALTA">Alta</option>
+        <option value="MEDIA">Média</option>
+        <option value="BAIXA">Baixa</option>
+        <option value="TODOS">Todos</option>
       </select>
       <i class="fas fa-chevron-down dropdown-icon"></i>
     </div>
