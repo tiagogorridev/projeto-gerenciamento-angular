@@ -15,4 +15,8 @@ export class TarefaService {
   getProjectTasks(projectId: string) {
     return this.http.get<Tarefa[]>(`/api/projetos/${projectId}/tarefas`);
   }
+
+  getProjectTasksUsers(projectId: string) {
+    return this.http.get<Tarefa[]>(`${this.apiUrl}/projetos/${projectId}/tarefas`);
+  }
 }

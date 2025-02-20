@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
+import { TarefaService } from '../../../core/auth/services/tarefa.service';
 import { Projeto } from '../../../core/auth/services/projeto.model';
+import { Tarefa } from '../../../core/auth/services/tarefa.model';
 
 @Component({
   selector: 'app-about-projects',
@@ -11,8 +13,13 @@ import { Projeto } from '../../../core/auth/services/projeto.model';
 export class AboutProjectsComponent implements OnInit {
 
   projeto!: Projeto;
+  tarefas: Tarefa[] = [];
 
-  constructor(private route: ActivatedRoute, private projectsService: ProjectsService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private projectsService: ProjectsService,
+    private tarefaService: TarefaService
+  ) { }
 
   ngOnInit(): void {
     const projetoId = Number(this.route.snapshot.paramMap.get('id'));
@@ -20,6 +27,10 @@ export class AboutProjectsComponent implements OnInit {
     if (projetoId) {
       this.projectsService.getProjetoById(projetoId).subscribe(projeto => {
         this.projeto = projeto;
+
+        this.tarefaService.getProjectTasksUsers(projetoId.toString()).subscribe(tarefas => {
+          this.tarefas = tarefas;
+        });
       });
     }
   }

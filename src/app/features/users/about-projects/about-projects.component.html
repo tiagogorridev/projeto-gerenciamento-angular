@@ -22,8 +22,8 @@
       <h3>Tarefas do Projeto</h3>
 
       <div class="tasks-card">
-        <div *ngIf="projeto.tarefas && projeto.tarefas.length > 0">
-          <div *ngFor="let tarefa of projeto.tarefas" class="task-item">
+        <div *ngIf="tarefas && tarefas.length > 0">
+          <div *ngFor="let tarefa of tarefas" class="task-item">
             <h4>{{ tarefa.nome }}</h4>
             <p><strong>Descrição:</strong> {{ tarefa.descricao }}</p>
             <p><strong>Status:</strong> {{ tarefa.status }}</p>
@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <div *ngIf="!projeto.tarefas || projeto.tarefas.length === 0">
+        <div *ngIf="!tarefas || tarefas.length === 0">
           <p>Nenhuma tarefa cadastrada para este projeto.</p>
         </div>
       </div>
