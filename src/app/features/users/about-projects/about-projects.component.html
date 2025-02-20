@@ -2,26 +2,44 @@
 <app-header></app-header>
 
 <div class="about-projects-container">
+  <div *ngIf="projeto">
+    <h2>{{ projeto.nome }}</h2>
+    <p><strong>ID:</strong> {{ projeto.id }}</p>
+    <p><strong>Descrição:</strong> {{ projeto.descricao }}</p>
+    <p><strong>Data de Início:</strong> {{ projeto.dataInicio | date:'dd/MM/yyyy' }}</p>
+    <p><strong>Data de Fim:</strong> {{ projeto.dataFim | date:'dd/MM/yyyy' }}</p>
+    <p><strong>Status:</strong> {{ projeto.status }}</p>
+    <p><strong>Horas Estimadas:</strong> {{ projeto.horasEstimadas }}</p>
+    <p><strong>Custo Estimado:</strong> R$ {{ projeto.custoEstimado | number:'1.2-2' }}</p>
+    <p><strong>Data de Criação:</strong> {{ projeto.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</p>
+    <p><strong>Prioridade:</strong> {{ projeto.prioridade }}</p>
+    <p><strong>Cliente:</strong> {{ projeto.cliente.nome }}</p>
 
-<div *ngIf="projeto">
-  <h2>{{ projeto.nome }}</h2>
-  <p><strong>ID:</strong> {{ projeto.id }}</p>
-  <p><strong>Descrição:</strong> {{ projeto.descricao }}</p>
-  <p><strong>Data de Início:</strong> {{ projeto.dataInicio | date:'dd/MM/yyyy' }}</p>
-  <p><strong>Data de Fim:</strong> {{ projeto.dataFim | date:'dd/MM/yyyy' }}</p>
-  <p><strong>Status:</strong> {{ projeto.status }}</p>
-  <p><strong>Horas Estimadas:</strong> {{ projeto.horasEstimadas }}</p>
-  <p><strong>Custo Estimado:</strong> R$ {{ projeto.custoEstimado | number:'1.2-2' }}</p>
-  <p><strong>Data de Criação:</strong> {{ projeto.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</p>
-  <p><strong>Prioridade:</strong> {{ projeto.prioridade }}</p>
-  <p><strong>Cliente:</strong> {{ projeto.cliente.nome }}</p>
+    <h3>Usuário Responsável</h3>
+    <p>{{ projeto.usuarioResponsavel.nome }}</p>
 
-  <h3>Usuário Responsável</h3>
-  <p>{{ projeto.usuarioResponsavel.nome }}</p>
-</div>
+    <div class="tasks-container">
+      <h3>Tarefas do Projeto</h3>
 
-<div *ngIf="!projeto">
-  <p>Carregando informações do projeto...</p>
-</div>
+      <div class="tasks-card">
+        <div *ngIf="projeto.tarefas && projeto.tarefas.length > 0">
+          <div *ngFor="let tarefa of projeto.tarefas" class="task-item">
+            <h4>{{ tarefa.nome }}</h4>
+            <p><strong>Descrição:</strong> {{ tarefa.descricao }}</p>
+            <p><strong>Status:</strong> {{ tarefa.status }}</p>
+            <p><strong>Data de Início:</strong> {{ tarefa.dataInicio | date:'dd/MM/yyyy' }}</p>
+            <p><strong>Data de Fim:</strong> {{ tarefa.dataFim | date:'dd/MM/yyyy' }}</p>
+          </div>
+        </div>
 
+        <div *ngIf="!projeto.tarefas || projeto.tarefas.length === 0">
+          <p>Nenhuma tarefa cadastrada para este projeto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!projeto">
+    <p>Carregando informações do projeto...</p>
+  </div>
 </div>

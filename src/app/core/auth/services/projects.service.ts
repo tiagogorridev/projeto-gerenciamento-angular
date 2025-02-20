@@ -24,13 +24,13 @@ export class ProjectsService {
   getProjetosDoUsuario(usuarioId: number): Observable<any[]> {
     const token = localStorage.getItem('auth_token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any[]>(`${this.baseUrl}/usuario/${usuarioId}`, { headers });
+    return this.http.get<any[]>(`${this.baseUrl}/usuario/${usuarioId}/projetos`, { headers });
   }
 
   getProjetosAssociados(usuarioId: number): Observable<Projeto[]> {
     const token = localStorage.getItem('auth_token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any[]>(`${this.baseUrl}/usuario/${usuarioId}`, { headers }).pipe(
+    return this.http.get<any[]>(`${this.baseUrl}/usuario/${usuarioId}/associacoes`, { headers }).pipe(
       map(response => {
         // Transformando a resposta para um array de projetos
         return response.map(projeto => ({
