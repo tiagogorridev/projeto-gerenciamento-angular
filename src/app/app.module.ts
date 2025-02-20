@@ -54,7 +54,7 @@ import { AdminRelatoriosComponent } from './features/admin/admin-relatorios/admi
 import { AdminProjetosComponent } from './features/admin/admin-projetos/admin-projetos.component';
 import { UsersRelatoriosComponent } from './features/users/users-relatorios/users-relatorios.component';
 import { AdminProfileComponent } from './features/admin/admin-profile/admin-profile.component';
-import { ProfileComponent } from './features/profile/profile.component';
+import { ProfileComponent } from './features/users/profile/profile.component';
 import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
 import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
 
