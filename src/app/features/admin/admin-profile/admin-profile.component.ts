@@ -97,38 +97,35 @@ export class AdminProfileComponent implements OnInit {
       this.onChangePassword();
     }
   }
+
   private onSavePersonal(): void {
     if (this.personalForm.valid && this.currentUser) {
       this.saving = true;
-      this.personalForm.get('email')?.enable();
-      this.personalForm.get('perfil')?.enable();
 
-      const updatedUser: Usuario = {
-        ...this.currentUser,
+      const updatedUser = {
         nome: this.personalForm.get('nome')?.value,
         email: this.currentUser.email,
-        perfil: this.currentUser.perfil,
-        senha: this.currentUser.senha
+        perfil: this.currentUser.perfil
       };
 
-      this.usuarioService.updateUsuario(updatedUser)
-        .pipe(finalize(() => {
-          this.saving = false;
-          this.personalForm.get('email')?.disable();
-          this.personalForm.get('perfil')?.disable();
-        }))
-        .subscribe({
-          next: (response) => {
-            this.successMessage = 'Informações pessoais atualizadas com sucesso!';
-            this.currentUser = response;
-            this.updatePersonalForm(this.currentUser);
-          },
-          error: (error) => {
-            this.errorMessage = 'Erro ao atualizar informações: ' + error.message;
-            console.error('Erro na atualização:', error);
-          }
-        });
-
+      this.usuarioService.updatePersonalInfo({
+        id: this.currentUser.id,
+        ...updatedUser
+      })
+      .pipe(finalize(() => {
+        this.saving = false;
+      }))
+      .subscribe({
+        next: (response) => {
+          this.successMessage = 'Informações pessoais atualizadas com sucesso!';
+          this.currentUser = response;
+          this.updatePersonalForm(this.currentUser);
+        },
+        error: (error) => {
+          this.errorMessage = 'Erro ao atualizar informações: ' + error.message;
+          console.error('Erro na atualização:', error);
+        }
+      });
     }
   }
 

@@ -43,6 +43,15 @@ export class UsuarioService {
         })
       );
   }
+  updatePersonalInfo(usuario: Partial<Usuario>): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.apiUrl}/usuarios/${usuario.id}`, usuario)
+      .pipe(
+        catchError(error => {
+          console.error('Erro ao atualizar informações pessoais:', error);
+          throw error;
+        })
+      );
+  }
 
   getEmails(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/emails`);
