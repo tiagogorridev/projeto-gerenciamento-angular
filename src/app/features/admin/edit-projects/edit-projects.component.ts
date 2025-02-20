@@ -4,15 +4,17 @@ import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { UsuarioService } from '../../../core/auth/services/usuario.service';
 import { ClienteService } from '../../../core/auth/services/clients.service';
 import { HttpErrorResponse } from '@angular/common/http';
-interface Cliente {
+export interface Cliente {
   id: number;
   nome: string;
+  email: string;
+  status?: string;
 }
 
 export interface ProjectDetails {
   name: string;
-  client: string | Cliente;
-  clientId?: number;
+  client: string;
+  clientId: number | undefined;
   estimatedHours: number;
   estimatedCost: number;
   status: string;
@@ -48,6 +50,7 @@ export class EditProjectsComponent implements OnInit {
   projectDetails: ProjectDetails = {
     name: '',
     client: '',
+    clientId: undefined,  // Adicionando o clientId que estava faltando
     estimatedHours: 0,
     estimatedCost: 0,
     status: 'EM_ANDAMENTO',
@@ -124,16 +127,16 @@ export class EditProjectsComponent implements OnInit {
           console.log('Dados do projeto:', response);
 
           this.projectDetails = {
-            name: response.nome || 'Projeto Desconhecido',
-            client: response.cliente || 'Nome do Cliente não disponível',
-            clientId: response.id_cliente || null,
-            estimatedHours: response.horasEstimadas || 0,
-            estimatedCost: response.custoEstimado || 0,
-            status: response.status || 'EM_ANDAMENTO',
-            priority: response.prioridade || 'ALTA',
+            name: response.nome,
+            client: response.cliente ? response.cliente.nome : 'Nome do Cliente não disponível',
+            clientId: response.cliente ? response.cliente.id : undefined,
+            estimatedHours: response.horasEstimadas,
+            estimatedCost: response.custoEstimado,
+            status: response.status,
+            priority: response.prioridade  // Make sure this mapping is correct
           };
         },
-        error => {
+        (error: Error) => {
           console.error('Erro ao carregar dados do projeto', error);
         }
       );
@@ -160,6 +163,7 @@ export class EditProjectsComponent implements OnInit {
       horasEstimadas: this.projectDetails.estimatedHours,
       custoEstimado: this.projectDetails.estimatedCost,
       status: this.projectDetails.status,
+      prioridade: this.projectDetails.priority
     };
 
     if (this.projectId) {
@@ -203,8 +207,6 @@ export class EditProjectsComponent implements OnInit {
   closeAddMemberModal(): void {
     this.showAddMemberModal = false;
   }
-
-
 
   onSubmit(): void {
     console.log('Tarefa Criada:', this.tarefa);
