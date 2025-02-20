@@ -154,15 +154,15 @@ export class EditProjectsComponent implements OnInit {
 
   loadProjectMembers(): void {
     if (this.projectId) {
-      this.projectMemberService.getProjectMembers(Number(this.projectId)).subscribe(
-        members => {
-          console.log('Membros do projeto:', members);  // Verifique o que está sendo retornado
+      this.projectMemberService.getProjectMembers(Number(this.projectId)).subscribe({
+        next: (members) => {
           this.members = members;
+          console.log('Membros atualizados:', members);
         },
-        error => {
+        error: (error) => {
           console.error('Erro ao carregar membros do projeto:', error);
         }
-      );
+      });
     }
   }
 
@@ -225,25 +225,42 @@ export class EditProjectsComponent implements OnInit {
     }
 
     const projectId = Number(this.projectId);
+    let processedCount = 0;
 
-    Promise.all(
-      this.selectedEmails.map(email =>
-        this.projectMemberService.getUserIdByEmail(email).toPromise()
-          .then(userId => {
-            if (userId) {
-              return this.projectsService.addMemberToProject(userId, projectId).toPromise();
-            }
-            throw new Error(`Usuário não encontrado para o email: ${email}`);
-          })
-      )
-    )
-    .then(() => {
-      console.log('Membros adicionados com sucesso');
-      this.closeAddMemberModal();
-      this.loadProjectMembers();
-    })
-    .catch(error => {
-      console.error('Erro ao adicionar membros:', error);
+    this.selectedEmails.forEach(email => {
+      this.projectMemberService.getUserIdByEmail(email).subscribe({
+        next: (userId) => {
+          if (userId) {
+            this.projectsService.addMemberToProject(userId, projectId).subscribe({
+              next: () => {
+                processedCount++;
+                if (processedCount === this.selectedEmails.length) {
+                  console.log('Membros adicionados com sucesso');
+                  this.loadProjectMembers(); // Recarrega a lista de membros
+                  this.closeAddMemberModal();
+                }
+              },
+              error: () => {
+                processedCount++;
+                console.log(`Usuário ${email} já é membro do projeto ou houve um erro`);
+
+                // Mesmo em caso de erro, verifica se foi o último processamento
+                if (processedCount === this.selectedEmails.length) {
+                  this.loadProjectMembers(); // Recarrega a lista de membros
+                  this.closeAddMemberModal();
+                }
+              }
+            });
+          } else {
+            processedCount++;
+            console.log(`Usuário não encontrado para o email: ${email}`);
+          }
+        },
+        error: (err) => {
+          processedCount++;
+          console.error(`Erro ao obter ID do usuário ${email}:`, err);
+        }
+      });
     });
   }
 

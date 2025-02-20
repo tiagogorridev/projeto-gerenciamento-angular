@@ -65,6 +65,8 @@ export class ProjectsService {
   }
 
   addMemberToProject(userId: number, projectId: number): Observable<any> {
-    return this.http.post(`${this.baseUrl}/${projectId}/associar-usuario/${userId}`, {});
+    return this.http.post(`${this.baseUrl}/${projectId}/associar-usuario/${userId}`, {}, {
+      responseType: 'text'  // Indica que esperamos uma resposta em texto
+    });
   }
 }
