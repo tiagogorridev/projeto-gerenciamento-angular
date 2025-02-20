@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectsService } from '../../../core/auth/services/projects.service'; // Caminho do seu serviço
-import { Projeto } from '../../../core/auth/services/projeto.model'; // Modelo de Projeto, ajuste conforme sua estrutura
+import { ProjectsService } from '../../../core/auth/services/projects.service';
+import { Projeto } from '../../../core/auth/services/projeto.model';
 
 @Component({
   selector: 'app-projetos-usuario',
@@ -10,12 +10,12 @@ import { Projeto } from '../../../core/auth/services/projeto.model'; // Modelo d
 
 export class ProjectsComponent implements OnInit {
 
-  projetos: Projeto[] = []; // Declarando a propriedade projetos
+  projetos: Projeto[] = [];
 
   constructor(private projetoService: ProjectsService) { }
 
   ngOnInit(): void {
-    const usuarioId = localStorage.getItem('usuario_id'); // ou use um serviço de autenticação
+    const usuarioId = localStorage.getItem('usuario_id');
     if (usuarioId) {
       this.projetoService.getProjetosAssociados(+usuarioId).subscribe(projetos => {
         console.log(projetos);

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Tarefa } from './tarefa.model';
+import { Projeto } from './projeto.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +25,21 @@ export class ProjectsService {
     const token = localStorage.getItem('auth_token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<any[]>(`${this.baseUrl}/usuario/${usuarioId}`, { headers });
+  }
+
+  getProjetosAssociados(usuarioId: number): Observable<Projeto[]> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any[]>(`${this.baseUrl}/usuario/${usuarioId}`, { headers }).pipe(
+      map(response => {
+        // Transformando a resposta para um array de projetos
+        return response.map(projeto => ({
+          ...projeto,
+          usuarioResponsavel: projeto.usuarioResponsavel,
+          cliente: projeto.cliente
+        }));
+      })
+    );
   }
 
   // Método para atualizar um projeto
@@ -66,7 +83,7 @@ export class ProjectsService {
 
   addMemberToProject(userId: number, projectId: number): Observable<any> {
     return this.http.post(`${this.baseUrl}/${projectId}/associar-usuario/${userId}`, {}, {
-      responseType: 'text'  // Indica que esperamos uma resposta em texto
+      responseType: 'text'
     });
   }
 }
