@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown'; // Importe o módulo
 
 // Core -> Auth -> Interceptors
 import { AuthInterceptor } from './core/auth/interceptors/auth.interceptor';
@@ -105,7 +106,8 @@ import { AboutProjectsComponent } from './features/users/about-projects/about-pr
     BrowserAnimationsModule,
     MatSelectModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DropdownModule
   ],
   providers: [
     {
