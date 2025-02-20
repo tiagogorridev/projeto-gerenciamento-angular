@@ -13,9 +13,11 @@ export class AdminProjetosComponent implements OnInit {
   hasProjects: boolean = false;
   showNewProjectModal: boolean = false;
   projects: any[] = [];
+  clientes: Cliente[] = [];
+
   filteredProjects: any[] = [];
   selectedStatus: string = '';
-  clientes: Cliente[] = [];
+  selectedPriority: string = '';
 
   searchQuery: string = '';
 
@@ -80,6 +82,10 @@ export class AdminProjetosComponent implements OnInit {
 
     if (this.selectedStatus && this.selectedStatus !== 'TODOS') {
       filtered = filtered.filter(projeto => projeto.status === this.selectedStatus);
+    }
+
+    if (this.selectedPriority && this.selectedPriority !== 'TODOS') {
+      filtered = filtered.filter(projeto => projeto.prioridade === this.selectedPriority);
     }
 
     this.filteredProjects = filtered;
