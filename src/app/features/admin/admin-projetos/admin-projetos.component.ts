@@ -13,7 +13,10 @@ export class AdminProjetosComponent implements OnInit {
   hasProjects: boolean = false;
   showNewProjectModal: boolean = false;
   projects: any[] = [];
+  filteredProjects: any[] = [];
   clientes: Cliente[] = [];
+
+  searchQuery: string = '';
 
   project = {
     nome: '',
@@ -46,6 +49,7 @@ export class AdminProjetosComponent implements OnInit {
             horasTrabalhadas: projeto.horasTrabalhadas || 0,
             custoTrabalhado: projeto.custoTrabalhado || 0
           }));
+          this.filteredProjects = [...this.projects];
           this.hasProjects = this.projects.length > 0;
         },
         error: (erro) => {
@@ -64,6 +68,16 @@ export class AdminProjetosComponent implements OnInit {
     });
   }
 
+  filterProjects(): void {
+    if (this.searchQuery.trim() === '') {
+      this.filteredProjects = [...this.projects];
+    } else {
+      this.filteredProjects = this.projects.filter(projeto =>
+        projeto.nome.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+  }
+
   openNewProjectModal(): void {
     this.showNewProjectModal = true;
   }
@@ -74,7 +88,7 @@ export class AdminProjetosComponent implements OnInit {
 
   navegarParaEdicao(projetoId: string, projetoNome: string): void {
     this.router.navigate(['/admin/edit-projects', projetoId], {
-      state: { projectName: projetoNome }  // Passando o nome do projeto via state
+      state: { projectName: projetoNome }
     });
   }
 
@@ -93,6 +107,7 @@ export class AdminProjetosComponent implements OnInit {
         next: (resposta) => {
           this.closeModal();
           this.projects.push(resposta);
+          this.filterProjects();
           this.hasProjects = this.projects.length > 0;
         },
         error: (erro) => {
