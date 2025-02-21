@@ -143,10 +143,16 @@
       <div class="members-table" *ngIf="members.length > 0">
         <div class="table-header">
           <div class="header-email">Membros</div>
+          <div class="header-actions">Ações</div>
         </div>
         <div class="table-body">
           <div class="table-row" *ngFor="let member of members">
             <div class="table-cell">{{ member.email }}</div>
+            <div class="table-cell actions">
+              <button class="remove-button" (click)="removeMember(member.email)">
+                Remover
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -154,6 +160,11 @@
       <div *ngIf="members.length === 0" class="empty-state">
         <p class="empty-title">Nenhum membro atribuído</p>
         <p class="empty-subtitle">Adicione membros ao projeto</p>
+      </div>
+
+      <!-- Mensagem de erro -->
+      <div class="error-message" *ngIf="showErrorMessage">
+        {{ errorMessage }}
       </div>
     </div>
 

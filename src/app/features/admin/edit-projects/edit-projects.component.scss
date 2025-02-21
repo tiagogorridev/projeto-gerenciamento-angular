@@ -797,3 +797,29 @@ option {
   gap: 10px;
   margin-top: 20px;
 }
+.error-message {
+  background-color: #ff4444;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.remove-btn {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background-color: #cc0000;
+}
+
+.header-actions {
+  width: 100px;
+  text-align: center;
+}

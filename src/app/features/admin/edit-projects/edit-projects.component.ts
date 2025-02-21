@@ -47,7 +47,7 @@ export class EditProjectsComponent implements OnInit {
   activeTab: 'tasks' | 'time' | 'details' = 'tasks';
   projectId: string | null = null;
   projectName: string | null = null;
-  selectedUserId: number | null = null;  // O id do usuário a ser adicionado
+  selectedUserId: number | null = null;
   projectDetails: ProjectDetails = {
     name: '',
     client: '',
@@ -80,6 +80,8 @@ export class EditProjectsComponent implements OnInit {
   usuariosEmails: string[] = [];
   searchTerm: string = '';
   selectedEmails: string[] = [];
+  showErrorMessage: boolean = false;
+  errorMessage: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -87,7 +89,7 @@ export class EditProjectsComponent implements OnInit {
     private usuarioService: UsuarioService,
     private clienteService: ClienteService,
     private projectMemberService: ProjectMemberService
-  ) {}
+    ) {}
 
   ngOnInit(): void {
     const navigation = history.state;
@@ -235,30 +237,29 @@ export class EditProjectsComponent implements OnInit {
               next: () => {
                 processedCount++;
                 if (processedCount === this.selectedEmails.length) {
-                  console.log('Membros adicionados com sucesso');
-                  this.loadProjectMembers(); // Recarrega a lista de membros
+                  this.loadProjectMembers();
                   this.closeAddMemberModal();
                 }
               },
-              error: () => {
+              error: (error) => {
                 processedCount++;
-                console.log(`Usuário ${email} já é membro do projeto ou houve um erro`);
+                if (error.error === 'O usuário já está associado a este projeto') {
+                  this.showError(`Usuário ${email} já é membro do projeto`);
+                } else {
+                  this.showError(`Erro ao adicionar ${email}`);
+                }
 
-                // Mesmo em caso de erro, verifica se foi o último processamento
                 if (processedCount === this.selectedEmails.length) {
-                  this.loadProjectMembers(); // Recarrega a lista de membros
+                  this.loadProjectMembers();
                   this.closeAddMemberModal();
                 }
               }
             });
-          } else {
-            processedCount++;
-            console.log(`Usuário não encontrado para o email: ${email}`);
           }
         },
         error: (err) => {
           processedCount++;
-          console.error(`Erro ao obter ID do usuário ${email}:`, err);
+          this.showError(`Erro ao processar usuário ${email}`);
         }
       });
     });
@@ -294,7 +295,6 @@ export class EditProjectsComponent implements OnInit {
       this.projectsService.addMemberToProject(Number(this.projectId), this.selectedUserId).subscribe(
           (response) => {
             console.log('Usuário adicionado ao projeto com sucesso', response);
-            // Atualiza a lista de membros após adicionar
             this.loadProjectMembers();
           },
           (error) => {
@@ -302,5 +302,42 @@ export class EditProjectsComponent implements OnInit {
           }
         );
     }
+  }
+
+  removeMember(email: string): void {
+    if (!this.projectId) return;
+
+    this.projectMemberService.getUserIdByEmail(email).subscribe({
+      next: (userId) => {
+        if (userId) {
+          this.projectMemberService.removeProjectMember(Number(this.projectId), userId).subscribe({
+            next: (response) => {
+              console.log('Membro removido com sucesso');
+              this.loadProjectMembers();
+            },
+            error: (err) => {
+              if (err.status !== 200) {
+                console.error('Erro ao remover membro:', err);
+                this.showError('Erro ao remover membro do projeto');
+              } else {
+                this.loadProjectMembers();
+              }
+            }
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Erro ao obter ID do usuário:', err);
+        this.showError('Erro ao encontrar usuário');
+      }
+    });
+  }
+
+  showError(message: string): void {
+    this.errorMessage = message;
+    this.showErrorMessage = true;
+    setTimeout(() => {
+      this.showErrorMessage = false;
+    }, 3000);
   }
 }
