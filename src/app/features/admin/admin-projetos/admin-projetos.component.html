@@ -72,8 +72,12 @@
         {{ projeto.custoTrabalhado || 0 | currency:'BRL' }} de
         {{ projeto.custoEstimado || 0 | currency:'BRL' }}
       </div>
-      <div class="project-status">{{ projeto.status.replace('_', ' ') }}</div>
-      <div class="project-priority">{{ projeto.prioridade }}</div>
+      <div class="project-status">
+        <span [class]="projeto.status">{{ projeto.status.replace('_', ' ') }}</span>
+      </div>
+      <div class="project-priority">
+        <span [class]="projeto.prioridade">{{ projeto.prioridade }}</span>
+      </div>
       <div class="project-start">{{ projeto.dataInicio | date:'dd/MM/yyyy' }}</div>
       <div class="project-end">{{ projeto.dataFim | date:'dd/MM/yyyy' }}</div>
     </div>

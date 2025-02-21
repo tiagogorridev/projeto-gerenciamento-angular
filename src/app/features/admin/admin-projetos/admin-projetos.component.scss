@@ -327,3 +327,209 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 .project-row:hover {
   background-color: #f9fafb;
 }
+
+.projects-container {
+  margin: 0 24px;
+  padding: 60px 24px 0 260px;
+
+  .projects-header {
+    margin-bottom: 24px;
+
+    h1 {
+      font-size: 20px;
+      color: #111827;
+      font-weight: 500;
+    }
+  }
+}
+
+.search-filter-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: center;
+
+  .input-group {
+    position: relative;
+
+    .input-field {
+      height: 40px;
+      padding: 8px 16px;
+      border: 1px solid #E5E7EB;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #374151;
+      background: #F9FAFB;
+      width: 240px;
+
+      &::placeholder {
+        color: #9CA3AF;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #6366F1;
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+      }
+    }
+
+    select.input-field {
+      appearance: none;
+      padding-right: 36px;
+      width: 160px;
+    }
+
+    .search-icon,
+    .dropdown-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6B7280;
+      pointer-events: none;
+    }
+  }
+
+  .new-project-btn {
+    margin-left: auto;
+    background: #6366F1;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    height: 40px;
+
+    &:hover {
+      background: #4F46E5;
+    }
+  }
+}
+
+.projects-list {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .project-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr;
+    padding: 12px 24px;
+    align-items: center;
+    border-bottom: 1px solid #E5E7EB;
+    cursor: pointer;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover:not(.headers) {
+      background: #F9FAFB;
+    }
+
+    &.headers {
+      background: #F9FAFB;
+      font-weight: 500;
+      color: #4B5563;
+      border-bottom: 2px solid #E5E7EB;
+    }
+
+    > div {
+      font-size: 14px;
+      color: #374151;
+    }
+  }
+
+  .project-name {
+    font-weight: 500;
+    color: #111827;
+  }
+
+  .project-progress,
+  .project-cost {
+    color: #6B7280;
+  }
+}
+
+// Status badges
+.project-status {
+  span {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+
+    &.PLANEJADO {
+      background: #EEF2FF;
+      color: #4F46E5;
+    }
+
+    &.EM_ANDAMENTO {
+      background: #F0F9FF;
+      color: #0284C7;
+    }
+
+    &.CONCLUIDO {
+      background: #F0FDF4;
+      color: #16A34A;
+    }
+
+    &.CANCELADO {
+      background: #FEF2F2;
+      color: #DC2626;
+    }
+  }
+}
+
+// Priority badges
+.project-priority {
+  span {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+
+    &.ALTA {
+      background: #FEF2F2;
+      color: #DC2626;
+    }
+
+    &.MEDIA {
+      background: #FFFBEB;
+      color: #D97706;
+    }
+
+    &.BAIXA {
+      background: #F0FDF4;
+      color: #16A34A;
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 48px;
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+
+  .empty-state-content {
+    text-align: center;
+
+    .empty-image {
+      width: 160px;
+      height: 160px;
+      margin-bottom: 16px;
+    }
+
+    .empty-text {
+      color: #6B7280;
+      font-size: 16px;
+    }
+  }
+}
