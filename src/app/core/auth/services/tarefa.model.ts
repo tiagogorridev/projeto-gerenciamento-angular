@@ -1,5 +1,5 @@
 export interface Tarefa {
-  id?: number;
+  id: number;
   nome: string;
   descricao: string;
   dataInicio: string;

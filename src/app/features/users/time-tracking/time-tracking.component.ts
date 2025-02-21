@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { Projeto } from '../../../core/auth/services/projeto.model';
 import { TarefaService } from '../../../core/auth/services/tarefa.service';
+import { Tarefa } from '../../../core/auth/services/tarefa.model';
+
 
 @Component({
   selector: 'app-time-tracking',
@@ -15,11 +17,13 @@ export class TimeTrackingComponent implements OnInit {
   endTime: string = '';
   duration: string = '';
   projects: Projeto[] = [];
-  tasks: any[] = [];
+
   selectedProject: any;
   selectedTask: any;
   description: string = '';
   usuarioId: number | null = null;
+  tasks: Tarefa[] = [];
+
 
   constructor(
     private projectsService: ProjectsService,
@@ -51,16 +55,25 @@ export class TimeTrackingComponent implements OnInit {
   }
 
   loadTasks(projectId: string): void {
-    this.tarefaService.getProjectTasksUsers(projectId).subscribe(tasks => {
-      this.tasks = tasks;
-    }, error => {
-      console.error('Erro ao carregar tarefas:', error);
-    });
+    console.log('Carregando tarefas para o projeto:', projectId);
+    this.tarefaService.getProjectTasksUsers(projectId).subscribe(
+      tasks => {
+        console.log('Tarefas recebidas:', tasks);
+        this.tasks = tasks;
+      },
+      error => {
+        console.error('Erro ao carregar tarefas:', error);
+      }
+    );
   }
 
   onProjectSelect(): void {
+    console.log('Projeto selecionado:', this.selectedProject);
     if (this.selectedProject) {
       this.loadTasks(this.selectedProject);
+    } else {
+      this.tasks = [];
+      this.selectedTask = null;
     }
   }
 

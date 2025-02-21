@@ -1,44 +1,123 @@
 <app-sidebar></app-sidebar>
 <app-header></app-header>
-<div class="task-log-container">
-  <h1>Lançamento de Horas</h1>
-  <p-calendar [(ngModel)]="startDate" name="dataInicio" [showIcon]="true" [showButtonBar]="true" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
+<div class="container">
+<div class="content-wrapper">
+  <div class="content-card">
+    <h2>Lançamento de Horas</h2>
 
-  <div class="input-group">
-    <label for="startTime">Início</label>
-    <input id="startTime" type="time" [(ngModel)]="startTime" (change)="calculateDuration()" required />
+    <div class="form-group">
+      <label>Data</label>
+      <p-calendar
+        [(ngModel)]="startDate"
+        name="dataInicio"
+        [showIcon]="true"
+        [showButtonBar]="true"
+        [touchUI]="false"
+        dateFormat="dd/mm/yy"
+        [required]="true"
+        styleClass="w-full">
+      </p-calendar>
+    </div>
+
+    <div class="time-section">
+      <div class="form-group">
+        <label for="startTime">Início</label>
+        <div class="time-input">
+          <input
+            id="startTime"
+            type="time"
+            [(ngModel)]="startTime"
+            (change)="calculateDuration()"
+            required />
+          <i class="pi pi-clock"></i>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="endTime">Fim</label>
+        <div class="time-input">
+          <input
+            id="endTime"
+            type="time"
+            [(ngModel)]="endTime"
+            (change)="calculateDuration()"
+            required />
+          <i class="pi pi-clock"></i>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="duration">Duração</label>
+        <input
+          id="duration"
+          type="text"
+          [(ngModel)]="duration"
+          readonly
+          class="readonly-input" />
+      </div>
+    </div>
+
+    <div class="project-section">
+      <div class="form-group">
+        <label for="project">Projeto</label>
+        <select
+          id="project"
+          [(ngModel)]="selectedProject"
+          (ngModelChange)="onProjectSelect()"
+          class="form-select">
+          <option [ngValue]="null">Selecione um projeto</option>
+          <option *ngFor="let projeto of projects" [ngValue]="projeto.id">
+            {{ projeto.nome }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="task">Tarefa</label>
+        <select
+          id="task"
+          [(ngModel)]="selectedTask"
+          class="form-select">
+          <option [ngValue]="null">Selecione uma tarefa</option>
+          <option *ngFor="let task of tasks" [ngValue]="task.id">
+            {{ task.nome }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Descrição</label>
+      <textarea
+        id="description"
+        [(ngModel)]="description"
+        rows="4"
+        placeholder="Digite sua descrição">
+      </textarea>
+    </div>
+
+    <div class="button-group">
+      <button class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button class="btn-submit" (click)="onConfirm()">Enviar Lançamento</button>
+    </div>
   </div>
 
-  <div class="input-group">
-    <label for="endTime">Fim</label>
-    <input id="endTime" type="time" [(ngModel)]="endTime" (change)="calculateDuration()" required />
+  <div class="info-sidebar">
+    <h3>Outras informações</h3>
+    <div class="info-grid">
+      <div class="info-card">
+        <span class="info-label">Total de horas hoje</span>
+        <span class="info-value">8h 30m</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Total na semana</span>
+        <span class="info-value">32h 15m</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Total no mês</span>
+        <span class="info-value">140h 45m</span>
+      </div>
+    </div>
   </div>
-
-  <div class="input-group">
-    <label for="duration">Duração</label>
-    <input id="duration" type="text" [(ngModel)]="duration" readonly />
-  </div>
-
-  <div class="form-group">
-    <label for="project">Projeto</label>
-    <select id="project" [(ngModel)]="selectedProject" class="form-control" (change)="onProjectSelect()">
-      <option *ngFor="let projeto of projects" [value]="projeto.id">{{ projeto.nome }}</option>
-    </select>
-  </div>
-
-  <div class="input-group">
-    <label for="task">Tarefa</label>
-    <p-dropdown [options]="tasks" [(ngModel)]="selectedTask" optionLabel="label" optionValue="value"
-                placeholder="Selecione uma tarefa"></p-dropdown>
-  </div>
-
-  <div class="input-group">
-    <label for="description">Descrição</label>
-    <textarea id="description" [(ngModel)]="description" rows="4"></textarea>
-  </div>
-
-  <div class="form-actions">
-    <button (click)="onConfirm()">Confirmar</button>
-    <button (click)="onCancel()">Cancelar</button>
-  </div>
+</div>
 </div>
