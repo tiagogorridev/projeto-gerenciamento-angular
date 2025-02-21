@@ -340,4 +340,21 @@ export class EditProjectsComponent implements OnInit {
       this.showErrorMessage = false;
     }, 3000);
   }
+
+  deleteTarefa(tarefaId: number | undefined): void {
+    if (!tarefaId) return;
+
+    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+      this.projectsService.deleteTarefa(tarefaId).subscribe({
+        next: () => {
+          console.log('Tarefa excluída com sucesso');
+          this.loadProjectTarefas(); // Recarrega a lista de tarefas
+        },
+        error: (error) => {
+          console.error('Erro ao excluir tarefa:', error);
+          this.showError('Erro ao excluir tarefa');
+        }
+      });
+    }
+  }
 }
