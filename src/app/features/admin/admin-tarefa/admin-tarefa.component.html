@@ -1,0 +1,11 @@
+<app-admin-sidebar></app-admin-sidebar>
+<app-admin-header></app-admin-header>
+<div *ngIf="tarefa">
+  <h2>{{ tarefa.nome }}</h2>
+  <p><strong>Descrição:</strong> {{ tarefa.descricao }}</p>
+  <p><strong>Data Início:</strong> {{ tarefa.dataInicio }}</p>
+  <p><strong>Data Fim:</strong> {{ tarefa.dataFim }}</p>
+  <p><strong>Responsável:</strong> {{ tarefa.responsavel }}</p>
+  <p><strong>Status:</strong> {{ tarefa.status }}</p>
+  <p><strong>Projeto:</strong> {{ tarefa.projeto.id }}</p>
+</div>
