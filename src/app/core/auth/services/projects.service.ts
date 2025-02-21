@@ -86,4 +86,10 @@ export class ProjectsService {
       responseType: 'text'
     });
   }
+
+  deleteTarefa(tarefaId: number): Observable<void> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete<void>(`http://localhost:8080/api/tarefas/${tarefaId}`, { headers });
+  }
 }
