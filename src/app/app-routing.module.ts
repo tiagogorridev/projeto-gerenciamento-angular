@@ -6,7 +6,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { SignupComponent } from './features/admin/signup/signup.component';
 import { ContactComponent } from './pages/contact/contact.component';
-import { HelpPageComponent } from './pages/help-page/help-page.component';
+import { HelpPageComponent } from './features/users/help-page/help-page.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 
 // Core -> Auth -> Guards
@@ -22,6 +22,8 @@ import { AdminSidebarComponent } from './features/admin/admin-sidebar/admin-side
 import { AdminRelatoriosComponent } from './features/admin/admin-relatorios/admin-relatorios.component';
 import { AdminProjetosComponent } from './features/admin/admin-projetos/admin-projetos.component';
 import { AdminAtividadesComponent } from './features/admin/admin-atividades/admin-atividades.component';
+import { HelpPageAdminComponent } from './features/admin/help-page-admin/help-page-admin.component';
+
 
 // Componentes de Usuário Comum
 import { ActivitiesComponent } from './features/users/activities/activities.component';
@@ -46,7 +48,6 @@ const routes: Routes = [
 
   // Rotas compartilhadas para usuários autenticados (tanto admin quanto usuário comum)
   { path: 'contact', component: ContactComponent, canActivate: [AuthGuard] },
-  { path: 'help-page', component: HelpPageComponent, canActivate: [AuthGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard] },
 
   // Rotas do Administrador
@@ -66,6 +67,7 @@ const routes: Routes = [
       { path: 'admin-profile', component: AdminProfileComponent },
       { path: 'edit-projects/:id', component: EditProjectsComponent },
       { path: 'adicionar-cliente', component: AdicionarClienteComponent },
+      { path: 'help-page-admin', component: HelpPageAdminComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
@@ -87,6 +89,7 @@ const routes: Routes = [
       { path: 'users-dashboard', component: UsersDashboardComponent, canActivate: [AuthGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: 'header', component: Header, canActivate: [AuthGuard] },
+      { path: 'help-page', component: HelpPageComponent, canActivate: [AuthGuard] },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },

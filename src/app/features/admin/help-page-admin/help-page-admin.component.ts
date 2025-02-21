@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { AuthService } from '../../core/auth/services/auth.service';
+import { AuthService } from '../../../core/auth/services/auth.service';
 
 interface FaqItem {
   category: string;
@@ -16,9 +16,9 @@ interface Category {
 }
 
 @Component({
-  selector: 'app-help-page',
-  templateUrl: './help-page.component.html',
-  styleUrls: ['./help-page.component.scss'],
+  selector: 'app-help-page-admin',
+  templateUrl: './help-page-admin.component.html',
+  styleUrls: ['./help-page-admin.component.scss'],
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
@@ -29,39 +29,38 @@ interface Category {
   ]
 })
 
-export class HelpPageComponent implements OnInit {
+export class HelpPageAdminComponent implements OnInit {
   searchQuery: string = '';
   selectedCategory: string = 'all';
-  isAdmin = false;
 
   constructor(
     private authService: AuthService
   ) {}
 
   categories: Category[] = [
-    { id: 'all', name: 'Todas', icon: 'fa-globe' },
-    { id: 'account', name: 'Conta', icon: 'fa-user' },
-    { id: 'projects', name: 'Projetos', icon: 'fa-project-diagram' },
-    { id: 'reports', name: 'Relatórios', icon: 'fa-chart-bar' },
+    { id: 'all', name: 'Todas', icon: 'pi pi-globe' },
+    { id: 'account', name: 'Conta', icon: 'pi pi-user' },
+    { id: 'projects', name: 'Projetos', icon: 'pi pi-folder-open' },
+    { id: 'reports', name: 'Relatórios', icon: 'pi pi-chart-bar' },
   ];
 
   faqItems: FaqItem[] = [
     {
       category: 'account',
-      question: 'Como posso resetar minha senha?',
-      answer: 'Para resetar sua senha, clique em "Esqueci minha senha" na tela de login. Você receberá um email com instruções para criar uma nova senha.',
+      question: 'Como posso mudar minha senha?',
+      answer: 'Para mudar sua senha, clique em "Meu Perfil" e na aba "Segurança" altere sua senha.',
       isOpen: false
     },
     {
       category: 'account',
       question: 'Como adicionar um novo usuário?',
-      answer: 'Acesse as configurações do sistema, clique em "Usuários" e depois em "Adicionar Novo". Preencha as informações necessárias e defina as permissões apropriadas.',
+      answer: 'Clique em "Usuários" e depois em "Adicionar Novo". Preencha as informações necessárias e defina as permissões apropriadas.',
       isOpen: false
     },
     {
       category: 'projects',
       question: 'Como criar um novo projeto?',
-      answer: 'Na dashboard, clique em "Novo Projeto", preencha as informações básicas como nome e descrição, e adicione os membros da equipe.',
+      answer: 'Clique em "Projeto" e depois em "Novo Projeto", preencha as informações básicas como nome e descrição, e adicione os membros da equipe.',
       isOpen: false
     },
     {
@@ -71,11 +70,10 @@ export class HelpPageComponent implements OnInit {
       isOpen: false
     }
   ];
-
   quickLinks = [
-    { title: 'Documentação', icon: 'fa-book', description: 'Acesse nossos guias e tutoriais' },
-    { title: 'Suporte', icon: 'fa-headset', description: 'Entre em contato com nossa equipe' },
-    { title: 'Contate-nos', icon: 'fa-comments', description: 'Tire suas dúvidas preenchendo um formulário' }
+    { title: 'Documentação', icon: 'pi pi-book', description: 'Acesse nossos guias e tutoriais' },
+    { title: 'Suporte', icon: 'pi pi-headphones', description: 'Entre em contato com nossa equipe' },
+    { title: 'Contate-nos', icon: 'pi pi-comments', description: 'Tire suas dúvidas preenchendo um formulário' }
   ];
 
   get filteredFaqs() {
@@ -96,6 +94,5 @@ export class HelpPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isAdmin = this.authService.isAdmin();
   }
 }

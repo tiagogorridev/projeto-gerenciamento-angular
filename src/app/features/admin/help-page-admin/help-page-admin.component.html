@@ -1,11 +1,5 @@
-<ng-container *ngIf="isAdmin; else regularUser">
-  <app-admin-sidebar></app-admin-sidebar>
-  <app-admin-header></app-admin-header>
-</ng-container>
-<ng-template #regularUser>
-  <app-sidebar></app-sidebar>
-  <app-header></app-header>
-</ng-template>
+<app-admin-sidebar></app-admin-sidebar>
+<app-admin-header></app-admin-header>
 
 <div class="help-center-container">
   <div class="help-header">

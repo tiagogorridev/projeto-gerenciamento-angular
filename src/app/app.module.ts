@@ -33,7 +33,7 @@ import { TimeTrackingComponent } from './features/users/time-tracking/time-track
 // Pages
 import { ContactComponent } from './pages/contact/contact.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
-import { HelpPageComponent } from './pages/help-page/help-page.component';
+import { HelpPageComponent } from './features/users/help-page/help-page.component';
 import { LoginComponent } from './pages/login/login.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 
@@ -59,6 +59,7 @@ import { ProfileComponent } from './features/users/profile/profile.component';
 import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
 import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
 import { AboutProjectsComponent } from './features/users/about-projects/about-projects.component';
+import { HelpPageAdminComponent } from './features/admin/help-page-admin/help-page-admin.component';
 
 
 @NgModule({
@@ -74,6 +75,7 @@ import { AboutProjectsComponent } from './features/users/about-projects/about-pr
     ReportsComponent,
     ContactComponent,
     HelpPageComponent,
+    HelpPageAdminComponent,
     ForgotPasswordComponent,
     SignupComponent,
     HeaderComponent,
@@ -91,7 +93,7 @@ import { AboutProjectsComponent } from './features/users/about-projects/about-pr
     ProfileComponent,
     AdminHeaderComponent,
     AdicionarClienteComponent,
-    AboutProjectsComponent,
+    AboutProjectsComponent
   ],
   imports: [
     BrowserModule,
