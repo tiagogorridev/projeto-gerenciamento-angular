@@ -2,18 +2,81 @@
 <app-header></app-header>
 
 <div class="projects-container">
-  <div *ngIf="projetos.length > 0">
-    <h3>Projetos dos quais você faz parte:</h3>
-    <div class="cards">
-      <div class="card" *ngFor="let projeto of projetos" (click)="navegarParaProjeto(projeto.id, projeto.nome)">
-        <h3>{{ projeto.nome }}</h3>
-        <p>{{ projeto.descricao }}</p>
-        <p>Cliente: {{ projeto.cliente.nome }}</p>
-        <p>Responsável: {{ projeto.usuarioResponsavel.nome }}</p>
-      </div>
+  <div class="filters-container">
+    <div class="search-filters">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="applyFilters()"
+        placeholder="Pesquisar projetos..."
+        class="search-input"
+      >
+
+      <select
+        [(ngModel)]="selectedStatus"
+        (ngModelChange)="applyFilters()"
+        class="filter-select"
+      >
+        <option value="">Status</option>
+        <option *ngFor="let status of statusOptions" [value]="status">
+          {{status}}
+        </option>
+      </select>
+
+      <select
+        [(ngModel)]="selectedPrioridade"
+        (ngModelChange)="applyFilters()"
+        class="filter-select"
+      >
+        <option value="">Prioridade</option>
+        <option *ngFor="let prioridade of prioridadeOptions" [value]="prioridade">
+          {{prioridade}}
+        </option>
+      </select>
     </div>
   </div>
-  <div *ngIf="projetos.length === 0">
-    <p>Você não está associado a nenhum projeto.</p>
+
+  <div class="projects-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Cliente</th>
+          <th>Progresso</th>
+          <th>Custo</th>
+          <th>Status</th>
+          <th>Prioridade</th>
+          <th>Data de Início</th>
+          <th>Data de Fim</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let projeto of filteredProjetos" (click)="navegarParaProjeto(projeto.id, projeto.nome)">
+          <td>{{projeto.nome}}</td>
+          <td>{{projeto.cliente.nome}}</td>
+          <td>{{getProgresso(projeto)}}</td>
+          <td>{{getCusto(projeto)}}</td>
+          <td>
+            <span [ngClass]="{'status': true,
+                            'status-em-andamento': projeto.status === 'EM ANDAMENTO',
+                            'status-concluido': projeto.status === 'CONCLUIDO',
+                            'status-cancelado': projeto.status === 'CANCELADO',
+                            'status-planejado': projeto.status === 'PLANEJADO'}">
+              {{projeto.status}}
+            </span>
+          </td>
+          <td>
+            <span [ngClass]="{'prioridade': true,
+                            'prioridade-alta': projeto.prioridade === 'ALTA',
+                            'prioridade-media': projeto.prioridade === 'MEDIA',
+                            'prioridade-baixa': projeto.prioridade === 'BAIXA'}">
+              {{projeto.prioridade}}
+            </span>
+          </td>
+          <td>{{projeto.dataInicio}}</td>
+          <td>{{projeto.dataFim}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
