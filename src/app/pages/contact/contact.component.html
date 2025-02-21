@@ -7,7 +7,7 @@
   <app-header></app-header>
 </ng-template>
 
-<div class="settings-container" @fadeInOut>
+<section class="settings-container" @fadeInOut>
   <h1 class="page-title">Fale Conosco</h1>
 
   <div class="contact-container">
@@ -20,8 +20,10 @@
             type="text"
             formControlName="name"
             [class.error]="contactForm.get('name')?.touched && contactForm.get('name')?.invalid"
-            placeholder="Seu nome completo">
-          <span class="error-message" *ngIf="contactForm.get('name')?.touched && contactForm.get('name')?.invalid">
+            placeholder="Seu nome completo"
+            aria-label="Nome Completo"
+            aria-describedby="name-error">
+          <span id="name-error" class="error-message" *ngIf="contactForm.get('name')?.touched && contactForm.get('name')?.invalid">
             {{ getErrorMessage('name') }}
           </span>
         </div>
@@ -29,11 +31,17 @@
         <div class="form-group">
           <label for="email">Email</label>
           <input
-            id="email"
-            type="email"
-            formControlName="email"
-            class="disabled-input"
-            [readonly]="true">
+          id="email"
+          type="email"
+          formControlName="email"
+          class="disabled-input"
+          [readonly]="true"
+          [value]="contactForm.get('email')?.value"
+          aria-label="Email"
+          aria-describedby="email-error">
+          <span id="email-error" class="error-message" *ngIf="contactForm.get('email')?.invalid">
+            {{ getErrorMessage('email') }}
+          </span>
         </div>
 
         <div class="form-group">
@@ -43,8 +51,10 @@
             type="text"
             formControlName="subject"
             [class.error]="contactForm.get('subject')?.touched && contactForm.get('subject')?.invalid"
-            placeholder="Assunto da mensagem">
-          <span class="error-message" *ngIf="contactForm.get('subject')?.touched && contactForm.get('subject')?.invalid">
+            placeholder="Assunto da mensagem"
+            aria-label="Assunto"
+            aria-describedby="subject-error">
+          <span id="subject-error" class="error-message" *ngIf="contactForm.get('subject')?.touched && contactForm.get('subject')?.invalid">
             {{ getErrorMessage('subject') }}
           </span>
         </div>
@@ -55,18 +65,20 @@
             id="message"
             formControlName="message"
             [class.error]="contactForm.get('message')?.touched && contactForm.get('message')?.invalid"
-            placeholder="Digite sua mensagem"></textarea>
-          <span class="error-message" *ngIf="contactForm.get('message')?.touched && contactForm.get('message')?.invalid">
+            placeholder="Digite sua mensagem"
+            aria-label="Mensagem"
+            aria-describedby="message-error"></textarea>
+          <span id="message-error" class="error-message" *ngIf="contactForm.get('message')?.touched && contactForm.get('message')?.invalid">
             {{ getErrorMessage('message') }}
           </span>
         </div>
 
         <div class="form-actions">
-          <button type="button" class="cancel-btn" (click)="onCancel()">
+          <button type="button" class="cancel-btn" (click)="onCancel()" aria-label="Cancelar">
             <i class="fas fa-times"></i>
             Cancelar
           </button>
-          <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+          <button type="submit" class="submit-btn" [disabled]="isSubmitting" aria-label="Enviar Mensagem">
             <i class="fas" [class.fa-paper-plane]="!isSubmitting" [class.fa-spinner]="isSubmitting" [class.fa-spin]="isSubmitting"></i>
             {{ isSubmitting ? 'Enviando...' : 'Enviar Mensagem' }}
           </button>
@@ -75,11 +87,11 @@
 
       <div class="success-message" *ngIf="showSuccessMessage" @fadeInOut>
         <i class="fas fa-check-circle"></i>
-        Mensagem enviada com sucesso!
+        <p>{{ showSuccessMessage }}</p>
       </div>
     </div>
 
-    <div class="contact-info">
+    <section class="contact-info">
       <h2>Outras formas de contato</h2>
 
       <div class="contact-methods">
@@ -119,13 +131,10 @@
           </div>
           <div class="method-details">
             <h3>Endereço</h3>
-            <a href="https://maps.google.com/?q=Av.Jardins,+100+-+Curitiba" target="_blank">
-              Av. Jardins, 100 - Jardim<br>
-              Curitiba - PR, 10000-000
-            </a>
+            <p>Rua Exemplo, 123, Curitiba, PR</p>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
-</div>
+</section>
