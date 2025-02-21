@@ -61,15 +61,15 @@
       <div class="form-group">
         <label for="project">Projeto</label>
         <select
-          id="project"
-          [(ngModel)]="selectedProject"
-          (ngModelChange)="onProjectSelect()"
-          class="form-select">
-          <option [ngValue]="null">Selecione um projeto</option>
-          <option *ngFor="let projeto of projects" [ngValue]="projeto.id">
-            {{ projeto.nome }}
-          </option>
-        </select>
+        id="project"
+        [(ngModel)]="selectedProject"
+        (ngModelChange)="onProjectSelect()"
+        class="form-select">
+        <option [ngValue]="null">Selecione um projeto</option>
+        <option *ngFor="let projeto of projects" [ngValue]="projeto">
+          {{ projeto.nome }}
+        </option>
+      </select>
       </div>
 
       <div class="form-group">
