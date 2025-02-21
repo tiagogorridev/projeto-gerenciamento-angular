@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Tarefa } from './tarefa.model';
 
@@ -26,5 +26,11 @@ export class TarefaService {
         return throwError(error);
       })
     );
+  }
+
+  deleteTarefa(tarefaId: number): Observable<void> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete<void>(`${this.apiUrl}/${tarefaId}`, { headers });
   }
 }
