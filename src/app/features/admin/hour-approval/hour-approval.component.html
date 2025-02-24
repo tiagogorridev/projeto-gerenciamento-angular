@@ -1,19 +1,41 @@
 <app-admin-sidebar></app-admin-sidebar>
 <app-admin-header></app-admin-header>
+
 <div class="approval-container">
   <h1 class="page-title">Aprovação de Horas</h1>
 
+  <!-- Mensagens de erro e sucesso -->
+  <div *ngIf="errorMessage" class="alert-error">
+    <i class="pi pi-exclamation-triangle"></i>
+    <span>{{ errorMessage }}</span>
+    <button class="close-btn" (click)="errorMessage = ''">
+      <i class="pi pi-times"></i>
+    </button>
+  </div>
+
+  <div *ngIf="successMessage" class="alert-success">
+    <i class="pi pi-check-circle"></i>
+    <span>{{ successMessage }}</span>
+    <button class="close-btn" (click)="successMessage = ''">
+      <i class="pi pi-times"></i>
+    </button>
+  </div>
+
+  <!-- Filtros -->
   <div class="filters-section">
     <div class="filters-grid">
       <div class="filter-item">
         <label>Projeto</label>
-        <select>
-          <option value="">Todos os Projetos</option>
+        <select [(ngModel)]="selectedProject">
+          <option [ngValue]="null">Todos os Projetos</option>
+          <option *ngFor="let projeto of projetos" [ngValue]="projeto.id">
+            {{ projeto.nome }}
+          </option>
         </select>
       </div>
 
       <div class="filter-item">
-        <label>Data Início</label>
+        <label>Data do Lançamento</label>
         <p-calendar
           [(ngModel)]="startDate"
           name="dataInicio"
@@ -21,37 +43,84 @@
           [showButtonBar]="true"
           [touchUI]="false"
           dateFormat="dd/mm/yy"
-          [required]="true"
           placeholder="Selecione a data"
         ></p-calendar>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn-filter" (click)="filtrarLancamentos()">
+          <i class="pi pi-filter"></i>
+          Filtrar
+        </button>
+        <button class="btn-clear" (click)="limparFiltros()">
+          <i class="pi pi-trash"></i>
+          Limpar Filtros
+        </button>
       </div>
     </div>
   </div>
 
-  <div class="time-entries-container">
-    <div class="time-entry-card">
+  <!-- Loader -->
+  <div *ngIf="loading" class="loading-indicator">
+    <i class="pi pi-spin pi-spinner"></i>
+    <span>Carregando...</span>
+  </div>
+
+  <!-- Lista de lançamentos -->
+  <div class="time-entries-container" *ngIf="!loading">
+    <div *ngIf="lancamentos.length === 0 && !loading && !successMessage" class="no-entries">
+      <i class="pi pi-info-circle"></i>
+      <span>Não há lançamentos pendentes de aprovação</span>
+    </div>
+
+    <div class="time-entry-card" *ngFor="let lancamento of lancamentos">
       <div class="entry-header">
         <div class="user-info">
-          <h3>Nome do Usuário</h3>
-          <span class="user-email">usuario@exemplo.com</span>
+          <h3>{{ lancamento.usuario.nome || 'Usuário não identificado' }}</h3>
+          <span class="user-email">{{ lancamento.usuario.email || 'Email não disponível' }}</span>
+                </div>
+        <div class="entry-details">
+          <span class="time-logged">{{ formatarHoras(lancamento.horas) }}</span>
+          <span class="status-badge" [ngClass]="getStatusClass(lancamento.status)">
+            {{ lancamento.status === 'EM_ANALISE' ? 'Em análise' :
+               lancamento.status === 'APROVADO' ? 'Aprovado' : 'Rejeitado' }}
+          </span>
         </div>
-        <span class="time-logged">8 horas</span>
       </div>
 
       <div class="project-details">
-        <div class="project-name">Nome do Projeto</div>
-        <div class="task-description">Descrição da tarefa...</div>
+        <div class="entry-date">
+          <i class="pi pi-calendar"></i>
+          <span>{{ lancamento.data | date:'dd/MM/yyyy' }}</span>
+          <span class="time-range">{{ lancamento.horaInicio }} - {{ lancamento.horaFim }}</span>
+        </div>
+        <div class="project-name">
+          <strong>Projeto:</strong> {{ lancamento.projeto.nome || 'Projeto não identificado' }}
+        </div>
+        <div class="task-name">
+          <strong>Tarefa:</strong> {{ lancamento.tarefa.nome || 'Tarefa não identificada' }}
+        </div>
+        <div class="task-description">
+          <strong>Descrição:</strong> {{ lancamento.descricao || 'Sem descrição' }}
+        </div>
       </div>
 
-      <div class="entry-actions">
-        <button class="approve-btn">
+      <div class="entry-actions" *ngIf="lancamento.status === 'EM_ANALISE'">
+        <button class="approve-btn" (click)="aprovarLancamento(lancamento.id)">
           <i class="pi pi-check"></i>
           Aprovar
         </button>
-        <button class="reject-btn">
+        <button class="reject-btn" (click)="rejeitarLancamento(lancamento.id)">
           <i class="pi pi-times"></i>
-          Cancelar
+          Rejeitar
         </button>
+      </div>
+
+      <div class="entry-status" *ngIf="lancamento.status !== 'EM_ANALISE'">
+        <div class="status-message" [ngClass]="{'approved': lancamento.status === 'APROVADO', 'rejected': lancamento.status === 'REJEITADO'}">
+          <i class="pi" [ngClass]="{'pi-check-circle': lancamento.status === 'APROVADO', 'pi-times-circle': lancamento.status === 'REJEITADO'}"></i>
+          <span>{{ lancamento.status === 'APROVADO' ? 'Lançamento aprovado' : 'Lançamento rejeitado' }}</span>
+        </div>
       </div>
     </div>
   </div>
