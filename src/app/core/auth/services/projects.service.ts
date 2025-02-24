@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { Tarefa } from './tarefa.model';
 import { Projeto } from './projeto.model';
 
@@ -92,4 +92,17 @@ export class ProjectsService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.delete<void>(`http://localhost:8080/api/tarefas/${tarefaId}`, { headers });
   }
+
+  getHorasDisponiveis(projectId: string): Observable<number> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<number>(`${this.baseUrl}/${projectId}/horas-disponiveis`, { headers })
+      .pipe(
+        catchError(error => {
+          console.error('Erro ao obter horas disponíveis:', error);
+          throw error;
+        })
+      );
+    }
 }
