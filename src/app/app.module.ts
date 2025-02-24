@@ -62,6 +62,7 @@ import { AdminHeaderComponent } from './features/admin/admin-header/admin-header
 import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
 import { AboutProjectsComponent } from './features/users/about-projects/about-projects.component';
 import { HelpPageAdminComponent } from './features/admin/help-page-admin/help-page-admin.component';
+import { AdminTarefaComponent } from './features/admin/admin-tarefa/admin-tarefa.component';
 
 
 @NgModule({
@@ -95,7 +96,8 @@ import { HelpPageAdminComponent } from './features/admin/help-page-admin/help-pa
     ProfileComponent,
     AdminHeaderComponent,
     AdicionarClienteComponent,
-    AboutProjectsComponent
+    AboutProjectsComponent,
+    AdminTarefaComponent
   ],
   imports: [
     BrowserModule,

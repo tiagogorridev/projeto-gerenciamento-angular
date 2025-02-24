@@ -39,6 +39,7 @@ import { AdminHeaderComponent } from './features/admin/admin-header/admin-header
 import { Header } from 'primeng/api';
 import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
 import { AboutProjectsComponent } from './features/users/about-projects/about-projects.component';
+import { AdminTarefaComponent } from './features/admin/admin-tarefa/admin-tarefa.component';
 
 // Rotas
 const routes: Routes = [
@@ -66,6 +67,7 @@ const routes: Routes = [
       { path: 'admin-relatorios', component: AdminRelatoriosComponent },
       { path: 'admin-profile', component: AdminProfileComponent },
       { path: 'edit-projects/:id', component: EditProjectsComponent },
+      { path: 'admin-tarefa/:idprojeto/:id', component: AdminTarefaComponent },
       { path: 'adicionar-cliente', component: AdicionarClienteComponent },
       { path: 'help-page-admin', component: HelpPageAdminComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

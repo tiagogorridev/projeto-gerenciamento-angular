@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { UsuarioService } from '../../../core/auth/services/usuario.service';
 import { ClienteService } from '../../../core/auth/services/clients.service';
@@ -88,7 +88,8 @@ export class EditProjectsComponent implements OnInit {
     private projectsService: ProjectsService,
     private usuarioService: UsuarioService,
     private clienteService: ClienteService,
-    private projectMemberService: ProjectMemberService
+    private projectMemberService: ProjectMemberService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -108,6 +109,10 @@ export class EditProjectsComponent implements OnInit {
     });
 
     this.loadClients();
+  }
+
+  navigateToTask(tarefaId: number): void {
+    this.router.navigate([`admin/admin-tarefa`, this.projectId, tarefaId]);
   }
 
   loadClients(): void {
