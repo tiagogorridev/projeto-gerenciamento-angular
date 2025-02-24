@@ -8,6 +8,7 @@ $hover-color: #7c3aed;
 $input-bg: #f8fafc;
 $success-color: #10b981;
 $danger-color: #ef4444;
+$warning-color: #f59e0b;
 
 .approval-container {
   margin: 0 24px;
@@ -61,6 +62,13 @@ $danger-color: #ef4444;
     }
   }
 
+  .entry-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
   .time-logged {
     background: lighten($primary-color, 35%);
     color: $primary-color;
@@ -74,9 +82,24 @@ $danger-color: #ef4444;
 .project-details {
   margin-bottom: 16px;
 
-  .project-name {
+  .entry-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $text-gray;
+    font-size: 14px;
+    margin-bottom: 12px;
+
+    .time-range {
+      margin-left: 8px;
+      padding-left: 8px;
+      border-left: 1px solid $border-color;
+    }
+  }
+
+  .project-name, .task-name {
     color: #374151;
-    font-weight: 500;
+    font-weight: 400;
     margin-bottom: 8px;
   }
 
@@ -84,6 +107,7 @@ $danger-color: #ef4444;
     color: $text-gray;
     font-size: 14px;
     line-height: 1.5;
+    margin-top: 8px;
   }
 }
 
@@ -102,6 +126,7 @@ $danger-color: #ef4444;
     font-weight: 500;
     font-size: 14px;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     i {
       font-size: 16px;
@@ -134,6 +159,31 @@ $danger-color: #ef4444;
   }
 }
 
+.entry-status {
+  margin-top: 16px;
+
+  .status-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+
+    &.approved {
+      background-color: rgba($success-color, 0.1);
+      color: $success-color;
+      border: 1px solid rgba($success-color, 0.2);
+    }
+
+    &.rejected {
+      background-color: rgba($danger-color, 0.1);
+      color: $danger-color;
+      border: 1px solid rgba($danger-color, 0.2);
+    }
+  }
+}
+
 .filters-section {
   background: $white;
   border-radius: 12px;
@@ -145,6 +195,7 @@ $danger-color: #ef4444;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
+    align-items: end;
 
     .filter-item {
       label {
@@ -171,37 +222,121 @@ $danger-color: #ef4444;
         box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
       }
     }
+
+    .filter-actions {
+      display: flex;
+      gap: 8px;
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .btn-filter {
+        background: $primary-color;
+        color: $white;
+        border: none;
+
+        &:hover {
+          background: $hover-color;
+        }
+      }
+
+      .btn-clear {
+        background: $white;
+        color: $gray;
+        border: 1px solid $border-color;
+
+        &:hover {
+          background: $secondary-color;
+        }
+      }
+    }
   }
 }
-:host ::ng-deep {
-  .p-calendar {
-    width: 100%;
 
-    .p-inputtext {
-      width: 100%;
-      padding: 8px 12px;
-      border: 1px solid $border-color;
-      border-radius: 6px;
-      background: $input-bg;
-      color: $text-gray;
-      font-size: 14px;
+.alert-error, .alert-success {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  position: relative;
 
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
-      }
+  i {
+    margin-right: 12px;
+    font-size: 18px;
+  }
+
+  .close-btn {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
     }
+  }
+}
 
-    .p-button {
-      background: $white;
-      border: 1px solid $border-color;
-      color: $gray;
+.alert-error {
+  background-color: rgba($danger-color, 0.1);
+  color: $danger-color;
+  border: 1px solid rgba($danger-color, 0.2);
+}
 
-      &:hover {
-        background: $secondary-color;
-      }
-    }
+.alert-success {
+  background-color: rgba($success-color, 0.1);
+  color: $success-color;
+  border: 1px solid rgba($success-color, 0.2);
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  font-size: 16px;
+  color: $text-gray;
+
+  i {
+    font-size: 24px;
+    color: $primary-color;
+  }
+}
+
+.no-entries {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: $white;
+  border-radius: 12px;
+  border: 1px solid $border-color;
+  text-align: center;
+  color: $text-gray;
+
+  i {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  span {
+    font-size: 16px;
   }
 }
 
@@ -226,30 +361,5 @@ $danger-color: #ef4444;
   &.reprovado {
     background: #fee2e2;
     color: #dc2626;
-  }
-}
-
-@media (max-width: 1024px) {
-  .approval-container {
-    padding: 24px;
-  }
-}
-
-@media (max-width: 640px) {
-  .entry-header {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .entry-actions {
-    flex-direction: column;
-
-    button {
-      width: 100%;
-    }
-  }
-
-  .filters-grid {
-    grid-template-columns: 1fr;
   }
 }
