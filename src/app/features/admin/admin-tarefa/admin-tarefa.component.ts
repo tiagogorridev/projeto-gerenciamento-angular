@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-admin-tarefa',
   templateUrl: './admin-tarefa.component.html',
-  styleUrls: ['./admin-tarefa.component.css']
+  styleUrls: ['./admin-tarefa.component.scss']
 })
 export class AdminTarefaComponent implements OnInit {
   idprojeto: number = 0;
