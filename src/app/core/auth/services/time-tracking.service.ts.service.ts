@@ -57,4 +57,46 @@ export class TimeTrackingService {
       catchError(this.handleError)
     );
   }
+
+  // Método para buscar todos os lançamentos com status EM_ANALISE
+  getLancamentosEmAnalise(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/em-analise`, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      map(lancamentos => lancamentos.map(lancamento => ({
+        ...lancamento,
+        data: new Date(lancamento.data).toISOString().split('T')[0],
+        horaInicio: lancamento.horaInicio.substring(0, 5),
+        horaFim: lancamento.horaFim.substring(0, 5)
+      }))),
+      catchError(this.handleError)
+    );
+  }
+
+  // Método para aprovar um lançamento
+  aprovarLancamento(lancamentoId: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/aprovar/${lancamentoId}`, {}, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Método para rejeitar um lançamento
+  rejeitarLancamento(lancamentoId: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/rejeitar/${lancamentoId}`, {}, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Método genérico para atualizar o status de um lançamento
+  atualizarStatus(lancamentoId: number, status: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${lancamentoId}/status`, { status }, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
 }
