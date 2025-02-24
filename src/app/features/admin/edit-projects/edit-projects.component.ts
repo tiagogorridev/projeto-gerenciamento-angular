@@ -12,7 +12,6 @@ export interface Cliente {
   email: string;
   status?: string;
 }
-
 export interface ProjectDetails {
   name: string;
   client: string;
@@ -22,7 +21,6 @@ export interface ProjectDetails {
   status: string;
   priority: string;
 }
-
 export interface Tarefa {
   id?: number;
   nome: string;
@@ -32,8 +30,8 @@ export interface Tarefa {
   responsavel: string;
   status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA';
   projeto: { id: number };
+  horasEstimadas: number;
 }
-
 interface Member {
   email: string;
 }
@@ -61,6 +59,7 @@ export class EditProjectsComponent implements OnInit {
   clients: Cliente[] = [];
   showNewTarefaModal: boolean = false;
   showAddMemberModal: boolean = false;
+  horasDisponiveis: number = 0;
 
   tarefa: Tarefa = {
     nome: '',
@@ -69,7 +68,8 @@ export class EditProjectsComponent implements OnInit {
     dataFim: '',
     responsavel: '',
     status: 'ABERTA',
-    projeto: { id: 0 }
+    projeto: { id: 0 },
+    horasEstimadas: 0
   };
 
   tarefas: Tarefa[] = [];
@@ -89,7 +89,7 @@ export class EditProjectsComponent implements OnInit {
     private usuarioService: UsuarioService,
     private clienteService: ClienteService,
     private projectMemberService: ProjectMemberService
-    ) {}
+  ) {}
 
   ngOnInit(): void {
     const navigation = history.state;
@@ -103,6 +103,7 @@ export class EditProjectsComponent implements OnInit {
         this.loadProjectData();
         this.loadProjectTarefas();
         this.loadProjectMembers();
+        this.carregarHorasDisponiveis();
       }
     });
 
@@ -197,6 +198,7 @@ export class EditProjectsComponent implements OnInit {
   }
 
   openModal(): void {
+    this.carregarHorasDisponiveis();
     this.showNewTarefaModal = true;
   }
 
@@ -266,7 +268,15 @@ export class EditProjectsComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.carregarHorasDisponiveis();
+
+    if (this.tarefa.horasEstimadas > this.horasDisponiveis) {
+      this.showError(`Horas estimadas (${this.tarefa.horasEstimadas}) excedem o limite disponível do projeto (${this.horasDisponiveis})`);
+      return;
+    }
+
     if (!this.projectId || !this.startDate || !this.endDate) {
+      this.showError('Dados incompletos para criar a tarefa');
       return;
     }
 
@@ -279,12 +289,13 @@ export class EditProjectsComponent implements OnInit {
         console.log('Tarefa salva com sucesso:', response);
         this.closeModal();
         this.loadProjectTarefas();
+        this.carregarHorasDisponiveis();
+        this.resetTarefaForm();
       },
       error => {
         console.error('Erro ao salvar tarefa:', error);
         if (error instanceof HttpErrorResponse) {
-          console.error('Erro HTTP:', error.message);
-          console.error('Detalhes do erro:', error.error);
+          this.showError(error.error?.message || 'Erro ao criar tarefa');
         }
       }
     );
@@ -348,7 +359,7 @@ export class EditProjectsComponent implements OnInit {
       this.projectsService.deleteTarefa(tarefaId).subscribe({
         next: () => {
           console.log('Tarefa excluída com sucesso');
-          this.loadProjectTarefas(); // Recarrega a lista de tarefas
+          this.loadProjectTarefas();
         },
         error: (error) => {
           console.error('Erro ao excluir tarefa:', error);
@@ -356,5 +367,35 @@ export class EditProjectsComponent implements OnInit {
         }
       });
     }
+  }
+
+  carregarHorasDisponiveis() {
+    if (this.projectId) {
+      this.projectsService.getHorasDisponiveis(this.projectId).subscribe(
+        (horas) => {
+          this.horasDisponiveis = horas;
+          console.log('Horas disponíveis atualizadas:', this.horasDisponiveis);
+        },
+        (error) => {
+          console.error('Erro ao carregar horas disponíveis:', error);
+          this.showError('Erro ao carregar horas disponíveis do projeto');
+        }
+      );
+    }
+  }
+
+  resetTarefaForm(): void {
+    this.tarefa = {
+      nome: '',
+      descricao: '',
+      dataInicio: '',
+      dataFim: '',
+      responsavel: '',
+      status: 'ABERTA',
+      projeto: { id: 0 },
+      horasEstimadas: 0
+    };
+    this.startDate = new Date();
+    this.endDate = new Date();
   }
 }
