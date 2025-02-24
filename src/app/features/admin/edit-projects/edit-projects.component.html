@@ -110,12 +110,13 @@
             <div class="tarefa-actions">Ações</div>
           </div>
 
-          <div class="tarefas-row" *ngFor="let tarefa of tarefas" [routerLink]="['/admin/edit-projects', projectId, tarefa.id]">
+          <div class="tarefas-row" *ngFor="let tarefa of tarefas">
             <div class="tarefa-name">{{ tarefa.nome }}</div>
             <div class="tarefa-client">{{ tarefa.responsavel }}</div>
             <div class="tarefa-status">{{ tarefa.status }}</div>
             <div class="tarefa-hours">0hr/{{ tarefa.horasEstimadas }}hr</div>
             <div class="tarefa-actions">
+            <button  class="btn btn-primary" [routerLink]="['/admin/edit-projects', projectId, tarefa.id]">Editar</button>
               <button class="delete-btn" (click)="deleteTarefa(tarefa.id)">
                 Excluir
               </button>
