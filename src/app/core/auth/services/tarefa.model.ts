@@ -1,5 +1,5 @@
 export interface Tarefa {
-  id: number;
+  id?: number;
   nome: string;
   descricao: string;
   dataInicio: string;
@@ -7,4 +7,6 @@ export interface Tarefa {
   responsavel: string;
   status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA';
   projeto: { id: number };
+  horasEstimadas: number;
+  horasDisponiveis?: number;
 }
