@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';  // Certifique-se de que está assim
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -8,12 +8,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AdminTarefaComponent implements OnInit {
   idprojeto: number = 0;
-  id: number = 0;
+  idtarefa: number = 0;  // Altere para idtarefa em vez de id
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    // Captura os parâmetros da rota
     this.idprojeto = +this.route.snapshot.paramMap.get('idprojeto')!;
-    this.id = +this.route.snapshot.paramMap.get('id')!;
+    this.idtarefa = +this.route.snapshot.paramMap.get('idtarefa')!;  // Atualize para 'idtarefa'
   }
 }

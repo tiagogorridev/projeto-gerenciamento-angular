@@ -112,7 +112,7 @@ export class EditProjectsComponent implements OnInit {
   }
 
   navigateToTask(tarefaId: number): void {
-    this.router.navigate([`admin/admin-tarefa`, this.projectId, tarefaId]);
+    this.router.navigate([`edit-projects`, this.projectId, tarefaId]);
   }
 
   loadClients(): void {

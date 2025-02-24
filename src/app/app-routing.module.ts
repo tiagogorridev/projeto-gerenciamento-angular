@@ -67,7 +67,7 @@ const routes: Routes = [
       { path: 'admin-relatorios', component: AdminRelatoriosComponent },
       { path: 'admin-profile', component: AdminProfileComponent },
       { path: 'edit-projects/:id', component: EditProjectsComponent },
-      { path: 'admin-tarefa/:idprojeto/:id', component: AdminTarefaComponent },
+      { path: 'edit-projects/:idprojeto/:idtarefa', component: AdminTarefaComponent },
       { path: 'adicionar-cliente', component: AdicionarClienteComponent },
       { path: 'help-page-admin', component: HelpPageAdminComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
