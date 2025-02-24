@@ -105,4 +105,8 @@ export class ProjectsService {
         })
       );
     }
+
+    getTarefaById(projetoId: number, id: number): Observable<Tarefa> {
+      return this.http.get<Tarefa>(`http://localhost:8080/api/tarefas/projeto/${projetoId}/tarefa/${id}`);
+    }
 }

@@ -28,12 +28,6 @@ export class TarefaService {
     );
   }
 
-  deleteTarefa(tarefaId: number): Observable<void> {
-    const token = localStorage.getItem('auth_token') || '';
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete<void>(`${this.apiUrl}/${tarefaId}`, { headers });
-  }
-
   getTarefaDetails(idprojeto: number, idtarefa: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/detalhes/${idprojeto}/${idtarefa}`).pipe(
       tap(response => {
