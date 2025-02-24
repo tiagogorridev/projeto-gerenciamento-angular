@@ -106,6 +106,7 @@
             <div class="tarefa-name">Nome</div>
             <div class="tarefa-client">Responsável</div>
             <div class="tarefa-status">Status</div>
+            <div class="tarefa-hours">Progresso</div>
             <div class="tarefa-actions">Ações</div>
           </div>
 
@@ -113,6 +114,7 @@
             <div class="tarefa-name">{{ tarefa.nome }}</div>
             <div class="tarefa-client">{{ tarefa.responsavel }}</div>
             <div class="tarefa-status">{{ tarefa.status }}</div>
+            <div class="tarefa-hours">0hr/{{ tarefa.horasEstimadas }}hr</div>
             <div class="tarefa-actions">
               <button class="delete-btn" (click)="deleteTarefa(tarefa.id)">
                 Excluir

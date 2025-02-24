@@ -1,3 +1,4 @@
+// Variables
 $primary-color: #8b5cf6;
 $border-color: #e2e8f0;
 $text-gray: #64748b;
@@ -5,840 +6,577 @@ $gray: #6b7280;
 $white: #ffffff;
 $hover-color: #7c3aed;
 $input-bg: #f8fafc;
+$error-red: #dc3545;
 $modal-overlay: rgba(0, 0, 0, 0.5);
+$success-green: #16a34a;
 
+// Global Reset
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Project Page */
-
+// Layout
 .project-page {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
   background-color: $white;
   margin: 0 24px;
   padding: 60px 24px 0 260px;
 }
 
-/* Project Header */
-
+// Header and Navigation
 .project-header {
   padding: 24px;
   border-bottom: 1px solid $border-color;
-}
 
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.breadcrumb span {
-  color: $gray;
-}
-
-.breadcrumb .separator {
-  color: $text-gray;
-}
-
-.breadcrumb h1 {
-  font-size: 20px;
-  font-weight: 600;
-}
-
-/* Tab Navigation */
-
-.tab-navigation {
-  display: flex;
-  gap: 32px;
-  padding: 0 24px;
-  border-bottom: 1px solid $border-color;
-}
-
-.tab-button {
-  padding: 16px 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: $gray;
-  font-weight: 500;
-  position: relative;
-}
-
-.tab-button.active {
-  color: $primary-color;
-}
-
-.tab-button.active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: $primary-color;
-}
-
-/* Content */
-
-.content {
-  flex: 1;
-  padding: 24px;
-}
-
-/* Actions Bar */
-
-.actions-bar {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 32px;
-}
-
-/* Search Container */
-
-.search-container {
-  position: relative;
-  width: 384px;
-}
-
-.search-input {
-  width: 100%;
-  padding: 8px 16px;
-  padding-left: 40px;
-  border: 1px solid $border-color;
-  border-radius: 8px;
-  background-color: $input-bg;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: $primary-color;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
-}
-
-.search-icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: $text-gray;
-}
-
-/* New Task Button */
-
-.new-task-button {
-  padding: 8px 16px;
-  background-color: $primary-color;
-  color: $white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.new-task-button:hover {
-  background-color: $hover-color;
-}
-
-/* Tasks Table */
-
-.tasks-table {
-  width: 100%;
-}
-
-/* Table Header */
-
-.table-header {
-  display: flex;
-  padding-bottom: 8px;
-  border-bottom: 1px solid $border-color;
-  font-size: 14px;
-  color: $gray;
-}
-
-.header-name {
-  flex: 1;
-}
-
-.header-assigned {
-  text-align: right;
-  flex: 1;
-}
-
-/* Empty State */
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 64px 0;
-  text-align: center;
-}
-
-.empty-title {
-  font-size: 18px;
-  color: $gray;
-}
-
-.empty-subtitle {
-  margin-top: 8px;
-  font-size: 14px;
-  color: $text-gray;
-}
-
-/* Time Container */
-
-.time-container {
-  padding: 24px;
-}
-
-/* Members List */
-
-.members-list {
-  max-width: 800px;
-}
-
-.members-list h3 {
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 16px;
-}
-
-/* Add Member Section */
-
-.add-member-section {
-  margin-bottom: 24px;
-}
-
-.add-member-button {
-  padding: 8px 16px;
-  background-color: $primary-color;
-  color: $white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/* Empty Members */
-
-.empty-members {
-  padding: 24px;
-  background-color: $input-bg;
-  border-radius: 8px;
-  color: $gray;
-}
-
-/* Details Form */
-
-.details-form {
-  max-width: 800px;
-  padding: 24px;
-}
-
-/* Form Section */
-
-.form-section {
-  margin-bottom: 32px;
-}
-
-.form-section h3 {
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 16px;
-}
-
-.form-section h4 {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 12px;
-  color: $text-gray;
-}
-
-/* Form Group */
-
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  color: $text-gray;
-  font-size: 14px;
-}
-
-.form-input,
-.form-select {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid $border-color;
-  border-radius: 6px;
-  background-color: $white;
-}
-
-.form-input:disabled {
-  background-color: $input-bg;
-  cursor: not-allowed;
-}
-
-/* Input Currency */
-
-.input-currency {
-  position: relative;
-}
-
-.currency-symbol {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: $gray;
-}
-
-/* Checkbox */
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.checkbox input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-}
-
-.checkbox label {
-  margin-bottom: 0;
-}
-
-/* Add Field Button */
-
-.add-field-button {
-  padding: 8px 16px;
-  background: none;
-  border: none;
-  color: $primary-color;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.add-field-button:hover {
-  text-decoration: underline;
-}
-
-/* Modal */
-
-/* Modal de Novo Projeto */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-
-  .modal-content {
-    background: white;
-    padding: 24px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    h2 {
-      margin-bottom: 24px;
-      font-size: 18px;
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    span {
+      color: $gray;
+      &.separator {
+        color: $text-gray;
+      }
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
       color: #1f2937;
     }
   }
 }
 
-/* Campos do Formulário */
-.form-group {
-  margin-bottom: 16px;
-
-  label {
-    display: block;
-    margin-bottom: 8px;
-    color: #6b7280;
-    font-size: 14px;
-  }
-
-  .input-field {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #e5e7eb;
-    border-radius: 4px;
-    font-size: 14px;
-
-    &:focus {
-      outline: none;
-      border-color: $primary-color;
-    }
-  }
-
-  &.checkbox {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-    }
-
-    label {
-      margin: 0;
-      color: #374151;
-    }
-  }
-}
-
-/* Campo de Entrada de Moeda */
-.currency-input {
-  position: relative;
-
-  .input-field {
-    padding-left: 40px;
-    height: 36px;
-  }
-
-  .currency {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6b7280;
-  }
-}
-
-/* Linhas do Formulário */
-.form-row {
+// Tab Navigation
+.tab-navigation {
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-
-  .form-group {
-    flex: 1;
-    min-width: 200px;
-
-    .input-field {
-      height: 36px;
-    }
-
-    .currency-input .input-field {
-      height: 36px;
-    }
-  }
-}
-
-/* Ações do Modal */
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-
-  button {
-    padding: 8px 24px;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-
-    &.cancel-btn {
-      background: white;
-      border: 1px solid #e5e7eb;
-      color: #6b7280;
-
-      &:hover {
-        background: #f9fafb;
-      }
-    }
-
-    &.submit-btn {
-      background: $primary-color;
-      border: none;
-      color: white;
-
-      &:hover {
-        background: $hover-color;
-      }
-    }
-  }
-}
-
-/* Projects List */
-
-.projects-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.project-row {
-  display: flex;
-  align-items: center;
-  padding: 12px 0;
+  gap: 32px;
+  padding: 0 24px;
   border-bottom: 1px solid $border-color;
-  justify-content: space-between;
+
+  .tab-button {
+    padding: 16px 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: $gray;
+    font-weight: 500;
+    position: relative;
+
+    &.active {
+      color: $primary-color;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: $primary-color;
+      }
+    }
+
+    &:hover:not(.active) {
+      color: darken($gray, 15%);
+    }
+  }
 }
 
-.headers {
-  font-weight: bold;
-  background-color: #f3f4f6;
-  border-bottom: 2px solid $border-color;
-}
-
-.project-name,
-.project-description,
-.project-client,
-.project-progress,
-.project-cost,
-.project-status,
-.project-priority,
-.project-start,
-.project-end {
+// Content Area
+.content {
   flex: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  padding: 0 8px;
-  font-size: 14px;
-  color: $text-gray;
+  padding: 24px;
+  overflow-y: auto;
+
+  // Search and Actions Bar
+  .actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .search-container {
+      position: relative;
+      width: 384px;
+
+      .search-input {
+        width: 100%;
+        padding: 8px 16px;
+        border: 1px solid $border-color;
+        border-radius: 8px;
+        background-color: $input-bg;
+        font-size: 14px;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+        }
+      }
+    }
+
+    .new-task-button,
+    .new-member-button {
+      padding: 8px 16px;
+      background-color: $primary-color;
+      color: $white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: $hover-color;
+      }
+    }
+  }
 }
 
-.project-name {
-  font-weight: bold;
-  max-width: 150px;
-}
-
-.project-description {
-  max-width: 200px;
-}
-
-.project-client {
-  max-width: 200px;
-}
-
-.project-progress,
-.project-cost,
-.project-status,
-.project-priority {
-  max-width: none;
-}
-
-.project-start,
-.project-end {
-  max-width: 100px;
-}
-
-.project-row:hover {
-  background-color: #f9fafb;
-}
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 32px;
-}
-
-.save-btn {
-  padding: 8px 16px;
-  background-color: $primary-color;
-  color: $white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.save-btn:hover {
-  background-color: $hover-color;
-}
-/* Tarefas Table */
+// Tasks Table
 .tasks-table {
   width: 100%;
-  border-collapse: collapse; /* Garante que as bordas não se sobreponham */
-  margin-top: 16px; /* Distância entre o conteúdo e a tabela */
+  margin-top: 16px;
+  background-color: $white;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .tarefas-list {
+    .tarefa-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 100px;
+      padding: 12px 16px;
+      align-items: center;
+      border-bottom: 1px solid $border-color;
+
+      &.headers {
+        background-color: #f9fafb;
+        font-weight: 500;
+        color: $text-gray;
+      }
+
+      > div {
+        padding: 0 8px;
+        font-size: 14px;
+      }
+    }
+
+    .tarefas-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 100px;
+      padding: 12px 16px;
+      align-items: center;
+      border-bottom: 1px solid $border-color;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #f9fafb;
+      }
+
+      .tarefa-status {
+        text-align: center;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+
+        &.ABERTA {
+          background-color: #e5e7eb;
+          color: $gray;
+        }
+
+        &.EM_ANDAMENTO {
+          background-color: #dbeafe;
+          color: #2563eb;
+        }
+
+        &.CONCLUIDA {
+          background-color: #dcfce7;
+          color: $success-green;
+        }
+
+        &.PAUSADA {
+          background-color: #fee2e2;
+          color: #dc2626;
+        }
+      }
+
+      .tarefa-hours {
+        flex: 1;
+        padding: 8px;
+        text-align: center;
+      }
+
+      .tarefa-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+
+        .delete-btn {
+          padding: 6px 12px;
+          background-color: $error-red;
+          color: $white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 12px;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: darken($error-red, 10%);
+          }
+        }
+      }
+    }
+  }
 }
 
-/* Table Header */
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 8px;
-  border-bottom: 1px solid $border-color;
-  font-size: 14px;
-  color: $gray;
+// Team Section
+.members-table {
+  width: 100%;
+  margin-top: 16px;
+  background-color: $white;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .table-header {
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    padding: 12px 16px;
+    background-color: #f9fafb;
+    border-bottom: 1px solid $border-color;
+    font-weight: 500;
+    color: $text-gray;
+  }
+
+  .table-body {
+    .table-row {
+      display: grid;
+      grid-template-columns: 1fr 100px;
+      padding: 12px 16px;
+      align-items: center;
+      border-bottom: 1px solid $border-color;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #f9fafb;
+      }
+
+      .table-cell {
+        font-size: 14px;
+
+        &.actions {
+          display: flex;
+          justify-content: flex-end;
+
+          .remove-button {
+            padding: 6px 12px;
+            background-color: $error-red;
+            color: $white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.2s;
+
+            &:hover {
+              background-color: darken($error-red, 10%);
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
-.header-name,
-.header-assigned {
-  flex: 1;
-  font-weight: 600;
-}
-
-.header-assigned {
-  text-align: right;
-}
-
-/* Tarefa Rows */
-.tarefas-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.tarefa-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid $border-color;
-  font-size: 14px;
-  color: $gray;
-}
-
-.tarefa-name,
-.tarefa-client,
-.tarefa-status {
-  flex: 1;
-}
-
-/* Tarefa Row (Responsive) */
-.tarefas-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid $border-color;
-  font-size: 14px;
-}
-
-.tarefa-name,
-.tarefa-client,
-.tarefa-status {
-  flex: 1;
-}
-
-.tarefa-status {
-  text-align: center;
-}
-
-/* Empty State */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 64px 0;
-  text-align: center;
-}
-
-.empty-title {
-  font-size: 18px;
-  color: $gray;
-}
-
-.empty-subtitle {
-  margin-top: 8px;
-  font-size: 14px;
-  color: $text-gray;
-}
-/* Modal para Adicionar Membro */
+// Modal Styles
 .modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: $modal-overlay;
-  z-index: 999;
-}
-
-.modal-content {
-  background-color: $white;
-  padding: 32px;
-  border-radius: 8px;
-  max-width: 600px;
-  width: 100%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  font-size: 24px;
-  font-weight: 600;
-  color: $text-gray;
-  margin-bottom: 16px;
-}
-
-.form-group {
-  margin-bottom: 16px;
-}
-
-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: $text-gray;
-  margin-bottom: 8px;
-}
-
-.mat-select {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid $border-color;
-  border-radius: 6px;
-  background-color: $input-bg;
-}
-
-.modal-actions {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 24px;
-}
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 
-button {
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  font-weight: 500;
-}
-
-.cancel-btn {
-  background-color: #e0e0e0;
-  color: $text-gray;
-  margin-right: 12px;
-}
-
-.create-btn {
-  background-color: $primary-color;
-  color: $white;
-}
-
-.cancel-btn:hover {
-  background-color: #c7c7c7;
-}
-
-.create-btn:hover {
-  background-color: $hover-color;
-}
-
-mat-form-field {
-  width: 100%;
-}
-
-.mat-select-trigger {
-  padding: 8px 16px;
-  background-color: $input-bg;
-}
-
-.mat-option {
-  font-size: 14px;
-}
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  font-size: 1.1rem;
-  font-weight: bold;
-  display: block;
-  margin-bottom: 8px;
-  color: #333;
-}
-
-select {
-  width: 100%;
-  padding: 10px;
-  font-size: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f9f9f9;
-  transition: all 0.3s ease;
-}
-
-select:focus {
-  border-color: #007bff;
-  outline: none;
-  background-color: #ffffff;
-}
-
-select:invalid {
-  color: #888;
-}
-
-option {
-  padding: 10px;
-  font-size: 1rem;
-}
-.modal-content {
-  mat-form-field {
+  .modal-content {
+    background-color: $white;
+    padding: 32px;
+    border-radius: 12px;
     width: 100%;
-    margin-bottom: 20px;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+
+      label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: $text-gray;
+        margin-bottom: 8px;
+      }
+
+      .input-field {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid $border-color;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.2s;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+        }
+
+        &:disabled {
+          background-color: $input-bg;
+          cursor: not-allowed;
+        }
+      }
+
+      textarea.input-field {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      select.input-field {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+      }
+
+      .error-text {
+        color: $error-red;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+    }
+
+    .form-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+
+      .form-group {
+        flex: 1;
+        margin-bottom: 0;
+      }
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 32px;
+
+      button {
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &.cancel-btn {
+          background-color: $white;
+          border: 1px solid $border-color;
+          color: $gray;
+
+          &:hover {
+            background-color: $input-bg;
+          }
+        }
+
+        &.submit-btn {
+          background-color: $primary-color;
+          border: none;
+          color: $white;
+
+          &:hover {
+            background-color: $hover-color;
+          }
+
+          &:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
   }
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
+// Project Details Tab
+.details-form {
+  max-width: 800px;
+  padding: 24px 0;
+
+  .form-section {
+    margin-bottom: 32px;
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+
+      label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: $text-gray;
+        margin-bottom: 8px;
+      }
+
+      .form-input,
+      .form-select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid $border-color;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.2s;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+        }
+
+        &:disabled {
+          background-color: $input-bg;
+          cursor: not-allowed;
+        }
+      }
+
+      .input-currency {
+        position: relative;
+
+        .form-input {
+          padding-right: 30px;
+        }
+
+        .currency-symbol {
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: $gray;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 24px;
+    border-top: 1px solid $border-color;
+
+    .save-btn {
+      padding: 10px 20px;
+      background-color: $primary-color;
+      color: $white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: $hover-color;
+      }
+    }
+  }
 }
+
+// Empty States
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 0;
+  text-align: center;
+
+  .empty-title {
+    font-size: 18px;
+    color: $gray;
+    margin-bottom: 8px;
+  }
+
+  .empty-subtitle {
+    font-size: 14px;
+    color: $text-gray;
+  }
+}
+
+// Error Messages
 .error-message {
-  background-color: #ff4444;
-  color: white;
-  padding: 10px;
-  border-radius: 4px;
-  margin: 10px 0;
+  background-color: $error-red;
+  color: $white;
+  padding: 12px;
+  border-radius: 6px;
+  margin: 16px 0;
   text-align: center;
+  font-size: 14px;
 }
 
-.remove-btn {
-  background-color: #ff4444;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
+// Calendar Component Overrides
+::ng-deep {
+  .p-calendar {
+    width: 100%;
 
-.remove-btn:hover {
-  background-color: #cc0000;
-}
+    .p-inputtext {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      font-size: 14px;
 
-.header-actions {
-  width: 100px;
-  text-align: center;
-}
-.tarefa-actions {
-  display: flex;
-  justify-content: flex-end;
-  padding: 0 1rem;
-}
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+      }
+    }
 
-.delete-btn {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
+    .p-button {
+      background-color: $white;
+      border: 1px solid $border-color;
+      color: $gray;
 
-  &:hover {
-    background-color: #c82333;
+      &:hover {
+        background-color: $input-bg;
+      }
+    }
   }
 }
