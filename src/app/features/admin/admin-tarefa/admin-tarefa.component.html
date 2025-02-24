@@ -1,58 +1,96 @@
-<app-admin-sidebar></app-admin-sidebar>
-<app-admin-header></app-admin-header>
-
 <div class="container">
-  <div *ngIf="tarefa && tarefa.nome">
-    <h1>Detalhes da Tarefa</h1>
-    <div>
-      <strong>Nome da Tarefa:</strong> {{ tarefa.nome }}
-    </div>
-    <div>
-      <strong>Descrição:</strong> {{ tarefa.descricao }}
-    </div>
-    <div>
-      <strong>Responsável:</strong> {{ tarefa.responsavel }}
-    </div>
-    <div>
-      <strong>Status:</strong> {{ tarefa.status }}
-    </div>
-    <div>
-      <strong>Horas Estimadas:</strong> {{ tarefa.horasEstimadas }} hr
-    </div>
-
-    <button (click)="editarTarefa()">Editar Tarefa</button>
+  <div class="breadcrumb">
+    <a [routerLink]="['/tarefas']">Tarefas</a> / {{ tarefa.nome }}
   </div>
 
-  <div *ngIf="isEditMode">
-    <h2>Editar Tarefa</h2>
-    <form (ngSubmit)="salvarAlteracoes()">
-      <div>
-        <label for="nome">Nome da Tarefa</label>
-        <input id="nome" [(ngModel)]="tarefa.nome" name="nome" required />
+  <div class="content">
+    <div *ngIf="!isEditMode" class="detalhes-section">
+      <h2>Detalhes</h2>
+
+      <div class="form-group">
+        <label>ID</label>
+        <div class="input-readonly">{{ tarefa.id }}</div>
       </div>
-      <div>
-        <label for="descricao">Descrição</label>
-        <textarea id="descricao" [(ngModel)]="tarefa.descricao" name="descricao" required></textarea>
+
+      <div class="form-group">
+        <label>Nome</label>
+        <div class="input-readonly">{{ tarefa.nome }}</div>
       </div>
-      <div>
-        <label for="dataInicio">Data de Início</label>
-        <input id="dataInicio" type="date" [(ngModel)]="tarefa.dataInicio" name="dataInicio" required />
+
+      <div class="form-group">
+        <label>Responsável</label>
+        <div class="input-readonly">{{ tarefa.usuarioResponsavel?.nome || 'Não atribuído' }}</div>
       </div>
-      <div>
-        <label for="dataFim">Data de Fim</label>
-        <input id="dataFim" type="date" [(ngModel)]="tarefa.dataFim" name="dataFim" required />
+
+      <h2>Estimativa</h2>
+
+      <div class="form-group">
+        <label>Horas estimadas</label>
+        <div class="input-readonly">{{ tarefa.horasEstimadas || 0 }}</div>
       </div>
-      <div>
-        <label for="status">Status</label>
-        <select id="status" [(ngModel)]="tarefa.status" name="status" required>
+
+      <div class="form-group">
+        <label>Tempo registrado</label>
+        <div class="input-readonly">0</div>
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <div class="input-readonly">{{ tarefa.status }}</div>
+      </div>
+
+      <div class="form-group">
+        <label>Prioridade</label>
+        <div class="input-readonly">Alta</div>
+      </div>
+
+      <button class="btn-primary" (click)="editarTarefa()">Editar tarefa</button>
+    </div>
+
+    <div *ngIf="isEditMode" class="edit-section">
+      <h2>Editar Tarefa</h2>
+
+      <div *ngIf="erro" class="alert alert-danger">
+        {{ erro }}
+      </div>
+
+      <div class="form-group">
+        <label>Nome da Tarefa</label>
+        <input type="text" [(ngModel)]="tarefa.nome" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea [(ngModel)]="tarefa.descricao" class="form-control"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Data de Início</label>
+        <input type="date" [(ngModel)]="tarefa.dataInicio" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label>Data de Fim</label>
+        <input type="date" [(ngModel)]="tarefa.dataFim" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <select [(ngModel)]="tarefa.status" class="form-control">
           <option *ngFor="let status of statusOpcoes" [value]="status">{{ status }}</option>
         </select>
       </div>
-      <div>
-        <label for="horasEstimadas">Horas Estimadas</label>
-        <input id="horasEstimadas" type="number" [(ngModel)]="tarefa.horasEstimadas" name="horasEstimadas" required />
+
+      <div class="form-group">
+        <label>Horas Estimadas <small>(Disponível: {{ horasDisponiveis | number:'1.1-1' }} horas)</small></label>
+        <input type="number" [(ngModel)]="tarefa.horasEstimadas" class="form-control" (blur)="validarHoras()" />
       </div>
-      <button type="submit">Salvar Alterações</button>
-    </form>
+
+      <div class="actions">
+        <button class="btn-primary" (click)="salvarAlteracoes()">Salvar alterações</button>
+        <button class="btn-secondary" (click)="isEditMode = false">Cancelar</button>
+        <button class="btn-danger" (click)="excluirTarefa()">Excluir tarefa</button>
+      </div>
+    </div>
   </div>
 </div>
