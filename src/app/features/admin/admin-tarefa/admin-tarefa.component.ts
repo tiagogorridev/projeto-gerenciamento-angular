@@ -1,5 +1,6 @@
+import { ProjectsService } from './../../../core/auth/services/projects.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TarefaService } from '../../../core/auth/services/tarefa.service';
 
 @Component({
@@ -7,6 +8,7 @@ import { TarefaService } from '../../../core/auth/services/tarefa.service';
   templateUrl: './admin-tarefa.component.html',
   styleUrls: ['./admin-tarefa.component.scss']
 })
+
 export class AdminTarefaComponent implements OnInit {
   idprojeto: number = 0;
   idtarefa: number = 0;
@@ -16,21 +18,19 @@ export class AdminTarefaComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private tarefaService: TarefaService
+    private tarefaService: TarefaService,
+    private projectsService: ProjectsService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.idprojeto = +this.route.snapshot.paramMap.get('idprojeto')!;
     this.idtarefa = +this.route.snapshot.paramMap.get('idtarefa')!;
 
-    console.log('idprojeto:', this.idprojeto);
-    console.log('idtarefa:', this.idtarefa);
-
     this.tarefaService.getTarefaDetails(this.idprojeto, this.idtarefa)
       .subscribe(
         (data) => {
           this.tarefa = data;
-          console.log('Tarefa carregada:', this.tarefa);
         },
         (error) => {
           console.error('Erro ao carregar a tarefa:', error);
@@ -47,7 +47,6 @@ export class AdminTarefaComponent implements OnInit {
       .subscribe(
         (data) => {
           this.tarefa = data;
-          console.log('Tarefa atualizada:', this.tarefa);
           this.isEditMode = false;
         },
         (error) => {
@@ -56,4 +55,19 @@ export class AdminTarefaComponent implements OnInit {
       );
   }
 
+  excluirTarefa(): void {
+    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+      this.projectsService.deleteTarefa(this.idtarefa)
+        .subscribe(
+          () => {
+            alert('Tarefa excluída com sucesso!');
+            this.router.navigate([`/projetos/${this.idprojeto}`]);
+          },
+          (error) => {
+            console.error('Erro ao excluir a tarefa:', error);
+            alert('Erro ao excluir a tarefa.');
+          }
+        );
+    }
+  }
 }
