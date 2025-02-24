@@ -2,3 +2,148 @@
   margin: 0 24px;
   padding: 60px 24px 0 260px;
 }
+
+.breadcrumb {
+  margin-bottom: 20px;
+  font-size: 14px;
+
+  a {
+    color: #666;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.content {
+  width: 100%;
+  max-width: 800px;
+}
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+
+  &.alert-danger {
+    background-color: #ffe8e8;
+    border: 1px solid #ffb8b8;
+    color: #e74c3c;
+  }
+}
+
+h2 {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+
+    small {
+      color: #999;
+      font-style: italic;
+    }
+  }
+
+  .input-readonly {
+    padding: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    min-height: 24px;
+    width: 100%;
+  }
+
+  .form-control {
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+      border-color: #6c5ce7;
+    }
+
+    &.is-invalid {
+      border-color: #e74c3c;
+      background-color: #ffe8e8;
+    }
+  }
+
+  select.form-control {
+    height: 40px;
+  }
+
+  textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+  }
+}
+
+.btn-primary {
+  background-color: #6c5ce7;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #5649c0;
+  }
+}
+
+.btn-secondary {
+  background-color: #f8f8f8;
+  color: #333;
+  border: 1px solid #e0e0e0;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
+
+.btn-danger {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+
+  &:hover {
+    background-color: #e74c3c;
+  }
+}
+
+.actions {
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+.detalhes-section, .edit-section {
+  padding-bottom: 50px;
+}
