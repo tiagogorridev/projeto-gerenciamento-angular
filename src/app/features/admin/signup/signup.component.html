@@ -43,7 +43,7 @@
     <div class="client-row" *ngFor="let usuario of filteredUsers" (click)="navegarParaEdicao(usuario.id)">
       <div class="client-name">{{ usuario.nome }}</div>
       <div class="client-email">{{ usuario.email }}</div>
-      <div class="client-status">{{ usuario.perfil === 'ADMIN' ? 'Administrador' : 'Usuário' }}</div>
+      <div class="client-status">{{ usuario.perfil === 'ADMIN' ? 'Admin' : 'Usuário' }}</div>
     </div>
   </div>
 
