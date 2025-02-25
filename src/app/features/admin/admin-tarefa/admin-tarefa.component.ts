@@ -103,4 +103,16 @@ export class AdminTarefaComponent implements OnInit {
         }
       );
   }
+
+  carregarTempoRegistrado(): void {
+    this.tarefaService.getTempoRegistrado(this.idprojeto, this.idtarefa)
+      .subscribe(
+        (tempo) => {
+          this.tarefa.tempoRegistrado = tempo;
+        },
+        (error) => {
+          console.error('Erro ao carregar tempo registrado:', error);
+        }
+      );
+  }
 }
