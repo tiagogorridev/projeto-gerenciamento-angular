@@ -70,6 +70,9 @@ export class EditProjectsComponent implements OnInit {
   showAddMemberModal: boolean = false;
   horasDisponiveis: number = 0;
 
+  originalTarefas: Tarefa[] = [];
+  originalMembers: Member[] = [];
+
   tarefa: Tarefa = {
     nome: '',
     descricao: '',
@@ -181,12 +184,13 @@ export class EditProjectsComponent implements OnInit {
     if (this.projectId) {
       this.projectsService.getTarefasByProjeto(this.projectId).subscribe(
         (response: Tarefa[]) => {
-          this.tarefas = response.map(tarefa => {
+          this.originalTarefas = response.map(tarefa => {
             return {
               ...tarefa,
               responsavel: tarefa.usuarioResponsavel?.nome || tarefa.responsavel || 'Não atribuído'
             };
           });
+          this.tarefas = [...this.originalTarefas];
         },
         error => {
           console.error('Erro ao carregar tarefas', error);
@@ -199,8 +203,8 @@ export class EditProjectsComponent implements OnInit {
     if (this.projectId) {
       this.projectMemberService.getProjectMembers(Number(this.projectId)).subscribe({
         next: (members) => {
-          this.members = members;
-          console.log('Membros atualizados:', members);
+          this.originalMembers = [...members];
+          this.members = [...this.originalMembers];
         },
         error: (error) => {
           console.error('Erro ao carregar membros do projeto:', error);
@@ -348,6 +352,29 @@ export class EditProjectsComponent implements OnInit {
         }
       }
     );
+  }
+
+
+  filterTarefas(): void {
+    if (this.searchTerm.trim() === '') {
+      this.tarefas = [...this.originalTarefas];
+    } else {
+      this.tarefas = this.originalTarefas.filter(tarefa =>
+        tarefa.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        tarefa.responsavel.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        tarefa.status.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+  }
+
+  filterMembers(): void {
+    if (this.searchTerm.trim() === '') {
+      this.members = [...this.originalMembers];
+    } else {
+      this.members = this.originalMembers.filter(member =>
+        member.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
   }
 
   addUserToProject(): void {
