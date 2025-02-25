@@ -172,6 +172,7 @@ export class EditProjectsComponent implements OnInit {
             status: response.status,
             priority: response.prioridade
           };
+          console.log('Projeto carregado:', this.projectDetails);  // Verifique se o nome está correto
         },
         (error: Error) => {
           console.error('Erro ao carregar dados do projeto', error);

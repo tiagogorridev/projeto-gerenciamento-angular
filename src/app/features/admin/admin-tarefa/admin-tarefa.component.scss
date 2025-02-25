@@ -1,3 +1,14 @@
+$primary-color: #8b5cf6;
+$border-color: #e2e8f0;
+$text-gray: #64748b;
+$gray: #6b7280;
+$white: #ffffff;
+$hover-color: #7c3aed;
+$input-bg: #f8fafc;
+$error-red: #dc3545;
+$modal-overlay: rgba(0, 0, 0, 0.5);
+$success-green: #16a34a;
+
 .container {
   margin: 0 24px;
   padding: 60px 24px 0 260px;
@@ -95,7 +106,7 @@ h2 {
 }
 
 .btn-primary {
-  background-color: #6c5ce7;
+  background-color: $primary-color;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -104,7 +115,7 @@ h2 {
   font-size: 14px;
 
   &:hover {
-    background-color: #5649c0;
+    background-color: $hover-color;
   }
 }
 
