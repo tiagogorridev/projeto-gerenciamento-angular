@@ -21,6 +21,8 @@ export interface ProjectDetails {
   estimatedCost: number;
   status: string;
   priority: string;
+  startDate?: string;
+  endDate?: string;
 }
 export interface Tarefa {
   id?: number;
@@ -163,7 +165,6 @@ export class EditProjectsComponent implements OnInit {
     if (this.projectId) {
       this.projectsService.getProjetoById(Number(this.projectId)).subscribe(
         (response: any) => {
-          this.projectName = response.nome;
           this.projectDetails = {
             name: response.nome,
             client: response.cliente ? response.cliente.nome : 'Nome do Cliente não disponível',
@@ -171,7 +172,9 @@ export class EditProjectsComponent implements OnInit {
             estimatedHours: response.horasEstimadas,
             estimatedCost: response.custoEstimado,
             status: response.status,
-            priority: response.prioridade
+            priority: response.prioridade,
+            startDate: response.dataInicio ? response.dataInicio.substring(0, 10) : '',
+            endDate: response.dataFim ? response.dataFim.substring(0, 10) : ''
           };
           console.log('Projeto carregado:', this.projectDetails);
         },
@@ -222,7 +225,9 @@ export class EditProjectsComponent implements OnInit {
       horasEstimadas: this.projectDetails.estimatedHours,
       custoEstimado: this.projectDetails.estimatedCost,
       status: this.projectDetails.status,
-      prioridade: this.projectDetails.priority
+      prioridade: this.projectDetails.priority,
+      dataInicio: this.projectDetails.startDate ? new Date(this.projectDetails.startDate).toISOString() : undefined,
+      dataFim: this.projectDetails.endDate ? new Date(this.projectDetails.endDate).toISOString() : undefined
     };
 
     if (this.projectId) {
@@ -329,15 +334,9 @@ export class EditProjectsComponent implements OnInit {
 
     this.tarefa.responsavel = this.currentUserName;
     this.tarefa.projeto = { id: Number(this.projectId) };
-    this.tarefa.usuarioResponsavel = { id: this.currentUserId };
+    this.tarefa.usuarioResponsavel = { id: this.currentUserId, nome: this.currentUserName };
     this.tarefa.dataInicio = this.startDate.toISOString();
     this.tarefa.dataFim = this.endDate.toISOString();
-    this.tarefa.responsavel = this.currentUserName;
-
-    this.tarefa.usuarioResponsavel = {
-      id: this.currentUserId,
-      nome: this.currentUserName
-    };
 
     this.projectsService.createTarefa(this.tarefa).subscribe(
       response => {
