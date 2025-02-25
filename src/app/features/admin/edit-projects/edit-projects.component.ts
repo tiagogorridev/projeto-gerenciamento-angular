@@ -5,6 +5,7 @@ import { UsuarioService } from '../../../core/auth/services/usuario.service';
 import { ClienteService } from '../../../core/auth/services/clients.service';
 import { ProjectMemberService } from '../../../core/auth/services/project-member.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../../core/auth/services/auth.service';
 
 export interface Cliente {
   id: number;
@@ -31,6 +32,11 @@ export interface Tarefa {
   status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA';
   projeto: { id: number };
   horasEstimadas: number;
+  usuarioResponsavel?: {
+    id: number;
+    nome?: string;
+    email?: string;
+  };
 }
 interface Member {
   email: string;
@@ -46,6 +52,9 @@ export class EditProjectsComponent implements OnInit {
   projectId: string | null = null;
   projectName: string | null = null;
   selectedUserId: number | null = null;
+  currentUserName: string = '';
+  currentUserEmail: string = '';
+  currentUserId: number | null = null;
   projectDetails: ProjectDetails = {
     name: '',
     client: '',
@@ -83,13 +92,15 @@ export class EditProjectsComponent implements OnInit {
   showErrorMessage: boolean = false;
   errorMessage: string = '';
 
+
   constructor(
     private route: ActivatedRoute,
     private projectsService: ProjectsService,
     private usuarioService: UsuarioService,
     private clienteService: ClienteService,
     private projectMemberService: ProjectMemberService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -97,6 +108,8 @@ export class EditProjectsComponent implements OnInit {
     if (navigation && navigation['projectName']) {
       this.projectName = navigation['projectName'];
     }
+
+    this.loadCurrentUserInfo();
 
     this.route.paramMap.subscribe(params => {
       this.projectId = params.get('id');
@@ -109,6 +122,23 @@ export class EditProjectsComponent implements OnInit {
     });
 
     this.loadClients();
+  }
+
+  loadCurrentUserInfo(): void {
+    this.authService.getCurrentUser().subscribe(
+      (user) => {
+        if (user) {
+          this.currentUserName = user.nome || user.nomeCompleto || '';
+          this.currentUserEmail = user.email || '';
+          this.currentUserId = user.id ? Number(user.id) : null;
+
+          this.tarefa.responsavel = this.currentUserName;
+        }
+      },
+      (error) => {
+        console.error('Erro ao carregar informações do usuário atual:', error);
+      }
+    );
   }
 
   navigateToTask(tarefaId: number): void {
@@ -151,7 +181,12 @@ export class EditProjectsComponent implements OnInit {
     if (this.projectId) {
       this.projectsService.getTarefasByProjeto(this.projectId).subscribe(
         (response: Tarefa[]) => {
-          this.tarefas = response;
+          this.tarefas = response.map(tarefa => {
+            return {
+              ...tarefa,
+              responsavel: tarefa.usuarioResponsavel?.nome || tarefa.responsavel || 'Não atribuído'
+            };
+          });
         },
         error => {
           console.error('Erro ao carregar tarefas', error);
@@ -204,6 +239,7 @@ export class EditProjectsComponent implements OnInit {
 
   openModal(): void {
     this.carregarHorasDisponiveis();
+    this.tarefa.responsavel = this.currentUserName;
     this.showNewTarefaModal = true;
   }
 
@@ -280,14 +316,22 @@ export class EditProjectsComponent implements OnInit {
       return;
     }
 
-    if (!this.projectId || !this.startDate || !this.endDate) {
+    if (!this.projectId || !this.startDate || !this.endDate || !this.currentUserId) {
       this.showError('Dados incompletos para criar a tarefa');
       return;
     }
 
+    this.tarefa.responsavel = this.currentUserName;
     this.tarefa.projeto = { id: Number(this.projectId) };
+    this.tarefa.usuarioResponsavel = { id: this.currentUserId };
     this.tarefa.dataInicio = this.startDate.toISOString();
     this.tarefa.dataFim = this.endDate.toISOString();
+    this.tarefa.responsavel = this.currentUserName;
+
+    this.tarefa.usuarioResponsavel = {
+      id: this.currentUserId,
+      nome: this.currentUserName
+    };
 
     this.projectsService.createTarefa(this.tarefa).subscribe(
       response => {
@@ -395,10 +439,11 @@ export class EditProjectsComponent implements OnInit {
       descricao: '',
       dataInicio: '',
       dataFim: '',
-      responsavel: '',
+      responsavel: this.currentUserName,
       status: 'ABERTA',
       projeto: { id: 0 },
-      horasEstimadas: 0
+      horasEstimadas: 0,
+      usuarioResponsavel: this.currentUserId ? { id: this.currentUserId } : undefined
     };
     this.startDate = new Date();
     this.endDate = new Date();
