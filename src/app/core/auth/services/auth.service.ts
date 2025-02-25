@@ -4,6 +4,23 @@ import { Router } from '@angular/router';
 import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { catchError, tap, finalize } from 'rxjs/operators';
 
+
+
+export interface LoginResponse {
+  token: string;
+  perfil: string;
+  id: string;
+  email: string;
+}
+
+export interface CurrentUser {
+  id?: string;
+  nome?: string;
+  nomeCompleto?: string;
+  email?: string;
+  perfil?: string | null;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,7 +43,6 @@ export class AuthService {
     return localStorage.getItem('perfil');
   }
 
-  // Método para pegar o ID do usuário logado
   getUserId(): string | null {
     return localStorage.getItem('usuario_id');
   }
@@ -98,11 +114,21 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('token');
   }
-}
 
-export interface LoginResponse {
-  token: string;
-  perfil: string;
-  id: string;
-  email: string;
+  getCurrentUser(): Observable<CurrentUser> {
+    const userId = this.getUserId();
+    const email = localStorage.getItem('usuario');
+    const perfil = this.getUserRole();
+
+    if (userId && email) {
+      const user: CurrentUser = {
+        id: userId,
+        email: email,
+        perfil: perfil
+      };
+      return of(user);
+    } else {
+      return throwError(() => new Error('User not authenticated'));
+    }
+  }
 }
