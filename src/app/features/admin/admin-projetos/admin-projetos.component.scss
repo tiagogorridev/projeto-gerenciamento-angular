@@ -11,12 +11,16 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 .projects-container {
   margin: 0 24px;
   padding: 60px 24px 0 260px;
-}
 
-/* Cabeçalho dos Projetos */
-.projects-container h1 {
-  color: $gray;
-  font-weight: 400;
+  .projects-header {
+    margin-bottom: 24px;
+
+    h1 {
+      font-size: 20px;
+      color: #111827;
+      font-weight: 500;
+    }
+  }
 }
 
 /* Estado vazio (sem projetos) */
@@ -24,74 +28,78 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 48px;
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
   min-height: 400px;
 
   .empty-state-content {
     text-align: center;
-  }
 
-  .empty-image {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-  }
+    .empty-image {
+      width: 160px;
+      height: 160px;
+      margin-bottom: 16px;
+    }
 
-  .empty-text {
-    color: $gray;
-    font-size: 1.2rem;
+    .empty-text {
+      color: $gray;
+      font-size: 16px;
+    }
   }
 }
 
 /* Filtros de Pesquisa */
 .search-filter-container {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  gap: 16px;
   margin-bottom: 24px;
+  align-items: center;
   flex-wrap: wrap;
-}
 
-/* Input de Pesquisa */
-.input-group {
-  position: relative;
-  min-width: 180px;
-  flex: 1;
-  max-width: 250px;
+  .input-group {
+    position: relative;
+    min-width: 180px;
+    flex: 1;
+    max-width: 250px;
 
-  .input-field {
-    width: 100%;
-    height: 40px;
-    padding: 8px 35px 8px 12px;
-    border: 1px solid $border-color;
-    border-radius: 6px;
-    font-size: 14px;
-    background-color: $input-bg;
-    transition: all 0.2s ease;
+    .input-field {
+      width: 100%;
+      height: 40px;
+      padding: 8px 16px;
+      border: 1px solid #E5E7EB;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #374151;
+      background: #F9FAFB;
 
-    &:focus {
-      outline: none;
-      border-color: $primary-color;
-      box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+      &::placeholder {
+        color: #9CA3AF;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #6366F1;
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+      }
     }
 
-    &::placeholder {
-      color: $text-gray;
+    select.input-field {
+      appearance: none;
+      padding-right: 36px;
+      cursor: pointer;
     }
-  }
 
-  .search-icon,
-  .dropdown-icon {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: $text-gray;
-    pointer-events: none;
-  }
-
-  select {
-    appearance: none;
-    cursor: pointer;
+    .search-icon,
+    .dropdown-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6B7280;
+      pointer-events: none;
+    }
   }
 }
 
@@ -215,10 +223,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     .input-field {
       height: 36px;
     }
-
-    .currency-input .input-field {
-      height: 36px;
-    }
   }
 }
 
@@ -259,160 +263,12 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 
 /* Lista de Projetos */
 .projects-list {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Linha de Projeto */
-.project-row {
-  display: flex;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid $border-color;
-  justify-content: space-between;
-}
-
-/* Cabeçalho da Tabela de Projetos */
-.headers {
-  font-weight: bold;
-  background-color: #f3f4f6;
-  border-bottom: 2px solid $border-color;
-}
-
-/* Estilos das Colunas de Projetos */
-.project-name,
-.project-description,
-.project-client,
-.project-progress,
-.project-cost,
-.project-status,
-.project-priority,
-.project-start,
-.project-end {
-  flex: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  padding: 0 8px;
-  font-size: 14px;
-  color: $text-gray;
-}
-
-.project-name {
-  font-weight: bold;
-  max-width: 150px;
-}
-
-.project-description {
-  max-width: 200px;
-}
-
-.project-client {
-  max-width: 200px;
-}
-
-.project-progress,
-.project-cost,
-.project-status,
-.project-priority {
-  max-width: none;
-}
-
-.project-start,
-.project-end {
-  max-width: 100px;
-}
-
-/* Hover em Linha de Projeto */
-.project-row:hover {
-  background-color: #f9fafb;
-}
-
-.projects-container {
-  margin: 0 24px;
-  padding: 60px 24px 0 260px;
-
-  .projects-header {
-    margin-bottom: 24px;
-
-    h1 {
-      font-size: 20px;
-      color: #111827;
-      font-weight: 500;
-    }
-  }
-}
-
-.search-filter-container {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
-  align-items: center;
-
-  .input-group {
-    position: relative;
-
-    .input-field {
-      height: 40px;
-      padding: 8px 16px;
-      border: 1px solid #E5E7EB;
-      border-radius: 6px;
-      font-size: 14px;
-      color: #374151;
-      background: #F9FAFB;
-      width: 240px;
-
-      &::placeholder {
-        color: #9CA3AF;
-      }
-
-      &:focus {
-        outline: none;
-        border-color: #6366F1;
-        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
-      }
-    }
-
-    select.input-field {
-      appearance: none;
-      padding-right: 36px;
-      width: 160px;
-    }
-
-    .search-icon,
-    .dropdown-icon {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #6B7280;
-      pointer-events: none;
-    }
-  }
-
-  .new-project-btn {
-    margin-left: auto;
-    background: #6366F1;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    height: 40px;
-
-    &:hover {
-      background: #4F46E5;
-    }
-  }
-}
-
-.projects-list {
   background: white;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
   .project-row {
     display: grid;
@@ -440,18 +296,22 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     > div {
       font-size: 14px;
       color: #374151;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
+}
 
-  .project-name {
-    font-weight: 500;
-    color: #111827;
-  }
+/* Estilos das Colunas de Projetos */
+.project-name {
+  font-weight: 500;
+  color: #111827;
+}
 
-  .project-progress,
-  .project-cost {
-    color: #6B7280;
-  }
+.project-progress,
+.project-cost {
+  color: #6B7280;
 }
 
 // Status badges
@@ -509,27 +369,32 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-.empty-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 48px;
-  background: white;
-  border: 1px solid #E5E7EB;
-  border-radius: 8px;
+::ng-deep {
+  .p-calendar {
+    width: 100%;
 
-  .empty-state-content {
-    text-align: center;
+    .p-inputtext {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      font-size: 14px;
 
-    .empty-image {
-      width: 160px;
-      height: 160px;
-      margin-bottom: 16px;
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+      }
     }
 
-    .empty-text {
-      color: #6B7280;
-      font-size: 16px;
+    .p-button {
+      background-color: $white;
+      border: 1px solid $border-color;
+      color: $gray;
+
+      &:hover {
+        background-color: $input-bg;
+      }
     }
   }
 }
