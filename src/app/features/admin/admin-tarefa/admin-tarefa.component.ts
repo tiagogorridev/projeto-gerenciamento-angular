@@ -105,19 +105,18 @@ export class AdminTarefaComponent implements OnInit {
       );
   }
 
-  excluirTarefa(): void {
-    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
-      this.tarefaService.deleteTarefa(this.idtarefa)
-        .subscribe(
-          () => {
-            alert('Tarefa excluída com sucesso!');
-            this.router.navigate(['/tarefas']);
-          },
-          (error) => {
-            console.error('Erro ao excluir a tarefa:', error);
-            alert('Erro ao excluir a tarefa.');
-          }
-        );
-    }
+excluirTarefa(): void {
+  if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+    this.tarefaService.deleteTarefa(this.idtarefa)
+      .subscribe(
+        () => {
+          alert('Tarefa excluída com sucesso!');
+          this.router.navigate([`/admin/edit-projects/${this.idprojeto}`]);
+        },
+        (error) => {
+          console.error('Erro ao excluir a tarefa:', error);
+          alert('Erro ao excluir a tarefa.');
+        }
+      );
   }
-}
+}}
