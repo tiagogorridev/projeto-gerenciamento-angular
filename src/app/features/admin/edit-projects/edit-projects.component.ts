@@ -169,6 +169,7 @@ export class EditProjectsComponent implements OnInit {
     if (this.projectId) {
       this.projectsService.getProjetoById(Number(this.projectId)).subscribe(
         (response: any) => {
+          this.projectName = response.nome;
           this.projectDetails = {
             name: response.nome,
             client: response.cliente ? response.cliente.nome : 'Nome do Cliente não disponível',
