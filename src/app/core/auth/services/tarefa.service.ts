@@ -58,4 +58,7 @@ export class TarefaService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
+  getTempoRegistrado(idProjeto: number, idTarefa: number) {
+    return this.http.get<number>(`${this.apiUrl}/projetos/${idProjeto}/tarefas/${idTarefa}/tempo-registrado`);
+  }
 }
