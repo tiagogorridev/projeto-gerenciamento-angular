@@ -35,6 +35,10 @@ export class AdminTarefaComponent implements OnInit {
     this.carregarHorasDisponiveisProjeto();
   }
 
+  navigateToTarefas(): void {
+    this.router.navigate([`/admin/edit-projects`, this.idprojeto]);
+  }
+
   carregarTarefa(): void {
     this.tarefaService.getTarefaDetails(this.idprojeto, this.idtarefa)
       .subscribe(
