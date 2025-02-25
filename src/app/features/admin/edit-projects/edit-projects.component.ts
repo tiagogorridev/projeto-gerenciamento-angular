@@ -1,3 +1,4 @@
+import { TarefaService } from './../../../core/auth/services/tarefa.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
@@ -6,6 +7,7 @@ import { ClienteService } from '../../../core/auth/services/clients.service';
 import { ProjectMemberService } from '../../../core/auth/services/project-member.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../../core/auth/services/auth.service';
+
 
 export interface Cliente {
   id: number;
@@ -34,6 +36,7 @@ export interface Tarefa {
   status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA';
   projeto: { id: number };
   horasEstimadas: number;
+  tempoRegistrado?: number;
   usuarioResponsavel?: {
     id: number;
     nome?: string;
@@ -83,7 +86,8 @@ export class EditProjectsComponent implements OnInit {
     responsavel: '',
     status: 'ABERTA',
     projeto: { id: 0 },
-    horasEstimadas: 0
+    horasEstimadas: 0,
+    tempoRegistrado: 0
   };
 
   tarefas: Tarefa[] = [];
@@ -105,7 +109,8 @@ export class EditProjectsComponent implements OnInit {
     private clienteService: ClienteService,
     private projectMemberService: ProjectMemberService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private tarefaService: TarefaService
   ) {}
 
   ngOnInit(): void {
@@ -201,6 +206,12 @@ export class EditProjectsComponent implements OnInit {
             };
           });
           this.tarefas = [...this.originalTarefas];
+
+          this.tarefas.forEach(tarefa => {
+            if (tarefa.id) {
+              this.carregarTempoRegistradoPorTarefa(tarefa.id);
+            }
+          });
         },
         error => {
           console.error('Erro ao carregar tarefas', error);
@@ -466,6 +477,23 @@ export class EditProjectsComponent implements OnInit {
     }
   }
 
+  carregarTempoRegistradoPorTarefa(tarefaId: number): void {
+    if (!this.projectId) return;
+
+    this.tarefaService.getTempoRegistrado(Number(this.projectId), Number(tarefaId))
+      .subscribe(
+        (tempo) => {
+          const tarefaIndex = this.tarefas.findIndex(t => t.id === tarefaId);
+          if (tarefaIndex !== -1) {
+            this.tarefas[tarefaIndex].tempoRegistrado = tempo;
+          }
+        },
+        (error) => {
+          console.error(`Erro ao carregar tempo registrado para tarefa ${tarefaId}:`, error);
+        }
+      );
+  }
+
   resetTarefaForm(): void {
     this.tarefa = {
       nome: '',
@@ -476,6 +504,7 @@ export class EditProjectsComponent implements OnInit {
       status: 'ABERTA',
       projeto: { id: 0 },
       horasEstimadas: 0,
+      tempoRegistrado: 0,
       usuarioResponsavel: this.currentUserId ? { id: this.currentUserId } : undefined
     };
     this.startDate = new Date();
