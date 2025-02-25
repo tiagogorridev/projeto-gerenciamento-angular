@@ -3,54 +3,13 @@
 
 <div class="container">
   <div class="breadcrumb">
-    <a  (click)="navigateToTarefas()">Tarefas</a> / {{ tarefa.nome }}
+    <a (click)="navigateToTarefas()">Tarefas</a> /
+    <span>{{ tarefa.nomeOriginal || tarefa.nome }}</span>
   </div>
 
   <div class="content">
-    <div *ngIf="!isEditMode" class="detalhes-section">
+    <div class="detalhes-section">
       <h2>Detalhes</h2>
-
-      <div class="form-group">
-        <label>Nome</label>
-        <div class="input-readonly">{{ tarefa.nome }}</div>
-      </div>
-
-      <div class="form-group">
-        <label>Responsável</label>
-        <div class="input-readonly">{{ tarefa.usuarioResponsavel?.nome || 'Não atribuído' }}</div>
-      </div>
-
-      <h2>Estimativa</h2>
-
-      <div class="form-group">
-        <label>Horas estimadas</label>
-        <div class="input-readonly">{{ tarefa.horasEstimadas || 0 }}</div>
-      </div>
-
-      <div class="form-group">
-        <label>Tempo registrado</label>
-        <div class="input-readonly">0</div>
-      </div>
-
-      <div class="form-group">
-        <label>Status</label>
-        <div class="input-readonly">{{ tarefa.status }}</div>
-      </div>
-
-      <div class="form-group">
-        <label>Prioridade</label>
-        <div class="input-readonly">Alta</div>
-      </div>
-
-      <button class="btn-primary" (click)="editarTarefa()">Editar tarefa</button>
-    </div>
-
-    <div *ngIf="isEditMode" class="edit-section">
-      <h2>Editar Tarefa</h2>
-
-      <div *ngIf="erro" class="alert alert-danger">
-        {{ erro }}
-      </div>
 
       <div class="form-group">
         <label>Nome da Tarefa</label>
@@ -63,13 +22,18 @@
       </div>
 
       <div class="form-group">
-        <label>Data de Início</label>
-        <input type="date" [(ngModel)]="tarefa.dataInicio" class="form-control" />
+        <label>Responsável</label>
+        <div class="input-readonly">{{ tarefa.usuarioResponsavel?.nome || 'Não atribuído' }}</div>
       </div>
 
       <div class="form-group">
-        <label>Data de Fim</label>
-        <input type="date" [(ngModel)]="tarefa.dataFim" class="form-control" />
+        <label>Horas estimadas</label>
+        <input type="number" [(ngModel)]="tarefa.horasEstimadas" class="form-control" (blur)="validarHoras()" />
+      </div>
+
+      <div class="form-group">
+        <label>Tempo registrado</label>
+        <div class="input-readonly">0</div>
       </div>
 
       <div class="form-group">
@@ -80,14 +44,17 @@
       </div>
 
       <div class="form-group">
-        <label>Horas Estimadas <small>(Disponível: {{ horasDisponiveis | number:'1.1-1' }} horas)</small></label>
-        <input type="number" [(ngModel)]="tarefa.horasEstimadas" class="form-control" (blur)="validarHoras()" />
+        <label>Data de Início</label>
+        <input type="date" [(ngModel)]="tarefa.dataInicio" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label>Data de Fim</label>
+        <input type="date" [(ngModel)]="tarefa.dataFim" class="form-control" />
       </div>
 
       <div class="actions">
         <button class="btn-primary" (click)="salvarAlteracoes()">Salvar alterações</button>
-        <button class="btn-secondary" (click)="isEditMode = false">Cancelar</button>
-        <button class="btn-danger" (click)="excluirTarefa()">Excluir tarefa</button>
       </div>
     </div>
   </div>

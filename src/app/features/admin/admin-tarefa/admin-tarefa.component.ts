@@ -12,7 +12,6 @@ export class AdminTarefaComponent implements OnInit {
   idprojeto: number = 0;
   idtarefa: number = 0;
   tarefa: any = {};
-  isEditMode: boolean = false;
   statusOpcoes: string[] = ['ABERTA', 'EM_ANDAMENTO', 'CONCLUIDA', 'PAUSADA'];
 
   horasOriginais: number = 0;
@@ -44,6 +43,7 @@ export class AdminTarefaComponent implements OnInit {
       .subscribe(
         (data) => {
           this.tarefa = data;
+          this.tarefa.nomeOriginal = data.nome;
           this.horasOriginais = parseFloat(this.tarefa.horasEstimadas || 0);
         },
         (error) => {
@@ -81,10 +81,6 @@ export class AdminTarefaComponent implements OnInit {
     return true;
   }
 
-  editarTarefa(): void {
-    this.isEditMode = true;
-  }
-
   salvarAlteracoes(): void {
     if (!this.validarHoras()) {
       return;
@@ -94,7 +90,6 @@ export class AdminTarefaComponent implements OnInit {
       .subscribe(
         (data) => {
           this.tarefa = data;
-          this.isEditMode = false;
           this.horasOriginais = parseFloat(this.tarefa.horasEstimadas || 0);
           this.carregarHorasDisponiveisProjeto();
         },
@@ -108,19 +103,4 @@ export class AdminTarefaComponent implements OnInit {
         }
       );
   }
-
-excluirTarefa(): void {
-  if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
-    this.tarefaService.deleteTarefa(this.idtarefa)
-      .subscribe(
-        () => {
-          alert('Tarefa excluída com sucesso!');
-          this.router.navigate([`/admin/edit-projects/${this.idprojeto}`]);
-        },
-        (error) => {
-          console.error('Erro ao excluir a tarefa:', error);
-          alert('Erro ao excluir a tarefa.');
-        }
-      );
-  }
-}}
+}
