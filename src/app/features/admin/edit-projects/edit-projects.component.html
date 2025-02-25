@@ -73,7 +73,8 @@
       </div>
       <div class="form-group">
         <label>Responsável</label>
-        <input type="text" class="input-field" [(ngModel)]="tarefa.responsavel" name="responsavel" required>
+        <input type="text" class="input-field" [(ngModel)]="tarefa.responsavel" name="responsavel" readonly>
+        <small class="info-text">A tarefa é atribuída automaticamente a você.</small>
       </div>
       <div class="form-group">
         <label>Status</label>
@@ -97,9 +98,7 @@
   </div>
 </div>
 
-      <!-- Tabela de Tarefas -->
       <div class="tasks-table">
-        <!-- Se houver tarefas, lista-as -->
 
         <div class="tarefas-list">
           <div class="tarefa-row headers">
@@ -112,7 +111,7 @@
 
           <div class="tarefas-row" *ngFor="let tarefa of tarefas">
             <div class="tarefa-name">{{ tarefa.nome }}</div>
-            <div class="tarefa-client">{{ tarefa.responsavel }}</div>
+            <div class="tarefa-client">{{ tarefa.usuarioResponsavel?.nome || tarefa.responsavel || 'Não atribuído' }}</div>
             <div class="tarefa-status">{{ tarefa.status }}</div>
             <div class="tarefa-hours">0hr/{{ tarefa.horasEstimadas }}hr</div>
             <div class="tarefa-actions">
