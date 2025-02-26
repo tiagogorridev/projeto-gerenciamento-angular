@@ -50,7 +50,7 @@
 
       <div class="form-group">
         <label>Status</label>
-        <select class="input-field">
+        <select class="input-field" [(ngModel)]="selectedStatus" (ngModelChange)="aplicarFiltros()">
           <option value="">Todos os status</option>
           <option value="PLANEJADO">Planejado</option>
           <option value="EM_ANDAMENTO">Em Andamento</option>
@@ -61,14 +61,13 @@
 
       <div class="form-group">
         <label>Prioridade</label>
-        <select class="input-field">
+        <select class="input-field" [(ngModel)]="selectedPrioridade" (ngModelChange)="aplicarFiltros()">
           <option value="">Todas as prioridades</option>
           <option value="ALTA">Alta</option>
           <option value="MEDIA">Média</option>
           <option value="BAIXA">Baixa</option>
         </select>
       </div>
-    </div>
 
     <div class="filter-actions">
       <button class="btn-secondary">Limpar Filtros</button>
