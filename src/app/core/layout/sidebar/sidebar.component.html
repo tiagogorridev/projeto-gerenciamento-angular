@@ -82,9 +82,7 @@
       </a>
     </div>
     <div class="user-details">
-      <span class="user-name">Nome do Usuário</span>
       <a routerLink="/logout" class="logout-link">
-        <i class="pi pi-sign-out"></i>
         <button *ngIf="isAuthenticated$ | async" (click)="logout()">Logout</button>
       </a>
     </div>
