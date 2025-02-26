@@ -24,9 +24,6 @@ export class AdminHeaderComponent implements OnInit {
     this.authService.logout().subscribe();
   }
 
-  onSearch(event: any): void {
-  }
-
   toggleProfileMenu(): void {
     this.showProfileMenu = !this.showProfileMenu;
   }
