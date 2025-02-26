@@ -122,52 +122,21 @@
           <div class="project-dates">Período</div>
         </div>
 
-        <div class="project-row">
-          <div class="project-name">Redesign Website</div>
-          <div class="project-client">Cliente A</div>
-          <div class="project-progress">45h de 60h</div>
-          <div class="project-cost">R$ 4.500,00 de R$ 6.000,00</div>
+        <div class="project-row" *ngFor="let projeto of projetos">
+          <div class="project-name">{{ projeto.nome }}</div>
+          <div class="project-client">{{ projeto.cliente.nome }}</div>
+          <div class="project-progress">{{ projeto.horasTrabalhadas }} de {{ projeto.horasEstimadas }}h</div>
+          <div class="project-cost">R$ {{ projeto.custoTrabalhado }} de R$ {{ projeto.custoEstimado }}</div>
           <div class="project-status">
-            <span class="EM_ANDAMENTO">EM ANDAMENTO</span>
+            <span [ngClass]="getStatusClass(projeto.status)">{{ projeto.status }}</span>
           </div>
           <div class="project-priority">
-            <span class="ALTA">ALTA</span>
+            <span [ngClass]="getPriorityClass(projeto.prioridade)">{{ projeto.prioridade }}</span>
           </div>
-          <div class="project-dates">01/02/2025 a 28/02/2025</div>
-        </div>
-
-        <div class="project-row">
-          <div class="project-name">App Mobile</div>
-          <div class="project-client">Cliente B</div>
-          <div class="project-progress">120h de 180h</div>
-          <div class="project-cost">R$ 12.000,00 de R$ 18.000,00</div>
-          <div class="project-status">
-            <span class="EM_ANDAMENTO">EM ANDAMENTO</span>
-          </div>
-          <div class="project-priority">
-            <span class="ALTA">ALTA</span>
-          </div>
-          <div class="project-dates">15/01/2025 a 15/03/2025</div>
-        </div>
-
-        <div class="project-row">
-          <div class="project-name">Sistema de Gestão</div>
-          <div class="project-client">Cliente C</div>
-          <div class="project-progress">80h de 120h</div>
-          <div class="project-cost">R$ 8.000,00 de R$ 12.000,00</div>
-          <div class="project-status">
-            <span class="PLANEJADO">PLANEJADO</span>
-          </div>
-          <div class="project-priority">
-            <span class="MEDIA">MEDIA</span>
-          </div>
-          <div class="project-dates">01/03/2025 a 30/04/2025</div>
+          <div class="project-dates">{{ projeto.dataInicio }} a {{ projeto.dataFim }}</div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Tarefas Tab (Hidden by default) -->
   <div class="report-content" style="display: none;">
     <div class="report-summary">
       <div class="summary-card">
