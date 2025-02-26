@@ -61,4 +61,8 @@ export class TarefaService {
   getTempoRegistrado(idProjeto: number, idTarefa: number) {
     return this.http.get<number>(`${this.apiUrl}/projetos/${idProjeto}/tarefas/${idTarefa}/tempo-registrado`);
   }
+
+  getTodasTarefas(): Observable<Tarefa[]> {
+    return this.http.get<Tarefa[]>(this.apiUrl);
+  }
 }
