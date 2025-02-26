@@ -26,6 +26,7 @@ export class AdminRelatoriosComponent implements OnInit {
   custoTrabalhado: number = 0;
   selectedDataInicio: string = '';
   selectedDataFim: string = '';
+  activeTab: string = 'projetos';
 
   constructor(
     private projectsService: ProjectsService,
@@ -101,5 +102,19 @@ export class AdminRelatoriosComponent implements OnInit {
     this.tempoRegistrado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.tempoRegistrado ?? 0), 0);
     this.custoEstimado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoEstimado ?? 0), 0);
     this.custoTrabalhado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoTrabalhado ?? 0), 0);
+  }
+
+  changeTab(tab: string): void {
+    this.activeTab = tab;
+  }
+
+  limparFiltros(): void {
+    this.selectedCliente = '';
+    this.selectedUsuario = '';
+    this.selectedStatus = '';
+    this.selectedPrioridade = '';
+    this.selectedDataInicio = '';
+    this.selectedDataFim = '';
+    this.aplicarFiltros();
   }
 }
