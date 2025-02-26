@@ -1,2 +1,246 @@
 <app-admin-sidebar></app-admin-sidebar>
 <app-admin-header></app-admin-header>
+
+<div class="reports-container">
+  <div class="reports-header">
+    <h1>Relatórios</h1>
+  </div>
+
+  <div class="report-tabs">
+    <button class="tab-button active">
+      Projetos
+    </button>
+    <button class="tab-button">
+      Tarefas
+    </button>
+  </div>
+
+  <div class="filter-section">
+    <h2>Filtros</h2>
+    <div class="filters-grid">
+      <div class="form-group">
+        <label>Período</label>
+        <div class="date-range">
+          <div class="date-input">
+            <label>De</label>
+            <input type="date" class="input-field">
+          </div>
+          <div class="date-input">
+            <label>Até</label>
+            <input type="date" class="input-field">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Cliente</label>
+        <select class="input-field">
+          <option value="">Todos os clientes</option>
+          <option value="1">Cliente A</option>
+          <option value="2">Cliente B</option>
+          <option value="3">Cliente C</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Usuário</label>
+        <select class="input-field">
+          <option value="">Todos os usuários</option>
+          <option value="1">João Silva</option>
+          <option value="2">Maria Santos</option>
+          <option value="3">Carlos Oliveira</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <select class="input-field">
+          <option value="">Todos os status</option>
+          <option value="PLANEJADO">Planejado</option>
+          <option value="EM_ANDAMENTO">Em Andamento</option>
+          <option value="CONCLUIDO">Concluído</option>
+          <option value="CANCELADO">Cancelado</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Prioridade</label>
+        <select class="input-field">
+          <option value="">Todas as prioridades</option>
+          <option value="ALTA">Alta</option>
+          <option value="MEDIA">Média</option>
+          <option value="BAIXA">Baixa</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-actions">
+      <button class="btn-secondary">Limpar Filtros</button>
+      <button class="btn-primary">Aplicar Filtros</button>
+    </div>
+  </div>
+
+  <!-- Projetos Tab -->
+  <div class="report-content">
+    <div class="report-summary">
+      <div class="summary-card">
+        <div class="summary-title">Total de Projetos</div>
+        <div class="summary-value">15</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-title">Horas Estimadas</div>
+        <div class="summary-value">450h</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-title">Horas Trabalhadas</div>
+        <div class="summary-value">328h</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-title">Custo Estimado</div>
+        <div class="summary-value">R$ 45.000,00</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-title">Custo Trabalhado</div>
+        <div class="summary-value">R$ 32.800,00</div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <div class="export-actions">
+        <button class="export-btn"><i class="fas fa-file-excel"></i> Exportar Excel</button>
+        <button class="export-btn"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
+      </div>
+
+      <div class="projects-table">
+        <div class="project-row headers">
+          <div class="project-name">Nome</div>
+          <div class="project-client">Cliente</div>
+          <div class="project-progress">Progresso</div>
+          <div class="project-cost">Custo</div>
+          <div class="project-status">Status</div>
+          <div class="project-priority">Prioridade</div>
+          <div class="project-dates">Período</div>
+        </div>
+
+        <div class="project-row">
+          <div class="project-name">Redesign Website</div>
+          <div class="project-client">Cliente A</div>
+          <div class="project-progress">45h de 60h</div>
+          <div class="project-cost">R$ 4.500,00 de R$ 6.000,00</div>
+          <div class="project-status">
+            <span class="EM_ANDAMENTO">EM ANDAMENTO</span>
+          </div>
+          <div class="project-priority">
+            <span class="ALTA">ALTA</span>
+          </div>
+          <div class="project-dates">01/02/2025 a 28/02/2025</div>
+        </div>
+
+        <div class="project-row">
+          <div class="project-name">App Mobile</div>
+          <div class="project-client">Cliente B</div>
+          <div class="project-progress">120h de 180h</div>
+          <div class="project-cost">R$ 12.000,00 de R$ 18.000,00</div>
+          <div class="project-status">
+            <span class="EM_ANDAMENTO">EM ANDAMENTO</span>
+          </div>
+          <div class="project-priority">
+            <span class="ALTA">ALTA</span>
+          </div>
+          <div class="project-dates">15/01/2025 a 15/03/2025</div>
+        </div>
+
+        <div class="project-row">
+          <div class="project-name">Sistema de Gestão</div>
+          <div class="project-client">Cliente C</div>
+          <div class="project-progress">80h de 120h</div>
+          <div class="project-cost">R$ 8.000,00 de R$ 12.000,00</div>
+          <div class="project-status">
+            <span class="PLANEJADO">PLANEJADO</span>
+          </div>
+          <div class="project-priority">
+            <span class="MEDIA">MEDIA</span>
+          </div>
+          <div class="project-dates">01/03/2025 a 30/04/2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tarefas Tab (Hidden by default) -->
+  <div class="report-content" style="display: none;">
+    <div class="report-summary">
+      <div class="summary-card">
+        <div class="summary-title">Total de Tarefas</div>
+        <div class="summary-value">42</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-title">Tarefas Concluídas</div>
+        <div class="summary-value">18</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-title">Tarefas em Andamento</div>
+        <div class="summary-value">24</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-title">Horas Estimadas</div>
+        <div class="summary-value">320h</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-title">Horas Registradas</div>
+        <div class="summary-value">215h</div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <div class="export-actions">
+        <button class="export-btn"><i class="fas fa-file-excel"></i> Exportar Excel</button>
+        <button class="export-btn"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
+      </div>
+
+      <div class="tasks-table">
+        <div class="task-row headers">
+          <div class="task-name">Tarefa</div>
+          <div class="task-project">Projeto</div>
+          <div class="task-user">Responsável</div>
+          <div class="task-status">Status</div>
+          <div class="task-hours">Horas</div>
+          <div class="task-dates">Período</div>
+        </div>
+
+        <div class="task-row">
+          <div class="task-name">Design da Homepage</div>
+          <div class="task-project">Redesign Website</div>
+          <div class="task-user">Maria Santos</div>
+          <div class="task-status">
+            <span class="CONCLUIDA">CONCLUIDA</span>
+          </div>
+          <div class="task-hours">12/15hr</div>
+          <div class="task-dates">01/02/2025 a 10/02/2025</div>
+        </div>
+
+        <div class="task-row">
+          <div class="task-name">Desenvolvimento Frontend</div>
+          <div class="task-project">Redesign Website</div>
+          <div class="task-user">João Silva</div>
+          <div class="task-status">
+            <span class="EM_ANDAMENTO">EM ANDAMENTO</span>
+          </div>
+          <div class="task-hours">18/30hr</div>
+          <div class="task-dates">11/02/2025 a 25/02/2025</div>
+        </div>
+
+        <div class="task-row">
+          <div class="task-name">API de Integração</div>
+          <div class="task-project">App Mobile</div>
+          <div class="task-user">Carlos Oliveira</div>
+          <div class="task-status">
+            <span class="EM_ANDAMENTO">EM ANDAMENTO</span>
+          </div>
+          <div class="task-hours">25/40hr</div>
+          <div class="task-dates">15/01/2025 a 15/02/2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
