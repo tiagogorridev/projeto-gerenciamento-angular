@@ -24,6 +24,8 @@ export class AdminRelatoriosComponent implements OnInit {
   tempoRegistrado: number = 0;
   custoEstimado: number = 0;
   custoTrabalhado: number = 0;
+  selectedDataInicio: string = '';
+  selectedDataFim: string = '';
 
   constructor(
     private projectsService: ProjectsService,
@@ -58,11 +60,17 @@ export class AdminRelatoriosComponent implements OnInit {
 
   aplicarFiltros(): void {
     this.projetosFiltrados = this.projetos.filter((projeto) => {
+      const dataInicioProjeto = new Date(projeto.dataInicio);
+      const dataFimProjeto = new Date(projeto.dataFim);
+      const dataInicioFiltro = this.selectedDataInicio ? new Date(this.selectedDataInicio) : null;
+      const dataFimFiltro = this.selectedDataFim ? new Date(this.selectedDataFim) : null;
       return (
         (!this.selectedCliente || projeto.cliente.id === Number(this.selectedCliente)) &&
         (!this.selectedUsuario || projeto.usuarioResponsavel.id === Number(this.selectedUsuario)) &&
         (!this.selectedStatus || projeto.status === this.selectedStatus) &&
-        (!this.selectedPrioridade || projeto.prioridade === this.selectedPrioridade)
+        (!this.selectedPrioridade || projeto.prioridade === this.selectedPrioridade) &&
+        (!dataInicioFiltro || dataInicioProjeto >= dataInicioFiltro) &&
+        (!dataFimFiltro || dataFimProjeto <= dataFimFiltro)
       );
     });
     this.atualizarResumo();
