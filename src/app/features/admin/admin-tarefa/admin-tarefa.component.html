@@ -39,7 +39,9 @@
       <div class="form-group">
         <label>Status</label>
         <select [(ngModel)]="tarefa.status" class="form-control">
-          <option *ngFor="let status of statusOpcoes" [value]="status">{{ status }}</option>
+          <option *ngFor="let status of statusOpcoes" [value]="status">
+            {{ getStatusDisplay(status) }}
+          </option>
         </select>
       </div>
 

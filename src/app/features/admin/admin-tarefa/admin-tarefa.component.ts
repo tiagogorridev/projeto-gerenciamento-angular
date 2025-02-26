@@ -12,12 +12,19 @@ export class AdminTarefaComponent implements OnInit {
   idprojeto: number = 0;
   idtarefa: number = 0;
   tarefa: any = {};
-  statusOpcoes: string[] = ['ABERTA', 'EM_ANDAMENTO', 'CONCLUIDA', 'PAUSADA'];
+  statusOpcoes: ('ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA')[] = ['ABERTA', 'EM_ANDAMENTO', 'CONCLUIDA', 'PAUSADA'];
 
   horasOriginais: number = 0;
   horasDisponiveisProjeto: number = 0;
   horasDisponiveis: number = 0;
   erro: string = '';
+
+  statusMap = {
+    ABERTA: 'Aberta',
+    EM_ANDAMENTO: 'Em Andamento',
+    CONCLUIDA: 'Concluída',
+    PAUSADA: 'Pausada'
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +43,15 @@ export class AdminTarefaComponent implements OnInit {
 
   navigateToTarefas(): void {
     this.router.navigate([`/admin/edit-projects`, this.idprojeto]);
+  }
+
+  getStatusDisplay(status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA'): string {
+    return this.statusMap[status] || status;
+  }
+
+  getStatusValue(display: string): 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA' {
+    const entry = Object.entries(this.statusMap).find(([key, value]) => value === display);
+    return entry ? entry[0] as 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA' : display as 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA';
   }
 
   carregarTarefa(): void {
