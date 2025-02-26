@@ -6,7 +6,9 @@ export interface Tarefa {
   dataFim: string;
   responsavel: string;
   status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA';
-  projeto: { id: number };
+  projeto: { id: number; nome: string };
+  usuarioResponsavel: { id: number; nome: string };
   horasEstimadas: number;
   horasDisponiveis?: number;
+  tempoRegistrado?: number;
 }
