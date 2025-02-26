@@ -9,8 +9,14 @@ import { Projeto } from '../../../core/auth/services/projeto.model';
 })
 export class AdminRelatoriosComponent implements OnInit {
   projetos: Projeto[] = [];
+  totalProjetos: number = 0;
+  horasEstimadas: number = 0;
+  tempoRegistrado: number = 0;
+  custoEstimado: number = 0;
+  custoTrabalhado: number = 0;
 
   constructor(private projectsService: ProjectsService) {}
+
 
   ngOnInit(): void {
     this.carregarProjetos();
@@ -20,6 +26,12 @@ export class AdminRelatoriosComponent implements OnInit {
     this.projectsService.getProjetos().subscribe(
       (projetos) => {
         this.projetos = projetos;
+
+        this.totalProjetos = this.projetos.length;
+        this.horasEstimadas = this.projetos.reduce((total, projeto) => total + (projeto.horasEstimadas ?? 0), 0);
+        this.tempoRegistrado = this.projetos.reduce((total, projeto) => total + (projeto.tempoRegistrado ?? 0), 0);
+        this.custoEstimado = this.projetos.reduce((total, projeto) => total + (projeto.custoEstimado ?? 0), 0);
+        this.custoTrabalhado = this.projetos.reduce((total, projeto) => total + (projeto.custoTrabalhado ?? 0), 0);
       },
       (error) => {
         console.error('Erro ao carregar projetos:', error);
