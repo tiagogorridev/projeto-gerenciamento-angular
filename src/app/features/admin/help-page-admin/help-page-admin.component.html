@@ -19,11 +19,38 @@
 
   <div class="quick-links">
     <div class="quick-link-card" *ngFor="let link of quickLinks">
-      <div class="icon-circle">
-        <i class="fas {{ link.icon }}"></i>
+      <a
+        *ngIf="link.title === 'Contate-nos'"
+        routerLink="/contact"
+        class="quick-link-card-link"
+      >
+        <div class="icon-circle">
+          <i class="fas {{ link.icon }}"></i>
+        </div>
+        <h3>{{ link.title }}</h3>
+        <p>{{ link.description }}</p>
+      </a>
+
+      <a
+        *ngIf="link.title === 'Suporte'"
+        href="https://wa.me/41988869690?text=Ol%C3%A1%2C%20tudo%20bem%3F%20Sou%20administrador%20do%20TimeTracker%20e%20estou%20com%20uma%20d%C3%BAvida%2C%20voc%C3%AA%20poderia%20me%20ajudar%3F"
+        target="_blank"
+        class="quick-link-card-link"
+      >
+        <div class="icon-circle">
+          <i class="fas {{ link.icon }}"></i>
+        </div>
+        <h3>{{ link.title }}</h3>
+        <p>{{ link.description }}</p>
+      </a>
+
+      <div *ngIf="link.title !== 'Contate-nos' && link.title !== 'Suporte'">
+        <div class="icon-circle">
+          <i class="fas {{ link.icon }}"></i>
+        </div>
+        <h3>{{ link.title }}</h3>
+        <p>{{ link.description }}</p>
       </div>
-      <h3>{{ link.title }}</h3>
-      <p>{{ link.description }}</p>
     </div>
   </div>
 
