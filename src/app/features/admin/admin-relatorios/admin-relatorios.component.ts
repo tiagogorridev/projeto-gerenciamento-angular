@@ -1,8 +1,13 @@
 import { UsuarioService } from './../../../core/auth/services/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
-import { Projeto } from '../../../core/auth/services/projeto.model';
 import { ClienteService } from '../../../core/auth/services/clients.service';
+import { TarefaService } from 'src/app/core/auth/services/tarefa.service';
+
+import { Projeto } from '../../../core/auth/services/projeto.model';
+import { Tarefa } from '../../../core/auth/services/tarefa.model';
+
+
 
 @Component({
   selector: 'app-admin-relatorios',
@@ -15,6 +20,7 @@ export class AdminRelatoriosComponent implements OnInit {
   projetosFiltrados: Projeto[] = [];
   clientes: any[] = [];
   usuarios: any[] = [];
+  tarefas: Tarefa[] = [];
   selectedCliente: string = '';
   selectedUsuario: string = '';
   selectedStatus: string = '';
@@ -28,16 +34,19 @@ export class AdminRelatoriosComponent implements OnInit {
   selectedDataFim: string = '';
   activeTab: string = 'projetos';
 
+
   constructor(
     private projectsService: ProjectsService,
     private clienteService: ClienteService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private tarefaService: TarefaService,
   ) {}
 
   ngOnInit(): void {
     this.carregarProjetos();
     this.carregarClientes();
     this.carregarUsuarios();
+    this.carregarTarefas(); // Adicione isso aqui
   }
 
   carregarProjetos(): void {
@@ -45,6 +54,17 @@ export class AdminRelatoriosComponent implements OnInit {
       this.projetos = projetos;
       this.aplicarFiltros();
     });
+  }
+
+  carregarTarefas(): void {
+    this.tarefaService.getTodasTarefas().subscribe(
+      (tarefas) => {
+        this.tarefas = tarefas; // Armazena as tarefas no array
+      },
+      (error) => {
+        console.error('Erro ao carregar tarefas:', error);
+      }
+    );
   }
 
   carregarClientes(): void {
