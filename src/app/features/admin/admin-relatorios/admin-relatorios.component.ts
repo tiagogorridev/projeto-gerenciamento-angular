@@ -39,7 +39,14 @@ export class AdminRelatoriosComponent implements OnInit {
   tarefasEmAndamento: number = 0;
   horasEstimadasTarefas: number = 0;
   horasRegistradasTarefas: number = 0;
+  selectedStatusTarefa: string = '';
+  selectedPrioridadeTarefa: string = '';
+  selectedUsuarioTarefa: string = '';
+  selectedDataInicioTarefa: string = '';
+  selectedDataFimTarefa: string = '';
 
+
+  tarefasFiltradas: Tarefa[] = [];
 
   constructor(
     private projectsService: ProjectsService,
@@ -102,6 +109,24 @@ export class AdminRelatoriosComponent implements OnInit {
       );
     });
     this.atualizarResumo();
+  }
+
+  aplicarFiltrosTarefas(): void {
+    this.tarefasFiltradas = this.tarefas.filter((tarefa) => {
+      const dataInicioTarefa = new Date(tarefa.dataInicio);
+      const dataFimTarefa = new Date(tarefa.dataFim);
+      const dataInicioFiltro = this.selectedDataInicioTarefa ? new Date(this.selectedDataInicioTarefa) : null;
+      const dataFimFiltro = this.selectedDataFimTarefa ? new Date(this.selectedDataFimTarefa) : null;
+
+      return (
+        (!this.selectedStatusTarefa || tarefa.status === this.selectedStatusTarefa) &&
+        (!this.selectedUsuarioTarefa || tarefa.usuarioResponsavel.id === Number(this.selectedUsuarioTarefa)) &&
+        (!dataInicioFiltro || dataInicioTarefa >= dataInicioFiltro) &&
+        (!dataFimFiltro || dataFimTarefa <= dataFimFiltro)
+      );
+    });
+
+    this.atualizarResumoTarefas(); // Atualiza o resumo das tarefas filtradas
   }
 
   getStatusClass(status: string): string {
