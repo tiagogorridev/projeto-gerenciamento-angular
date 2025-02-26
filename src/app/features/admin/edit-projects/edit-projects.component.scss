@@ -141,6 +141,7 @@ $success-green: #16a34a;
   }
 }
 
+/// Tasks Table
 // Tasks Table
 .tasks-table {
   width: 100%;
@@ -149,10 +150,17 @@ $success-green: #16a34a;
   border-radius: 8px;
   overflow: hidden;
 
-  // Cabeçalho da tabela
-  .tarefa-row.headers {
+  // Shared grid layout for consistent alignment
+  .tarefa-row.headers,
+  .tarefas-row {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 120px;
+    align-items: center;
+    text-align: left;
+  }
+
+  // Cabeçalho da tabela
+  .tarefa-row.headers {
     padding: 12px 16px;
     background-color: #f9fafb;
     border-bottom: 1px solid $border-color;
@@ -163,14 +171,18 @@ $success-green: #16a34a;
       padding: 0 8px;
       font-size: 14px;
     }
+
+    // Explicit text alignment for each column header
+    .tarefa-name { text-align: left; }
+    .tarefa-client { text-align: left; }
+    .tarefa-status { text-align: center; }
+    .tarefa-hours { text-align: center; }
+    .tarefa-actions { text-align: right; }
   }
 
   // Linhas de dados
   .tarefas-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 120px;
     padding: 12px 16px;
-    align-items: center;
     border-bottom: 1px solid $border-color;
     transition: background-color 0.2s;
 
@@ -178,20 +190,32 @@ $success-green: #16a34a;
       background-color: #f9fafb;
     }
 
-    .tarefa-name, .tarefa-client {
-      font-size: 14px;
+    > div {
       padding: 0 8px;
     }
 
-    // Estilização do status
+    .tarefa-name,
+    .tarefa-client {
+      font-size: 14px;
+      text-align: left;
+    }
+
+    // Estilização do status - explicitly center this column
     .tarefa-status {
       font-size: 14px;
-      padding: 4px 8px;
-      margin: 0 8px;
       text-align: center;
-      border-radius: 4px;
-      font-weight: 500;
+      display: flex;
+      justify-content: center;
+    }
+
+    // Status pill styling
+    .status-pill {
       display: inline-block;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-weight: 500;
+      font-size: 13px;
+      text-align: center;
 
       &.ABERTA {
         background-color: #e5e7eb;
@@ -214,9 +238,8 @@ $success-green: #16a34a;
       }
     }
 
-    // Progresso das horas
+    // Progresso das horas - explicitly center this column
     .tarefa-hours {
-      padding: 0 8px;
       font-size: 14px;
       text-align: center;
     }
@@ -226,6 +249,7 @@ $success-green: #16a34a;
       display: flex;
       justify-content: flex-end;
       gap: 8px;
+      text-align: right;
 
       button {
         padding: 6px 12px;
