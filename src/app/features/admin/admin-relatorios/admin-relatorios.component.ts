@@ -34,6 +34,12 @@ export class AdminRelatoriosComponent implements OnInit {
   selectedDataFim: string = '';
   activeTab: string = 'projetos';
 
+  totalTarefas: number = 0;
+  tarefasConcluidas: number = 0;
+  tarefasEmAndamento: number = 0;
+  horasEstimadasTarefas: number = 0;
+  horasRegistradasTarefas: number = 0;
+
 
   constructor(
     private projectsService: ProjectsService,
@@ -46,7 +52,7 @@ export class AdminRelatoriosComponent implements OnInit {
     this.carregarProjetos();
     this.carregarClientes();
     this.carregarUsuarios();
-    this.carregarTarefas(); // Adicione isso aqui
+    this.carregarTarefas();
   }
 
   carregarProjetos(): void {
@@ -59,7 +65,8 @@ export class AdminRelatoriosComponent implements OnInit {
   carregarTarefas(): void {
     this.tarefaService.getTodasTarefas().subscribe(
       (tarefas) => {
-        this.tarefas = tarefas; // Armazena as tarefas no array
+        this.tarefas = tarefas;
+        this.atualizarResumoTarefas();  // Atualiza o resumo de tarefas
       },
       (error) => {
         console.error('Erro ao carregar tarefas:', error);
@@ -122,6 +129,14 @@ export class AdminRelatoriosComponent implements OnInit {
     this.tempoRegistrado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.tempoRegistrado ?? 0), 0);
     this.custoEstimado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoEstimado ?? 0), 0);
     this.custoTrabalhado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoTrabalhado ?? 0), 0);
+  }
+
+  atualizarResumoTarefas(): void {
+    this.totalTarefas = this.tarefas.length;
+    this.tarefasConcluidas = this.tarefas.filter(tarefa => tarefa.status === 'CONCLUIDA').length;
+    this.tarefasEmAndamento = this.tarefas.filter(tarefa => tarefa.status === 'EM_ANDAMENTO').length;
+    this.horasEstimadasTarefas = this.tarefas.reduce((total, tarefa) => total + (tarefa.horasEstimadas ?? 0), 0);
+    this.horasRegistradasTarefas = this.tarefas.reduce((total, tarefa) => total + (tarefa.tempoRegistrado ?? 0), 0);
   }
 
   changeTab(tab: string): void {
