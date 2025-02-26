@@ -174,37 +174,15 @@
           <div class="task-dates">Período</div>
         </div>
 
-        <div class="task-row">
-          <div class="task-name">Design da Homepage</div>
-          <div class="task-project">Redesign Website</div>
-          <div class="task-user">Maria Santos</div>
+        <div class="task-row" *ngFor="let tarefa of tarefas">
+          <div class="task-name">{{ tarefa.nome }}</div>
+          <div class="task-project">{{ tarefa.projeto.nome }}</div>
+          <div class="task-user">{{ tarefa.usuarioResponsavel.nome }}</div>
           <div class="task-status">
-            <span class="CONCLUIDA">CONCLUIDA</span>
+            <span [ngClass]="getStatusClass(tarefa.status)">{{ tarefa.status }}</span>
           </div>
-          <div class="task-hours">12/15hr</div>
-          <div class="task-dates">01/02/2025 a 10/02/2025</div>
-        </div>
-
-        <div class="task-row">
-          <div class="task-name">Desenvolvimento Frontend</div>
-          <div class="task-project">Redesign Website</div>
-          <div class="task-user">João Silva</div>
-          <div class="task-status">
-            <span class="EM_ANDAMENTO">EM ANDAMENTO</span>
-          </div>
-          <div class="task-hours">18/30hr</div>
-          <div class="task-dates">11/02/2025 a 25/02/2025</div>
-        </div>
-
-        <div class="task-row">
-          <div class="task-name">API de Integração</div>
-          <div class="task-project">App Mobile</div>
-          <div class="task-user">Carlos Oliveira</div>
-          <div class="task-status">
-            <span class="EM_ANDAMENTO">EM ANDAMENTO</span>
-          </div>
-          <div class="task-hours">25/40hr</div>
-          <div class="task-dates">15/01/2025 a 15/02/2025</div>
+          <div class="task-hours">{{ tarefa.horasEstimadas }}h / {{ tarefa.tempoRegistrado }}h</div>
+          <div class="task-dates">{{ tarefa.dataInicio }} a {{ tarefa.dataFim }}</div>
         </div>
       </div>
     </div>
