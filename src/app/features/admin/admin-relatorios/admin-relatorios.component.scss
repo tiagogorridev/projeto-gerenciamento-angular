@@ -1,0 +1,363 @@
+$primary-color: #8b5cf6;
+$border-color: #e2e8f0;
+$text-gray: #64748b;
+$gray: #6b7280;
+$white: #ffffff;
+$hover-color: #7c3aed;
+$input-bg: #f8fafc;
+$error-red: #dc3545;
+$success-green: #16a34a;
+
+.reports-container {
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  margin: 0 24px;
+  padding: 60px 24px 24px 260px;
+}
+
+.reports-header {
+  padding: 24px 0;
+  border-bottom: 1px solid $border-color;
+
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+  }
+}
+
+// Tab Navigation
+.report-tabs {
+  display: flex;
+  gap: 32px;
+  padding: 16px 0;
+  border-bottom: 1px solid $border-color;
+  margin-bottom: 24px;
+
+  .tab-button {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: $gray;
+    font-weight: 500;
+    position: relative;
+    font-size: 16px;
+
+    &.active {
+      color: $primary-color;
+      border-bottom: 2px solid $primary-color;
+    }
+
+    &:hover:not(.active) {
+      color: darken($gray, 15%);
+    }
+  }
+}
+
+// Filter Section
+.filter-section {
+  background-color: #f9fafb;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  border: 1px solid $border-color;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 16px;
+  }
+
+  .filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .form-group {
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: $text-gray;
+      margin-bottom: 8px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      font-size: 14px;
+      background-color: $white;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+      }
+    }
+
+    .date-range {
+      display: flex;
+      gap: 16px;
+
+      .date-input {
+        flex: 1;
+
+        label {
+          font-size: 12px;
+          margin-bottom: 4px;
+        }
+      }
+    }
+  }
+
+  .filter-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+
+    button {
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &.btn-secondary {
+        background-color: $white;
+        border: 1px solid $border-color;
+        color: $gray;
+
+        &:hover {
+          background-color: $input-bg;
+        }
+      }
+
+      &.btn-primary {
+        background-color: $primary-color;
+        border: none;
+        color: $white;
+
+        &:hover {
+          background-color: $hover-color;
+        }
+      }
+    }
+  }
+}
+
+// Report Summary
+.report-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+
+  .summary-card {
+    background-color: $white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid $border-color;
+
+    .summary-title {
+      font-size: 14px;
+      color: $text-gray;
+      margin-bottom: 8px;
+    }
+
+    .summary-value {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+  }
+}
+
+// Table Container
+.table-container {
+  background-color: $white;
+  border-radius: 8px;
+  border: 1px solid $border-color;
+  overflow: hidden;
+
+  .export-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid $border-color;
+
+    .export-btn {
+      padding: 8px 16px;
+      background-color: $white;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      color: $gray;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        background-color: $input-bg;
+      }
+
+      i {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+// Projects Table
+.projects-table, .tasks-table {
+  width: 100%;
+
+  .project-row, .task-row {
+    display: grid;
+    padding: 16px;
+    border-bottom: 1px solid $border-color;
+    align-items: center;
+
+    &.headers {
+      background-color: #f9fafb;
+      font-weight: 500;
+      color: $text-gray;
+      font-size: 14px;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .project-row {
+    grid-template-columns: 1.5fr 1fr 1.2fr 1.2fr 1fr 1fr 1.2fr;
+  }
+
+  .task-row {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.2fr;
+  }
+
+  // Status styling
+  .project-status, .task-status {
+    span {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      display: inline-block;
+      text-align: center;
+
+      &.PLANEJADO, &.ABERTA {
+        background-color: #e5e7eb;
+        color: $gray;
+      }
+
+      &.EM_ANDAMENTO {
+        background-color: #dbeafe;
+        color: #2563eb;
+      }
+
+      &.CONCLUIDO, &.CONCLUIDA {
+        background-color: #dcfce7;
+        color: $success-green;
+      }
+
+      &.CANCELADO, &.PAUSADA {
+        background-color: #fee2e2;
+        color: #dc2626;
+      }
+    }
+  }
+
+  // Priority styling
+  .project-priority {
+    span {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      display: inline-block;
+      text-align: center;
+
+      &.ALTA {
+        background-color: #fee2e2;
+        color: #dc2626;
+      }
+
+      &.MEDIA {
+        background-color: #fef3c7;
+        color: #d97706;
+      }
+
+      &.BAIXA {
+        background-color: #dcfce7;
+        color: $success-green;
+      }
+    }
+  }
+}
+
+// Empty state
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 64px 24px;
+
+  .empty-state-content {
+    text-align: center;
+
+    .empty-image {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 16px;
+      opacity: 0.6;
+    }
+
+    .empty-text {
+      font-size: 16px;
+      color: $text-gray;
+    }
+  }
+}
+
+// Calendar Component Overrides
+::ng-deep {
+  .p-calendar {
+    width: 100%;
+
+    .p-inputtext {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      font-size: 14px;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+      }
+    }
+
+    .p-button {
+      background-color: $white;
+      border: 1px solid $border-color;
+      color: $gray;
+
+      &:hover {
+        background-color: $input-bg;
+      }
+    }
+  }
+}
