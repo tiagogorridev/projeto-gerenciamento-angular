@@ -160,6 +160,35 @@ $light-white: #FEFEFE;
         &:hover {
           color: $light-gray;
         }
+
+        button {
+          background-color: $strong-purple;
+          color: #fff;
+          padding: 8px 16px;
+          border: none;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          &:hover {
+            background-color: darken($strong-purple, 10%);
+            transform: translateY(-2px); /* Efeito de elevação */
+          }
+
+          &:active {
+            background-color: darken($strong-purple, 15%);
+            transform: translateY(0); /* Retorna à posição normal ao clicar */
+          }
+
+          i {
+            margin-right: 8px;
+            font-size: 16px;
+          }
+        }
       }
     }
   }
