@@ -3,6 +3,8 @@ import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { ClienteService } from '../../../core/auth/services/clients.service';
 import { Router } from '@angular/router';
 import { Cliente } from '../../../core/auth/services/clients.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-projetos',
@@ -18,6 +20,7 @@ export class AdminProjetosComponent implements OnInit {
   filteredProjects: any[] = [];
   selectedStatus: string = '';
   selectedPriority: string = '';
+  loadingProjetos: boolean = true;
 
   searchQuery: string = '';
 
@@ -43,20 +46,44 @@ export class AdminProjetosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadingProjetos = true;
     const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0', 10);
+
     if (usuarioId) {
-      this.projectsService.getProjetosDoUsuario(usuarioId).subscribe({
-        next: (projetos) => {
-          this.projects = projetos.map(projeto => ({
+      this.projectsService.getProjetosDoUsuario(usuarioId).pipe(
+        switchMap(projetos => {
+          this.projects = projetos;
+
+          // Para cada projeto, buscar o tempo registrado
+          const tempoRegistradoRequests = projetos.map(projeto =>
+            this.projectsService.getTempoRegistradoProjeto(projeto.id).pipe(
+              catchError(error => {
+                console.error(`Erro ao buscar tempo registrado para projeto ${projeto.id}`, error);
+                return of({ tempoRegistrado: 0, percentualConcluido: 0 });
+              })
+            )
+          );
+
+          return forkJoin(tempoRegistradoRequests);
+        })
+      ).subscribe({
+        next: (tempoRegistradoResults) => {
+          // Atualizar os projetos com os dados de tempo registrado
+          this.projects = this.projects.map((projeto, index) => ({
             ...projeto,
+            tempoRegistrado: tempoRegistradoResults[index].tempoRegistrado,
+            percentualConcluido: tempoRegistradoResults[index].percentualConcluido,
             horasTrabalhadas: projeto.horasTrabalhadas || 0,
             custoTrabalhado: projeto.custoTrabalhado || 0
           }));
+
           this.filteredProjects = [...this.projects];
           this.hasProjects = this.projects.length > 0;
+          this.loadingProjetos = false;
         },
         error: (erro) => {
           console.error('Erro ao carregar os projetos:', erro);
+          this.loadingProjetos = false;
         }
       });
     }
@@ -91,6 +118,18 @@ export class AdminProjetosComponent implements OnInit {
     this.filteredProjects = filtered;
   }
 
+  getProgressBarClass(percentualConcluido: number): string {
+    if (percentualConcluido >= 100) {
+      return 'bg-success';
+    } else if (percentualConcluido >= 75) {
+      return 'bg-info';
+    } else if (percentualConcluido >= 50) {
+      return 'bg-warning';
+    } else {
+      return 'bg-danger';
+    }
+  }
+
   openNewProjectModal(): void {
     this.showNewProjectModal = true;
   }
@@ -119,7 +158,11 @@ export class AdminProjetosComponent implements OnInit {
       this.projectsService.createProjeto(projetoParaEnviar).subscribe({
         next: (resposta) => {
           this.closeModal();
-          this.projects.push(resposta);
+          this.projects.push({
+            ...resposta,
+            tempoRegistrado: 0,
+            percentualConcluido: 0
+          });
           this.filterProjects();
           this.hasProjects = this.projects.length > 0;
         },
