@@ -8,8 +8,9 @@ export interface Projeto {
   dataFim: string;
   status: string;
   prioridade: string;
-  horasTrabalhadas?: number; // Adicionado
-  custoTrabalhado?: number; // Adicionado
+  tempoRegistrado?: number;
+  horasTrabalhadas?: number;
+  custoTrabalhado?: number;
   usuarioResponsavel: {
       id: number;
       nome: string;
@@ -24,7 +25,7 @@ export interface Projeto {
       status: string;
   };
   dataCriacao: string;
-  tarefas?: Tarefa[];  // Adicionei a propriedade tarefas
+  tarefas?: Tarefa[];
 }
 
 export interface Tarefa {
