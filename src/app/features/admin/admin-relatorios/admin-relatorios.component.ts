@@ -9,6 +9,7 @@ import { ClienteService } from '../../../core/auth/services/clients.service';
   templateUrl: './admin-relatorios.component.html',
   styleUrls: ['./admin-relatorios.component.scss']
 })
+
 export class AdminRelatoriosComponent implements OnInit {
   projetos: Projeto[] = [];
   projetosFiltrados: Projeto[] = [];
@@ -16,6 +17,8 @@ export class AdminRelatoriosComponent implements OnInit {
   usuarios: any[] = [];
   selectedCliente: string = '';
   selectedUsuario: string = '';
+  selectedStatus: string = '';
+  selectedPrioridade: string = '';
   totalProjetos: number = 0;
   horasEstimadas: number = 0;
   tempoRegistrado: number = 0;
@@ -57,7 +60,9 @@ export class AdminRelatoriosComponent implements OnInit {
     this.projetosFiltrados = this.projetos.filter((projeto) => {
       return (
         (!this.selectedCliente || projeto.cliente.id === Number(this.selectedCliente)) &&
-        (!this.selectedUsuario || projeto.usuarioResponsavel.id === Number(this.selectedUsuario))
+        (!this.selectedUsuario || projeto.usuarioResponsavel.id === Number(this.selectedUsuario)) &&
+        (!this.selectedStatus || projeto.status === this.selectedStatus) &&
+        (!this.selectedPrioridade || projeto.prioridade === this.selectedPrioridade)
       );
     });
     this.atualizarResumo();
@@ -65,20 +70,21 @@ export class AdminRelatoriosComponent implements OnInit {
 
   getStatusClass(status: string): string {
     switch (status) {
-        case 'Concluído': return 'status-concluido';
-        case 'Em Andamento': return 'status-em-andamento';
-        case 'Atrasado': return 'status-atrasado';
-        default: return 'status-padrao';
+      case 'PLANEJADO': return 'status-planejado';
+      case 'EM_ANDAMENTO': return 'status-em-andamento';
+      case 'CONCLUIDO': return 'status-concluido';
+      case 'CANCELADO': return 'status-cancelado';
+      default: return 'status-padrao';
     }
-}
+  }
 
   getPriorityClass(priority: string): string {
-      switch (priority) {
-          case 'Alta': return 'prioridade-alta';
-          case 'Média': return 'prioridade-media';
-          case 'Baixa': return 'prioridade-baixa';
-          default: return 'prioridade-padrao';
-      }
+    switch (priority) {
+      case 'ALTA': return 'prioridade-alta';
+      case 'MEDIA': return 'prioridade-media';
+      case 'BAIXA': return 'prioridade-baixa';
+      default: return 'prioridade-padrao';
+    }
   }
 
   atualizarResumo(): void {
@@ -87,9 +93,5 @@ export class AdminRelatoriosComponent implements OnInit {
     this.tempoRegistrado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.tempoRegistrado ?? 0), 0);
     this.custoEstimado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoEstimado ?? 0), 0);
     this.custoTrabalhado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoTrabalhado ?? 0), 0);
-  }
-
-  filterProjetos() {
-    console.log('Filtrando projetos...');
   }
 }
