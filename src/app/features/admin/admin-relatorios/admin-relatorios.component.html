@@ -85,23 +85,23 @@
     <div class="report-summary">
       <div class="summary-card">
         <div class="summary-title">Total de Projetos</div>
-        <div class="summary-value">15</div>
+        <div class="summary-value">{{ totalProjetos }}</div>
       </div>
       <div class="summary-card">
         <div class="summary-title">Horas Estimadas</div>
-        <div class="summary-value">450h</div>
+        <div class="summary-value">{{ horasEstimadas }}h</div>
       </div>
       <div class="summary-card">
         <div class="summary-title">Horas Trabalhadas</div>
-        <div class="summary-value">328h</div>
+        <div class="summary-value">{{ tempoRegistrado }}h</div>
       </div>
       <div class="summary-card">
         <div class="summary-title">Custo Estimado</div>
-        <div class="summary-value">R$ 45.000,00</div>
+        <div class="summary-value">R$ {{ custoEstimado }}</div>
       </div>
       <div class="summary-card">
         <div class="summary-title">Custo Trabalhado</div>
-        <div class="summary-value">R$ 32.800,00</div>
+        <div class="summary-value">R$ {{ custoTrabalhado }}</div>
       </div>
     </div>
 
@@ -125,7 +125,7 @@
         <div class="project-row" *ngFor="let projeto of projetos">
           <div class="project-name">{{ projeto.nome }}</div>
           <div class="project-client">{{ projeto.cliente.nome }}</div>
-          <div class="project-progress">{{ projeto.horasTrabalhadas }} de {{ projeto.horasEstimadas }}h</div>
+          <div class="project-progress">{{ projeto.tempoRegistrado }} de {{ projeto.horasEstimadas }}h</div>
           <div class="project-cost">R$ {{ projeto.custoTrabalhado }} de R$ {{ projeto.custoEstimado }}</div>
           <div class="project-status">
             <span [ngClass]="getStatusClass(projeto.status)">{{ projeto.status }}</span>
