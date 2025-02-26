@@ -50,7 +50,6 @@
           <label>Data de Início</label>
           <p-calendar [(ngModel)]="startDate" name="dataInicio" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
         </div>
-
         <div class="form-group">
           <label>Data de Fim</label>
           <p-calendar [(ngModel)]="endDate" name="dataFim" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
@@ -70,11 +69,6 @@
         <small class="error-text" *ngIf="tarefa.horasEstimadas > horasDisponiveis">
           As horas estimadas não podem exceder as horas disponíveis do projeto
         </small>
-      </div>
-      <div class="form-group">
-        <label>Responsável</label>
-        <input type="text" class="input-field" [(ngModel)]="tarefa.responsavel" name="responsavel" readonly>
-        <small class="info-text">A tarefa é atribuída automaticamente a você.</small>
       </div>
       <div class="form-group">
         <label>Status</label>
