@@ -235,3 +235,12 @@
     }
   }
 }
+
+.quick-link-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.quick-link-card-link:hover {
+  opacity: 0.8;
+}
