@@ -113,4 +113,10 @@ export class ProjectsService {
     getTempoRegistradoProjeto(projetoId: number): Observable<any> {
       return this.http.get<any>(`${this.baseUrl}/${projetoId}/tempo-registrado`);
     }
+
+    getProjetos(): Observable<Projeto[]> {
+      const token = localStorage.getItem('auth_token') || '';
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<Projeto[]>(`${this.baseUrl}/getProjetos`, { headers });
+    }
 }
