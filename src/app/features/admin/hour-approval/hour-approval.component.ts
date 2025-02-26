@@ -90,9 +90,6 @@ export class HourApprovalComponent implements OnInit {
       .subscribe({
         next: (lancamentos) => {
           this.lancamentos = lancamentos;
-          if (lancamentos.length === 0) {
-            this.successMessage = 'Não há lançamentos pendentes de aprovação.';
-          }
         },
         error: (error) => {
           this.errorMessage = 'Erro ao carregar lançamentos: ' + error;
