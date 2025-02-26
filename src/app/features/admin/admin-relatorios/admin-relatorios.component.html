@@ -7,10 +7,10 @@
   </div>
 
   <div class="report-tabs">
-    <button class="tab-button active">
+    <button class="tab-button" [ngClass]="{'active': activeTab === 'projetos'}" (click)="changeTab('projetos')">
       Projetos
     </button>
-    <button class="tab-button">
+    <button class="tab-button" [ngClass]="{'active': activeTab === 'tarefas'}" (click)="changeTab('tarefas')">
       Tarefas
     </button>
   </div>
@@ -68,15 +68,15 @@
           <option value="BAIXA">Baixa</option>
         </select>
       </div>
+    </div>
 
     <div class="filter-actions">
-      <button class="btn-secondary">Limpar Filtros</button>
-      <button class="btn-primary">Aplicar Filtros</button>
+      <button class="btn-secondary" (click)="limparFiltros()">Limpar Filtros</button>
+      <button class="btn-primary" (click)="aplicarFiltros()">Aplicar Filtros</button>
     </div>
   </div>
 
-  <!-- Projetos Tab -->
-  <div class="report-content">
+  <div class="report-content" *ngIf="activeTab === 'projetos'">
     <div class="report-summary">
       <div class="summary-card">
         <div class="summary-title">Total de Projetos</div>
@@ -131,8 +131,10 @@
           <div class="project-dates">{{ projeto.dataInicio }} a {{ projeto.dataFim }}</div>
         </div>
       </div>
+    </div>
+  </div>
 
-  <div class="report-content" style="display: none;">
+  <div class="report-content" *ngIf="activeTab === 'tarefas'">
     <div class="report-summary">
       <div class="summary-card">
         <div class="summary-title">Total de Tarefas</div>
