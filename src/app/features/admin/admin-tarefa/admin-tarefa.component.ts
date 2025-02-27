@@ -18,6 +18,7 @@ export class AdminTarefaComponent implements OnInit {
   horasDisponiveisProjeto: number = 0;
   horasDisponiveis: number = 0;
   erro: string = '';
+  sucessoMensagem: string = '';
 
   statusMap = {
     ABERTA: 'Aberta',
@@ -98,6 +99,9 @@ export class AdminTarefaComponent implements OnInit {
   }
 
   salvarAlteracoes(): void {
+    this.erro = '';
+    this.sucessoMensagem = '';
+
     if (!this.validarHoras()) {
       return;
     }
@@ -108,6 +112,10 @@ export class AdminTarefaComponent implements OnInit {
           this.tarefa = data;
           this.horasOriginais = parseFloat(this.tarefa.horasEstimadas || 0);
           this.carregarHorasDisponiveisProjeto();
+          this.sucessoMensagem = 'Alterações salvas com sucesso!';
+          setTimeout(() => {
+            this.sucessoMensagem = '';
+          }, 3000);
         },
         (error) => {
           if (error.status === 400 && error.error && error.error.message) {
