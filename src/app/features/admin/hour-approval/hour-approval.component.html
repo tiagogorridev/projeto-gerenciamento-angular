@@ -83,7 +83,7 @@
           <span class="time-logged">{{ formatarHoras(lancamento.horas) }}</span>
           <span class="status-badge" [ngClass]="getStatusClass(lancamento.status)">
             {{ lancamento.status === 'EM_ANALISE' ? 'Em análise' :
-               lancamento.status === 'APROVADO' ? 'Aprovado' : 'Rejeitado' }}
+               lancamento.status === 'APROVADO' ? 'Aprovado' : 'Reprovado' }}
           </span>
         </div>
       </div>
@@ -112,14 +112,14 @@
         </button>
         <button class="reject-btn" (click)="rejeitarLancamento(lancamento.id)">
           <i class="pi pi-times"></i>
-          Rejeitar
+          Reprovar
         </button>
       </div>
 
       <div class="entry-status" *ngIf="lancamento.status !== 'EM_ANALISE'">
-        <div class="status-message" [ngClass]="{'approved': lancamento.status === 'APROVADO', 'rejected': lancamento.status === 'REJEITADO'}">
-          <i class="pi" [ngClass]="{'pi-check-circle': lancamento.status === 'APROVADO', 'pi-times-circle': lancamento.status === 'REJEITADO'}"></i>
-          <span>{{ lancamento.status === 'APROVADO' ? 'Lançamento aprovado' : 'Lançamento rejeitado' }}</span>
+        <div class="status-message" [ngClass]="{'approved': lancamento.status === 'APROVADO', 'rejected': lancamento.status === 'REPROVADO'}">
+          <i class="pi" [ngClass]="{'pi-check-circle': lancamento.status === 'APROVADO', 'pi-times-circle': lancamento.status === 'REPROVADO'}"></i>
+          <span>{{ lancamento.status === 'APROVADO' ? 'Lançamento aprovado' : 'Lançamento reprovado' }}</span>
         </div>
       </div>
     </div>
