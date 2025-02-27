@@ -242,6 +242,11 @@ $success-green: #16a34a;
     grid-template-columns: 1.5fr 1fr 1.2fr 1.2fr 1fr 1fr 1.2fr;
   }
 
+  .text-danger {
+    color: #DC2626 !important;
+    font-weight: 500;
+  }
+
   .task-row {
     grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.2fr;
   }
