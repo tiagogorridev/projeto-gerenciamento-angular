@@ -141,6 +141,17 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
       font-size: 18px;
       color: #1f2937;
     }
+
+    .error-message {
+      background-color: #dc3545;
+      color: white;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      width: 100%;
+      text-align: center;
+    }
   }
 }
 
@@ -265,4 +276,16 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 .client-row:hover {
   background-color: #f9fafb;
   cursor: pointer;
+}
+
+.success-message {
+  background-color: #28a745;
+  color: white;
+  padding: 12px;
+  font-size: 14px;
+  text-align: center;
+  width: 300px;
+  margin: 20px auto;
+  border-radius: 4px;
+  display: block; /* Alterado para 'block' quando for visível */
 }
