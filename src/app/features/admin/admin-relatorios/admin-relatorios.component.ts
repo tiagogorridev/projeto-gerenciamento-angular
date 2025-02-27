@@ -7,6 +7,9 @@ import { TarefaService } from 'src/app/core/auth/services/tarefa.service';
 import { Projeto } from '../../../core/auth/services/projeto.model';
 import { Tarefa } from '../../../core/auth/services/tarefa.model';
 
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
 @Component({
   selector: 'app-admin-relatorios',
   templateUrl: './admin-relatorios.component.html',
@@ -228,5 +231,41 @@ export class AdminRelatoriosComponent implements OnInit {
       this.tarefasFiltradas = this.tarefas;
       this.atualizarResumoTarefas();
     }
+  }
+
+  exportarPDF() {
+    const elemento = document.querySelector(this.activeTab === 'projetos' ? '.projects-table' : '.tasks-table');
+    const titulo = this.activeTab === 'projetos' ? 'Relatório de Projetos' : 'Relatório de Tarefas';
+
+    if (!elemento) return;
+
+    html2canvas(elemento as HTMLElement).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210;
+      const pageHeight = 297;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.setFontSize(16);
+      pdf.text(titulo, 105, 15, { align: 'center' });
+
+      const hoje = new Date().toLocaleDateString('pt-BR');
+      pdf.setFontSize(10);
+      pdf.text(`Exportado em: ${hoje}`, 105, 22, { align: 'center' });
+
+      pdf.addImage(imgData, 'PNG', 0, 30, imgWidth, imgHeight);
+      heightLeft -= (pageHeight - 30);
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save(`relatorio_${this.activeTab}_${hoje.replace(/\//g, '-')}.pdf`);
+    });
   }
 }
