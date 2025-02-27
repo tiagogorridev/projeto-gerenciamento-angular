@@ -81,6 +81,9 @@ $success-green: #16a34a;
   }
 
   .form-group {
+    display: flex;
+    flex-direction: column;
+
     label {
       display: block;
       font-size: 14px;
@@ -90,6 +93,7 @@ $success-green: #16a34a;
     }
 
     .input-field {
+      margin-top: auto;
       width: 100%;
       padding: 10px 12px;
       border: 1px solid $border-color;
@@ -104,20 +108,24 @@ $success-green: #16a34a;
       }
     }
 
-    .date-range {
-      display: flex;
-      gap: 16px;
+      .date-range {
+        display: flex;
+        gap: 16px;
+        align-items: flex-end;
+      }
 
       .date-input {
         flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
 
-        label {
-          font-size: 12px;
-          margin-bottom: 4px;
-        }
+      .date-input label {
+        font-size: 12px;
+        margin-bottom: 4px;
       }
     }
-  }
+
 
   .filter-actions {
     display: flex;
