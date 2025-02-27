@@ -313,6 +313,10 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 .project-cost {
   color: #6B7280;
 }
+.projects-list .project-row .project-progress.text-danger {
+  color: #DC2626 !important;
+  font-weight: 500;
+}
 
 // Status badges
 .project-status {
