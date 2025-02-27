@@ -24,6 +24,12 @@ interface LancamentoHoras {
   };
 }
 
+interface StatusFilter {
+  label: string;
+  value: string;
+  icon: string;
+}
+
 @Component({
   selector: 'app-time-history',
   templateUrl: './time-history.component.html',
@@ -35,6 +41,16 @@ export class TimeHistoryComponent implements OnInit {
   errorMessage: string = '';
   usuarioId: number | null = null;
 
+  filteredLancamentos: LancamentoHoras[] = [];
+  searchQuery: string = '';
+  selectedStatus: string = 'todos';
+
+  statusFilters: StatusFilter[] = [
+    { label: 'Todos', value: 'todos', icon: 'pi pi-list' },
+    { label: 'Aprovados', value: 'aprovado', icon: 'pi pi-check-circle' },
+    { label: 'Reprovados', value: 'reprovado', icon: 'pi pi-times-circle' },
+    { label: 'Em análise', value: 'em_analise', icon: 'pi pi-search' }
+  ];
   constructor(
     private timeTrackingService: TimeTrackingService,
     private router: Router
@@ -66,6 +82,7 @@ export class TimeHistoryComponent implements OnInit {
         this.lancamentos = lancamentos;
         this.isLoading = false;
         this.errorMessage = '';
+        this.filteredLancamentos = [...this.lancamentos];
       },
       error: (error) => {
         this.errorMessage = error;
@@ -94,6 +111,15 @@ export class TimeHistoryComponent implements OnInit {
     }
   }
 
+  formatDuration(horas: number): string {
+    const horasInteiras = Math.floor(horas);
+    const minutos = (horas - horasInteiras) * 60;
+    const minutosInteiros = Math.round(minutos);
+    const minutosFinal = minutosInteiros > 59 ? 59 : minutosInteiros;
+
+    return `${horasInteiras}h ${minutosFinal < 10 ? '0' + minutosFinal : minutosFinal}min`;
+  }
+
   getStatusClass(status: string): string {
     const statusLowerCase = status.toLowerCase();
 
@@ -106,5 +132,32 @@ export class TimeHistoryComponent implements OnInit {
     } else {
       return '';
     }
+  }
+
+  filterLancamentos(): void {
+    let filtered = this.lancamentos;
+
+    // Filter by search query
+    if (this.searchQuery.trim() !== '') {
+      const query = this.searchQuery.toLowerCase();
+      filtered = filtered.filter(lancamento =>
+        lancamento.projeto.nome.toLowerCase().includes(query) ||
+        lancamento.tarefa.nome.toLowerCase().includes(query)
+      );
+    }
+
+    // Filter by status
+    if (this.selectedStatus !== 'todos') {
+      filtered = filtered.filter(lancamento =>
+        lancamento.status.toLowerCase() === this.selectedStatus.toLowerCase()
+      );
+    }
+
+    this.filteredLancamentos = filtered;
+  }
+
+  filterByStatus(status: string): void {
+    this.selectedStatus = status;
+    this.filterLancamentos();
   }
 }
