@@ -218,13 +218,13 @@ $success-green: #16a34a;
       text-align: center;
 
       &.ABERTA {
-        background-color: #e5e7eb;
-        color: $gray;
+        background: #EEF2FF;
+        color: #4F46E5;
       }
 
       &.EM_ANDAMENTO {
-        background-color: #dbeafe;
-        color: #2563eb;
+        background: #F0F9FF;
+        color: #0284C7;
       }
 
       &.CONCLUIDA {

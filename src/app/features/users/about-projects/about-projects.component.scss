@@ -56,16 +56,23 @@
     }
 
     .status-badge {
-      &.PLANEJADO { background-color: #f3e8ff; color: #9333ea; }
-      &.EM_ANDAMENTO { background-color: #dbeafe; color: #2563eb; }
-      &.CONCLUIDO { background-color: #dcfce7; color: #16a34a; }
-      &.CANCELADO { background-color: #fee2e2; color: #dc2626; }
+      &.PLANEJADO {     background: #EEF2FF;
+        color: #4F46E5; }
+      &.EM_ANDAMENTO { background: #F0F9FF;
+        color: #0284C7; }
+      &.CONCLUIDO {       background: #F0FDF4;
+        color: #16A34A; }
+      &.CANCELADO {       background: #FEF2F2;
+        color: #DC2626; }
     }
 
     .priority-badge {
-      &.ALTA { background-color: #fee2e2; color: #dc2626; }
-      &.MEDIA { background-color: #fef3c7; color: #d97706; }
-      &.BAIXA { background-color: #dcfce7; color: #16a34a; }
+      &.ALTA {       background: #FEF2F2;
+        color: #DC2626; }
+      &.MEDIA {     background: #EEF2FF;
+        color: #4F46E5; }
+      &.BAIXA {       background: #F0FDF4;
+        color: #16A34A; }
     }
   }
 
