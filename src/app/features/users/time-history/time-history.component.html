@@ -1,63 +1,84 @@
 <app-sidebar></app-sidebar>
 <app-header></app-header>
-<div class="container">
-  <div class="content-wrapper">
-    <div class="content-card">
-      <h2 class="content-title">Histórico de Lançamentos</h2>
 
-      <div *ngIf="isLoading" class="loading-container">
-        <p-progressSpinner></p-progressSpinner>
-      </div>
+<div class="help-center-container">
+  <div class="help-header">
+    <h1>Histórico de Horas</h1>
+    <p class="subtitle">Visualize todos os seus registros de horas</p>
 
-      <div *ngIf="errorMessage" class="error-container">
-        {{ errorMessage }}
-      </div>
-
-      <div *ngIf="!isLoading && !errorMessage" class="table-container">
-        <p-table
-          [value]="lancamentos"
-          [paginator]="true"
-          [rows]="10"
-          [scrollable]="true"
-          scrollHeight="calc(100vh - 350px)"
-          styleClass="lancamentos-table"
-          [tableStyle]="{'min-width': '50rem'}"
-          [rowHover]="true">
-          <ng-template pTemplate="header">
-            <tr>
-              <th class="col-data">Data</th>
-              <th class="col-projeto">Projeto</th>
-              <th class="col-tarefa">Tarefa</th>
-              <th class="col-inicio">Início</th>
-              <th class="col-fim">Fim</th>
-              <th class="col-duracao">Duração</th>
-              <th class="col-status">Status</th>
-              <th class="col-descricao">Descrição</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-lancamento>
-            <tr>
-              <td class="col-data">{{ formatDate(lancamento.data) }}</td>
-              <td class="col-projeto">{{ lancamento.projeto.nome }}</td>
-              <td class="col-tarefa">{{ lancamento.tarefa.nome }}</td>
-              <td class="col-inicio">{{ lancamento.horaInicio }}</td>
-              <td class="col-fim">{{ lancamento.horaFim }}</td>
-              <td class="col-duracao">{{ lancamento.horas }}h</td>
-              <td class="col-status">
-                <span class="status" [ngClass]="getStatusClass(lancamento.status)">
-                  {{ formatStatus(lancamento.status) }}
-                </span>
-              </td>
-              <td class="col-descricao">{{ lancamento.descricao }}</td>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="8" class="empty-message">Nenhum lançamento encontrado.</td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
+    <div class="search-container">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Busque por projetos ou tarefas..."
+        class="search-input"
+        (input)="filterLancamentos()"
+      >
     </div>
   </div>
-</div>
+
+  <div class="lancamentos-container">
+    <div class="category-filters">
+      <button
+        *ngFor="let status of statusFilters"
+        [class.active]="selectedStatus === status.value"
+        (click)="filterByStatus(status.value)"
+        class="category-btn"
+      >
+        <i class="fas {{ status.icon }}"></i>
+        {{ status.label }}
+      </button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-container">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-container">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && !errorMessage" class="table-container">
+      <p-table
+        [value]="filteredLancamentos"
+        [paginator]="true"
+        [rows]="10"
+        [scrollable]="true"
+        scrollHeight="calc(100vh - 450px)"
+        styleClass="lancamentos-table"
+        [tableStyle]="{'min-width': '50rem'}"
+        [rowHover]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="col-data">Data</th>
+            <th class="col-projeto">Projeto</th>
+            <th class="col-tarefa">Tarefa</th>
+            <th class="col-inicio">Início</th>
+            <th class="col-fim">Fim</th>
+            <th class="col-duracao">Duração</th>
+            <th class="col-status">Status</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-lancamento>
+          <tr>
+            <td class="col-data">{{ formatDate(lancamento.data) }}</td>
+            <td class="col-projeto">{{ lancamento.projeto.nome }}</td>
+            <td class="col-tarefa">{{ lancamento.tarefa.nome }}</td>
+            <td class="col-inicio">{{ lancamento.horaInicio }}</td>
+            <td class="col-fim">{{ lancamento.horaFim }}</td>
+            <td class="col-duracao">{{ formatDuration(lancamento.horas) }}</td>
+            <td class="col-status">
+              <span class="status-badge" [ngClass]="getStatusClass(lancamento.status)">
+                {{ formatStatus(lancamento.status) }}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="empty-message">Nenhum lançamento encontrado.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
