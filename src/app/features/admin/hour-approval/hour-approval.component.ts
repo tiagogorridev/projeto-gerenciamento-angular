@@ -130,16 +130,16 @@ export class HourApprovalComponent implements OnInit {
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: (response) => {
-          this.successMessage = 'Lançamento rejeitado com sucesso!';
+          this.successMessage = 'Lançamento reprovado com sucesso!';
           const lancamento = this.lancamentos.find(l => l.id === lancamentoId);
           if (lancamento) {
-            lancamento.status = 'REJEITADO';
+            lancamento.status = 'REPROVADO';
           }
           this.carregarLancamentos();
         },
         error: (error) => {
-          this.errorMessage = 'Erro ao rejeitar lançamento: ' + error;
-          console.error('Erro ao rejeitar lançamento:', error);
+          this.errorMessage = 'Erro ao reprovar lançamento: ' + error;
+          console.error('Erro ao reprovar lançamento:', error);
         }
       });
   }
@@ -158,7 +158,7 @@ export class HourApprovalComponent implements OnInit {
     const statusMap: Record<string, string> = {
       'EM_ANALISE': 'pendente',
       'APROVADO': 'aprovado',
-      'REJEITADO': 'reprovado'
+      'REPROVADO': 'reprovado'
     };
     return statusMap[status] || '';
   }
