@@ -15,145 +15,68 @@
     </button>
   </div>
 
-  <div class="filter-section" *ngIf="activeTab === 'projetos'">
-    <h2>Filtros</h2>
-    <div class="filters-grid">
-      <div class="form-group">
-        <label>Período</label>
-        <div class="date-range">
-          <div class="date-input">
-            <label>De</label>
-            <input type="date" class="input-field" [(ngModel)]="selectedDataInicio" (ngModelChange)="aplicarFiltros()">
+  <div *ngIf="activeTab === 'projetos'">
+    <div class="filter-section">
+      <h2>Filtros</h2>
+      <div class="filters-grid">
+        <div class="form-group">
+          <label>Período</label>
+          <div class="date-range">
+            <div class="date-input">
+              <label>De</label>
+              <input type="date" class="input-field" [(ngModel)]="selectedDataInicio" (ngModelChange)="aplicarFiltros()">
+            </div>
+            <div class="date-input">
+              <label>Até</label>
+              <input type="date" class="input-field" [(ngModel)]="selectedDataFim" (ngModelChange)="aplicarFiltros()">
+            </div>
           </div>
-          <div class="date-input">
-            <label>Até</label>
-            <input type="date" class="input-field" [(ngModel)]="selectedDataFim" (ngModelChange)="aplicarFiltros()">
-          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Cliente</label>
+          <select class="input-field" [(ngModel)]="selectedCliente" (ngModelChange)="aplicarFiltros()">
+            <option value="">Todos os clientes</option>
+            <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Usuário</label>
+          <select class="input-field" [(ngModel)]="selectedUsuario" (ngModelChange)="aplicarFiltros()">
+            <option value="">Todos os usuários</option>
+            <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nome }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select class="input-field" [(ngModel)]="selectedStatus" (ngModelChange)="aplicarFiltros()">
+            <option value="">Todos os status</option>
+            <option value="PLANEJADO">Planejado</option>
+            <option value="EM_ANDAMENTO">Em Andamento</option>
+            <option value="CONCLUIDO">Concluído</option>
+            <option value="CANCELADO">Cancelado</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Prioridade</label>
+          <select class="input-field" [(ngModel)]="selectedPrioridade" (ngModelChange)="aplicarFiltros()">
+            <option value="">Todas as prioridades</option>
+            <option value="ALTA">Alta</option>
+            <option value="MEDIA">Média</option>
+            <option value="BAIXA">Baixa</option>
+          </select>
         </div>
       </div>
 
-      <div class="form-group">
-        <label>Cliente</label>
-        <select class="input-field" [(ngModel)]="selectedCliente" (ngModelChange)="aplicarFiltros()">
-          <option value="">Todos os clientes</option>
-          <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Usuário</label>
-        <select class="input-field" [(ngModel)]="selectedUsuario" (ngModelChange)="aplicarFiltros()">
-          <option value="">Todos os usuários</option>
-          <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nome }}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Status</label>
-        <select class="input-field" [(ngModel)]="selectedStatus" (ngModelChange)="aplicarFiltros()">
-          <option value="">Todos os status</option>
-          <option value="PLANEJADO">Planejado</option>
-          <option value="EM_ANDAMENTO">Em Andamento</option>
-          <option value="CONCLUIDO">Concluído</option>
-          <option value="CANCELADO">Cancelado</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Prioridade</label>
-        <select class="input-field" [(ngModel)]="selectedPrioridade" (ngModelChange)="aplicarFiltros()">
-          <option value="">Todas as prioridades</option>
-          <option value="ALTA">Alta</option>
-          <option value="MEDIA">Média</option>
-          <option value="BAIXA">Baixa</option>
-        </select>
+      <div class="filter-actions">
+        <button class="btn-secondary" (click)="limparFiltros()">Limpar Filtros</button>
+        <button class="btn-primary" (click)="aplicarFiltros()">Aplicar Filtros</button>
       </div>
     </div>
 
-    <div class="filter-actions">
-      <button class="btn-secondary" (click)="limparFiltros()">Limpar Filtros</button>
-      <button class="btn-primary" (click)="aplicarFiltros()">Aplicar Filtros</button>
-    </div>
-  </div>
-
-  <div class="filter-section" *ngIf="activeTab === 'tarefas'">
-    <h2>Filtros</h2>
-    <div class="filters-grid">
-      <div class="form-group">
-        <label>Período</label>
-        <div class="date-range">
-          <div class="date-input">
-            <label>De</label>
-            <input type="date" class="input-field" [(ngModel)]="selectedDataInicioTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
-          </div>
-          <div class="date-input">
-            <label>Até</label>
-            <input type="date" class="input-field" [(ngModel)]="selectedDataFimTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Projeto</label>
-        <select class="input-field" [(ngModel)]="selectedProjetoTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
-          <option value="">Todos os projetos</option>
-          <option *ngFor="let projeto of projetos" [value]="projeto.id">{{ projeto.nome }}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Cliente</label>
-        <select class="input-field" [(ngModel)]="selectedClienteTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
-          <option value="">Todos os clientes</option>
-          <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Administrador</label>
-        <select class="input-field" [(ngModel)]="selectedAdminTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
-          <option value="">Todos os administradores</option>
-          <option *ngFor="let admin of administradores" [value]="admin.id">{{ admin.nome }}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Usuário</label>
-        <select class="input-field" [(ngModel)]="selectedUsuarioTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
-          <option value="">Todos os usuários</option>
-          <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nome }}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Status</label>
-        <select class="input-field" [(ngModel)]="selectedStatusTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
-          <option value="">Todos os status</option>
-          <option value="ABERTA">Aberta</option>
-          <option value="EM_ANDAMENTO">Em Andamento</option>
-          <option value="CONCLUIDA">Concluída</option>
-          <option value="PAUSADA">Pausada</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Prioridade</label>
-        <select class="input-field" [(ngModel)]="selectedPrioridadeTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
-          <option value="">Todas as prioridades</option>
-          <option value="ALTA">Alta</option>
-          <option value="MEDIA">Média</option>
-          <option value="BAIXA">Baixa</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="filter-actions">
-      <button class="btn-secondary" (click)="limparFiltros()">Limpar Filtros</button>
-      <button class="btn-primary" (click)="aplicarFiltrosTarefas()">Aplicar Filtros</button>
-    </div>
-  </div>
-
-  <div class="report-content" *ngIf="activeTab === 'projetos'">
     <div class="report-summary">
       <div class="summary-card">
         <div class="summary-title">Total de Projetos</div>
@@ -197,21 +120,110 @@
         <div class="project-row" *ngFor="let projeto of projetosFiltrados">
           <div class="project-name">{{ projeto.nome }}</div>
           <div class="project-client">{{ projeto.cliente.nome }}</div>
-          <div class="project-progress" [ngClass]="{'text-danger': (projeto.tempoRegistrado || 0) > (projeto.horasEstimadas || 0)}">{{ projeto.tempoRegistrado }} de {{ projeto.horasEstimadas }}h</div>
-          <div class="project-cost">R$ {{ projeto.custoTrabalhado }} de R$ {{ projeto.custoEstimado }}</div>
+          <div class="project-progress" [ngClass]="{'text-danger': (projeto.tempoRegistrado || 0) > (projeto.horasEstimadas || 0)}">
+            {{ projeto.tempoRegistrado }} de {{ projeto.horasEstimadas }}h
+          </div>
+          <div class="project-cost">
+            R$ {{ projeto.custoTrabalhado }} de R$ {{ projeto.custoEstimado }}
+          </div>
           <div class="project-status">
-            <span [ngClass]="getStatusClass(projeto.status)">{{ projeto.status }}</span>
+            <span class="status-pill {{ projeto.status }}">{{ projeto.status }}</span>
           </div>
           <div class="project-priority">
-            <span [ngClass]="getPriorityClass(projeto.prioridade)">{{ projeto.prioridade }}</span>
+            <span class="priority-pill {{ projeto.prioridade }}">{{ projeto.prioridade }}</span>
           </div>
           <div class="project-dates">{{ projeto.dataInicio }} a {{ projeto.dataFim }}</div>
+        </div>
+
+        <div class="empty-state" *ngIf="projetosFiltrados.length === 0">
+          <div class="empty-state-content">
+            <img src="assets/images/empty.svg" alt="Sem dados" class="empty-image">
+            <div class="empty-text">Nenhum projeto encontrado com os filtros selecionados.</div>
+            <button class="empty-action" (click)="limparFiltros()">Limpar Filtros</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="report-content" *ngIf="activeTab === 'tarefas'">
+  <div *ngIf="activeTab === 'tarefas'">
+    <div class="filter-section">
+      <h2>Filtros</h2>
+      <div class="filters-grid">
+        <div class="form-group">
+          <label>Período</label>
+          <div class="date-range">
+            <div class="date-input">
+              <label>De</label>
+              <input type="date" class="input-field" [(ngModel)]="selectedDataInicioTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
+            </div>
+            <div class="date-input">
+              <label>Até</label>
+              <input type="date" class="input-field" [(ngModel)]="selectedDataFimTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Projeto</label>
+          <select class="input-field" [(ngModel)]="selectedProjetoTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
+            <option value="">Todos os projetos</option>
+            <option *ngFor="let projeto of projetos" [value]="projeto.id">{{ projeto.nome }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Cliente</label>
+          <select class="input-field" [(ngModel)]="selectedClienteTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
+            <option value="">Todos os clientes</option>
+            <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Administrador</label>
+          <select class="input-field" [(ngModel)]="selectedAdminTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
+            <option value="">Todos os administradores</option>
+            <option *ngFor="let admin of administradores" [value]="admin.id">{{ admin.nome }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Usuário</label>
+          <select class="input-field" [(ngModel)]="selectedUsuarioTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
+            <option value="">Todos os usuários</option>
+            <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nome }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select class="input-field" [(ngModel)]="selectedStatusTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
+            <option value="">Todos os status</option>
+            <option value="ABERTA">Aberta</option>
+            <option value="EM_ANDAMENTO">Em Andamento</option>
+            <option value="CONCLUIDA">Concluída</option>
+            <option value="PAUSADA">Pausada</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Prioridade</label>
+          <select class="input-field" [(ngModel)]="selectedPrioridadeTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
+            <option value="">Todas as prioridades</option>
+            <option value="ALTA">Alta</option>
+            <option value="MEDIA">Média</option>
+            <option value="BAIXA">Baixa</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn-secondary" (click)="limparFiltros()">Limpar Filtros</button>
+        <button class="btn-primary" (click)="aplicarFiltrosTarefas()">Aplicar Filtros</button>
+      </div>
+    </div>
+
     <div class="report-summary">
       <div class="summary-card">
         <div class="summary-title">Total de Tarefas</div>
@@ -256,10 +268,20 @@
           <div class="task-project">{{ tarefa.projeto.nome }}</div>
           <div class="task-user">{{ tarefa.usuarioResponsavel.nome }}</div>
           <div class="task-status">
-            <span [ngClass]="getStatusClass(tarefa.status)">{{ tarefa.status }}</span>
+            <span class="status-pill {{ tarefa.status }}">{{ tarefa.status }}</span>
           </div>
-          <div class="task-hours">{{ tarefa.horasEstimadas }}h / {{ tarefa.tempoRegistrado }}h</div>
+          <div class="task-hours" [ngClass]="{'text-danger': (tarefa.tempoRegistrado || 0) > (tarefa.horasEstimadas || 0)}">
+            {{ tarefa.horasEstimadas }}h / {{ tarefa.tempoRegistrado }}h
+          </div>
           <div class="task-dates">{{ tarefa.dataInicio }} a {{ tarefa.dataFim }}</div>
+        </div>
+
+        <div class="empty-state" *ngIf="tarefasFiltradas.length === 0">
+          <div class="empty-state-content">
+            <img src="assets/images/empty.svg" alt="Sem dados" class="empty-image">
+            <div class="empty-text">Nenhuma tarefa encontrada com os filtros selecionados.</div>
+            <button class="empty-action" (click)="limparFiltros()">Limpar Filtros</button>
+          </div>
         </div>
       </div>
     </div>

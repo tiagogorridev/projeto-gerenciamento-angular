@@ -14,6 +14,7 @@ $success-green: #16a34a;
   background-color: $white;
   margin: 0 24px;
   padding: 60px 24px 24px 260px;
+  max-width: 1600px;
 }
 
 .reports-header {
@@ -21,14 +22,13 @@ $success-green: #16a34a;
   border-bottom: 1px solid $border-color;
 
   h1 {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 600;
     color: #1f2937;
     margin: 0;
   }
 }
 
-// Tab Navigation
 .report-tabs {
   display: flex;
   gap: 32px;
@@ -37,7 +37,7 @@ $success-green: #16a34a;
   margin-bottom: 24px;
 
   .tab-button {
-    padding: 8px 16px;
+    padding: 10px 24px;
     border: none;
     background: none;
     cursor: pointer;
@@ -45,10 +45,11 @@ $success-green: #16a34a;
     font-weight: 500;
     position: relative;
     font-size: 16px;
+    transition: all 0.2s ease;
 
     &.active {
       color: $primary-color;
-      border-bottom: 2px solid $primary-color;
+      border-bottom: 3px solid $primary-color;
     }
 
     &:hover:not(.active) {
@@ -57,25 +58,25 @@ $success-green: #16a34a;
   }
 }
 
-// Filter Section
 .filter-section {
   background-color: #f9fafb;
-  padding: 20px;
+  padding: 24px;
   border-radius: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
   border: 1px solid $border-color;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 
   h2 {
     font-size: 18px;
     font-weight: 600;
     color: #1f2937;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   .filters-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
     margin-bottom: 24px;
   }
 
@@ -121,10 +122,10 @@ $success-green: #16a34a;
   .filter-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
+    gap: 16px;
 
     button {
-      padding: 10px 20px;
+      padding: 10px 24px;
       border-radius: 6px;
       font-size: 14px;
       font-weight: 500;
@@ -154,49 +155,58 @@ $success-green: #16a34a;
   }
 }
 
-// Report Summary
 .report-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
 
   .summary-card {
     background-color: $white;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     border: 1px solid $border-color;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
 
     .summary-title {
-      font-size: 14px;
+      font-size: 15px;
       color: $text-gray;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      font-weight: 500;
     }
 
     .summary-value {
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 600;
       color: #1f2937;
     }
   }
 }
 
-// Table Container
 .table-container {
   background-color: $white;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid $border-color;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 
   .export-actions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-    padding: 16px;
+    padding: 16px 24px;
     border-bottom: 1px solid $border-color;
+    background-color: #f9fafb;
 
     .export-btn {
-      padding: 8px 16px;
+      padding: 10px 16px;
       background-color: $white;
       border: 1px solid $border-color;
       border-radius: 6px;
@@ -204,9 +214,11 @@ $success-green: #16a34a;
       font-size: 14px;
       cursor: pointer;
       transition: all 0.2s;
+      font-weight: 500;
 
       &:hover {
         background-color: $input-bg;
+        border-color: darken($border-color, 10%);
       }
 
       i {
@@ -216,21 +228,83 @@ $success-green: #16a34a;
   }
 }
 
-// Projects Table
+.status-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-weight: 500;
+  font-size: 13px;
+  text-align: center;
+  min-width: 100px;
+
+  &.PLANEJADO, &.ABERTA {
+    background: #EEF2FF;
+    color: #4F46E5;
+  }
+
+  &.EM_ANDAMENTO {
+    background: #F0F9FF;
+    color: #0284C7;
+  }
+
+  &.CONCLUIDO, &.CONCLUIDA {
+    background: #F0FDF4;
+    color: #16A34A;
+  }
+
+  &.CANCELADO, &.PAUSADA {
+    background: #FEF2F2;
+    color: #DC2626;
+  }
+}
+
+.priority-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-weight: 500;
+  font-size: 13px;
+  text-align: center;
+  min-width: 80px;
+
+  &.ALTA {
+    background-color: #fee2e2;
+    color: #dc2626;
+  }
+
+  &.MEDIA {
+    background-color: #fef3c7;
+    color: #d97706;
+  }
+
+  &.BAIXA {
+    background-color: #dcfce7;
+    color: $success-green;
+  }
+}
+
 .projects-table, .tasks-table {
   width: 100%;
 
   .project-row, .task-row {
     display: grid;
-    padding: 16px;
+    padding: 16px 24px;
     border-bottom: 1px solid $border-color;
     align-items: center;
+    transition: background-color 0.15s ease;
+
+    &:hover:not(.headers) {
+      background-color: #f9fafb;
+    }
 
     &.headers {
       background-color: #f9fafb;
       font-weight: 500;
       color: $text-gray;
       font-size: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 1;
     }
 
     &:last-child {
@@ -242,81 +316,46 @@ $success-green: #16a34a;
     grid-template-columns: 1.5fr 1fr 1.2fr 1.2fr 1fr 1fr 1.2fr;
   }
 
+  .task-row {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.2fr;
+  }
+
   .text-danger {
     color: #DC2626 !important;
     font-weight: 500;
   }
 
-  .task-row {
-    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.2fr;
+  .project-name, .task-name {
+    font-weight: 500;
+    color: #1f2937;
   }
 
-  // Status styling
-  .project-status, .task-status {
-    span {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 500;
-      display: inline-block;
-      text-align: center;
-
-      &.PLANEJADO, &.ABERTA {
-        background-color: #e5e7eb;
-        color: $gray;
-      }
-
-      &.EM_ANDAMENTO {
-        background-color: #dbeafe;
-        color: #2563eb;
-      }
-
-      &.CONCLUIDO, &.CONCLUIDA {
-        background-color: #dcfce7;
-        color: $success-green;
-      }
-
-      &.CANCELADO, &.PAUSADA {
-        background-color: #fee2e2;
-        color: #dc2626;
-      }
-    }
+  .project-client, .task-project, .task-user {
+    color: $text-gray;
   }
 
-  // Priority styling
-  .project-priority {
-    span {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 500;
-      display: inline-block;
-      text-align: center;
+  .project-progress, .task-hours, .project-cost {
+    font-size: 14px;
+    color: $text-gray;
+  }
 
-      &.ALTA {
-        background-color: #fee2e2;
-        color: #dc2626;
-      }
+  .project-dates, .task-dates {
+    color: $text-gray;
+    font-size: 13px;
+  }
 
-      &.MEDIA {
-        background-color: #fef3c7;
-        color: #d97706;
-      }
-
-      &.BAIXA {
-        background-color: #dcfce7;
-        color: $success-green;
-      }
-    }
+  .project-status, .task-status, .project-priority {
+    text-align: center;
   }
 }
 
-// Empty state
 .empty-state {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 64px 24px;
+  background-color: #f9fafb;
+  border-radius: 8px;
 
   .empty-state-content {
     text-align: center;
@@ -331,36 +370,21 @@ $success-green: #16a34a;
     .empty-text {
       font-size: 16px;
       color: $text-gray;
+      margin-bottom: 24px;
     }
-  }
-}
 
-// Calendar Component Overrides
-::ng-deep {
-  .p-calendar {
-    width: 100%;
-
-    .p-inputtext {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid $border-color;
+    .empty-action {
+      padding: 10px 20px;
+      background-color: $primary-color;
+      color: $white;
       border-radius: 6px;
+      font-weight: 500;
       font-size: 14px;
-
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
-      }
-    }
-
-    .p-button {
-      background-color: $white;
-      border: 1px solid $border-color;
-      color: $gray;
+      display: inline-block;
+      cursor: pointer;
 
       &:hover {
-        background-color: $input-bg;
+        background-color: $hover-color;
       }
     }
   }
