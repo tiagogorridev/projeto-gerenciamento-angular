@@ -60,26 +60,32 @@
       <div class="project-priority">Prioridade</div>
       <div class="project-start">Data de Início</div>
       <div class="project-end">Data de Fim</div>
+      <div class="project-actions">Ações</div>
     </div>
 
-    <div class="project-row" *ngFor="let projeto of filteredProjects" (click)="navegarParaEdicao(projeto.id, projeto.nome)">
-      <div class="project-name">{{ projeto.nome }}</div>
-      <div class="project-client">{{ projeto.cliente?.nome }}</div>
-      <div class="project-progress" [ngClass]="{'text-danger': (projeto.tempoRegistrado || 0) > (projeto.horasEstimadas || 0)}">
+    <div class="project-row" *ngFor="let projeto of filteredProjects">
+      <div class="project-name" (click)="navegarParaEdicao(projeto.id, projeto.nome)">{{ projeto.nome }}</div>
+      <div class="project-client" (click)="navegarParaEdicao(projeto.id, projeto.nome)">{{ projeto.cliente?.nome }}</div>
+      <div class="project-progress" (click)="navegarParaEdicao(projeto.id, projeto.nome)" [ngClass]="{'text-danger': (projeto.tempoRegistrado || 0) > (projeto.horasEstimadas || 0)}">
         {{ projeto.tempoRegistrado || 0 }}h de {{ projeto.horasEstimadas || 0 }}h
       </div>
-      <div class="project-cost">
+      <div class="project-cost" (click)="navegarParaEdicao(projeto.id, projeto.nome)">
         {{ projeto.custoTrabalhado || 0 | currency:'BRL' }} de
         {{ projeto.custoEstimado || 0 | currency:'BRL' }}
       </div>
-      <div class="project-status">
+      <div class="project-status" (click)="navegarParaEdicao(projeto.id, projeto.nome)">
         <span [class]="projeto.status">{{ projeto.status.replace('_', ' ') }}</span>
       </div>
-      <div class="project-priority">
+      <div class="project-priority" (click)="navegarParaEdicao(projeto.id, projeto.nome)">
         <span [class]="projeto.prioridade">{{ projeto.prioridade }}</span>
       </div>
-      <div class="project-start">{{ projeto.dataInicio | date:'dd/MM/yyyy' }}</div>
-      <div class="project-end">{{ projeto.dataFim | date:'dd/MM/yyyy' }}</div>
+      <div class="project-start" (click)="navegarParaEdicao(projeto.id, projeto.nome)">{{ projeto.dataInicio | date:'dd/MM/yyyy' }}</div>
+      <div class="project-end" (click)="navegarParaEdicao(projeto.id, projeto.nome)">{{ projeto.dataFim | date:'dd/MM/yyyy' }}</div>
+      <div class="project-actions">
+        <button class="delete-btn" (click)="confirmarExclusao(projeto)">
+          <i class="pi pi-trash"></i>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -153,6 +159,19 @@
           <button type="submit" class="create-btn" [disabled]="!projectForm.form.valid">Criar</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showDeleteConfirmModal">
+    <div class="modal-content confirm-modal">
+      <h2>Confirmar Exclusão</h2>
+      <p>Tem certeza que deseja excluir o projeto "{{ projetoParaExcluir?.nome }}"?</p>
+      <p class="warning-text">Esta ação não pode ser desfeita.</p>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="cancelarExclusao()">Cancelar</button>
+        <button type="button" class="delete-confirm-btn" (click)="excluirProjeto()">Excluir</button>
+      </div>
     </div>
   </div>
 </div>
