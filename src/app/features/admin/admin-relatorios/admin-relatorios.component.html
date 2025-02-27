@@ -34,18 +34,18 @@
         </div>
 
         <div class="form-group">
-          <label>Cliente</label>
-          <select class="input-field" [(ngModel)]="selectedCliente" (ngModelChange)="aplicarFiltros()">
-            <option value="">Todos os clientes</option>
-            <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
+          <label>Administrador</label>
+          <select class="input-field" [(ngModel)]="selectedAdmin" (ngModelChange)="aplicarFiltros()">
+            <option value="">Todos os administradores</option>
+            <option *ngFor="let admin of administradores" [value]="admin.id">{{ admin.nome }}</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>Usuário</label>
-          <select class="input-field" [(ngModel)]="selectedUsuario" (ngModelChange)="aplicarFiltros()">
-            <option value="">Todos os usuários</option>
-            <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nome }}</option>
+          <label>Cliente</label>
+          <select class="input-field" [(ngModel)]="selectedCliente" (ngModelChange)="aplicarFiltros()">
+            <option value="">Todos os clientes</option>
+            <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
           </select>
         </div>
 
@@ -102,13 +102,13 @@
 
     <div class="table-container">
       <div class="export-actions">
-        <button class="export-btn"><i class="fas fa-file-excel"></i> Exportar Excel</button>
-        <button class="export-btn" (click)="exportarPDF()"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
+        <button class="export-btn"><i class="pi pi-file-excel"></i> Exportar Excel</button>
+        <button class="export-btn" (click)="exportarPDF()"><i class="pi pi-file-pdf"></i> Exportar PDF</button>
       </div>
 
       <div class="projects-table">
         <div class="project-row headers">
-          <div class="project-name">Nome</div>
+          <div class="project-name">Projeto</div>
           <div class="project-client">Cliente</div>
           <div class="project-progress">Progresso</div>
           <div class="project-cost">Custo</div>
@@ -137,7 +137,7 @@
 
         <div class="empty-state" *ngIf="projetosFiltrados.length === 0">
           <div class="empty-state-content">
-            <img src="assets/images/empty.svg" alt="Sem dados" class="empty-image">
+            <img src="../../../../assets/no-project.png" alt="Sem dados" class="empty-image">
             <div class="empty-text">Nenhum projeto encontrado com os filtros selecionados.</div>
             <button class="empty-action" (click)="limparFiltros()">Limpar Filtros</button>
           </div>
@@ -185,14 +185,6 @@
           <select class="input-field" [(ngModel)]="selectedAdminTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
             <option value="">Todos os administradores</option>
             <option *ngFor="let admin of administradores" [value]="admin.id">{{ admin.nome }}</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Usuário</label>
-          <select class="input-field" [(ngModel)]="selectedUsuarioTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
-            <option value="">Todos os usuários</option>
-            <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nome }}</option>
           </select>
         </div>
 
@@ -249,8 +241,8 @@
 
     <div class="table-container">
       <div class="export-actions">
-        <button class="export-btn"><i class="fas fa-file-excel"></i> Exportar Excel</button>
-        <button class="export-btn"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
+        <button class="export-btn"><i class="pi pi-file-excel"></i> Exportar Excel</button>
+        <button class="export-btn"><i class="pi pi-file-pdf"></i> Exportar PDF</button>
       </div>
 
       <div class="tasks-table">
@@ -278,7 +270,7 @@
 
         <div class="empty-state" *ngIf="tarefasFiltradas.length === 0">
           <div class="empty-state-content">
-            <img src="assets/images/empty.svg" alt="Sem dados" class="empty-image">
+            <img src="../../../../assets/no-project.png" alt="Sem dados" class="empty-image">
             <div class="empty-text">Nenhuma tarefa encontrada com os filtros selecionados.</div>
             <button class="empty-action" (click)="limparFiltros()">Limpar Filtros</button>
           </div>
