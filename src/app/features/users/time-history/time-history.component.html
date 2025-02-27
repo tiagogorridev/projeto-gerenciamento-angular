@@ -31,6 +31,7 @@
               <th class="col-inicio">Início</th>
               <th class="col-fim">Fim</th>
               <th class="col-duracao">Duração</th>
+              <th class="col-status">Status</th>
               <th class="col-descricao">Descrição</th>
             </tr>
           </ng-template>
@@ -42,12 +43,17 @@
               <td class="col-inicio">{{ lancamento.horaInicio }}</td>
               <td class="col-fim">{{ lancamento.horaFim }}</td>
               <td class="col-duracao">{{ lancamento.horas }}h</td>
+              <td class="col-status">
+                <span class="status" [ngClass]="getStatusClass(lancamento.status)">
+                  {{ formatStatus(lancamento.status) }}
+                </span>
+              </td>
               <td class="col-descricao">{{ lancamento.descricao }}</td>
             </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage">
             <tr>
-              <td colspan="7" class="empty-message">Nenhum lançamento encontrado.</td>
+              <td colspan="8" class="empty-message">Nenhum lançamento encontrado.</td>
             </tr>
           </ng-template>
         </p-table>
