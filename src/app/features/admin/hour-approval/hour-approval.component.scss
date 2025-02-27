@@ -17,9 +17,8 @@ $warning-color: #f59e0b;
 }
 
 .page-title {
-  color: $gray;
-  font-weight: 500;
-  font-size: 24px;
+  color: #6b7280;
+  font-weight: 400;
   margin-bottom: 32px;
 }
 
@@ -361,5 +360,34 @@ $warning-color: #f59e0b;
   &.reprovado {
     background: #fee2e2;
     color: #dc2626;
+  }
+}
+::ng-deep {
+  .p-calendar {
+    width: 100%;
+
+    .p-inputtext {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      font-size: 14px;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+      }
+    }
+
+    .p-button {
+      background-color: $primary-color;
+      border: 1px solid $border-color;
+      color: $white;
+
+      &:hover {
+        background-color: $hover-color;
+      }
+    }
   }
 }
