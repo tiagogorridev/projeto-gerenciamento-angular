@@ -283,10 +283,10 @@ $success-green: #16a34a;
 }
 
 .text-danger {
-  color: red;
+  color: #DC2626 !important;
+  font-weight: 500;
 }
 
-// Ajustando também a barra de pesquisa e botão de nova tarefa para ficar consistente
 .actions-bar {
   .new-task-button {
     padding: 8px 16px;
