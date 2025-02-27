@@ -9,6 +9,7 @@ interface LancamentoHoras {
   horaFim: string;
   horas: number;
   descricao: string;
+  status: 'EM_ANALISE' | 'APROVADO' | 'REPROVADO';
   projeto: {
     id: number;
     nome: string;
@@ -74,10 +75,36 @@ export class TimeHistoryComponent implements OnInit {
         }
       }
     });
-  };
-
+  }
 
   formatDate(date: string): string {
     return new Date(date).toLocaleDateString('pt-BR');
+  }
+
+  formatStatus(status: string): string {
+    switch(status) {
+      case 'EM_ANALISE':
+        return 'Em Análise';
+      case 'APROVADO':
+        return 'Aprovado';
+      case 'REPROVADO':
+        return 'Reprovado';
+      default:
+        return status;
+    }
+  }
+
+  getStatusClass(status: string): string {
+    const statusLowerCase = status.toLowerCase();
+
+    if (statusLowerCase.includes('analise') || statusLowerCase.includes('análise')) {
+      return 'status-em-analise';
+    } else if (statusLowerCase.includes('aprovado')) {
+      return 'status-aprovado';
+    } else if (statusLowerCase.includes('reprovado')) {
+      return 'status-reprovado';
+    } else {
+      return '';
+    }
   }
 }
