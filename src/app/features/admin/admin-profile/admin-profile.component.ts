@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { UsuarioService } from '../../../core/auth/services/usuario.service';
 import { AuthService } from '../../../core/auth/services/auth.service';
 import { Usuario } from '../../../core/auth/services/usuario.model';
 import { finalize } from 'rxjs/operators';
+
 @Component({
   selector: 'app-admin-profile',
   templateUrl: './admin-profile.component.html',
@@ -20,6 +21,7 @@ export class AdminProfileComponent implements OnInit {
   successMessage: string = '';
   senhaAtualInvalida: boolean = false;
   mensagemErroSenha: string = '';
+  erroSenhaIgual: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -42,7 +44,7 @@ export class AdminProfileComponent implements OnInit {
   private initializeSecurityForm(): FormGroup {
     return this.fb.group({
       senhaAtual: ['', [Validators.required]],
-      novaSenha: ['', [Validators.required, Validators.minLength(6)]],
+      novaSenha: ['', [Validators.required, Validators.minLength(6), this.novaSenhaDiferenteValidator.bind(this)]], // Validação personalizada
       confirmPassword: ['', [Validators.required]]
     }, {
       validator: this.passwordMatchValidator
@@ -51,10 +53,7 @@ export class AdminProfileComponent implements OnInit {
 
   private loadUserData(): void {
     this.loading = true;
-
     const userId = this.authService.getUserId();
-    console.log('ID do usuário:', userId);
-
     if (userId) {
       this.usuarioService.getUsuarioById(Number(userId))
         .subscribe({
@@ -64,7 +63,6 @@ export class AdminProfileComponent implements OnInit {
           },
           error: (error) => {
             this.errorMessage = 'Erro ao carregar dados do usuário: ' + (error?.message || 'Desconhecido');
-            console.error('Erro ao carregar usuário:', error);
           },
           complete: () => {
             this.loading = false;
@@ -72,7 +70,6 @@ export class AdminProfileComponent implements OnInit {
         });
     } else {
       this.errorMessage = 'ID do usuário não encontrado.';
-      console.error('ID do usuário não encontrado.');
       this.loading = false;
     }
   }
@@ -101,7 +98,6 @@ export class AdminProfileComponent implements OnInit {
   private onSavePersonal(): void {
     if (this.personalForm.valid && this.currentUser) {
       this.saving = true;
-
       const updatedUser = {
         nome: this.personalForm.get('nome')?.value,
         email: this.currentUser.email,
@@ -123,7 +119,6 @@ export class AdminProfileComponent implements OnInit {
         },
         error: (error) => {
           this.errorMessage = 'Erro ao atualizar informações: ' + error.message;
-          console.error('Erro na atualização:', error);
         }
       });
     }
@@ -141,17 +136,25 @@ export class AdminProfileComponent implements OnInit {
         senhaAtual: this.securityForm.get('senhaAtual')?.value
       };
 
+      // Verifica se a nova senha é igual à antiga
+      if (this.securityForm.hasError('senhaIgual')) {
+        this.erroSenhaIgual = true;
+        this.saving = false;
+        return; // Impede o envio se as senhas forem iguais
+      }
+
+      // Caso contrário, tenta atualizar a senha
       this.usuarioService.updateUsuario(updatedUser)
         .pipe(finalize(() => this.saving = false))
         .subscribe({
           next: () => {
             this.successMessage = 'Senha atualizada com sucesso!';
             this.securityForm.reset();
+            this.erroSenhaIgual = false;  // Reseta o erro quando a senha for alterada com sucesso
             this.senhaAtualInvalida = false;
             this.mensagemErroSenha = '';
           },
           error: (error) => {
-            console.error('Erro na atualização da senha:', error);
             this.senhaAtualInvalida = true;
             this.mensagemErroSenha = 'Senha atual incorreta';
           }
@@ -159,12 +162,21 @@ export class AdminProfileComponent implements OnInit {
     }
   }
 
+  novaSenhaDiferenteValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const senhaAtual = this.securityForm?.get('senhaAtual')?.value;
+    if (control.value === senhaAtual) {
+      return { 'senhaIgual': true };  // Retorna erro se a senha for igual
+    }
+    return null;  // Se não for igual, não há erro
+  }
 
-  private passwordMatchValidator(group: FormGroup): null | { passwordMismatch: true } {
-    const novaSenha = group.get('novaSenha')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-
-    return novaSenha === confirmPassword ? null : { passwordMismatch: true };
+  private passwordMatchValidator(formGroup: FormGroup): { [key: string]: boolean } | null {
+    const novaSenha = formGroup.get('novaSenha')?.value;
+    const confirmPassword = formGroup.get('confirmPassword')?.value;
+    if (novaSenha && confirmPassword && novaSenha !== confirmPassword) {
+      return { 'passwordMismatch': true };  // Erro se as senhas não coincidirem
+    }
+    return null;
   }
 
   hasError(form: FormGroup, controlName: string, errorName: string): boolean {
@@ -172,14 +184,12 @@ export class AdminProfileComponent implements OnInit {
     return control ? control.hasError(errorName) && control.touched : false;
   }
 
-    // Método para limpar os erros quando mudar de aba
-    private clearMessages(): void {
-      this.errorMessage = '';
-      this.successMessage = '';
-      this.senhaAtualInvalida = false;
-      this.mensagemErroSenha = '';
-    }
-
+  private clearMessages(): void {
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.senhaAtualInvalida = false;
+    this.mensagemErroSenha = '';
+  }
 
   get isPersonalFormDirty(): boolean {
     return this.personalForm.dirty;
