@@ -8,7 +8,7 @@
   <div class="search-filter-container">
     <div class="input-group">
       <input type="text" placeholder="Pesquisar clientes..." class="input-field" [(ngModel)]="searchTerm">
-      <i class="fas fa-search search-icon"></i>
+      <i class="pi pi-search search-icon"></i>
     </div>
 
     <div class="input-group">
@@ -18,13 +18,15 @@
         <option>Inativo</option>
         <option>Todos</option>
       </select>
-      <i class="fas fa-chevron-down dropdown-icon"></i>
+      <i class="pi pi-chevron-down dropdown-icon"></i>
     </div>
+
 
     <button class="new-client-btn" (click)="openNewClientModal()">
       Novo Cliente
     </button>
   </div>
+
 
   <div class="empty-state" *ngIf="!hasClients">
     <div class="empty-state-content">
@@ -43,10 +45,18 @@
       <div class="client-name">{{ cliente.nome }}</div>
       <div class="client-email">{{ cliente.email }}</div>
     </div>
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
   </div>
 
   <div class="modal" *ngIf="showNewClientModal">
     <div class="modal-content">
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
       <h2>Novo Cliente</h2>
 
       <form (ngSubmit)="onSubmit(clientForm)" #clientForm="ngForm">
