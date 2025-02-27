@@ -9,14 +9,14 @@
         class="nav-item"
         [class.active]="activeTab === 'personal'"
         (click)="setActiveTab('personal')">
-        <i class="fas fa-user"></i>
+        <i class="pi pi-user"></i>
         Informações Pessoais
       </button>
       <button
         class="nav-item"
         [class.active]="activeTab === 'security'"
         (click)="setActiveTab('security')">
-        <i class="fas fa-lock"></i>
+        <i class="pi pi-lock"></i>
         Segurança
       </button>
     </div>
@@ -53,11 +53,8 @@
             <div class="error-message" *ngIf="hasError(securityForm, 'senhaAtual', 'required') && securityForm.get('senhaAtual')?.touched">
               Senha atual é obrigatória
             </div>
-
-            <div class="error-message" *ngIf="mensagemErroSenha">
-              {{mensagemErroSenha}}
             </div>
-          </div>
+
 
           <div class="form-group">
             <label>Nova Senha</label>
@@ -88,6 +85,15 @@
               As senhas não coincidem
             </div>
           </div>
+
+          <div *ngIf="successMessage" class="alert alert-success">
+            {{ successMessage }}
+          </div>
+
+          <div *ngIf="erroSenhaIgual" class="alert alert-danger">
+            A nova senha não pode ser igual à senha atual.
+          </div>
+
         </form>
       </div>
 
