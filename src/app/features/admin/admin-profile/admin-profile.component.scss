@@ -145,10 +145,12 @@
     }
   }
 }
+
 .disabled-input {
   background-color: #f3f3f3;
   cursor: not-allowed;
 }
+
 .error-message {
   color: #dc3545;
   font-size: 0.875rem;
@@ -181,4 +183,22 @@
       border-color: #dc3545;
     }
   }
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.alert .alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
 }
