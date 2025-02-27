@@ -9,51 +9,80 @@
 }
 
 .content-card {
-  background: white;
+  background-color: #ffffff;
   border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
 }
 
-.loading {
+.content-title {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.loading-container, .error-container {
   display: flex;
   justify-content: center;
-  padding: 20px;
+  padding: 30px;
 }
 
-.error-message {
+.error-container {
   color: #dc3545;
-  padding: 10px;
-  margin: 10px 0;
-  background-color: #fff3f3;
-  border-radius: 4px;
-  text-align: center;
 }
 
-.lancamentos-table {
-  margin-top: 20px;
+.empty-message {
+  text-align: center;
+  padding: 20px;
+  color: #6c757d;
+}
 
-  ::ng-deep {
-    .p-datatable {
-      .p-datatable-header {
-        background: #f8f9fa;
-      }
+.status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  min-width: 90px;
 
-      .p-datatable-thead > tr > th {
-        background: #f8f9fa;
-        color: #495057;
-        font-weight: 600;
-        padding: 1rem;
-      }
-
-      .p-datatable-tbody > tr > td {
-        padding: 0.75rem 1rem;
-      }
-    }
+  &-em-analise {
+    background-color: #f3e8ff;
+    color: #9333ea;
   }
+
+  &-aprovado {
+    background-color: #dcfce7;
+    color: #16a34a;
+  }
+
+  &-reprovado {
+    background-color: #fee2e2;
+    color: #dc2626;
+  }
+}
+
+.col-data {
+  width: 100px;
+}
+
+.col-projeto, .col-tarefa {
+  width: 150px;
+}
+
+.col-inicio, .col-fim {
+  width: 80px;
+}
+
+.col-duracao {
+  width: 80px;
+}
+
+.col-status {
+  width: 110px;
+}
+
+.col-descricao {
+  min-width: 200px;
 }
