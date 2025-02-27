@@ -22,7 +22,8 @@ export class SignupComponent implements OnInit {
     email: '',
     senha: '',
     confirmPassword: '',
-    perfil: 'USUARIO'
+    perfil: 'USUARIO',
+    ativo: 'ATIVO'
   };
 
   constructor(
@@ -50,18 +51,18 @@ export class SignupComponent implements OnInit {
 
   aplicarFiltros(): void {
     this.filteredUsers = this.users.filter(user => {
-      // Filtro de busca por nome ou email
       const termFilter = !this.searchTerm ||
-                        user.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                        user.email.toLowerCase().includes(this.searchTerm.toLowerCase());
+                          user.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                          user.email.toLowerCase().includes(this.searchTerm.toLowerCase());
 
-      // Filtro por perfil
       const perfilFilter = !this.perfilFilter ||
-                          this.perfilFilter === 'Todos' ||
-                          (this.perfilFilter === 'Administrador' && user.perfil === 'ADMIN') ||
-                          (this.perfilFilter === 'Usuário' && user.perfil === 'USUARIO');
+                            this.perfilFilter === 'Todos' ||
+                            (this.perfilFilter === 'Administrador' && user.perfil === 'ADMIN') ||
+                            (this.perfilFilter === 'Usuário' && user.perfil === 'USUARIO');
 
-      return termFilter && perfilFilter;
+      const ativoFilter = user.ativo === 'ATIVO';
+
+      return termFilter && perfilFilter && ativoFilter;
     });
   }
 
@@ -71,7 +72,8 @@ export class SignupComponent implements OnInit {
       email: '',
       senha: '',
       confirmPassword: '',
-      perfil: 'USUARIO'
+      perfil: 'USUARIO',
+      ativo: 'ATIVO'
     };
     this.showNewUserModal = true;
   }
@@ -95,7 +97,8 @@ export class SignupComponent implements OnInit {
       email: this.user.email,
       senha: this.user.senha,
       perfil: this.user.perfil,
-      confirmPassword: this.user.confirmPassword
+      confirmPassword: this.user.confirmPassword,
+      ativo: 'ATIVO'
     };
 
     this.usuarioService.cadastrarUsuario(novoUsuario).subscribe({
@@ -112,12 +115,10 @@ export class SignupComponent implements OnInit {
 
   navegarParaEdicao(id: string | number | undefined): void {
     if (id !== undefined) {
-      // Convert to string if it's a number
       const idString = String(id);
       this.router.navigate(['/usuarios/editar', idString]);
     } else {
       console.error('Tentativa de navegar para edição com ID indefinido');
-      // Optionally show user feedback that this action failed
     }
   }
 }
