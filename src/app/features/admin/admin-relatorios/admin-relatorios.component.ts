@@ -55,6 +55,8 @@ export class AdminRelatoriosComponent implements OnInit {
   horasEstimadasTarefas: number = 0;
   horasRegistradasTarefas: number = 0;
 
+  selectedAdmin: string = '';
+
   activeTab: string = 'projetos';
 
   constructor(
@@ -110,13 +112,20 @@ export class AdminRelatoriosComponent implements OnInit {
       const dataFimProjeto = new Date(projeto.dataFim);
       const dataInicioFiltro = this.selectedDataInicio ? new Date(this.selectedDataInicio) : null;
       const dataFimFiltro = this.selectedDataFim ? new Date(this.selectedDataFim) : null;
+
+      const isAdmin = this.selectedAdmin ?
+                     this.administradores.some(admin =>
+                       admin.id === projeto.usuarioResponsavel.id &&
+                       admin.id === Number(this.selectedAdmin)) :
+                     true;
+
       return (
         (!this.selectedCliente || projeto.cliente.id === Number(this.selectedCliente)) &&
-        (!this.selectedUsuario || projeto.usuarioResponsavel.id === Number(this.selectedUsuario)) &&
         (!this.selectedStatus || projeto.status === this.selectedStatus) &&
         (!this.selectedPrioridade || projeto.prioridade === this.selectedPrioridade) &&
         (!dataInicioFiltro || dataInicioProjeto >= dataInicioFiltro) &&
-        (!dataFimFiltro || dataFimProjeto <= dataFimFiltro)
+        (!dataFimFiltro || dataFimProjeto <= dataFimFiltro) &&
+        isAdmin
       );
     });
     this.atualizarResumo();
@@ -130,15 +139,14 @@ export class AdminRelatoriosComponent implements OnInit {
       const dataFimFiltro = this.selectedDataFimTarefa ? new Date(this.selectedDataFimTarefa) : null;
 
       const isAdmin = this.selectedAdminTarefa ?
-                      this.administradores.some(admin =>
-                        admin.id === tarefa.usuarioResponsavel.id &&
-                        admin.id === Number(this.selectedAdminTarefa)) :
-                      true;
+                    this.administradores.some(admin =>
+                      admin.id === tarefa.usuarioResponsavel.id &&
+                      admin.id === Number(this.selectedAdminTarefa)) :
+                    true;
 
       return (
         (!this.selectedProjetoTarefa || tarefa.projeto.id === Number(this.selectedProjetoTarefa)) &&
         (!this.selectedClienteTarefa || (tarefa.projeto && this.getClienteByProjetoId(tarefa.projeto.id) === Number(this.selectedClienteTarefa))) &&
-        (!this.selectedUsuarioTarefa || tarefa.usuarioResponsavel.id === Number(this.selectedUsuarioTarefa)) &&
         (!this.selectedAdminTarefa || isAdmin) &&
         (!this.selectedStatusTarefa || tarefa.status === this.selectedStatusTarefa) &&
         (!this.selectedPrioridadeTarefa || this.getTarefaPrioridade(tarefa) === this.selectedPrioridadeTarefa) &&
@@ -213,7 +221,7 @@ export class AdminRelatoriosComponent implements OnInit {
   limparFiltros(): void {
     if (this.activeTab === 'projetos') {
       this.selectedCliente = '';
-      this.selectedUsuario = '';
+      this.selectedAdmin = '';
       this.selectedStatus = '';
       this.selectedPrioridade = '';
       this.selectedDataInicio = '';
@@ -222,7 +230,6 @@ export class AdminRelatoriosComponent implements OnInit {
     } else {
       this.selectedProjetoTarefa = '';
       this.selectedClienteTarefa = '';
-      this.selectedUsuarioTarefa = '';
       this.selectedAdminTarefa = '';
       this.selectedStatusTarefa = '';
       this.selectedPrioridadeTarefa = '';
