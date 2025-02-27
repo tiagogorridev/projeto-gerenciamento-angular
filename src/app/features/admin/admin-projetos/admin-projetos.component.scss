@@ -1,13 +1,9 @@
 $primary-color: #8b5cf6;
+$hover-color: #7c3aed;
 $border-color: #e2e8f0;
 $text-gray: #64748b;
-$gray: #6b7280;
 $white: #ffffff;
-$hover-color: #7c3aed;
-$input-bg: #f8fafc;
-$modal-overlay: rgba(0, 0, 0, 0.5);
 
-/* Container de Projetos */
 .projects-container {
   margin: 0 24px;
   padding: 60px 24px 0 260px;
@@ -23,13 +19,12 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-/* Estado vazio (sem projetos) */
 .empty-state {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 48px;
-  background: white;
+  background: $white;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
   min-height: 400px;
@@ -44,13 +39,12 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     }
 
     .empty-text {
-      color: $gray;
+      color: #6b7280;
       font-size: 16px;
     }
   }
 }
 
-/* Filtros de Pesquisa */
 .search-filter-container {
   display: flex;
   gap: 16px;
@@ -71,7 +65,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
       border: 1px solid #E5E7EB;
       border-radius: 6px;
       font-size: 14px;
-      color: #374151;
       background: #F9FAFB;
 
       &::placeholder {
@@ -103,7 +96,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-/* Botão Novo Projeto */
 .new-project-btn {
   height: 40px;
   padding: 0 24px;
@@ -122,7 +114,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-/* Modal de Novo Projeto */
 .modal {
   position: fixed;
   top: 0;
@@ -136,7 +127,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   z-index: 1000;
 
   .modal-content {
-    background: white;
+    background: $white;
     padding: 24px;
     border-radius: 8px;
     width: 100%;
@@ -151,7 +142,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-/* Campos do Formulário */
 .form-group {
   margin-bottom: 16px;
 
@@ -174,43 +164,8 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
       border-color: $primary-color;
     }
   }
-
-  &.checkbox {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-    }
-
-    label {
-      margin: 0;
-      color: #374151;
-    }
-  }
 }
 
-/* Campo de Entrada de Moeda */
-.currency-input {
-  position: relative;
-
-  .input-field {
-    padding-left: 40px;
-    height: 36px;
-  }
-
-  .currency {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6b7280;
-  }
-}
-
-/* Linhas do Formulário */
 .form-row {
   display: flex;
   gap: 16px;
@@ -219,14 +174,9 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   .form-group {
     flex: 1;
     min-width: 200px;
-
-    .input-field {
-      height: 36px;
-    }
   }
 }
 
-/* Ações do Modal */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -240,7 +190,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     cursor: pointer;
 
     &.cancel-btn {
-      background: white;
+      background: $white;
       border: 1px solid #e5e7eb;
       color: #6b7280;
 
@@ -249,21 +199,28 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
       }
     }
 
-    &.create-btn {
+    &.create-btn, &.delete-confirm-btn {
       background: $primary-color;
       border: none;
-      color: white;
+      color: $white;
 
       &:hover {
         background: $hover-color;
       }
     }
+
+    &.delete-confirm-btn {
+      background-color: #dc3545;
+
+      &:hover {
+        background-color: #c82333;
+      }
+    }
   }
 }
 
-/* Lista de Projetos */
 .projects-list {
-  background: white;
+  background: $white;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
   overflow: hidden;
@@ -272,11 +229,10 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 
   .project-row {
     display: grid;
-    grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr 0.5fr;
     padding: 12px 24px;
     align-items: center;
     border-bottom: 1px solid #E5E7EB;
-    cursor: pointer;
 
     &:last-child {
       border-bottom: none;
@@ -303,74 +259,99 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-/* Estilos das Colunas de Projetos */
 .project-name {
   font-weight: 500;
   color: #111827;
 }
 
-.project-progress,
-.project-cost {
-  color: #6B7280;
-}
-.projects-list .project-row .project-progress.text-danger {
-  color: #DC2626 !important;
+.project-progress.text-danger {
+  color: #DC2626;
   font-weight: 500;
 }
 
-// Status badges
-.project-status {
-  span {
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
+.project-status span {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
 
-    &.PLANEJADO {
-      background: #EEF2FF;
-      color: #4F46E5;
-    }
+  &.PLANEJADO {
+    background: #EEF2FF;
+    color: #4F46E5;
+  }
 
-    &.EM_ANDAMENTO {
-      background: #F0F9FF;
-      color: #0284C7;
-    }
+  &.EM_ANDAMENTO {
+    background: #F0F9FF;
+    color: #0284C7;
+  }
 
-    &.CONCLUIDO {
-      background: #F0FDF4;
-      color: #16A34A;
-    }
+  &.CONCLUIDO {
+    background: #F0FDF4;
+    color: #16A34A;
+  }
 
-    &.CANCELADO {
-      background: #FEF2F2;
-      color: #DC2626;
-    }
+  &.CANCELADO {
+    background: #FEF2F2;
+    color: #DC2626;
   }
 }
 
-// Priority badges
-.project-priority {
-  span {
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
+.project-priority span {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
 
-    &.ALTA {
-      background: #FEF2F2;
-      color: #DC2626;
-    }
-
-    &.MEDIA {
-      background: #FFFBEB;
-      color: #D97706;
-    }
-
-    &.BAIXA {
-      background: #F0FDF4;
-      color: #16A34A;
-    }
+  &.ALTA {
+    background: #FEF2F2;
+    color: #DC2626;
   }
+
+  &.MEDIA {
+    background: #FFFBEB;
+    color: #D97706;
+  }
+
+  &.BAIXA {
+    background: #F0FDF4;
+    color: #16A34A;
+  }
+}
+
+.project-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-btn {
+  background-color: transparent;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 8px;
+
+  &:hover {
+    background-color: #ffebee;
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+.confirm-modal {
+  max-width: 400px;
+}
+
+.warning-text {
+  color: #dc3545;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.project-row > div:not(.project-actions) {
+  cursor: pointer;
 }
 
 ::ng-deep {
