@@ -119,4 +119,13 @@ export class ProjectsService {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.http.get<Projeto[]>(`${this.baseUrl}/getProjetos`, { headers });
     }
+
+    deleteProjeto(id: number): Observable<any> {
+      const token = localStorage.getItem('auth_token') || '';
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.delete(`${this.baseUrl}/${id}`, {
+        headers,
+        responseType: 'text'
+      });
+    }
 }
