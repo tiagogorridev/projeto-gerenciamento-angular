@@ -233,8 +233,8 @@ $success-green: #16a34a;
       }
 
       &.PAUSADA {
-        background-color: #fee2e2;
-        color: #dc2626;
+        background: #FEF2F2;
+        color: #DC2626;
       }
     }
 
@@ -630,12 +630,12 @@ $success-green: #16a34a;
     }
 
     .p-button {
-      background-color: $white;
+      background-color: $primary-color;
       border: 1px solid $border-color;
-      color: $gray;
+      color: $white;
 
       &:hover {
-        background-color: $input-bg;
+        background-color: $hover-color;
       }
     }
   }

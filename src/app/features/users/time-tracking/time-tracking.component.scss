@@ -90,19 +90,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   input {
     padding-right: 40px;
   }
-
-  i, .calendar-btn {
-    position: absolute;
-    right: 12px;
-    color: #6b7280;
-  }
-
-  .calendar-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  }
 }
 
 .info-sidebar {
@@ -191,27 +178,25 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     .p-inputtext {
       width: 100%;
       padding: 10px 12px;
-      border: 1px solid #e5e7eb;
+      border: 1px solid $border-color;
       border-radius: 6px;
-      background-color: #f9fafb;
       font-size: 14px;
-      color: #1f2937;
-    }
-  }
 
-  .p-datepicker {
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-
-    .p-datepicker-header {
-      padding: 0.5rem;
-      border-bottom: 1px solid #e5e7eb;
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+      }
     }
 
-    .p-datepicker-buttonbar {
-      padding: 0.5rem;
-      border-top: 1px solid #e5e7eb;
+    .p-button {
+      background-color: $primary-color;
+      border: 1px solid $border-color;
+      color: $white;
+
+      &:hover {
+        background-color: $hover-color;
+      }
     }
   }
 }
