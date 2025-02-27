@@ -38,7 +38,7 @@ export class AdicionarClienteComponent implements OnInit {
   loadClients(): void {
     this.clienteService.listarClientes().subscribe({
       next: (response: Cliente[]) => {
-        this.clients = response;
+        this.clients = response.filter(cliente => cliente.status === 'ATIVO');
         this.hasClients = this.clients.length > 0;
         this.filterClients();
       },
