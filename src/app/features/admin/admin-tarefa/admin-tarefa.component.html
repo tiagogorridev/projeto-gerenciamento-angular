@@ -58,6 +58,14 @@
       <div class="actions">
         <button class="btn-primary" (click)="salvarAlteracoes()">Salvar alterações</button>
       </div>
+
+      <div class="alert alert-danger" *ngIf="erro">
+        {{ erro }}
+      </div>
+
+      <div class="alert alert-success" *ngIf="sucessoMensagem">
+        {{ sucessoMensagem }}
+      </div>
     </div>
   </div>
 </div>
