@@ -14,6 +14,9 @@ import { catchError, switchMap } from 'rxjs/operators';
 export class AdminProjetosComponent implements OnInit {
   hasProjects: boolean = false;
   showNewProjectModal: boolean = false;
+  showDeleteConfirmModal: boolean = false;
+  projetoParaExcluir: any = null;
+
   projects: any[] = [];
   clientes: Cliente[] = [];
 
@@ -46,6 +49,11 @@ export class AdminProjetosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.carregarProjetos();
+    this.carregarClientes();
+  }
+
+  carregarProjetos(): void {
     this.loadingProjetos = true;
     const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0', 10);
 
@@ -54,7 +62,6 @@ export class AdminProjetosComponent implements OnInit {
         switchMap(projetos => {
           this.projects = projetos;
 
-          // Para cada projeto, buscar o tempo registrado
           const tempoRegistradoRequests = projetos.map(projeto =>
             this.projectsService.getTempoRegistradoProjeto(projeto.id).pipe(
               catchError(error => {
@@ -68,7 +75,6 @@ export class AdminProjetosComponent implements OnInit {
         })
       ).subscribe({
         next: (tempoRegistradoResults) => {
-          // Atualizar os projetos com os dados de tempo registrado
           this.projects = this.projects.map((projeto, index) => ({
             ...projeto,
             tempoRegistrado: tempoRegistradoResults[index].tempoRegistrado,
@@ -87,7 +93,9 @@ export class AdminProjetosComponent implements OnInit {
         }
       });
     }
+  }
 
+  carregarClientes(): void {
     this.clienteService.listarClientes().subscribe({
       next: (clientes) => {
         this.clientes = clientes;
@@ -176,6 +184,35 @@ export class AdminProjetosComponent implements OnInit {
         },
         error: (erro) => {
           console.error('Erro ao criar projeto:', erro);
+        }
+      });
+    }
+  }
+
+  confirmarExclusao(projeto: any): void {
+    event?.stopPropagation();
+
+    this.projetoParaExcluir = projeto;
+    this.showDeleteConfirmModal = true;
+  }
+
+  cancelarExclusao(): void {
+    this.projetoParaExcluir = null;
+    this.showDeleteConfirmModal = false;
+  }
+
+  excluirProjeto(): void {
+    if (this.projetoParaExcluir && this.projetoParaExcluir.id) {
+      this.projectsService.deleteProjeto(this.projetoParaExcluir.id).subscribe({
+        next: () => {
+          this.projects = this.projects.filter(p => p.id !== this.projetoParaExcluir.id);
+          this.filterProjects();
+          this.hasProjects = this.projects.length > 0;
+
+          this.cancelarExclusao();
+        },
+        error: (erro) => {
+          console.error('Erro ao excluir projeto:', erro);
         }
       });
     }
