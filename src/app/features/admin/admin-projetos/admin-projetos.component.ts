@@ -150,19 +150,27 @@ export class AdminProjetosComponent implements OnInit {
       this.project.dataFim = this.endDate;
 
       const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0', 10);
+
+      const clienteId = this.project.cliente;
+      const clienteCompleto = this.clientes.find(c => c.id.toString() === clienteId.toString());
+
       const projetoParaEnviar = {
         ...this.project,
-        usuarioResponsavel: { id: usuarioId }
+        usuarioResponsavel: { id: usuarioId },
+        cliente: { id: clienteId }
       };
 
       this.projectsService.createProjeto(projetoParaEnviar).subscribe({
         next: (resposta) => {
           this.closeModal();
+
           this.projects.push({
             ...resposta,
+            cliente: clienteCompleto,
             tempoRegistrado: 0,
             percentualConcluido: 0
           });
+
           this.filterProjects();
           this.hasProjects = this.projects.length > 0;
         },
