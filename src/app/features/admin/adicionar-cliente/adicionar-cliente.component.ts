@@ -17,6 +17,7 @@ export class AdicionarClienteComponent implements OnInit {
   statusFilter: string = '';
 
   showNewClientModal: boolean = false;
+
   client: { nome: string, email: string, status: 'ATIVO' | 'INATIVO' } = {
     nome: '',
     email: '',
