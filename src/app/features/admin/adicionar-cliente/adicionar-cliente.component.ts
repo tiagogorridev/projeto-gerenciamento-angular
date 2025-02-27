@@ -7,6 +7,7 @@ import { ClienteService, Cliente } from '../../../core/auth/services/clients.ser
   templateUrl: './adicionar-cliente.component.html',
   styleUrls: ['./adicionar-cliente.component.scss']
 })
+
 export class AdicionarClienteComponent implements OnInit {
   clients: Cliente[] = [];
   filteredClients: Cliente[] = [];
@@ -21,6 +22,9 @@ export class AdicionarClienteComponent implements OnInit {
     email: '',
     status: 'ATIVO'
   };
+
+  errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(
     private router: Router,
@@ -66,24 +70,27 @@ export class AdicionarClienteComponent implements OnInit {
     };
   }
 
-  navegarParaEdicao(clienteId: number): void {
-    if (clienteId) {
-      this.router.navigate(['/admin/editar-cliente', clienteId]);
-    }
-  }
-
   onSubmit(form: any): void {
     if (form.valid) {
       this.clienteService.cadastrarCliente(this.client).subscribe({
         next: (response) => {
-          console.log('Cliente criado com sucesso:', response);
+          this.successMessage = 'Cliente criado com sucesso!';
+          this.errorMessage = '';
           this.closeModal();
           this.loadClients();
         },
         error: (error: Error) => {
           console.error('Erro ao criar cliente:', error);
+          this.errorMessage = 'Erro ao criar cliente. Tente novamente.';
+          this.successMessage = '';
         }
       });
+    }
+  }
+
+  navegarParaEdicao(clienteId: number): void {
+    if (clienteId) {
+      this.router.navigate(['/admin/editar-cliente', clienteId]);
     }
   }
 }
