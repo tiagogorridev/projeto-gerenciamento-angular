@@ -43,13 +43,17 @@
         <p>{{ link.description }}</p>
       </a>
 
-      <div *ngIf="link.title !== 'Contate-nos' && link.title !== 'Suporte'">
-        <div class="icon-circle">
-          <i class="fas {{ link.icon }}"></i>
-        </div>
-        <h3>{{ link.title }}</h3>
-        <p>{{ link.description }}</p>
+      <a
+      *ngIf="link.title === 'Acessar Configurações'"
+      routerLink="/user/profile"
+      class="quick-link-card-link"
+    >
+      <div class="icon-circle">
+        <i class="fas {{ link.icon }}"></i>
       </div>
+      <h3>{{ link.title }}</h3>
+      <p>{{ link.description }}</p>
+    </a>
     </div>
   </div>
 

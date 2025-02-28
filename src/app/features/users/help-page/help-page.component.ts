@@ -72,7 +72,7 @@ export class HelpPageComponent implements OnInit {
   ];
 
   quickLinks = [
-    { title: 'Documentação', icon: 'pi pi-book', description: 'Acesse nossos guias e tutoriais' },
+    { title: 'Acessar Configurações', icon: 'pi pi-cog', description: 'Clique aqui para acessar suas configurações' },
     { title: 'Suporte', icon: 'pi pi-headphones', description: 'Entre em contato com nossa equipe' },
     { title: 'Contate-nos', icon: 'pi pi-comments', description: 'Tire suas dúvidas preenchendo um formulário' }
   ];
