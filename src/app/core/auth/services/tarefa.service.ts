@@ -57,9 +57,8 @@ export class TarefaService {
   deleteTarefa(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
-
   getTempoRegistrado(idProjeto: number, idTarefa: number) {
-    return this.http.get<number>(`${this.apiUrl}/projetos/${idProjeto}/tarefas/${idTarefa}/tempo-registrado`);
+    return this.http.get<{ tempoRegistrado: number }>(`${this.apiUrl}/${idTarefa}/tempo-registrado`);
   }
 
   getTodasTarefas(): Observable<Tarefa[]> {
