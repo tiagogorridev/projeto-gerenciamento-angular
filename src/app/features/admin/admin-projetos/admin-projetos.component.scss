@@ -240,6 +240,7 @@ $white: #ffffff;
 
     &:hover:not(.headers) {
       background: #F9FAFB;
+      cursor: pointer;
     }
 
     &.headers {
