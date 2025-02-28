@@ -90,5 +90,12 @@ export class UsuarioService {
         catchError(this.handleError)
       );
   }
+
+  excluirUsuario(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/soft-delete/${id}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 }
 
