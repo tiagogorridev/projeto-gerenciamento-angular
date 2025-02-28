@@ -186,10 +186,6 @@ $success-green: #16a34a;
     border-bottom: 1px solid $border-color;
     transition: background-color 0.2s;
 
-    &:hover {
-      background-color: #f9fafb;
-    }
-
     > div {
       padding: 0 8px;
     }
@@ -322,10 +318,6 @@ $success-green: #16a34a;
       align-items: center;
       border-bottom: 1px solid $border-color;
       transition: background-color 0.2s;
-
-      &:hover {
-        background-color: #f9fafb;
-      }
 
       .table-cell {
         font-size: 14px;
