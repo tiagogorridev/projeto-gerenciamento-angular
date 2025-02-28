@@ -1,7 +1,8 @@
 <app-admin-sidebar></app-admin-sidebar>
 <app-admin-header></app-admin-header>
-<div class="clientes-container">
-  <div class="clientes-header">
+
+<div class="usuarios-container">
+  <div class="usuarios-header">
     <h1>Adicionar Usuário</h1>
   </div>
 
@@ -21,7 +22,7 @@
       <i class="pi pi-chevron-down dropdown-icon"></i>
     </div>
 
-    <button class="new-client-btn" (click)="openNewUserModal()">
+    <button class="new-user-btn" (click)="openNewUserModal()">
       Novo Usuário
     </button>
   </div>
@@ -33,20 +34,27 @@
     </div>
   </div>
 
-  <div class="clients-list" *ngIf="hasUsers">
-    <div class="client-row headers">
-      <div class="client-name">Nome</div>
-      <div class="client-email">Email</div>
-      <div class="client-status">Perfil</div>
+  <div class="usuarios-list" *ngIf="hasUsers">
+    <div class="usuario-row headers">
+      <div class="usuario-name">Nome</div>
+      <div class="usuario-email">Email</div>
+      <div class="usuario-status">Perfil</div>
+      <div class="usuario-actions">Ações</div>
     </div>
 
-    <div class="client-row" *ngFor="let usuario of filteredUsers">
-      <div class="client-name">{{ usuario.nome }}</div>
-      <div class="client-email">{{ usuario.email }}</div>
-      <div class="client-status">{{ usuario.perfil === 'ADMIN' ? 'Admin' : 'Usuário' }}</div>
+    <div class="usuario-row" *ngFor="let usuario of filteredUsers">
+      <div class="usuario-name">{{ usuario.nome }}</div>
+      <div class="usuario-email">{{ usuario.email }}</div>
+      <div class="usuario-status">{{ usuario.perfil === 'ADMIN' ? 'Administrador' : 'Usuário' }}</div>
+      <div class="usuario-actions">
+        <button class="delete-btn" (click)="openDeleteModal(usuario)">
+          <i class="pi pi-trash"></i>
+        </button>
+      </div>
     </div>
   </div>
 
+  <!-- Modal de novo usuário -->
   <div class="modal" *ngIf="showNewUserModal">
     <div class="modal-content">
       <h2>Novo Usuário</h2>
@@ -91,6 +99,19 @@
           <button type="submit" class="create-btn" [disabled]="!userForm.form.valid">Criar</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal de confirmação de exclusão -->
+  <div class="modal" *ngIf="showDeleteModal">
+    <div class="modal-content confirm-modal">
+      <h2>Confirmar Exclusão</h2>
+      <p>Tem certeza que deseja excluir o usuário "{{ selectedUser?.nome }}"?</p>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeDeleteModal()">Cancelar</button>
+        <button type="button" class="delete-confirm-btn" (click)="deleteUser()">Excluir</button>
+      </div>
     </div>
   </div>
 </div>
