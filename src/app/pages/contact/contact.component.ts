@@ -55,12 +55,12 @@ export class ContactComponent implements OnInit {
       if (this.contactForm.valid) {
         this.isSubmitting = true;
 
-        const userEmail = this.usuarioService.getUserEmail(); // Pegue o e-mail diretamente do serviço
+        const userEmail = this.usuarioService.getUserEmail();
 
         const formData = {
           ...this.contactForm.value,
-          recipientEmail: 'testeprojetowise@gmail.com',  // Destinatário fixo
-          from: userEmail,  // Agora, usa o e-mail diretamente do serviço
+          recipientEmail: 'testeprojetowise@gmail.com',
+          from: userEmail,
         };
 
         console.log('FormData enviado:', formData);
@@ -73,7 +73,7 @@ export class ContactComponent implements OnInit {
             setTimeout(() => this.showSuccessMessage = false, 5000);
           },
           error: (err) => {
-            console.error('Erro completo ao enviar e-mail:', err);  // Exibe o erro completo no console
+            console.error('Erro completo ao enviar e-mail:', err);
             this.isSubmitting = false;
           }
         });
