@@ -95,12 +95,15 @@ export class EditProjectsComponent implements OnInit {
   members: Member[] = [];
   startDate: Date | null = new Date();
   endDate: Date | null = new Date();
+
+  startDateCalendar: Date | null = null;
+  endDateCalendar: Date | null = null;
+
   usuariosEmails: string[] = [];
   searchTerm: string = '';
   selectedEmails: string[] = [];
   showErrorMessage: boolean = false;
   errorMessage: string = '';
-
 
   constructor(
     private route: ActivatedRoute,
@@ -111,7 +114,8 @@ export class EditProjectsComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private tarefaService: TarefaService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     const navigation = history.state;
@@ -183,15 +187,46 @@ export class EditProjectsComponent implements OnInit {
             estimatedCost: response.custoEstimado,
             status: response.status,
             priority: response.prioridade,
-            startDate: response.dataInicio ? response.dataInicio.substring(0, 10) : '',
-            endDate: response.dataFim ? response.dataFim.substring(0, 10) : ''
+            startDate: response.dataInicio ? new Date(response.dataInicio).toISOString().split('T')[0] : undefined,
+            endDate: response.dataFim ? new Date(response.dataFim).toISOString().split('T')[0] : undefined
           };
+
+          if (this.projectDetails.startDate) {
+            const startDateStr = this.projectDetails.startDate + 'T12:00:00';
+            this.startDateCalendar = new Date(startDateStr);
+
+          }
+
+          if (this.projectDetails.endDate) {
+            this.endDateCalendar = new Date(this.projectDetails.endDate);
+            const endDateStr = this.projectDetails.endDate + 'T12:00:00';
+            this.endDateCalendar = new Date(endDateStr);
+          }
+
           console.log('Projeto carregado:', this.projectDetails);
         },
         (error: Error) => {
           console.error('Erro ao carregar dados do projeto', error);
         }
       );
+    }
+  }
+
+  onStartDateChange(event: any): void {
+    if (event) {
+      const date = new Date(event);
+      this.projectDetails.startDate = date.toISOString().substring(0, 10);
+    } else {
+      this.projectDetails.startDate = undefined;
+    }
+  }
+
+  onEndDateChange(event: any): void {
+    if (event) {
+      const date = new Date(event);
+      this.projectDetails.endDate = date.toISOString().substring(0, 10);
+    } else {
+      this.projectDetails.endDate = undefined;
     }
   }
 
