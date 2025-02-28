@@ -237,16 +237,34 @@
             </select>
           </div>
           <div class="form-group">
-          <div class="dates-section">
-            <label for="startDate">Data de Início:</label>
-            <input type="date" id="startDate" [(ngModel)]="projectDetails.startDate" name="startDate">
-          </div>
-          <div class="form-group">
-            <label for="endDate">Data de Fim:</label>
-            <input type="date" id="endDate" [(ngModel)]="projectDetails.endDate" name="endDate">
+            <div class="dates-section">
+              <label for="startDate">Data de Início:</label>
+              <p-calendar
+                id="startDate"
+                [(ngModel)]="startDateCalendar"
+                name="startDate"
+                [locale]="ptBR"
+                dateFormat="dd/mm/yy"
+                [showIcon]="true"
+                (onSelect)="onStartDateChange($event)"
+                inputStyleClass="calendar-input">
+              </p-calendar>
+            </div>
+            <div class="form-group">
+              <label for="endDate">Data de Fim:</label>
+              <p-calendar
+                id="endDate"
+                [(ngModel)]="endDateCalendar"
+                name="endDate"
+                [locale]="ptBR"
+                dateFormat="dd/mm/yy"
+                [showIcon]="true"
+                (onSelect)="onEndDateChange($event)"
+                inputStyleClass="calendar-input">
+              </p-calendar>
+            </div>
           </div>
         </div>
-      </div>
         <div class="form-actions">
           <button type="button" class="save-btn" (click)="saveProjectDetails()">Salvar alterações</button>
         </div>
