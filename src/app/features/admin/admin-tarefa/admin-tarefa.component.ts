@@ -64,6 +64,15 @@ export class AdminTarefaComponent implements OnInit {
           this.tarefa.nomeOriginal = data.nome;
           this.horasOriginais = parseFloat(this.tarefa.horasEstimadas || 0);
 
+          if (this.tarefa.dataInicio) {
+            const dataInicioStr = this.tarefa.dataInicio + 'T12:00:00';
+            this.tarefa.dataInicio = new Date(dataInicioStr);
+          }
+          if (this.tarefa.dataFim) {
+            const dataFimStr = this.tarefa.dataFim + 'T12:00:00';
+            this.tarefa.dataFim = new Date(dataFimStr);
+          }
+
           this.projectsService.getProjetoById(this.idprojeto).subscribe(
             (projetoData) => {
               this.projeto = projetoData;
@@ -140,13 +149,30 @@ export class AdminTarefaComponent implements OnInit {
     this.tarefaService.atualizarTarefa(this.idprojeto, this.idtarefa, this.tarefa)
       .subscribe(
         (data) => {
-          this.tarefa = data;
+          console.log('Data returned from update:', data);
+          console.log('Date types before conversion:', {
+            dataInicio: typeof data.dataInicio,
+            dataFim: typeof data.dataFim
+          });
+
+          if (this.tarefa.dataInicio) {
+            this.tarefa.dataInicio = new Date(this.tarefa.dataInicio);
+          }
+          if (this.tarefa.dataFim) {
+            this.tarefa.dataFim = new Date(this.tarefa.dataFim);
+          }
+
           this.horasOriginais = parseFloat(this.tarefa.horasEstimadas || 0);
           this.carregarHorasDisponiveisProjeto();
           this.sucessoMensagem = 'Alterações salvas com sucesso!';
           setTimeout(() => {
             this.sucessoMensagem = '';
           }, 3000);
+
+          console.log('Date types after conversion:', {
+            dataInicio: typeof this.tarefa.dataInicio,
+            dataFim: typeof this.tarefa.dataFim
+          });
         },
         (error) => {
           if (error.status === 400 && error.error && error.error.message) {
