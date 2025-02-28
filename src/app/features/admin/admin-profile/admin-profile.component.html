@@ -56,20 +56,23 @@
             </div>
 
 
-          <div class="form-group">
-            <label>Nova Senha</label>
-            <input
-              type="password"
-              class="input-field"
-              formControlName="novaSenha"
-              [class.error]="hasError(securityForm, 'novaSenha', 'required') || hasError(securityForm, 'novaSenha', 'minlength')">
-            <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'required')">
-              Nova senha é obrigatória
+            <div class="form-group">
+              <label>Nova Senha</label>
+              <input
+                type="password"
+                class="input-field"
+                formControlName="novaSenha"
+                [class.error]="hasError(securityForm, 'novaSenha', 'required') || hasError(securityForm, 'novaSenha', 'minlength') || senhaIgualAtual">
+              <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'required')">
+                Nova senha é obrigatória
+              </div>
+              <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'minlength')">
+                A senha deve ter pelo menos 6 caracteres
+              </div>
+              <div class="error-message" *ngIf="senhaIgualAtual">
+                A nova senha não pode ser igual à senha atual
+              </div>
             </div>
-            <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'minlength')">
-              A senha deve ter pelo menos 6 caracteres
-            </div>
-          </div>
 
           <div class="form-group">
             <label>Confirmar Nova Senha</label>

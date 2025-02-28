@@ -22,6 +22,8 @@ export class AdminProfileComponent implements OnInit {
   senhaAtualInvalida: boolean = false;
   mensagemErroSenha: string = '';
   erroSenhaIgual: boolean = false;
+  senhaIgualAtual = false;
+
 
   constructor(
     private fb: FormBuilder,
