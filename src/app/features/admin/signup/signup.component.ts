@@ -10,8 +10,6 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./signup.component.scss']
 })
 
-
-
 export class SignupComponent implements OnInit {
   searchTerm: string = '';
   perfilFilter: string = '';
@@ -19,6 +17,8 @@ export class SignupComponent implements OnInit {
   filteredUsers: Usuario[] = [];
   users: Usuario[] = [];
   showNewUserModal: boolean = false;
+  showDeleteModal: boolean = false;
+  selectedUser: Usuario | null = null;
 
   user: Usuario = {
     nome: '',
@@ -83,6 +83,31 @@ export class SignupComponent implements OnInit {
 
   closeModal(): void {
     this.showNewUserModal = false;
+  }
+
+  openDeleteModal(usuario: Usuario): void {
+    this.selectedUser = usuario;
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+    this.selectedUser = null;
+  }
+
+  deleteUser(): void {
+    if (this.selectedUser && this.selectedUser.id) {
+      this.usuarioService.excluirUsuario(this.selectedUser.id).subscribe({
+        next: () => {
+          console.log('Usuário excluído com sucesso');
+          this.closeDeleteModal();
+          this.carregarUsuarios();
+        },
+        error: (error) => {
+          console.error('Erro ao excluir usuário:', error);
+        }
+      });
+    }
   }
 
   onSubmit(form: NgForm): void {
