@@ -47,12 +47,12 @@
 
       <div class="form-group">
         <label>Data de Início</label>
-        <input type="date" [(ngModel)]="tarefa.dataInicio" class="form-control" />
+        <p-calendar [(ngModel)]="tarefa.dataInicio" dateFormat="dd/mm/yy" [showIcon]="true" [showTime]="false"></p-calendar>
       </div>
 
       <div class="form-group">
         <label>Data de Fim</label>
-        <input type="date" [(ngModel)]="tarefa.dataFim" class="form-control" />
+        <p-calendar [(ngModel)]="tarefa.dataFim" dateFormat="dd/mm/yy" [showIcon]="true" [showTime]="false"></p-calendar>
       </div>
 
       <div class="actions">
