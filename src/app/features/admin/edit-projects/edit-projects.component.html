@@ -141,6 +141,9 @@
       <!-- Modal para Adicionar Membro -->
       <div class="modal" *ngIf="showAddMemberModal">
         <div class="modal-content">
+          <div class="error-message" *ngIf="showErrorMessage">
+            {{ errorMessage }}
+          </div>
           <h2>Adicionar Membro ao Projeto</h2>
           <form #addMemberForm="ngForm" (ngSubmit)="addMembers()">
             <mat-form-field appearance="fill" class="w-full">
@@ -185,10 +188,7 @@
         <p class="empty-subtitle">Adicione membros ao projeto</p>
       </div>
 
-      <!-- Mensagem de erro -->
-      <div class="error-message" *ngIf="showErrorMessage">
-        {{ errorMessage }}
-      </div>
+
     </div>
 
     <!-- Detalhes Tab -->
