@@ -39,12 +39,19 @@
     <div class="client-row headers">
       <div class="client-name">Nome</div>
       <div class="client-email">Email</div>
+      <div class="actions">Ações</div>
     </div>
 
-    <div class="client-row" *ngFor="let cliente of filteredClients" (click)="navegarParaEdicao(cliente.id)">
+    <div class="client-row" *ngFor="let cliente of filteredClients">
       <div class="client-name">{{ cliente.nome }}</div>
       <div class="client-email">{{ cliente.email }}</div>
+      <div class="actions">
+        <button class="delete-btn" (click)="confirmarExclusao(cliente.id, $event)">
+          <i class="pi pi-trash"></i>
+        </button>
+      </div>
     </div>
+
     <div *ngIf="successMessage" class="success-message">
       {{ successMessage }}
     </div>
