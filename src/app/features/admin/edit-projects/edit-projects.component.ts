@@ -226,6 +226,7 @@ export class EditProjectsComponent implements OnInit {
         next: (members) => {
           this.originalMembers = [...members];
           this.members = [...this.originalMembers];
+          console.log('Membros atualizados:', this.members);
         },
         error: (error) => {
           console.error('Erro ao carregar membros do projeto:', error);
@@ -277,8 +278,10 @@ export class EditProjectsComponent implements OnInit {
   openAddMemberModal(): void {
     this.usuarioService.getEmails().subscribe(
       (emails: string[]) => {
-        this.usuariosEmails = emails;
+        const existingMemberEmails = this.members.map(member => member.email.toLowerCase());
+        this.usuariosEmails = emails.filter(email => !existingMemberEmails.includes(email.toLowerCase()));
         this.showAddMemberModal = true;
+        this.selectedEmails = [];
       },
       (error) => {
         console.error('Erro ao carregar emails dos usuários:', error);
@@ -298,6 +301,7 @@ export class EditProjectsComponent implements OnInit {
 
     const projectId = Number(this.projectId);
     let processedCount = 0;
+    let successCount = 0;
 
     this.selectedEmails.forEach(email => {
       this.projectMemberService.getUserIdByEmail(email).subscribe({
@@ -306,21 +310,21 @@ export class EditProjectsComponent implements OnInit {
             this.projectsService.addMemberToProject(userId, projectId).subscribe({
               next: () => {
                 processedCount++;
+                successCount++;
+
                 if (processedCount === this.selectedEmails.length) {
-                  this.loadProjectMembers();
+                  if (successCount > 0) {
+                    this.loadProjectMembers();
+                  }
                   this.closeAddMemberModal();
                 }
               },
               error: (error) => {
                 processedCount++;
-                if (error.error === 'O usuário já está associado a este projeto') {
-                  this.showError(`Usuário ${email} já é membro do projeto`);
-                } else {
-                  this.showError(`Erro ao adicionar ${email}`);
-                }
-
                 if (processedCount === this.selectedEmails.length) {
-                  this.loadProjectMembers();
+                  if (successCount > 0) {
+                    this.loadProjectMembers();
+                  }
                   this.closeAddMemberModal();
                 }
               }
@@ -330,6 +334,13 @@ export class EditProjectsComponent implements OnInit {
         error: (err) => {
           processedCount++;
           this.showError(`Erro ao processar usuário ${email}`);
+
+          if (processedCount === this.selectedEmails.length) {
+            if (successCount > 0) {
+              this.loadProjectMembers();
+            }
+            this.closeAddMemberModal();
+          }
         }
       });
     });
@@ -395,16 +406,10 @@ export class EditProjectsComponent implements OnInit {
   }
 
   addUserToProject(): void {
-    if (this.projectId && this.selectedUserId) {
-      this.projectsService.addMemberToProject(Number(this.projectId), this.selectedUserId).subscribe(
-          (response) => {
-            console.log('Usuário adicionado ao projeto com sucesso', response);
-            this.loadProjectMembers();
-          },
-          (error) => {
-            console.error('Erro ao adicionar usuário ao projeto', error);
-          }
-        );
+    if (this.projectId && this.selectedEmails && this.selectedEmails.length > 0) {
+      this.addMembers();
+    } else {
+      this.showError('Selecione ao menos um usuário para adicionar ao projeto');
     }
   }
 
@@ -482,10 +487,10 @@ export class EditProjectsComponent implements OnInit {
 
     this.tarefaService.getTempoRegistrado(Number(this.projectId), Number(tarefaId))
       .subscribe(
-        (tempo) => {
+        (response) => {
           const tarefaIndex = this.tarefas.findIndex(t => t.id === tarefaId);
           if (tarefaIndex !== -1) {
-            this.tarefas[tarefaIndex].tempoRegistrado = tempo;
+            this.tarefas[tarefaIndex].tempoRegistrado = response.tempoRegistrado;
           }
         },
         (error) => {
