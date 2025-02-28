@@ -13,6 +13,7 @@ export class AdminTarefaComponent implements OnInit {
   idtarefa: number = 0;
   tarefa: any = {};
   statusOpcoes: ('ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA')[] = ['ABERTA', 'EM_ANDAMENTO', 'CONCLUIDA', 'PAUSADA'];
+  projeto: any = {};
 
   horasOriginais: number = 0;
   horasDisponiveisProjeto: number = 0;
@@ -62,6 +63,15 @@ export class AdminTarefaComponent implements OnInit {
           this.tarefa = data;
           this.tarefa.nomeOriginal = data.nome;
           this.horasOriginais = parseFloat(this.tarefa.horasEstimadas || 0);
+
+          this.projectsService.getProjetoById(this.idprojeto).subscribe(
+            (projetoData) => {
+              this.projeto = projetoData;
+            },
+            (error) => {
+              console.error('Erro ao carregar projeto:', error);
+            }
+          );
         },
         (error) => {
           console.error('Erro ao carregar a tarefa:', error);
@@ -98,11 +108,32 @@ export class AdminTarefaComponent implements OnInit {
     return true;
   }
 
+  validarDatas(): boolean {
+    const dataInicio = new Date(this.tarefa.dataInicio);
+    const dataFim = new Date(this.tarefa.dataFim);
+
+    const dataInicioProjeto = new Date(this.projeto.dataInicio);
+    const dataFimProjeto = new Date(this.projeto.dataFim);
+
+    if (dataInicio < dataInicioProjeto || dataFim > dataFimProjeto) {
+      this.erro = `As datas de início ou fim da tarefa estão fora do período do projeto (de ${dataInicioProjeto.toLocaleDateString()} a ${dataFimProjeto.toLocaleDateString()}).`;
+      return false;
+    }
+
+    if (dataFim < dataInicio) {
+      this.erro = 'A data de fim não pode ser anterior à data de início.';
+      return false;
+    }
+
+    this.erro = '';
+    return true;
+  }
+
   salvarAlteracoes(): void {
     this.erro = '';
     this.sucessoMensagem = '';
 
-    if (!this.validarHoras()) {
+    if (!this.validarHoras() || !this.validarDatas()) {
       return;
     }
 
