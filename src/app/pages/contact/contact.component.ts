@@ -75,11 +75,6 @@ export class ContactComponent implements OnInit {
           error: (err) => {
             console.error('Erro completo ao enviar e-mail:', err);  // Exibe o erro completo no console
             this.isSubmitting = false;
-            if (err.status === 401) {
-              alert('Erro de autenticação. Faça login novamente.');
-            } else {
-              alert('Ocorreu um erro ao enviar o e-mail. Detalhes: ' + err.message);  // Exibe a mensagem de erro completa
-            }
           }
         });
       } else {
