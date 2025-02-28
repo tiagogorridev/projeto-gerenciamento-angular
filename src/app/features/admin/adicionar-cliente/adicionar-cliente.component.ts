@@ -89,9 +89,26 @@ export class AdicionarClienteComponent implements OnInit {
     }
   }
 
-  navegarParaEdicao(clienteId: number): void {
-    if (clienteId) {
-      this.router.navigate(['/admin/editar-cliente', clienteId]);
+  confirmarExclusao(clienteId: number, event: Event): void {
+    event.stopPropagation();
+
+    if (confirm('Tem certeza que deseja excluir este cliente?')) {
+      this.clienteService.excluirCliente(clienteId).subscribe({
+        next: () => {
+          this.successMessage = 'Cliente excluído com sucesso!';
+          setTimeout(() => {
+            this.successMessage = '';
+          }, 3000);
+          this.loadClients();
+        },
+        error: (error) => {
+          console.error('Erro ao excluir cliente:', error);
+          this.errorMessage = 'Erro ao excluir cliente. Tente novamente.';
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 3000);
+        }
+      });
     }
   }
 }

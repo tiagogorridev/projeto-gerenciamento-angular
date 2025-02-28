@@ -1,4 +1,4 @@
-// Reutiliza as mesmas variáveis de cor
+// Variáveis de cor
 $primary-color: #8b5cf6;
 $border-color: #e2e8f0;
 $text-gray: #64748b;
@@ -8,19 +8,19 @@ $hover-color: #7c3aed;
 $input-bg: #f8fafc;
 $modal-overlay: rgba(0, 0, 0, 0.5);
 
-// Reutiliza os mesmos estilos do container principal
+// Container principal
 .clientes-container {
   margin: 0 24px;
   padding: 60px 24px 0 260px;
 }
 
-// Mesmo estilo de cabeçalho
+// Estilo de cabeçalho
 .clientes-container h1 {
   color: $gray;
   font-weight: 400;
 }
 
-// Reutiliza os mesmos estilos de estado vazio
+// Estado vazio
 .empty-state {
   display: flex;
   justify-content: center;
@@ -43,7 +43,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-// Reutiliza os mesmos estilos de pesquisa e filtros
+// Pesquisa e filtros
 .search-filter-container {
   display: flex;
   align-items: center;
@@ -52,7 +52,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   flex-wrap: wrap;
 }
 
-// Mesmo estilo para grupos de input
+// Grupos de input
 .input-group {
   position: relative;
   min-width: 180px;
@@ -96,7 +96,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-// Mesmo estilo de botão, apenas mudando o nome da classe
+// Botão de novo cliente
 .new-client-btn {
   height: 40px;
   padding: 0 24px;
@@ -115,7 +115,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-// Reutiliza os mesmos estilos de modal
+// Modal
 .modal {
   position: fixed;
   top: 0;
@@ -155,7 +155,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-// Reutiliza os mesmos estilos de formulário
+// Formulário
 .form-group {
   margin-bottom: 16px;
 
@@ -180,7 +180,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-// Reutiliza os mesmos estilos de ações do modal
+// Ações do modal
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -215,69 +215,75 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-// Adapta os estilos da lista de projetos para clientes
+// Lista de clientes
 .clients-list {
-  display: flex;
-  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: $white;
+  margin-top: 20px;
 }
 
 .client-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 3fr 0.5fr;
+  padding: 12px 24px;
   align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid $border-color;
-  justify-content: space-between;
+
+  &:not(.headers) {
+    border-bottom: 1px solid #E5E7EB;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &.headers {
+    background: #F9FAFB;
+    font-weight: 500;
+    color: #4B5563;
+    border-bottom: 2px solid #E5E7EB;
+  }
 }
 
-.headers {
-  font-weight: bold;
-  background-color: #f3f4f6;
-  border-bottom: 2px solid $border-color;
-}
-
-// Ajusta as larguras das colunas para os dados de clientes
 .client-name,
-.client-email,
-.client-projects,
-.client-status,
-.client-created,
-.client-updated {
-  flex: 1;
+.client-email {
+  padding: 0 8px;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
-  padding: 0 8px;
-  font-size: 14px;
-  color: $text-gray;
 }
 
-.client-name {
-  font-weight: bold;
-  max-width: 200px;
-}
-
-.client-email {
-  max-width: 250px;
-}
-
-.client-projects {
-  max-width: 100px;
-}
-
-.client-status {
-  max-width: 100px;
-}
-
-.client-created,
-.client-updated {
-  max-width: 120px;
-}
-
-.client-row:hover {
-  background-color: #f9fafb;
+// Botão de exclusão
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #f43f5e;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  justify-self: center;
+
+  &:hover {
+    background-color: rgba(244, 63, 94, 0.1);
+  }
 }
 
+// Hover na linha
+.client-row:not(.headers):hover {
+  background-color: #f9fafb;
+
+  .client-name, .client-email {
+    cursor: pointer;
+  }
+}
+
+// Ações
+.actions {
+  justify-self: center;
+}
+
+// Mensagem de sucesso
 .success-message {
   background-color: #28a745;
   color: white;
@@ -287,5 +293,5 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   width: 300px;
   margin: 20px auto;
   border-radius: 4px;
-  display: block; /* Alterado para 'block' quando for visível */
+  display: block;
 }
