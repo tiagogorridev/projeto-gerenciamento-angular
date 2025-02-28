@@ -9,6 +9,9 @@ import { NgForm } from '@angular/forms';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
+
+
+
 export class SignupComponent implements OnInit {
   searchTerm: string = '';
   perfilFilter: string = '';
@@ -111,14 +114,5 @@ export class SignupComponent implements OnInit {
         console.error('Erro ao cadastrar usuário:', error);
       }
     });
-  }
-
-  navegarParaEdicao(id: string | number | undefined): void {
-    if (id !== undefined) {
-      const idString = String(id);
-      this.router.navigate(['/usuarios/editar', idString]);
-    } else {
-      console.error('Tentativa de navegar para edição com ID indefinido');
-    }
   }
 }

@@ -1,4 +1,4 @@
-// Reutiliza as mesmas variáveis de cor
+// Variáveis de cor
 $primary-color: #8b5cf6;
 $border-color: #e2e8f0;
 $text-gray: #64748b;
@@ -6,44 +6,62 @@ $gray: #6b7280;
 $white: #ffffff;
 $hover-color: #7c3aed;
 $input-bg: #f8fafc;
-$modal-overlay: rgba(0, 0, 0, 0.5);
+$error-color: #ef4444;
+$danger-color: #ef4444;
+$danger-hover: #dc2626;
+$success-color: #10b981;
 
-// Reutiliza os mesmos estilos do container principal
+// Container principal
 .clientes-container {
   margin: 0 24px;
   padding: 60px 24px 0 260px;
-}
 
-// Mesmo estilo de cabeçalho
-.clientes-container h1 {
-  color: $gray;
-  font-weight: 400;
-}
-
-// Reutiliza os mesmos estilos de estado vazio
-.empty-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px;
-
-  .empty-state-content {
-    text-align: center;
-  }
-
-  .empty-image {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-  }
-
-  .empty-text {
+  h1 {
     color: $gray;
-    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 24px;
   }
 }
 
-// Reutiliza os mesmos estilos de pesquisa e filtros
+// Mensagens de feedback
+.message-container {
+  margin-bottom: 16px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  animation: fadeIn 0.3s ease-in-out;
+
+  .success-message, .error-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+
+    i {
+      font-size: 16px;
+    }
+  }
+
+  .success-message {
+    color: $success-color;
+    background-color: rgba($success-color, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+  }
+
+  .error-message {
+    color: $error-color;
+    background-color: rgba($error-color, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// Pesquisa e filtros
 .search-filter-container {
   display: flex;
   align-items: center;
@@ -52,7 +70,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   flex-wrap: wrap;
 }
 
-// Mesmo estilo para grupos de input
+// Grupos de input
 .input-group {
   position: relative;
   min-width: 180px;
@@ -96,7 +114,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-// Mesmo estilo de botão, apenas mudando o nome da classe
+// Botão de novo usuário
 .new-client-btn {
   height: 40px;
   padding: 0 24px;
@@ -115,7 +133,97 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 }
 
-// Reutiliza os mesmos estilos de modal
+// Estado vazio
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+
+  .empty-state-content {
+    text-align: center;
+  }
+
+  .empty-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+  }
+
+  .empty-text {
+    color: $gray;
+    font-size: 1.2rem;
+  }
+}
+
+// Lista de clientes/usuários
+.clients-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.client-row {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr 0.5fr;
+  padding: 12px 24px;
+  align-items: center;
+
+  &:not(.headers) {
+    border-bottom: 1px solid $border-color;
+
+    &:hover {
+      background-color: #f9fafb;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.headers {
+  font-weight: 500;
+  color: $gray;
+  background-color: #f3f4f6;
+  padding: 14px 24px;
+  border-bottom: 2px solid $border-color;
+}
+
+.client-name,
+.client-email,
+.client-status {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 14px;
+  color: $text-gray;
+  cursor: pointer;
+}
+
+.client-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: $text-gray;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.2s;
+
+  &:hover {
+    color: $danger-color;
+    background-color: rgba($danger-color, 0.1);
+  }
+}
+
+// Modais
 .modal {
   position: fixed;
   top: 0;
@@ -134,7 +242,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     border-radius: 8px;
     width: 100%;
     max-width: 600px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
     h2 {
       margin-bottom: 24px;
@@ -142,16 +250,25 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
       color: #1f2937;
     }
   }
+
+  .confirm-modal {
+    max-width: 400px;
+
+    p {
+      margin-bottom: 16px;
+      color: $text-gray;
+    }
+  }
 }
 
-// Reutiliza os mesmos estilos de formulário
+// Formulários
 .form-group {
   margin-bottom: 16px;
 
   label {
     display: block;
     margin-bottom: 8px;
-    color: #6b7280;
+    color: $gray;
     font-size: 14px;
   }
 
@@ -169,13 +286,13 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   }
 
   .error-text {
-    color: #ef4444;
+    color: $error-color;
     font-size: 12px;
     margin-top: 4px;
   }
 }
 
-// Reutiliza os mesmos estilos de ações do modal
+// Ações do modal
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -191,7 +308,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     &.cancel-btn {
       background: white;
       border: 1px solid #e5e7eb;
-      color: #6b7280;
+      color: $gray;
 
       &:hover {
         background: #f9fafb;
@@ -207,56 +324,15 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
         background: $hover-color;
       }
     }
+
+    &.delete-confirm-btn {
+      background: $danger-color;
+      border: none;
+      color: white;
+
+      &:hover {
+        background: $danger-hover;
+      }
+    }
   }
-}
-
-// Adapta os estilos da lista de projetos para usuários
-.clients-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.client-row {
-  display: flex;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid $border-color;
-  justify-content: space-between;
-}
-
-.headers {
-  font-weight: bold;
-  background-color: #f3f4f6;
-  border-bottom: 2px solid $border-color;
-}
-
-// Ajusta as larguras das colunas para os dados de usuários
-.client-name,
-.client-email,
-.client-status {
-  flex: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  padding: 0 8px;
-  font-size: 14px;
-  color: $text-gray;
-}
-
-.client-name {
-  font-weight: bold;
-  max-width: 200px;
-}
-
-.client-email {
-  max-width: 250px;
-}
-
-.client-status {
-  max-width: 100px;
-}
-
-.client-row:hover {
-  background-color: #f9fafb;
-  cursor: pointer;
 }
