@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { UsuarioService } from '../../../core/auth/services/usuario.service';
 import { AuthService } from '../../../core/auth/services/auth.service';
 import { Usuario } from '../../../core/auth/services/usuario.model';
@@ -22,7 +22,8 @@ export class ProfileComponent implements OnInit {
   successMessage: string = '';
   senhaAtualInvalida: boolean = false;
   mensagemErroSenha: string = '';
-
+  senhaIgualAtual = false;
+  erroSenhaIgual: boolean = false;
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
@@ -44,7 +45,7 @@ export class ProfileComponent implements OnInit {
   private initializeSecurityForm(): FormGroup {
     return this.fb.group({
       senhaAtual: ['', [Validators.required]],
-      novaSenha: ['', [Validators.required, Validators.minLength(6)]],
+      novaSenha: ['', [Validators.required, Validators.minLength(6), this.novaSenhaDiferenteValidator.bind(this)]],
       confirmPassword: ['', [Validators.required]]
     }, {
       validator: this.passwordMatchValidator
@@ -100,6 +101,28 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+
+    novaSenhaDiferenteValidator(control: AbstractControl): { [key: string]: boolean } | null {
+      if (!control.value) return null; // Se não tiver valor, não valida
+
+      const senhaAtual = this.securityForm?.get('senhaAtual')?.value;
+      if (senhaAtual && control.value === senhaAtual) {
+        this.senhaIgualAtual = true;
+        return { 'senhaIgual': true };  // Retorna erro se a senha for igual
+      }
+      this.senhaIgualAtual = false;
+      return null;  // Se não for igual, não há erro
+    }
+
+    private passwordMatchValidator(formGroup: FormGroup): { [key: string]: boolean } | null {
+      const novaSenha = formGroup.get('novaSenha')?.value;
+      const confirmPassword = formGroup.get('confirmPassword')?.value;
+      if (novaSenha && confirmPassword && novaSenha !== confirmPassword) {
+        return { 'passwordMismatch': true };  // Erro se as senhas não coincidirem
+      }
+      return null;
+    }
+
   private onSavePersonal(): void {
     if (this.personalForm.valid && this.currentUser) {
       this.saving = true;
@@ -137,6 +160,13 @@ export class ProfileComponent implements OnInit {
       this.senhaAtualInvalida = false;
       this.mensagemErroSenha = '';
 
+      // Verifica se a nova senha é igual à antiga
+      if (this.securityForm.hasError('senhaIgual') || this.senhaIgualAtual) {
+        this.erroSenhaIgual = true;
+        this.saving = false;
+        return; // Impede o envio se as senhas forem iguais
+      }
+
       const updatedUser = {
         id: this.currentUser.id,
         senha: this.securityForm.get('novaSenha')?.value,
@@ -151,6 +181,7 @@ export class ProfileComponent implements OnInit {
             this.securityForm.reset();
             this.senhaAtualInvalida = false;
             this.mensagemErroSenha = '';
+            if (this.erroSenhaIgual) this.erroSenhaIgual = false;
           },
           error: (error) => {
             console.error('Erro na atualização da senha:', error);
@@ -162,16 +193,17 @@ export class ProfileComponent implements OnInit {
   }
 
 
-  private passwordMatchValidator(group: FormGroup): null | { passwordMismatch: true } {
-    const novaSenha = group.get('novaSenha')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-
-    return novaSenha === confirmPassword ? null : { passwordMismatch: true };
-  }
-
   hasError(form: FormGroup, controlName: string, errorName: string): boolean {
     const control = form.get(controlName);
-    return control ? control.hasError(errorName) && control.touched : false;
+    if (!control) return false;
+
+    // Para erros normais
+    if (errorName !== 'senhaIgual') {
+      return control.hasError(errorName) && control.touched;
+    }
+
+    // Específico para o erro de senha igual
+    return control.hasError(errorName);
   }
 
     // Método para limpar os erros quando mudar de aba

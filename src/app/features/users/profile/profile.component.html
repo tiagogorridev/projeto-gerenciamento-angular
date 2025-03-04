@@ -65,12 +65,15 @@
               type="password"
               class="input-field"
               formControlName="novaSenha"
-              [class.error]="hasError(securityForm, 'novaSenha', 'required') || hasError(securityForm, 'novaSenha', 'minlength')">
+              [class.error]="hasError(securityForm, 'novaSenha', 'required') || hasError(securityForm, 'novaSenha', 'minlength') || senhaIgualAtual">
             <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'required')">
               Nova senha é obrigatória
             </div>
             <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'minlength')">
               A senha deve ter pelo menos 6 caracteres
+            </div>
+            <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'senhaIgual')">
+              A nova senha não pode ser igual à senha atual
             </div>
           </div>
 
@@ -88,8 +91,15 @@
               As senhas não coincidem
             </div>
           </div>
+
+
+          <div *ngIf="successMessage" class="alert alert-success">
+            {{ successMessage }}
+          </div>
         </form>
       </div>
+
+
 
       <div class="form-actions">
         <button class="cancel-btn">Cancelar</button>
