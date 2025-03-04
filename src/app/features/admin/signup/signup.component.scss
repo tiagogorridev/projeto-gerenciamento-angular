@@ -281,6 +281,17 @@ $success-color: #10b981;
   }
 }
 
+.error-message {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%;
+  text-align: center;
+}
+
 // Ações do modal
 .modal-actions {
   display: flex;

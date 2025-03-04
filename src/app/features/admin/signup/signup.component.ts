@@ -20,6 +20,10 @@ export class SignupComponent implements OnInit {
   showDeleteModal: boolean = false;
   selectedUser: Usuario | null = null;
 
+
+  errorMessage: string = '';
+  successMessage: string = '';
+
   user: Usuario = {
     nome: '',
     email: '',
@@ -109,35 +113,36 @@ export class SignupComponent implements OnInit {
       });
     }
   }
+  onSubmit(form: any): void {
+    if (form.valid) {
+      const novoUsuario: Usuario = {
+        nome: this.user.nome,
+        email: this.user.email,
+        senha: this.user.senha,
+        perfil: this.user.perfil,
+        confirmPassword: this.user.confirmPassword,
+        ativo: 'ATIVO'
+      };
 
-  onSubmit(form: NgForm): void {
-    if (form.invalid) {
-      return;
+      this.usuarioService.cadastrarUsuario(novoUsuario).subscribe({
+        next: (response) => {
+          this.successMessage = 'Usuário cadastrado com sucesso!';
+          this.errorMessage = '';
+          this.closeModal();
+          this.carregarUsuarios();
+        },
+        error: (error: any) => {
+          console.error('Erro ao cadastrar usuário:', error);
+          if (error.status === 400 && error.error.message === 'Email já cadastrado') {
+            this.errorMessage = 'Este email já está em uso. Tente outro.';
+          } else {
+            this.errorMessage = 'Erro ao cadastrar usuário. Tente novamente.';
+          }
+          this.successMessage = '';
+        }
+      });
+    } else {
+      this.errorMessage = 'Por favor, preencha todos os campos corretamente.';
     }
-
-    if (this.user.senha !== this.user.confirmPassword) {
-      console.error('As senhas não coincidem!');
-      return;
-    }
-
-    const novoUsuario: Usuario = {
-      nome: this.user.nome,
-      email: this.user.email,
-      senha: this.user.senha,
-      perfil: this.user.perfil,
-      confirmPassword: this.user.confirmPassword,
-      ativo: 'ATIVO'
-    };
-
-    this.usuarioService.cadastrarUsuario(novoUsuario).subscribe({
-      next: (response) => {
-        console.log('Usuário cadastrado com sucesso:', response);
-        this.closeModal();
-        this.carregarUsuarios();
-      },
-      error: (error) => {
-        console.error('Erro ao cadastrar usuário:', error);
-      }
-    });
   }
 }

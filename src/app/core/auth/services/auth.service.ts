@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { catchError, tap, finalize } from 'rxjs/operators';
 
-
-
 export interface LoginResponse {
   token: string;
   perfil: string;
@@ -26,7 +24,6 @@ export interface CurrentUser {
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
-
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
@@ -51,13 +48,11 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, senha })
       .pipe(
         tap((response: LoginResponse) => {
-          console.log('Resposta do Login:', response);
           const userEmail = response.email || email;
           this.saveSession(response.token, response.perfil, response.id, userEmail);
           this.isAuthenticatedSubject.next(true);
         }),
         catchError(error => {
-          console.error('Erro no login:', error);
           let message = 'Erro ao realizar login';
           if (error.error?.message) {
             message = error.error.message;
@@ -84,7 +79,6 @@ export class AuthService {
         this.router.navigate(['/login']);
       }),
       catchError((error) => {
-        console.error('Erro no logout:', error);
         this.clearSession();
         return of(null);
       })

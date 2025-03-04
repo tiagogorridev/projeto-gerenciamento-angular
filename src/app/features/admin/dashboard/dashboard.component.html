@@ -83,7 +83,7 @@
     </div>
 
     <div class="projects-list">
-      <div class="project-card" *ngFor="let projeto of projetosFiltrados" [routerLink]="['/admin/projeto', projeto.id]">
+      <div class="project-card" *ngFor="let projeto of projetosFiltrados" [routerLink]="['/admin/edit-projects', projeto.id]">
         <div class="project-name">{{ projeto.nome }}</div>
         <div class="project-info">
           <span class="project-client">{{ projeto.cliente.nome }}</span>

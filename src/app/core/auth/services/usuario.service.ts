@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Usuario } from './usuario.model';
@@ -29,18 +29,6 @@ export class UsuarioService {
       .pipe(
         catchError(this.handleError)
       );
-  }
-
-  // Exemplo de método para buscar membros do projeto
-  getMembrosByProjeto(projectId: number | string): Observable<Usuario[]> {
-    const token = localStorage.getItem('auth_token') || '';
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<Usuario[]>(`${this.apiUrl}/${projectId}/membros`, { headers }).pipe(
-      catchError(error => {
-        console.error('Erro ao obter membros do projeto:', error);
-        throw error;
-      })
-    );
   }
 
   updateUsuario(usuario: any): Observable<Usuario> {

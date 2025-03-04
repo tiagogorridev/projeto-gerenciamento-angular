@@ -56,7 +56,10 @@
 
   <!-- Modal de novo usuário -->
   <div class="modal" *ngIf="showNewUserModal">
-    <div class="modal-content">
+  <div class="modal-content">
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
       <h2>Novo Usuário</h2>
 
       <form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm">

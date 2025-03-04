@@ -104,7 +104,7 @@ export class AdminTarefaComponent implements OnInit {
     const { dataInicio: projInicio, dataFim: projFim } = this.projeto;
 
     if (new Date(dataInicio) < new Date(projInicio) || new Date(dataFim) > new Date(projFim)) {
-      this.erro = `As datas devem estar dentro do período do projeto (${new Date(projInicio).toLocaleDateString()} a ${new Date(projFim).toLocaleDateString()}).`;
+      this.erro = `As datas devem estar dentro do período do projeto.`;
       return false;
     }
     if (new Date(dataFim) < new Date(dataInicio)) {

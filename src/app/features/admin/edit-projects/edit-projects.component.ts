@@ -279,10 +279,6 @@ export class EditProjectsComponent implements OnInit {
         const selectedDate = new Date(date);
         const projectStart = new Date(this.startDateCalendar);
         const projectEnd = new Date(this.endDateCalendar);
-
-        if (selectedDate < projectStart || selectedDate > projectEnd) {
-          this.startDateError = 'Data fora do período do projeto';
-        }
       }
 
       if (this.endDate && date > this.endDate) {
@@ -305,10 +301,6 @@ export class EditProjectsComponent implements OnInit {
         const selectedDate = new Date(date);
         const projectStart = new Date(this.startDateCalendar);
         const projectEnd = new Date(this.endDateCalendar);
-
-        if (selectedDate < projectStart || selectedDate > projectEnd) {
-          this.endDateError = 'Data fora do período do projeto';
-        }
       }
 
       if (this.startDate && date < this.startDate) {
@@ -466,6 +458,7 @@ export class EditProjectsComponent implements OnInit {
       });
     });
   }
+
 
   onSubmit(): void {
     this.carregarHorasDisponiveis();

@@ -31,7 +31,7 @@ export class TarefaService {
   getTarefaDetails(idprojeto: number, idtarefa: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/detalhes/${idprojeto}/${idtarefa}`).pipe(
       tap(response => {
-        console.log('Resposta da API:', response);  // Verifique o formato da resposta
+        console.log('Resposta da API:', response);
       }),
       catchError(error => {
         console.error('Erro no serviço:', error);
