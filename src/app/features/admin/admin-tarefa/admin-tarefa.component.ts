@@ -10,8 +10,10 @@ import { TarefaService } from '../../../core/auth/services/tarefa.service';
 })
 export class AdminTarefaComponent implements OnInit {
   idprojeto = 0;
+  projectId: string | null = null;
   idtarefa = 0;
   tarefa: any = {};
+  tarefas: any[] = [];
   projeto: any = {};
   horasOriginais = 0;
   horasDisponiveisProjeto = 0;
@@ -145,4 +147,27 @@ export class AdminTarefaComponent implements OnInit {
     if (this.tarefa.dataInicio) this.tarefa.dataInicio = new Date(`${this.tarefa.dataInicio}T12:00:00`);
     if (this.tarefa.dataFim) this.tarefa.dataFim = new Date(`${this.tarefa.dataFim}T12:00:00`);
   }
+
+  carregarTempoRegistradoPorTarefa(tarefaId: number): void {
+    if (!this.projectId) return;
+
+    this.tarefaService.getTarefaDetails(Number(this.projectId), tarefaId)
+      .subscribe(
+        (tarefa) => {
+          const tarefaIndex = this.tarefas.findIndex(t => t.id === tarefaId);
+          if (tarefaIndex !== -1) {
+            // Atualizar toda a tarefa com os detalhes mais recentes
+            this.tarefas[tarefaIndex] = tarefa;
+          }
+        },
+        (error) => {
+          console.error(`Erro ao carregar detalhes da tarefa ${tarefaId}:`, error);
+        }
+      );
+  }
+
+  calculateRegisteredCost(tarefa: any): number {
+    return (tarefa.valorPorHora ?? 0) * (tarefa.tempoRegistrado ?? 0);
+  }
 }
+

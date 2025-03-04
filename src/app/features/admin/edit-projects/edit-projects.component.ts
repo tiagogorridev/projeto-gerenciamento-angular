@@ -42,8 +42,8 @@ export interface Tarefa {
     nome?: string;
     email?: string;
   };
-  valorPorHora: number;  // Changed from 0 to number
-  custoRegistrado: number;  // Changed from 0 to number
+  valorPorHora: number;
+  custoRegistrado: number;
 }
 
 interface Member {
@@ -83,6 +83,8 @@ export class EditProjectsComponent implements OnInit {
 
   startDateError: string = '';
   endDateError: string = '';
+
+  horasRegistradas: number = 0;
 
   tarefa: Tarefa = {
     nome: '',
@@ -144,6 +146,52 @@ export class EditProjectsComponent implements OnInit {
     });
 
     this.loadClients();
+  }
+
+  registrarTempo(tarefaId: number): void {
+    if (this.horasRegistradas <= 0) {
+      this.showError('Por favor, insira um valor válido de horas.');
+      return;
+    }
+
+    this.tarefaService.registrarTempo(tarefaId, this.horasRegistradas).subscribe({
+      next: (tarefaAtualizada) => {
+        console.log('Tempo registrado com sucesso', tarefaAtualizada);
+
+        const index = this.tarefas.findIndex(t => t.id === tarefaId);
+        if (index !== -1) {
+          this.tarefas[index] = tarefaAtualizada;
+        }
+        this.carregarTempoRegistradoPorTarefa(tarefaId);
+        this.horasRegistradas = 0;
+        this.showError('Tempo registrado com sucesso!');
+      },
+      error: (error) => {
+        console.error('Erro ao registrar tempo', error);
+        this.showError('Erro ao registrar tempo. Tente novamente.');
+      }
+    });
+  }
+
+  carregarTempoRegistradoPorTarefa(tarefaId: number): void {
+    if (!this.projectId) return;
+
+    this.tarefaService.getTarefaDetails(Number(this.projectId), tarefaId)
+      .subscribe(
+        (tarefa) => {
+          const tarefaIndex = this.tarefas.findIndex(t => t.id === tarefaId);
+          if (tarefaIndex !== -1) {
+            this.tarefas[tarefaIndex] = tarefa;
+          }
+        },
+        (error) => {
+          console.error(`Erro ao carregar detalhes da tarefa ${tarefaId}:`, error);
+        }
+      );
+  }
+
+  calculateRegisteredCost(tarefa: any): number {
+    return (tarefa.valorPorHora ?? 0) * (tarefa.tempoRegistrado ?? 0);
   }
 
   loadCurrentUserInfo(): void {
@@ -225,10 +273,8 @@ export class EditProjectsComponent implements OnInit {
       const date = new Date(event);
       this.projectDetails.startDate = date.toISOString().substring(0, 10);
 
-      // Clear error when user changes the date
       this.startDateError = '';
 
-      // Validate date is within project timeframe
       if (this.startDateCalendar && this.endDateCalendar) {
         const selectedDate = new Date(date);
         const projectStart = new Date(this.startDateCalendar);
@@ -239,7 +285,6 @@ export class EditProjectsComponent implements OnInit {
         }
       }
 
-      // Check if end date is now before start date
       if (this.endDate && date > this.endDate) {
         this.endDateError = 'Data final deve ser posterior à data inicial';
       }
@@ -254,10 +299,8 @@ export class EditProjectsComponent implements OnInit {
       const date = new Date(event);
       this.projectDetails.endDate = date.toISOString().substring(0, 10);
 
-      // Clear error when user changes the date
       this.endDateError = '';
 
-      // Validate date is within project timeframe
       if (this.startDateCalendar && this.endDateCalendar) {
         const selectedDate = new Date(date);
         const projectStart = new Date(this.startDateCalendar);
@@ -268,7 +311,6 @@ export class EditProjectsComponent implements OnInit {
         }
       }
 
-      // Check if end date is before start date
       if (this.startDate && date < this.startDate) {
         this.endDateError = 'Data final deve ser posterior à data inicial';
       }
@@ -428,15 +470,12 @@ export class EditProjectsComponent implements OnInit {
   onSubmit(): void {
     this.carregarHorasDisponiveis();
 
-    // Validate dates before submission
     if (this.startDate && this.endDate) {
-      // Check if end date is before start date
       if (this.endDate < this.startDate) {
         this.endDateError = 'Data final deve ser posterior à data inicial';
         return;
       }
 
-      // Check if dates are within project timeframe
       if (this.startDateCalendar && this.endDateCalendar) {
         const projectStart = new Date(this.startDateCalendar);
         const projectEnd = new Date(this.endDateCalendar);
@@ -458,13 +497,11 @@ export class EditProjectsComponent implements OnInit {
       return;
     }
 
-    // Continue with existing validation logic
     if (!this.projectId || !this.startDate || !this.endDate || !this.currentUserId) {
       this.showError('Dados incompletos para criar a tarefa');
       return;
     }
 
-    // Continue with existing submit logic
     this.tarefa.responsavel = this.currentUserName;
     this.tarefa.projeto = { id: Number(this.projectId) };
     this.tarefa.usuarioResponsavel = { id: this.currentUserId, nome: this.currentUserName };
@@ -588,25 +625,8 @@ export class EditProjectsComponent implements OnInit {
     }
   }
 
-  carregarTempoRegistradoPorTarefa(tarefaId: number): void {
-    if (!this.projectId) return;
-
-    this.tarefaService.getTempoRegistrado(Number(this.projectId), Number(tarefaId))
-      .subscribe(
-        (response) => {
-          const tarefaIndex = this.tarefas.findIndex(t => t.id === tarefaId);
-          if (tarefaIndex !== -1) {
-            this.tarefas[tarefaIndex].tempoRegistrado = response.tempoRegistrado;
-          }
-        },
-        (error) => {
-          console.error(`Erro ao carregar tempo registrado para tarefa ${tarefaId}:`, error);
-        }
-      );
-  }
 
   resetTarefaForm(): void {
-    // Existing reset logic
     this.tarefa = {
       nome: '',
       descricao: '',
@@ -624,12 +644,10 @@ export class EditProjectsComponent implements OnInit {
     this.startDate = new Date();
     this.endDate = new Date();
 
-    // Clear error messages
     this.startDateError = '';
     this.endDateError = '';
   }
 
-  // Update closeModal to also clear error messages
   closeModal(): void {
     this.showNewTarefaModal = false;
     this.startDateError = '';

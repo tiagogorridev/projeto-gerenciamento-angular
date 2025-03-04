@@ -64,4 +64,17 @@ export class TarefaService {
   getTodasTarefas(): Observable<Tarefa[]> {
     return this.http.get<Tarefa[]>(this.apiUrl);
   }
+
+  registrarTempo(tarefaId: number, horas: number): Observable<Tarefa> {
+    const url = `${this.apiUrl}/${tarefaId}/registrar-tempo`;
+    return this.http.put<Tarefa>(url, { horas }).pipe(
+      tap(response => {
+        console.log('Tempo registrado com sucesso:', response);
+      }),
+      catchError(error => {
+        console.error('Erro ao registrar tempo:', error);
+        return throwError(error);
+      })
+    );
+  }
 }
