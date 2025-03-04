@@ -63,7 +63,12 @@ import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/ad
 import { AboutProjectsComponent } from './features/users/about-projects/about-projects.component';
 import { HelpPageAdminComponent } from './features/admin/help-page-admin/help-page-admin.component';
 import { AdminTarefaComponent } from './features/admin/admin-tarefa/admin-tarefa.component';
-
+import { CardModule } from 'primeng/card';
+import { ChartModule } from 'primeng/chart';
+import { AvatarModule } from 'primeng/avatar';
+import { BadgeModule } from 'primeng/badge';
+import { TagModule } from 'primeng/tag';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   declarations: [
@@ -107,6 +112,14 @@ import { AdminTarefaComponent } from './features/admin/admin-tarefa/admin-tarefa
     InputTextModule,
     PasswordModule,
     ButtonModule,
+    CardModule,
+    ChartModule,
+    TableModule,
+    AvatarModule,
+    BadgeModule,
+    DropdownModule,
+    TagModule,
+    ProgressBarModule,
     HttpClientModule,
     CalendarModule,
     BrowserAnimationsModule,

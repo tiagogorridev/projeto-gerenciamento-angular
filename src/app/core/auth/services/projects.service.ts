@@ -128,4 +128,9 @@ export class ProjectsService {
         responseType: 'text'
       });
     }
+
+    listarTodasAssociacoes(): Observable<any[]> {
+      const url = `${this.baseUrl}/associacoes`;
+      return this.http.get<any[]>(url);
+    }
 }

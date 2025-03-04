@@ -11,4 +11,6 @@ export interface Tarefa {
   horasEstimadas: number;
   horasDisponiveis?: number;
   tempoRegistrado?: number;
+  valorPorHora: number;
+  custoRegistrado: number;
 }
