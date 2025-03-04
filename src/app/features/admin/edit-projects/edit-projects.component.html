@@ -33,6 +33,7 @@
       </div>
 
 <!-- Modal de Nova Tarefa -->
+<!-- Modal de Nova Tarefa -->
 <div class="modal" *ngIf="showNewTarefaModal">
   <div class="modal-content">
     <h2>Nova Tarefa</h2>
@@ -45,14 +46,30 @@
         <label>Descrição</label>
         <textarea class="input-field" [(ngModel)]="tarefa.descricao" name="descricao" required></textarea>
       </div>
+      <div class="form-group">
+        <label>Valor por Hora</label>
+        <input
+          type="number"
+          class="input-field"
+          [(ngModel)]="tarefa.valorPorHora"
+          name="valorPorHora"
+          min="0"
+          step="0.01"
+          required
+        >
+      </div>
       <div class="form-row">
         <div class="form-group">
           <label>Data de Início</label>
-          <p-calendar [(ngModel)]="startDate" name="dataInicio" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
+          <p-calendar [(ngModel)]="startDate" (ngModelChange)="onStartDateChange($event)" name="dataInicio" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"
+                     [ngClass]="{'error-input': startDateError}"></p-calendar>
+          <small class="error-text" *ngIf="startDateError">{{ startDateError }}</small>
         </div>
         <div class="form-group">
           <label>Data de Fim</label>
-          <p-calendar [(ngModel)]="endDate" name="dataFim" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
+          <p-calendar [(ngModel)]="endDate" (ngModelChange)="onEndDateChange($event)" name="dataFim" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"
+                     [ngClass]="{'error-input': endDateError}"></p-calendar>
+          <small class="error-text" *ngIf="endDateError">{{ endDateError }}</small>
         </div>
       </div>
       <!-- Novo campo de horas -->
@@ -83,7 +100,7 @@
         <button type="button" (click)="closeModal()" class="cancel-btn">Cancelar</button>
         <button
           type="submit"
-          [disabled]="!tarefaForm.form.valid || tarefa.horasEstimadas > horasDisponiveis"
+          [disabled]="!tarefaForm.form.valid || tarefa.horasEstimadas > horasDisponiveis || startDateError || endDateError"
           class="submit-btn">
           Salvar
         </button>

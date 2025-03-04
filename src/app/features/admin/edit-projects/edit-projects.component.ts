@@ -42,7 +42,10 @@ export interface Tarefa {
     nome?: string;
     email?: string;
   };
+  valorPorHora: number;  // Changed from 0 to number
+  custoRegistrado: number;  // Changed from 0 to number
 }
+
 interface Member {
   email: string;
 }
@@ -78,6 +81,9 @@ export class EditProjectsComponent implements OnInit {
   originalTarefas: Tarefa[] = [];
   originalMembers: Member[] = [];
 
+  startDateError: string = '';
+  endDateError: string = '';
+
   tarefa: Tarefa = {
     nome: '',
     descricao: '',
@@ -87,7 +93,9 @@ export class EditProjectsComponent implements OnInit {
     status: 'ABERTA',
     projeto: { id: 0 },
     horasEstimadas: 0,
-    tempoRegistrado: 0
+    tempoRegistrado: 0,
+    valorPorHora: 0,
+    custoRegistrado: 0
   };
 
   tarefas: Tarefa[] = [];
@@ -216,8 +224,28 @@ export class EditProjectsComponent implements OnInit {
     if (event) {
       const date = new Date(event);
       this.projectDetails.startDate = date.toISOString().substring(0, 10);
+
+      // Clear error when user changes the date
+      this.startDateError = '';
+
+      // Validate date is within project timeframe
+      if (this.startDateCalendar && this.endDateCalendar) {
+        const selectedDate = new Date(date);
+        const projectStart = new Date(this.startDateCalendar);
+        const projectEnd = new Date(this.endDateCalendar);
+
+        if (selectedDate < projectStart || selectedDate > projectEnd) {
+          this.startDateError = 'Data fora do período do projeto';
+        }
+      }
+
+      // Check if end date is now before start date
+      if (this.endDate && date > this.endDate) {
+        this.endDateError = 'Data final deve ser posterior à data inicial';
+      }
     } else {
       this.projectDetails.startDate = undefined;
+      this.startDateError = '';
     }
   }
 
@@ -225,8 +253,28 @@ export class EditProjectsComponent implements OnInit {
     if (event) {
       const date = new Date(event);
       this.projectDetails.endDate = date.toISOString().substring(0, 10);
+
+      // Clear error when user changes the date
+      this.endDateError = '';
+
+      // Validate date is within project timeframe
+      if (this.startDateCalendar && this.endDateCalendar) {
+        const selectedDate = new Date(date);
+        const projectStart = new Date(this.startDateCalendar);
+        const projectEnd = new Date(this.endDateCalendar);
+
+        if (selectedDate < projectStart || selectedDate > projectEnd) {
+          this.endDateError = 'Data fora do período do projeto';
+        }
+      }
+
+      // Check if end date is before start date
+      if (this.startDate && date < this.startDate) {
+        this.endDateError = 'Data final deve ser posterior à data inicial';
+      }
     } else {
       this.projectDetails.endDate = undefined;
+      this.endDateError = '';
     }
   }
 
@@ -306,10 +354,6 @@ export class EditProjectsComponent implements OnInit {
     this.showNewTarefaModal = true;
   }
 
-  closeModal(): void {
-    this.showNewTarefaModal = false;
-  }
-
   openAddMemberModal(): void {
     this.usuarioService.getEmails().subscribe(
       (emails: string[]) => {
@@ -384,16 +428,43 @@ export class EditProjectsComponent implements OnInit {
   onSubmit(): void {
     this.carregarHorasDisponiveis();
 
+    // Validate dates before submission
+    if (this.startDate && this.endDate) {
+      // Check if end date is before start date
+      if (this.endDate < this.startDate) {
+        this.endDateError = 'Data final deve ser posterior à data inicial';
+        return;
+      }
+
+      // Check if dates are within project timeframe
+      if (this.startDateCalendar && this.endDateCalendar) {
+        const projectStart = new Date(this.startDateCalendar);
+        const projectEnd = new Date(this.endDateCalendar);
+
+        if (this.startDate < projectStart || this.startDate > projectEnd) {
+          this.startDateError = 'Data fora do período do projeto';
+          return;
+        }
+
+        if (this.endDate < projectStart || this.endDate > projectEnd) {
+          this.endDateError = 'Data fora do período do projeto';
+          return;
+        }
+      }
+    }
+
     if (this.tarefa.horasEstimadas > this.horasDisponiveis) {
       this.showError(`Horas estimadas (${this.tarefa.horasEstimadas}) excedem o limite disponível do projeto (${this.horasDisponiveis})`);
       return;
     }
 
+    // Continue with existing validation logic
     if (!this.projectId || !this.startDate || !this.endDate || !this.currentUserId) {
       this.showError('Dados incompletos para criar a tarefa');
       return;
     }
 
+    // Continue with existing submit logic
     this.tarefa.responsavel = this.currentUserName;
     this.tarefa.projeto = { id: Number(this.projectId) };
     this.tarefa.usuarioResponsavel = { id: this.currentUserId, nome: this.currentUserName };
@@ -535,6 +606,7 @@ export class EditProjectsComponent implements OnInit {
   }
 
   resetTarefaForm(): void {
+    // Existing reset logic
     this.tarefa = {
       nome: '',
       descricao: '',
@@ -545,9 +617,22 @@ export class EditProjectsComponent implements OnInit {
       projeto: { id: 0 },
       horasEstimadas: 0,
       tempoRegistrado: 0,
-      usuarioResponsavel: this.currentUserId ? { id: this.currentUserId } : undefined
+      usuarioResponsavel: this.currentUserId ? { id: this.currentUserId } : undefined,
+      valorPorHora: 0,
+      custoRegistrado: 0
     };
     this.startDate = new Date();
     this.endDate = new Date();
+
+    // Clear error messages
+    this.startDateError = '';
+    this.endDateError = '';
+  }
+
+  // Update closeModal to also clear error messages
+  closeModal(): void {
+    this.showNewTarefaModal = false;
+    this.startDateError = '';
+    this.endDateError = '';
   }
 }

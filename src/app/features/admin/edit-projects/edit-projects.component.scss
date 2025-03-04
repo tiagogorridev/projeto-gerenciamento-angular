@@ -346,7 +346,28 @@ $success-green: #16a34a;
   }
 }
 
-// Modal Styles
+.error-text {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+  text-decoration: underline;
+  font-weight: 400;
+}
+
+.error-input {
+  border-color: #f44336 !important;
+
+  ::ng-deep .p-calendar .p-inputtext {
+    border-color: #f44336 !important;
+  }
+}
+
+.form-group {
+  margin-bottom: 16px;
+  position: relative;
+}
+
 .modal {
   position: fixed;
   top: 0;
