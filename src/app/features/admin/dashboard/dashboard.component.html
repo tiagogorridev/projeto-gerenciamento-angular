@@ -1,2 +1,102 @@
 <app-admin-sidebar></app-admin-sidebar>
 <app-admin-header></app-admin-header>
+
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Dashboard Administrativo</h1>
+    <div class="action-buttons">
+      <button class="btn btn-primary" [routerLink]="['/admin/adicionar-cliente']">
+        <i class="pi pi-user-plus"></i> Adicionar Cliente
+      </button>
+      <button class="btn btn-success" [routerLink]="['/admin/signup']">
+        <i class="pi pi-plus-circle"></i> Adicionar Usuário
+      </button>
+    </div>
+  </div>
+
+  <div class="dashboard-statistics">
+    <div class="stat-card">
+      <div class="stat-title">Total de Horas Lançadas no Mês</div>
+      <div class="stat-value">{{ totalHorasMes | number:'1.1-1' }}h</div>
+      <div class="stat-footer">Atualizado em {{ dataAtualizacao }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-title">Horas Aprovadas</div>
+      <div class="stat-value">{{ horasAprovadas | number:'1.1-1' }}h</div>
+      <div class="stat-percentage">{{ calcularPorcentagem(horasAprovadas, totalHorasMes) | number:'1.1-1' }}%</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-title">Horas Reprovadas</div>
+      <div class="stat-value">{{ horasReprovadas | number:'1.1-1' }}h</div>
+      <div class="stat-percentage">{{ calcularPorcentagem(horasReprovadas, totalHorasMes) | number:'1.1-1' }}%</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-title">Horas em Análise</div>
+      <div class="stat-value">{{ horasEmAnalise | number:'1.1-1' }}h</div>
+      <div class="stat-percentage">{{ calcularPorcentagem(horasEmAnalise, totalHorasMes) | number:'1.1-1' }}%</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-title">Média de Horas por Usuário</div>
+      <div class="stat-value">{{ mediaHorasUsuario | number:'1.1-1' }}h</div>
+      <div class="stat-footer">{{ usuariosAtivos }} usuários ativos</div>
+    </div>
+  </div>
+
+  <div class="top-users-section">
+    <h2>Top 5 Usuários com Mais Horas Lançadas</h2>
+    <div class="top-users-list">
+      <div class="user-item" *ngFor="let user of topUsuarios; let i = index">
+        <div class="user-rank">{{ i + 1 }}</div>
+        <div class="user-avatar">
+          <img src="../../../../assets/perfil.png" alt="Avatar">
+        </div>
+        <div class="user-info">
+          <div class="user-name">{{ user.nome }}</div>
+          <div class="user-role">{{ user.cargo }}</div>
+        </div>
+        <div class="user-hours">{{ user.horas | number:'1.1-1' }}h</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="top-projects-section">
+    <div class="section-header">
+      <h2>Top 5 Projetos Mais Concluídos</h2>
+      <div class="filter-controls">
+        <select class="form-control" id="statusFilter" [(ngModel)]="statusFiltro" (change)="filtrarProjetos()">
+          <option value="all">Todos os Status</option>
+          <option value="EM_ANDAMENTO">Em Andamento</option>
+          <option value="CONCLUIDO">Concluídos</option>
+          <option value="PAUSADO">Pausados</option>
+        </select>
+        <select class="form-control" id="priorityFilter" [(ngModel)]="prioridadeFiltro" (change)="filtrarProjetos()">
+          <option value="all">Todas as Prioridades</option>
+          <option value="ALTA">Alta</option>
+          <option value="MEDIA">Média</option>
+          <option value="BAIXA">Baixa</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="projects-list">
+      <div class="project-card" *ngFor="let projeto of projetosFiltrados" [routerLink]="['/admin/projeto', projeto.id]">
+        <div class="project-name">{{ projeto.nome }}</div>
+        <div class="project-info">
+          <span class="project-client">{{ projeto.cliente.nome }}</span>
+          <span class="project-status" [ngClass]="getPriorityClass(projeto.prioridade)">{{ getPriorityDisplay(projeto.prioridade) }}</span>
+        </div>
+        <div class="project-progress">
+          <div class="progress-label">Progresso: {{ calcularProgresso(projeto) | number:'1.2-2' }}%</div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="calcularProgresso(projeto)"></div>
+          </div>
+        </div>
+        <div class="project-hours">Total de horas: {{ projeto.tempoRegistrado | number:'1.1-1' }}h</div>
+      </div>
+    </div>
+  </div>
+</div>
