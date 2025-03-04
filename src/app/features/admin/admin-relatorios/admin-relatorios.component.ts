@@ -1,3 +1,4 @@
+import { Usuario } from './../../../core/auth/services/usuario.model';
 import { UsuarioService } from './../../../core/auth/services/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
@@ -23,6 +24,7 @@ export class AdminRelatoriosComponent implements OnInit {
   clientes: any[] = [];
   usuarios: any[] = [];
   administradores: any[] = [];
+  usuariosAssociados: Usuario[] = []; // Definindo a propriedade
 
   tarefas: Tarefa[] = [];
   tarefasFiltradas: Tarefa[] = [];
@@ -106,6 +108,18 @@ export class AdminRelatoriosComponent implements OnInit {
     });
   }
 
+  carregarUsuariosAssociados(): void {
+    this.projectsService.listarTodasAssociacoes().subscribe(
+      (associacoes) => {
+        this.usuarios = associacoes; // Armazenando a resposta da API em 'usuarios'
+        console.log(this.usuarios); // Para verificar os dados
+      },
+      (error) => {
+        console.error('Erro ao carregar associações:', error);
+      }
+    );
+  }
+
   aplicarFiltros(): void {
     this.projetosFiltrados = this.projetos.filter((projeto) => {
       const dataInicioProjeto = new Date(projeto.dataInicio);
@@ -119,13 +133,19 @@ export class AdminRelatoriosComponent implements OnInit {
                        admin.id === Number(this.selectedAdmin)) :
                      true;
 
+      // Add this condition to check if the project is associated with the selected user
+      const isUser = this.selectedUsuario ?
+                   projeto.usuarioResponsavel.id === Number(this.selectedUsuario) :
+                   true;
+
       return (
         (!this.selectedCliente || projeto.cliente.id === Number(this.selectedCliente)) &&
         (!this.selectedStatus || projeto.status === this.selectedStatus) &&
         (!this.selectedPrioridade || projeto.prioridade === this.selectedPrioridade) &&
         (!dataInicioFiltro || dataInicioProjeto >= dataInicioFiltro) &&
         (!dataFimFiltro || dataFimProjeto <= dataFimFiltro) &&
-        isAdmin
+        isAdmin &&
+        isUser  // Add this to the return statement
       );
     });
     this.atualizarResumo();
@@ -144,6 +164,11 @@ export class AdminRelatoriosComponent implements OnInit {
                       admin.id === Number(this.selectedAdminTarefa)) :
                     true;
 
+      // Add this condition for user filtering in tasks
+      const isUser = this.selectedUsuario ?
+                   tarefa.usuarioResponsavel.id === Number(this.selectedUsuario) :
+                   true;
+
       return (
         (!this.selectedProjetoTarefa || tarefa.projeto.id === Number(this.selectedProjetoTarefa)) &&
         (!this.selectedClienteTarefa || (tarefa.projeto && this.getClienteByProjetoId(tarefa.projeto.id) === Number(this.selectedClienteTarefa))) &&
@@ -151,7 +176,8 @@ export class AdminRelatoriosComponent implements OnInit {
         (!this.selectedStatusTarefa || tarefa.status === this.selectedStatusTarefa) &&
         (!this.selectedPrioridadeTarefa || this.getTarefaPrioridade(tarefa) === this.selectedPrioridadeTarefa) &&
         (!dataInicioFiltro || dataInicioTarefa >= dataInicioFiltro) &&
-        (!dataFimFiltro || dataFimTarefa <= dataFimFiltro)
+        (!dataFimFiltro || dataFimTarefa <= dataFimFiltro) &&
+        isUser  // Add this to the return statement
       );
     });
 

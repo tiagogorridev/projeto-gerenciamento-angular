@@ -11,24 +11,23 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./admin-profile.component.scss']
 })
 export class AdminProfileComponent implements OnInit {
-  activeTab: string = 'personal';
-  loading: boolean = false;
-  saving: boolean = false;
+  activeTab = 'personal';
+  loading = false;
+  saving = false;
   personalForm: FormGroup = this.initializePersonalForm();
   securityForm: FormGroup = this.initializeSecurityForm();
   currentUser: Usuario | null = null;
-  errorMessage: string = '';
-  successMessage: string = '';
-  senhaAtualInvalida: boolean = false;
-  mensagemErroSenha: string = '';
-  erroSenhaIgual: boolean = false;
+  errorMessage = '';
+  successMessage = '';
+  senhaAtualInvalida = false;
+  mensagemErroSenha = '';
+  erroSenhaIgual = false;
   senhaIgualAtual = false;
-
 
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +45,7 @@ export class AdminProfileComponent implements OnInit {
   private initializeSecurityForm(): FormGroup {
     return this.fb.group({
       senhaAtual: ['', [Validators.required]],
-      novaSenha: ['', [Validators.required, Validators.minLength(6), this.novaSenhaDiferenteValidator.bind(this)]], // Validação personalizada
+      novaSenha: ['', [Validators.required, Validators.minLength(6), this.novaSenhaDiferenteValidator.bind(this)]],
       confirmPassword: ['', [Validators.required]]
     }, {
       validator: this.passwordMatchValidator
@@ -138,21 +137,19 @@ export class AdminProfileComponent implements OnInit {
         senhaAtual: this.securityForm.get('senhaAtual')?.value
       };
 
-      // Verifica se a nova senha é igual à antiga
       if (this.securityForm.hasError('senhaIgual')) {
         this.erroSenhaIgual = true;
         this.saving = false;
-        return; // Impede o envio se as senhas forem iguais
+        return;
       }
 
-      // Caso contrário, tenta atualizar a senha
       this.usuarioService.updateUsuario(updatedUser)
         .pipe(finalize(() => this.saving = false))
         .subscribe({
           next: () => {
             this.successMessage = 'Senha atualizada com sucesso!';
             this.securityForm.reset();
-            this.erroSenhaIgual = false;  // Reseta o erro quando a senha for alterada com sucesso
+            this.erroSenhaIgual = false;
             this.senhaAtualInvalida = false;
             this.mensagemErroSenha = '';
           },
@@ -165,25 +162,35 @@ export class AdminProfileComponent implements OnInit {
   }
 
   novaSenhaDiferenteValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    if (!control.value) return null;
+
     const senhaAtual = this.securityForm?.get('senhaAtual')?.value;
-    if (control.value === senhaAtual) {
-      return { 'senhaIgual': true };  // Retorna erro se a senha for igual
+    if (senhaAtual && control.value === senhaAtual) {
+      this.senhaIgualAtual = true;
+      return { 'senhaIgual': true };
     }
-    return null;  // Se não for igual, não há erro
+    this.senhaIgualAtual = false;
+    return null;
   }
 
   private passwordMatchValidator(formGroup: FormGroup): { [key: string]: boolean } | null {
     const novaSenha = formGroup.get('novaSenha')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
     if (novaSenha && confirmPassword && novaSenha !== confirmPassword) {
-      return { 'passwordMismatch': true };  // Erro se as senhas não coincidirem
+      return { 'passwordMismatch': true };
     }
     return null;
   }
 
   hasError(form: FormGroup, controlName: string, errorName: string): boolean {
     const control = form.get(controlName);
-    return control ? control.hasError(errorName) && control.touched : false;
+    if (!control) return false;
+
+    if (errorName !== 'senhaIgual') {
+      return control.hasError(errorName) && control.touched;
+    }
+
+    return control.hasError(errorName);
   }
 
   private clearMessages(): void {
