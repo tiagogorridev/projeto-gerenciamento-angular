@@ -1,6 +1,6 @@
-import { ProjectsService } from './../../../core/auth/services/projects.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { TarefaService } from '../../../core/auth/services/tarefa.service';
 
 @Component({
@@ -9,18 +9,17 @@ import { TarefaService } from '../../../core/auth/services/tarefa.service';
   styleUrls: ['./admin-tarefa.component.scss']
 })
 export class AdminTarefaComponent implements OnInit {
-  idprojeto: number = 0;
-  idtarefa: number = 0;
+  idprojeto = 0;
+  idtarefa = 0;
   tarefa: any = {};
-  statusOpcoes: ('ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA')[] = ['ABERTA', 'EM_ANDAMENTO', 'CONCLUIDA', 'PAUSADA'];
   projeto: any = {};
+  horasOriginais = 0;
+  horasDisponiveisProjeto = 0;
+  horasDisponiveis = 0;
+  erro = '';
+  sucessoMensagem = '';
 
-  horasOriginais: number = 0;
-  horasDisponiveisProjeto: number = 0;
-  horasDisponiveis: number = 0;
-  erro: string = '';
-  sucessoMensagem: string = '';
-
+  statusOpcoes: ('ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA')[] = ['ABERTA', 'EM_ANDAMENTO', 'CONCLUIDA', 'PAUSADA'];
   statusMap = {
     ABERTA: 'Aberta',
     EM_ANDAMENTO: 'Em Andamento',
@@ -38,7 +37,6 @@ export class AdminTarefaComponent implements OnInit {
   ngOnInit(): void {
     this.idtarefa = +this.route.snapshot.paramMap.get('idtarefa')!;
     this.idprojeto = +this.route.snapshot.paramMap.get('idprojeto')!;
-
     this.carregarTarefa();
     this.carregarHorasDisponiveisProjeto();
   }
@@ -46,6 +44,7 @@ export class AdminTarefaComponent implements OnInit {
   navigateToTarefas(): void {
     this.router.navigate([`/admin/edit-projects`, this.idprojeto]);
   }
+
 
   getStatusDisplay(status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA'): string {
     return this.statusMap[status] || status;
@@ -57,48 +56,32 @@ export class AdminTarefaComponent implements OnInit {
   }
 
   carregarTarefa(): void {
-    this.tarefaService.getTarefaDetails(this.idprojeto, this.idtarefa)
-      .subscribe(
-        (data) => {
-          this.tarefa = data;
-          this.tarefa.nomeOriginal = data.nome;
-          this.horasOriginais = parseFloat(this.tarefa.horasEstimadas || 0);
+    this.tarefaService.getTarefaDetails(this.idprojeto, this.idtarefa).subscribe(
+      (data) => {
+        this.tarefa = { ...data, nomeOriginal: data.nome };
+        this.horasOriginais = +this.tarefa.horasEstimadas || 0;
+        this.converterDatas();
+        this.carregarProjeto();
+      },
+      (error) => console.error('Erro ao carregar a tarefa:', error)
+    );
+  }
 
-          if (this.tarefa.dataInicio) {
-            const dataInicioStr = this.tarefa.dataInicio + 'T12:00:00';
-            this.tarefa.dataInicio = new Date(dataInicioStr);
-          }
-          if (this.tarefa.dataFim) {
-            const dataFimStr = this.tarefa.dataFim + 'T12:00:00';
-            this.tarefa.dataFim = new Date(dataFimStr);
-          }
-
-          this.projectsService.getProjetoById(this.idprojeto).subscribe(
-            (projetoData) => {
-              this.projeto = projetoData;
-            },
-            (error) => {
-              console.error('Erro ao carregar projeto:', error);
-            }
-          );
-        },
-        (error) => {
-          console.error('Erro ao carregar a tarefa:', error);
-        }
-      );
+  carregarProjeto(): void {
+    this.projectsService.getProjetoById(this.idprojeto).subscribe(
+      (projetoData) => (this.projeto = projetoData),
+      (error) => console.error('Erro ao carregar projeto:', error)
+    );
   }
 
   carregarHorasDisponiveisProjeto(): void {
-    this.projectsService.getHorasDisponiveis(this.idprojeto.toString())
-      .subscribe(
-        (horas) => {
-          this.horasDisponiveisProjeto = horas;
-          this.atualizarHorasDisponiveis();
-        },
-        (error) => {
-          console.error('Erro ao carregar horas disponíveis:', error);
-        }
-      );
+    this.projectsService.getHorasDisponiveis(this.idprojeto.toString()).subscribe(
+      (horas) => {
+        this.horasDisponiveisProjeto = horas;
+        this.atualizarHorasDisponiveis();
+      },
+      (error) => console.error('Erro ao carregar horas disponíveis:', error)
+    );
   }
 
   atualizarHorasDisponiveis(): void {
@@ -106,94 +89,60 @@ export class AdminTarefaComponent implements OnInit {
   }
 
   validarHoras(): boolean {
-    const horasAtualizadas = parseFloat(this.tarefa.horasEstimadas || 0);
-
-    if (horasAtualizadas > this.horasDisponiveis) {
+    if (+this.tarefa.horasEstimadas > this.horasDisponiveis) {
       this.erro = `Horas excedidas. O projeto possui apenas ${this.horasDisponiveis} horas disponíveis.`;
       return false;
     }
-
     this.erro = '';
     return true;
   }
 
   validarDatas(): boolean {
-    const dataInicio = new Date(this.tarefa.dataInicio);
-    const dataFim = new Date(this.tarefa.dataFim);
+    const { dataInicio, dataFim } = this.tarefa;
+    const { dataInicio: projInicio, dataFim: projFim } = this.projeto;
 
-    const dataInicioProjeto = new Date(this.projeto.dataInicio);
-    const dataFimProjeto = new Date(this.projeto.dataFim);
-
-    if (dataInicio < dataInicioProjeto || dataFim > dataFimProjeto) {
-      this.erro = `As datas de início ou fim da tarefa estão fora do período do projeto (de ${dataInicioProjeto.toLocaleDateString()} a ${dataFimProjeto.toLocaleDateString()}).`;
+    if (new Date(dataInicio) < new Date(projInicio) || new Date(dataFim) > new Date(projFim)) {
+      this.erro = `As datas devem estar dentro do período do projeto (${new Date(projInicio).toLocaleDateString()} a ${new Date(projFim).toLocaleDateString()}).`;
       return false;
     }
-
-    if (dataFim < dataInicio) {
+    if (new Date(dataFim) < new Date(dataInicio)) {
       this.erro = 'A data de fim não pode ser anterior à data de início.';
       return false;
     }
-
     this.erro = '';
     return true;
   }
 
   salvarAlteracoes(): void {
-    this.erro = '';
-    this.sucessoMensagem = '';
+    if (!this.validarHoras() || !this.validarDatas()) return;
 
-    if (!this.validarHoras() || !this.validarDatas()) {
-      return;
-    }
+    this.tarefaService.atualizarTarefa(this.idprojeto, this.idtarefa, this.tarefa).subscribe(
+      () => {
+        this.horasOriginais = +this.tarefa.horasEstimadas || 0;
+        this.carregarHorasDisponiveisProjeto();
+        this.exibirMensagemSucesso();
+      },
+      (error) => {
+        this.erro = error.status === 400 && error.error?.message ? error.error.message : 'Erro ao atualizar a tarefa. Tente novamente.';
+        console.error('Erro ao atualizar a tarefa:', error);
+      }
+    );
+  }
 
-    this.tarefaService.atualizarTarefa(this.idprojeto, this.idtarefa, this.tarefa)
-      .subscribe(
-        (data) => {
-          console.log('Data returned from update:', data);
-          console.log('Date types before conversion:', {
-            dataInicio: typeof data.dataInicio,
-            dataFim: typeof data.dataFim
-          });
-
-          if (this.tarefa.dataInicio) {
-            this.tarefa.dataInicio = new Date(this.tarefa.dataInicio);
-          }
-          if (this.tarefa.dataFim) {
-            this.tarefa.dataFim = new Date(this.tarefa.dataFim);
-          }
-
-          this.horasOriginais = parseFloat(this.tarefa.horasEstimadas || 0);
-          this.carregarHorasDisponiveisProjeto();
-          this.sucessoMensagem = 'Alterações salvas com sucesso!';
-          setTimeout(() => {
-            this.sucessoMensagem = '';
-          }, 3000);
-
-          console.log('Date types after conversion:', {
-            dataInicio: typeof this.tarefa.dataInicio,
-            dataFim: typeof this.tarefa.dataFim
-          });
-        },
-        (error) => {
-          if (error.status === 400 && error.error && error.error.message) {
-            this.erro = error.error.message;
-          } else {
-            this.erro = 'Erro ao atualizar a tarefa. Tente novamente.';
-            console.error('Erro ao atualizar a tarefa:', error);
-          }
-        }
-      );
+  exibirMensagemSucesso(): void {
+    this.sucessoMensagem = 'Alterações salvas com sucesso!';
+    setTimeout(() => (this.sucessoMensagem = ''), 3000);
   }
 
   carregarTempoRegistrado(): void {
-    this.tarefaService.getTempoRegistrado(this.idprojeto, this.idtarefa)
-      .subscribe(
-        (tempo) => {
-          this.tarefa.tempoRegistrado = tempo;
-        },
-        (error) => {
-          console.error('Erro ao carregar tempo registrado:', error);
-        }
-      );
+    this.tarefaService.getTempoRegistrado(this.idprojeto, this.idtarefa).subscribe(
+      (tempo) => (this.tarefa.tempoRegistrado = tempo),
+      (error) => console.error('Erro ao carregar tempo registrado:', error)
+    );
+  }
+
+  private converterDatas(): void {
+    if (this.tarefa.dataInicio) this.tarefa.dataInicio = new Date(`${this.tarefa.dataInicio}T12:00:00`);
+    if (this.tarefa.dataFim) this.tarefa.dataFim = new Date(`${this.tarefa.dataFim}T12:00:00`);
   }
 }

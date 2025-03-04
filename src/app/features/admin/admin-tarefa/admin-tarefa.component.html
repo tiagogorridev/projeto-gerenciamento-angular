@@ -47,25 +47,21 @@
 
       <div class="form-group">
         <label>Data de Início</label>
-        <p-calendar [(ngModel)]="tarefa.dataInicio" dateFormat="dd/mm/yy" [showIcon]="true" [showTime]="false"></p-calendar>
+        <p-calendar [(ngModel)]="tarefa.dataInicio" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
       </div>
 
       <div class="form-group">
         <label>Data de Fim</label>
-        <p-calendar [(ngModel)]="tarefa.dataFim" dateFormat="dd/mm/yy" [showIcon]="true" [showTime]="false"></p-calendar>
+        <p-calendar [(ngModel)]="tarefa.dataFim" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
       </div>
 
       <div class="actions">
         <button class="btn-primary" (click)="salvarAlteracoes()">Salvar alterações</button>
+        <button class="btn-secondary" (click)="navigateToTarefas()">Voltar</button>
       </div>
 
-      <div class="alert alert-danger" *ngIf="erro">
-        {{ erro }}
-      </div>
-
-      <div class="alert alert-success" *ngIf="sucessoMensagem">
-        {{ sucessoMensagem }}
-      </div>
+      <div class="alert alert-danger" *ngIf="erro">{{ erro }}</div>
+      <div class="alert alert-success" *ngIf="sucessoMensagem">{{ sucessoMensagem }}</div>
     </div>
   </div>
 </div>
