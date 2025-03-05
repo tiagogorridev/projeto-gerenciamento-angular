@@ -32,7 +32,6 @@ export class UsersDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCurrentUserId();
-    this.carregarDados();
   }
 
   getCurrentUserId(): void {
@@ -76,37 +75,60 @@ export class UsersDashboardComponent implements OnInit {
           status: l.status
         }));
 
+      const projetoMap = new Map();
+      const tarefaMap = new Map();
+
+      lancamentos.forEach(lancamento => {
+        const projetoId = lancamento.projeto.id;
+        const projetoNome = lancamento.projeto.nome;
+        const duracao = this.calcularDuracao(lancamento.horaInicio, lancamento.horaFim);
+
+        if (!projetoMap.has(projetoId)) {
+          projetoMap.set(projetoId, {
+            id: projetoId,
+            nome: projetoNome,
+            cliente: lancamento.projeto.cliente?.nome || 'Não especificado',
+            prioridade: lancamento.projeto.prioridade || 'MEDIA',
+            progresso: 0,
+            horasLancadas: 0,
+            horasEstimadas: lancamento.projeto.horasEstimadas || 0
+          });
+        }
+
+        const projeto = projetoMap.get(projetoId);
+        projeto.horasLancadas += duracao;
+        projeto.progresso = this.calcularProgressoProjeto(projeto);
+
+        const tarefaId = lancamento.tarefa.id;
+        const tarefaNome = lancamento.tarefa.nome;
+
+        if (!tarefaMap.has(tarefaId)) {
+          tarefaMap.set(tarefaId, {
+            id: tarefaId,
+            nome: tarefaNome,
+            projeto: projetoNome,
+            cliente: lancamento.projeto.cliente?.nome || 'Não especificado',
+            prioridade: lancamento.tarefa.prioridade || 'MEDIA',
+            progresso: 0,
+            horasLancadas: 0,
+            horasEstimadas: lancamento.tarefa.horasEstimadas || 0
+          });
+        }
+
+        const tarefa = tarefaMap.get(tarefaId);
+        tarefa.horasLancadas += duracao;
+        tarefa.progresso = this.calcularProgressoTarefa(tarefa);
+      });
+
+      this.topProjetos = Array.from(projetoMap.values())
+        .sort((a, b) => b.horasLancadas - a.horasLancadas)
+        .slice(0, 3);
+
+      this.topTarefas = Array.from(tarefaMap.values())
+        .sort((a, b) => b.horasLancadas - a.horasLancadas)
+        .slice(0, 3);
+
       this.criarGraficos();
-    });
-
-    forkJoin({
-      projetos: this.projectsService.getProjetosDoUsuario(this.usuarioId),
-      tarefas: this.projectsService.getProjetosDoUsuario(this.usuarioId)
-    }).subscribe(({projetos, tarefas}) => {
-      this.topProjetos = projetos
-        .sort((a, b) => (b.tempoRegistrado || 0) - (a.tempoRegistrado || 0))
-        .slice(0, 3)
-        .map(p => ({
-          id: p.id,
-          nome: p.nome,
-          cliente: p.cliente.nome,
-          prioridade: p.prioridade,
-          progresso: this.calcularProgresso(p),
-          horasLancadas: p.tempoRegistrado || 0
-        }));
-
-      this.topTarefas = tarefas
-        .sort((a, b) => (b.tempoRegistrado || 0) - (a.tempoRegistrado || 0))
-        .slice(0, 3)
-        .map(t => ({
-          id: t.id,
-          nome: t.nome,
-          projeto: t.projeto.nome,
-          cliente: t.projeto.cliente.nome,
-          prioridade: t.prioridade,
-          progresso: this.calcularProgressoTarefa(t),
-          horasLancadas: t.tempoRegistrado || 0
-        }));
     });
   }
 
@@ -139,14 +161,12 @@ export class UsersDashboardComponent implements OnInit {
     return total > 0 ? (parte / total) * 100 : 0;
   }
 
-  calcularProgresso(projeto: any): number {
+  calcularProgressoProjeto(projeto: any): number {
     if (!projeto.horasEstimadas || projeto.horasEstimadas === 0) {
       return 0;
     }
 
-    const tempoRegistrado = projeto.tempoRegistrado || 0;
-    const progresso = (tempoRegistrado / projeto.horasEstimadas) * 100;
-
+    const progresso = (projeto.horasLancadas / projeto.horasEstimadas) * 100;
     return Math.min(Math.round(progresso * 100) / 100, 100);
   }
 
@@ -155,8 +175,17 @@ export class UsersDashboardComponent implements OnInit {
       return 0;
     }
 
-    const tempoRegistrado = tarefa.tempoRegistrado || 0;
-    const progresso = (tempoRegistrado / tarefa.horasEstimadas) * 100;
+    const progresso = (tarefa.horasLancadas / tarefa.horasEstimadas) * 100;
+    return Math.min(Math.round(progresso * 100) / 100, 100);
+  }
+
+  calcularProgresso(projeto: any): number {
+    if (!projeto.horasEstimadas || projeto.horasEstimadas === 0) {
+      return 0;
+    }
+
+    const tempoRegistrado = projeto.tempoRegistrado || 0;
+    const progresso = (tempoRegistrado / projeto.horasEstimadas) * 100;
 
     return Math.min(Math.round(progresso * 100) / 100, 100);
   }
@@ -255,31 +284,61 @@ export class UsersDashboardComponent implements OnInit {
       this.horasTendenciaChart.destroy();
     }
 
-    const labels = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
-    const data = [10, 15, 13, this.totalHorasMes / 4];
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = hoje.getMonth();
 
-    this.horasTendenciaChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Horas Lançadas',
-          data: data,
-          borderColor: '#8b5cf6',
-          backgroundColor: 'rgba(139, 92, 246, 0.1)',
-          tension: 0.3,
-          fill: true
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true
+    const primeiroDiaMes = new Date(ano, mes, 1);
+    const ultimoDiaMes = new Date(ano, mes + 1, 0);
+
+    const numeroSemanas = Math.ceil((ultimoDiaMes.getDate() - primeiroDiaMes.getDate() + 1) / 7);
+
+    const labels = Array.from({ length: numeroSemanas }, (_, i) => `Semana ${i + 1}`);
+    const data = Array(numeroSemanas).fill(0);
+
+    this.timeTrackingService.getLancamentosByUsuario(this.usuarioId).subscribe(lancamentos => {
+      const lancamentosMes = lancamentos.filter(l => {
+        const dataLancamento = new Date(l.data);
+        return dataLancamento >= primeiroDiaMes && dataLancamento <= ultimoDiaMes;
+      });
+
+      lancamentosMes.forEach(lancamento => {
+        const dataLancamento = new Date(lancamento.data);
+        const diaMes = dataLancamento.getDate();
+        const semanaIndex = Math.floor((diaMes - 1) / 7);
+
+        const duracao = this.calcularDuracao(lancamento.horaInicio, lancamento.horaFim);
+
+        if (semanaIndex < numeroSemanas) {
+          data[semanaIndex] += duracao;
+        }
+      });
+
+      const roundedData = data.map(value => Math.round(value * 10) / 10);
+
+      this.horasTendenciaChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Horas Lançadas',
+            data: roundedData,
+            borderColor: '#8b5cf6',
+            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
           }
         }
-      }
+      });
     });
   }
 }
