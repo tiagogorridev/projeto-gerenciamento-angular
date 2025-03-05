@@ -17,6 +17,9 @@
           [required]="true"
           styleClass="w-full">
         </p-calendar>
+        <div *ngIf="dateValidationError" class="date-validation-error">
+          {{ dateValidationError }}
+        </div>
       </div>
 
       <div class="time-section" [ngClass]="{'has-overlap-error': timeOverlapError}">

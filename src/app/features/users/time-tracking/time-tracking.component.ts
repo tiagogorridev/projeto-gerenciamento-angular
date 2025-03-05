@@ -27,6 +27,7 @@ export class TimeTrackingComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
+  dateValidationError: string = '';
 
   constructor(
     private projectsService: ProjectsService,
@@ -94,14 +95,39 @@ export class TimeTrackingComponent implements OnInit {
     }
   }
 
+  validateSelectedDate(): boolean {
+    if (!this.startDate) {
+      this.dateValidationError = 'Data inválida';
+      return false;
+    }
+
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    today.setHours(0, 0, 0, 0);
+    yesterday.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(this.startDate);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    if (selectedDate > today) {
+      this.dateValidationError = 'Não é possível lançar horas em datas futuras';
+      return false;
+    }
+
+    this.dateValidationError = '';
+    return true;
+  }
+
   validateLaunchData(): boolean {
     this.durationError = '';
     this.errorMessage = '';
+    this.dateValidationError = '';
 
-    if (!this.startDate) {
-      this.errorMessage = 'Por favor, selecione uma data';
+    if (!this.validateSelectedDate()) {
       return false;
     }
+
     if (!this.startTime || !this.endTime) {
       this.errorMessage = 'Por favor, preencha os horários de início e fim';
       return false;
