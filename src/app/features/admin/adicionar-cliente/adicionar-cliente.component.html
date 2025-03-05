@@ -7,13 +7,13 @@
 
   <div class="search-filter-container">
     <div class="input-group">
-      <input type="text" placeholder="Pesquisar clientes..." class="input-field" [(ngModel)]="searchTerm">
+      <input type="text" placeholder="Pesquisar clientes..." class="input-field" [(ngModel)]="searchTerm" (ngModelChange)="filterClients()">
       <i class="pi pi-search search-icon"></i>
     </div>
 
     <div class="input-group">
-      <select class="input-field" [(ngModel)]="statusFilter">
-        <option value="" disabled selected>Status</option>
+      <select class="input-field" [(ngModel)]="statusFilter" (ngModelChange)="filterClients()">
+        <option value="">Status</option>
         <option>Ativo</option>
         <option>Inativo</option>
         <option>Todos</option>
@@ -21,12 +21,10 @@
       <i class="pi pi-chevron-down dropdown-icon"></i>
     </div>
 
-
     <button class="new-client-btn" (click)="openNewClientModal()">
       Novo Cliente
     </button>
   </div>
-
 
   <div class="empty-state" *ngIf="!hasClients">
     <div class="empty-state-content">
@@ -46,16 +44,16 @@
       <div class="client-name">{{ cliente.nome }}</div>
       <div class="client-email">{{ cliente.email }}</div>
       <div class="actions">
-        <button class="delete-btn" (click)="confirmarExclusao(cliente.id, $event)">
+        <button class="delete-btn" (click)="openDeleteModal(cliente)">
           <i class="pi pi-trash"></i>
         </button>
       </div>
     </div>
   </div>
 
+  <!-- Novo Modal de Cliente -->
   <div class="modal" *ngIf="showNewClientModal">
     <div class="modal-content">
-
       <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}
       </div>
@@ -88,6 +86,19 @@
           <button type="submit" class="create-btn" [disabled]="!clientForm.form.valid">Criar</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmação de Exclusão -->
+  <div class="modal" *ngIf="showDeleteModal">
+    <div class="modal-content confirm-modal">
+      <h2>Confirmar Exclusão</h2>
+      <p>Tem certeza que deseja excluir o cliente "{{ selectedClient?.nome }}"?</p>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeDeleteModal()">Cancelar</button>
+        <button type="button" class="delete-confirm-btn" (click)="deleteClient()">Excluir</button>
+      </div>
     </div>
   </div>
 </div>

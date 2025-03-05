@@ -7,7 +7,6 @@ import { ClienteService, Cliente } from '../../../core/auth/services/clients.ser
   templateUrl: './adicionar-cliente.component.html',
   styleUrls: ['./adicionar-cliente.component.scss']
 })
-
 export class AdicionarClienteComponent implements OnInit {
   clients: Cliente[] = [];
   filteredClients: Cliente[] = [];
@@ -17,6 +16,8 @@ export class AdicionarClienteComponent implements OnInit {
   statusFilter: string = '';
 
   showNewClientModal: boolean = false;
+  showDeleteModal: boolean = false;
+  selectedClient: Cliente | null = null;
 
   client: { nome: string, email: string, status: 'ATIVO' | 'INATIVO' } = {
     nome: '',
@@ -53,17 +54,26 @@ export class AdicionarClienteComponent implements OnInit {
     this.filteredClients = this.clients.filter(cliente => {
       const matchesSearch = cliente.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
                             cliente.email.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchesStatus = this.statusFilter ? cliente.status === this.statusFilter : true;
+      const matchesStatus = this.statusFilter === '' ||
+                            this.statusFilter === 'Todos' ||
+                            cliente.status === this.statusFilter;
       return matchesSearch && matchesStatus;
     });
   }
 
   openNewClientModal(): void {
     this.showNewClientModal = true;
+    this.errorMessage = ''; // Reset error message
+    this.client = {
+      nome: '',
+      email: '',
+      status: 'ATIVO'
+    };
   }
 
   closeModal(): void {
     this.showNewClientModal = false;
+    this.errorMessage = ''; // Ensure error message is cleared
     this.client = {
       nome: '',
       email: '',
@@ -80,33 +90,50 @@ export class AdicionarClienteComponent implements OnInit {
           this.closeModal();
           this.loadClients();
         },
-        error: (error: Error) => {
-          console.error('Erro ao criar cliente:', error);
-          this.errorMessage = 'Erro ao criar cliente. Tente novamente.';
+        error: (error: any) => {
+          if (error.status === 400) {
+            switch (error.error.message) {
+              case 'Email já cadastrado':
+                this.errorMessage = 'Este email já está em uso. Tente outro.';
+                break;
+              case 'Cliente inativo':
+                this.errorMessage = 'Este email pertence a um cliente inativo. Entre em contato com o administrador.';
+                break;
+              default:
+                this.errorMessage = 'Erro ao criar cliente. Tente novamente.';
+            }
+          } else {
+            this.errorMessage = 'Erro ao criar cliente. Tente novamente.';
+          }
           this.successMessage = '';
         }
       });
+    } else {
+      this.errorMessage = 'Por favor, preencha todos os campos corretamente.';
     }
   }
 
-  confirmarExclusao(clienteId: number, event: Event): void {
-    event.stopPropagation();
+  openDeleteModal(cliente: Cliente): void {
+    this.selectedClient = cliente;
+    this.showDeleteModal = true;
+  }
 
-    if (confirm('Tem certeza que deseja excluir este cliente?')) {
-      this.clienteService.excluirCliente(clienteId).subscribe({
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+    this.selectedClient = null;
+  }
+
+  deleteClient(): void {
+    if (this.selectedClient && this.selectedClient.id) {
+      this.clienteService.excluirCliente(this.selectedClient.id).subscribe({
         next: () => {
           this.successMessage = 'Cliente excluído com sucesso!';
-          setTimeout(() => {
-            this.successMessage = '';
-          }, 3000);
+          this.closeDeleteModal();
           this.loadClients();
         },
         error: (error) => {
           console.error('Erro ao excluir cliente:', error);
           this.errorMessage = 'Erro ao excluir cliente. Tente novamente.';
-          setTimeout(() => {
-            this.errorMessage = '';
-          }, 3000);
         }
       });
     }
