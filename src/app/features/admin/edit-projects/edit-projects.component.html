@@ -33,7 +33,6 @@
       </div>
 
 <!-- Modal de Nova Tarefa -->
-<!-- Modal de Nova Tarefa -->
 <div class="modal" *ngIf="showNewTarefaModal">
   <div class="modal-content">
     <h2>Nova Tarefa</h2>
@@ -231,6 +230,13 @@
             <label>Custo estimado</label>
             <div class="input-currency">
               <input type="number" class="form-input" [(ngModel)]="projectDetails.estimatedCost" name="estimatedCost">
+              <span class="currency-symbol">R$</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Custo registrado</label>
+            <div class="input-currency">
+              <input type="number" class="form-input" [value]="projectDetails.registeredCost" name="registeredCost" readonly>
               <span class="currency-symbol">R$</span>
             </div>
           </div>

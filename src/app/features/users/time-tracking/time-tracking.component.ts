@@ -147,6 +147,8 @@ export class TimeTrackingComponent implements OnInit {
     }
 
     this.isLoading = true;
+    const horas = this.convertDurationToHours(this.duration);
+
     const launchData = {
       idUsuario: this.usuarioId,
       idProjeto: this.selectedProject.id,
@@ -154,19 +156,28 @@ export class TimeTrackingComponent implements OnInit {
       data: this.formatDate(this.startDate!),
       horaInicio: this.startTime,
       horaFim: this.endTime,
-      horas: this.convertDurationToHours(this.duration),
+      horas: horas, // Ensure this is a number
       descricao: this.description.trim()
     };
 
+    console.log('Sending launch data:', launchData); // Add logging
+
     this.timeTrackingService.saveLancamento(launchData).subscribe({
       next: (response) => {
-        console.log('Lançamento salvo com sucesso', response);
-        this.successMessage = 'Lançamento salvo com sucesso!';
-        this.isLoading = false;
-        this.onCancel();
-        setTimeout(() => {
-          this.successMessage = '';
-        }, 3000);
+        // After saving the launch, register time for the task
+        this.tarefaService.registrarTempo(this.selectedTask, horas).subscribe({
+          next: (tarefaResponse) => {
+            console.log('Tarefa updated:', tarefaResponse);
+            this.successMessage = 'Lançamento salvo com sucesso!';
+            this.isLoading = false;
+            this.onCancel();
+          },
+          error: (error) => {
+            console.error('Erro ao registrar tempo:', error);
+            this.errorMessage = 'Erro ao registrar tempo da tarefa. ' + (error.message || '');
+            this.isLoading = false;
+          }
+        });
       },
       error: (error) => {
         console.error('Erro ao salvar lançamento', error);

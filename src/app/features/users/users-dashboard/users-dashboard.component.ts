@@ -21,7 +21,6 @@ export class UsersDashboardComponent implements OnInit {
   topTarefas: any[] = [];
   usuarioId: number = 0;
 
-  // Charts
   horasStatusChart: any;
   horasTendenciaChart: any;
 
@@ -48,9 +47,7 @@ export class UsersDashboardComponent implements OnInit {
   carregarDados(): void {
     if (this.usuarioId <= 0) return;
 
-    // Obter todos os lançamentos do usuário
     this.timeTrackingService.getLancamentosByUsuario(this.usuarioId).subscribe(lancamentos => {
-      // Filtrar lançamentos do mês atual
       const hoje = new Date();
       const primeiroDiaMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
       const ultimoDiaMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
@@ -60,13 +57,11 @@ export class UsersDashboardComponent implements OnInit {
         return dataLancamento >= primeiroDiaMes && dataLancamento <= ultimoDiaMes;
       });
 
-      // Calcular totais
       this.totalHorasMes = this.calcularTotalHoras(lancamentosMes);
       this.horasAprovadas = this.calcularTotalHorasPorStatus(lancamentosMes, 'APROVADO');
       this.horasReprovadas = this.calcularTotalHorasPorStatus(lancamentosMes, 'REPROVADO');
       this.horasEmAnalise = this.calcularTotalHorasPorStatus(lancamentosMes, 'EM_ANALISE');
 
-      // Obter últimos 5 lançamentos
       this.ultimosLancamentos = lancamentos
         .sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime())
         .slice(0, 5)
@@ -81,16 +76,13 @@ export class UsersDashboardComponent implements OnInit {
           status: l.status
         }));
 
-      // Criar e atualizar gráficos
       this.criarGraficos();
     });
 
-    // Obter projetos e tarefas
     forkJoin({
       projetos: this.projectsService.getProjetosDoUsuario(this.usuarioId),
       tarefas: this.projectsService.getProjetosDoUsuario(this.usuarioId)
     }).subscribe(({projetos, tarefas}) => {
-      // Top 3 projetos com mais horas
       this.topProjetos = projetos
         .sort((a, b) => (b.tempoRegistrado || 0) - (a.tempoRegistrado || 0))
         .slice(0, 3)
@@ -103,7 +95,6 @@ export class UsersDashboardComponent implements OnInit {
           horasLancadas: p.tempoRegistrado || 0
         }));
 
-      // Top 3 tarefas com mais horas
       this.topTarefas = tarefas
         .sort((a, b) => (b.tempoRegistrado || 0) - (a.tempoRegistrado || 0))
         .slice(0, 3)
@@ -156,7 +147,6 @@ export class UsersDashboardComponent implements OnInit {
     const tempoRegistrado = projeto.tempoRegistrado || 0;
     const progresso = (tempoRegistrado / projeto.horasEstimadas) * 100;
 
-    // Limita o progresso a 100% e arredonda para duas casas decimais
     return Math.min(Math.round(progresso * 100) / 100, 100);
   }
 
@@ -243,9 +233,9 @@ export class UsersDashboardComponent implements OnInit {
         datasets: [{
           data: [this.horasAprovadas, this.horasReprovadas, this.horasEmAnalise],
           backgroundColor: [
-            '#10b981', // verde para aprovadas
-            '#ef4444', // vermelho para reprovadas
-            '#f59e0b'  // amarelo para em análise
+            '#10b981',
+            '#ef4444',
+            '#f59e0b'
           ],
           borderWidth: 1
         }]
@@ -265,10 +255,8 @@ export class UsersDashboardComponent implements OnInit {
       this.horasTendenciaChart.destroy();
     }
 
-    // Aqui você normalmente buscaria dados históricos para montar a tendência
-    // Estou simulando alguns dados para exemplo
     const labels = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
-    const data = [10, 15, 13, this.totalHorasMes / 4]; // Simulação de dados
+    const data = [10, 15, 13, this.totalHorasMes / 4];
 
     this.horasTendenciaChart = new Chart(ctx, {
       type: 'line',

@@ -49,8 +49,24 @@
       </div>
 
       <div class="form-group">
-        <label>Custo registrado</label>
-        <div class="input-readonly">R$ {{ calculateRegisteredCost(tarefa) | number:'1.2-2' }}</div>
+        <label>Valor por Hora</label>
+        <input
+          type="number"
+          [(ngModel)]="tarefa.valorPorHora"
+          class="form-control"
+          [ngClass]="{'is-invalid': erro && erro.includes('Valor por hora inválido')}"
+          (blur)="validarValorPorHora()"
+        />
+        <small *ngIf="erro && erro.includes('Valor por hora inválido')" class="error-text">
+          {{ erro }}
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Custo Registrado</label>
+        <div class="input-readonly">
+          R$ {{ tarefa.custoRegistrado | number:'1.2-2' }}
+        </div>
       </div>
 
       <div class="form-group">

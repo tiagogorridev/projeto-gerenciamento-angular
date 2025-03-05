@@ -5,6 +5,7 @@ import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { forkJoin } from 'rxjs';
 import { Usuario } from '../../../core/auth/services/usuario.model';
 import { Projeto } from '../../../core/auth/services/projeto.model';
+import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,6 +26,9 @@ export class DashboardComponent implements OnInit {
   prioridadeFiltro: string = 'all';
   dataAtualizacao: string = new Date().toLocaleDateString('pt-BR');
 
+    horasStatusChart: any;
+    horasTendenciaChart: any;
+
   constructor(
     private timeTrackingService: TimeTrackingService,
     private usuarioService: UsuarioService,
@@ -34,6 +38,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.carregarDados();
   }
+
 
   carregarDados(): void {
     this.usuarioService.getUsuarios().subscribe(usuarios => {
@@ -45,13 +50,7 @@ export class DashboardComponent implements OnInit {
         this.carregarTodosLancamentos(usuariosAtivos);
       });
     });
-
-    this.projectsService.getProjetos().subscribe(projetos => {
-      this.topProjetos = projetos
-        .sort((a, b) => (b.tempoRegistrado || 0) - (a.tempoRegistrado || 0))
-        .slice(0, 5);
-      this.projetosFiltrados = [...this.topProjetos];
-    });
+    this.criarGraficos();
   }
 
   carregarTodosLancamentos(usuarios: Usuario[]): void {
@@ -158,7 +157,6 @@ export class DashboardComponent implements OnInit {
     const tempoRegistrado = projeto.tempoRegistrado || 0;
     const progresso = (tempoRegistrado / projeto.horasEstimadas) * 100;
 
-    // Limita o progresso a 100% e arredonda para duas casas decimais
     return Math.min(Math.round(progresso * 100) / 100, 100);
   }
 
@@ -167,6 +165,76 @@ export class DashboardComponent implements OnInit {
       const matchStatus = this.statusFiltro === 'all' || projeto.status === this.statusFiltro;
       const matchPrioridade = this.prioridadeFiltro === 'all' || projeto.prioridade === this.prioridadeFiltro;
       return matchStatus && matchPrioridade;
+    });
+  }
+
+  criarGraficos(): void {
+    this.criarGraficoStatus();
+    this.criarGraficoTendencia();
+  }
+
+  criarGraficoStatus(): void {
+    const ctx = document.getElementById('horasStatusChart') as HTMLCanvasElement;
+    if (!ctx) return;
+
+    if (this.horasStatusChart) {
+      this.horasStatusChart.destroy();
+    }
+
+    this.horasStatusChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Aprovadas', 'Reprovadas', 'Em Análise'],
+        datasets: [{
+          data: [this.horasAprovadas, this.horasReprovadas, this.horasEmAnalise],
+          backgroundColor: [
+            '#10b981',
+            '#ef4444',
+            '#f59e0b'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+  }
+
+  criarGraficoTendencia(): void {
+    const ctx = document.getElementById('horasTendenciaChart') as HTMLCanvasElement;
+    if (!ctx) return;
+
+    if (this.horasTendenciaChart) {
+      this.horasTendenciaChart.destroy();
+    }
+
+    const labels = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
+    const data = [10, 15, 13, this.totalHorasMes / 4];
+
+    this.horasTendenciaChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Horas Lançadas',
+          data: data,
+          borderColor: '#8b5cf6',
+          backgroundColor: 'rgba(139, 92, 246, 0.1)',
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
     });
   }
 }

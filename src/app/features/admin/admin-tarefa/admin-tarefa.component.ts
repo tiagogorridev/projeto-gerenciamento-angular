@@ -15,6 +15,7 @@ export class AdminTarefaComponent implements OnInit {
   tarefa: any = {};
   tarefas: any[] = [];
   projeto: any = {};
+  custoRegistrado: number = 0;
   horasOriginais = 0;
   horasDisponiveisProjeto = 0;
   horasDisponiveis = 0;
@@ -99,6 +100,16 @@ export class AdminTarefaComponent implements OnInit {
     return true;
   }
 
+  validarValorPorHora(): boolean {
+    if (this.tarefa.valorPorHora <= 0) {
+      this.erro = 'O valor por hora deve ser maior que zero.';
+      return false;
+    }
+    this.erro = '';
+    return true;
+  }
+
+
   validarDatas(): boolean {
     const { dataInicio, dataFim } = this.tarefa;
     const { dataInicio: projInicio, dataFim: projFim } = this.projeto;
@@ -116,7 +127,9 @@ export class AdminTarefaComponent implements OnInit {
   }
 
   salvarAlteracoes(): void {
-    if (!this.validarHoras() || !this.validarDatas()) return;
+    delete this.tarefa.custoRegistrado;
+
+    if (!this.validarHoras() || !this.validarDatas() || !this.validarValorPorHora()) return;
 
     this.tarefaService.atualizarTarefa(this.idprojeto, this.idtarefa, this.tarefa).subscribe(
       () => {
@@ -156,7 +169,6 @@ export class AdminTarefaComponent implements OnInit {
         (tarefa) => {
           const tarefaIndex = this.tarefas.findIndex(t => t.id === tarefaId);
           if (tarefaIndex !== -1) {
-            // Atualizar toda a tarefa com os detalhes mais recentes
             this.tarefas[tarefaIndex] = tarefa;
           }
         },
@@ -164,10 +176,6 @@ export class AdminTarefaComponent implements OnInit {
           console.error(`Erro ao carregar detalhes da tarefa ${tarefaId}:`, error);
         }
       );
-  }
-
-  calculateRegisteredCost(tarefa: any): number {
-    return (tarefa.valorPorHora ?? 0) * (tarefa.tempoRegistrado ?? 0);
   }
 }
 

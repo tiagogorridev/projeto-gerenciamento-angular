@@ -23,6 +23,7 @@ export interface ProjectDetails {
   estimatedCost: number;
   status: string;
   priority: string;
+  registeredCost: number; // Add this line
   startDate?: string;
   endDate?: string;
 }
@@ -67,6 +68,7 @@ export class EditProjectsComponent implements OnInit {
     name: '',
     client: '',
     clientId: undefined,
+    registeredCost: 0,
     estimatedHours: 0,
     estimatedCost: 0,
     status: 'EM_ANDAMENTO',
@@ -241,6 +243,7 @@ export class EditProjectsComponent implements OnInit {
             clientId: response.cliente ? response.cliente.id : undefined,
             estimatedHours: response.horasEstimadas,
             estimatedCost: response.custoEstimado,
+            registeredCost: response.custoRegistrado,
             status: response.status,
             priority: response.prioridade,
             startDate: response.dataInicio ? new Date(response.dataInicio).toISOString().split('T')[0] : undefined,
