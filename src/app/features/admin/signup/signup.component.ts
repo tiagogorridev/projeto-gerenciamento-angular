@@ -9,7 +9,6 @@ import { NgForm } from '@angular/forms';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-
 export class SignupComponent implements OnInit {
   searchTerm: string = '';
   perfilFilter: string = '';
@@ -19,8 +18,6 @@ export class SignupComponent implements OnInit {
   showNewUserModal: boolean = false;
   showDeleteModal: boolean = false;
   selectedUser: Usuario | null = null;
-
-
   errorMessage: string = '';
   successMessage: string = '';
 
@@ -82,11 +79,13 @@ export class SignupComponent implements OnInit {
       perfil: 'USUARIO',
       ativo: 'ATIVO'
     };
+    this.errorMessage = '';
     this.showNewUserModal = true;
   }
 
   closeModal(): void {
     this.showNewUserModal = false;
+    this.errorMessage = '';
   }
 
   openDeleteModal(usuario: Usuario): void {
@@ -103,7 +102,6 @@ export class SignupComponent implements OnInit {
     if (this.selectedUser && this.selectedUser.id) {
       this.usuarioService.excluirUsuario(this.selectedUser.id).subscribe({
         next: () => {
-          console.log('Usuário excluído com sucesso');
           this.closeDeleteModal();
           this.carregarUsuarios();
         },
@@ -113,6 +111,7 @@ export class SignupComponent implements OnInit {
       });
     }
   }
+
   onSubmit(form: any): void {
     if (form.valid) {
       const novoUsuario: Usuario = {
@@ -132,9 +131,17 @@ export class SignupComponent implements OnInit {
           this.carregarUsuarios();
         },
         error: (error: any) => {
-          console.error('Erro ao cadastrar usuário:', error);
-          if (error.status === 400 && error.error.message === 'Email já cadastrado') {
-            this.errorMessage = 'Este email já está em uso. Tente outro.';
+          if (error.status === 400) {
+            switch (error.error.message) {
+              case 'Email já cadastrado':
+                this.errorMessage = 'Este email já está em uso. Tente outro.';
+                break;
+              case 'Usuário inativo':
+                this.errorMessage = 'Este email pertence a um usuário inativo. Entre em contato com o administrador.';
+                break;
+              default:
+                this.errorMessage = 'Erro ao cadastrar usuário. Tente novamente.';
+            }
           } else {
             this.errorMessage = 'Erro ao cadastrar usuário. Tente novamente.';
           }
