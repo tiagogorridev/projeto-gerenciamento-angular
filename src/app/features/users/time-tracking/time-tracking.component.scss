@@ -217,3 +217,25 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   border-color: #dc3545;
   box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
 }
+.time-section {
+  position: relative;
+
+  &.has-overlap-error {
+    margin-bottom: 40px;
+  }
+
+  .input-overlap-error {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+  }
+
+  .time-overlap-error {
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    color: #dc3545;
+    font-size: 0.8rem;
+    width: 100%;
+    text-align: left;
+  }
+}

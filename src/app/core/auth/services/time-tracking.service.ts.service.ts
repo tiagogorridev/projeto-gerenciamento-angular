@@ -99,4 +99,23 @@ export class TimeTrackingService {
       catchError(this.handleError)
     );
   }
+
+
+  checkTimeOverlap(
+    userId: number,
+    date: string,
+    startTime: string,
+    endTime: string
+  ): Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/check-overlap`, {
+      usuarioId: userId,
+      data: date,
+      horaInicio: startTime,
+      horaFim: endTime
+    }, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
 }

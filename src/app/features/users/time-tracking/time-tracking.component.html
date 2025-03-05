@@ -19,7 +19,7 @@
         </p-calendar>
       </div>
 
-      <div class="time-section">
+      <div class="time-section" [ngClass]="{'has-overlap-error': timeOverlapError}">
         <div class="form-group">
           <label for="startTime">Início</label>
           <div class="time-input">
@@ -28,7 +28,9 @@
               type="time"
               [(ngModel)]="startTime"
               (change)="calculateDuration()"
-              required />
+              required
+              [ngClass]="{'input-overlap-error': timeOverlapError}"
+            />
           </div>
         </div>
 
@@ -40,9 +42,15 @@
               type="time"
               [(ngModel)]="endTime"
               (change)="calculateDuration()"
-              required />
+              required
+              [ngClass]="{'input-overlap-error': timeOverlapError}"
+            />
           </div>
+
+        <div *ngIf="timeOverlapError" class="time-overlap-error">
+          {{ timeOverlapError }}
         </div>
+      </div>
 
       <div class="form-group duration-group">
         <label for="duration">Duração</label>

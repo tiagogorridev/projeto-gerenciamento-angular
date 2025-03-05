@@ -1,10 +1,10 @@
-import { TimeTrackingService } from '../../../core/auth/services/time-tracking.service.ts.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { Projeto } from '../../../core/auth/services/projeto.model';
 import { TarefaService } from '../../../core/auth/services/tarefa.service';
 import { Tarefa } from '../../../core/auth/services/tarefa.model';
+import { TimeTrackingService } from '../../../core/auth/services/time-tracking.service.ts.service';
 
 @Component({
   selector: 'app-time-tracking',
@@ -15,6 +15,7 @@ export class TimeTrackingComponent implements OnInit {
   startDate: Date | null = null;
   startTime: string = '';
   endTime: string = '';
+  timeOverlapError: string = '';
   duration: string = '';
   durationError: string = '';
   projects: Projeto[] = [];
@@ -149,39 +150,47 @@ export class TimeTrackingComponent implements OnInit {
     this.isLoading = true;
     const horas = this.convertDurationToHours(this.duration);
 
-    const launchData = {
-      idUsuario: this.usuarioId,
-      idProjeto: this.selectedProject.id,
-      idTarefa: this.selectedTask,
-      data: this.formatDate(this.startDate!),
-      horaInicio: this.startTime,
-      horaFim: this.endTime,
-      horas: horas, // Ensure this is a number
-      descricao: this.description.trim()
-    };
+    this.timeTrackingService.checkTimeOverlap(
+      this.usuarioId!,
+      this.formatDate(this.startDate!),
+      this.startTime,
+      this.endTime
+    ).subscribe({
+      next: (hasOverlap: boolean) => {
+        if (hasOverlap) {
+          this.timeOverlapError = 'Já existe um lançamento de horas neste período.';
+          this.isLoading = false;
+          return;
+        }
 
-    console.log('Sending launch data:', launchData); // Add logging
+        const launchData = {
+          idUsuario: this.usuarioId,
+          idProjeto: this.selectedProject.id,
+          idTarefa: this.selectedTask,
+          data: this.formatDate(this.startDate!),
+          horaInicio: this.startTime,
+          horaFim: this.endTime,
+          horas: horas,
+          descricao: this.description.trim()
+        };
 
-    this.timeTrackingService.saveLancamento(launchData).subscribe({
-      next: (response) => {
-        // After saving the launch, register time for the task
-        this.tarefaService.registrarTempo(this.selectedTask, horas).subscribe({
-          next: (tarefaResponse) => {
-            console.log('Tarefa updated:', tarefaResponse);
-            this.successMessage = 'Lançamento salvo com sucesso!';
+        this.timeTrackingService.saveLancamento(launchData).subscribe({
+          next: (response) => {
+            this.successMessage = 'Lançamento de horas salvo com sucesso.';
             this.isLoading = false;
+            this.clearMessages();
             this.onCancel();
           },
-          error: (error) => {
-            console.error('Erro ao registrar tempo:', error);
-            this.errorMessage = 'Erro ao registrar tempo da tarefa. ' + (error.message || '');
+          error: (error: any) => {
+            console.error('Erro ao salvar lançamento:', error);
+            this.errorMessage = error || 'Erro ao salvar lançamento. Por favor, tente novamente.';
             this.isLoading = false;
           }
         });
       },
-      error: (error) => {
-        console.error('Erro ao salvar lançamento', error);
-        this.errorMessage = 'Erro ao salvar lançamento. Por favor, verifique os dados e tente novamente.';
+      error: (error: any) => {
+        console.error('Erro ao verificar sobreposição de horários:', error);
+        this.errorMessage = 'Erro ao verificar lançamentos existentes. Por favor, tente novamente.';
         this.isLoading = false;
       }
     });
@@ -196,18 +205,9 @@ export class TimeTrackingComponent implements OnInit {
     this.selectedTask = null;
     this.description = '';
     this.errorMessage = '';
+    this.timeOverlapError = '';
   }
 
-  isValidTimeRange(): boolean {
-    if (!this.startTime || !this.endTime) return false;
-
-    const start = this.parseTime(this.startTime);
-    const end = this.parseTime(this.endTime);
-
-    if (start === undefined || end === undefined) return false;
-
-    return end > start;
-  }
   calculateDuration() {
     this.durationError = '';
 
