@@ -463,6 +463,24 @@ export class EditProjectsComponent implements OnInit {
   onSubmit(): void {
     this.carregarHorasDisponiveis();
 
+    const areDatesEqual = (date1: Date, date2: Date): boolean => {
+      return (
+        date1.getFullYear() === date2.getFullYear() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getDate() === date2.getDate()
+      );
+    };
+
+    const isDateWithinRange = (date: Date, start: Date, end: Date): boolean => {
+      const compareDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+      const endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+
+      return (compareDate >= startDate && compareDate <= endDate) ||
+             areDatesEqual(compareDate, startDate) ||
+             areDatesEqual(compareDate, endDate);
+    };
+
     if (this.startDate && this.endDate) {
       if (this.endDate < this.startDate) {
         this.endDateError = 'Data final deve ser posterior à data inicial';
@@ -473,13 +491,18 @@ export class EditProjectsComponent implements OnInit {
         const projectStart = new Date(this.startDateCalendar);
         const projectEnd = new Date(this.endDateCalendar);
 
-        if (this.startDate < projectStart || this.startDate > projectEnd) {
-          this.startDateError = 'Data fora do período do projeto';
+        console.log('Project Start:', projectStart);
+        console.log('Project End:', projectEnd);
+        console.log('Task Start:', this.startDate);
+        console.log('Task End:', this.endDate);
+
+        if (!isDateWithinRange(this.startDate, projectStart, projectEnd)) {
+          this.startDateError = 'Data de início fora do período do projeto';
           return;
         }
 
-        if (this.endDate < projectStart || this.endDate > projectEnd) {
-          this.endDateError = 'Data fora do período do projeto';
+        if (!isDateWithinRange(this.endDate, projectStart, projectEnd)) {
+          this.endDateError = 'Data final fora do período do projeto';
           return;
         }
       }
@@ -497,7 +520,11 @@ export class EditProjectsComponent implements OnInit {
 
     this.tarefa.responsavel = this.currentUserName;
     this.tarefa.projeto = { id: Number(this.projectId) };
-    this.tarefa.usuarioResponsavel = { id: this.currentUserId, nome: this.currentUserName };
+    this.tarefa.usuarioResponsavel = {
+      id: this.currentUserId,
+      nome: this.currentUserName
+    };
+
     this.tarefa.dataInicio = this.startDate.toISOString();
     this.tarefa.dataFim = this.endDate.toISOString();
 
