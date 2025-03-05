@@ -4,6 +4,15 @@ $strong-purple: #6e38ec;
 $dark-purple: #2a1263;
 $gray: #6b7280;
 $hover: rgba(255, 255, 255, 0.05);
+$primary-color: #8b5cf6;
+$border-color: #e2e8f0;
+$text-gray: #64748b;
+$gray: #6b7280;
+$white: #ffffff;
+$hover-color: #7c3aed;
+$input-bg: #f8fafc;
+$error-red: #dc3545;
+$success-green: #16a34a;
 
 .signup-container {
   display: flex;
@@ -86,6 +95,46 @@ $hover: rgba(255, 255, 255, 0.05);
   position: relative;
   margin-bottom: 20px;
   width: 100%;
+  transition: none; // Remove any transitions
+}
+
+.input-field {
+  width: 100%;
+  font-size: 16px;
+  padding: 10px 150px 10px 10px;
+  border: 1px solid $light-gray;
+  border-radius: 5px;
+  text-align: left;
+  transition: none; // Remove any transitions
+}
+
+.error-input {
+  .input-field {
+    border-color: $error-red;
+    border-width: 1px; // Ensure consistent border width
+    transition: none; // No animation
+  }
+}
+
+.input-error {
+  border: 1px solid $error-red; // Consistent border
+  transition: none; // No animation
+}
+
+.error-text {
+  color: $error-red;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+  height: auto; // Ensure consistent height
+  opacity: 1; // Ensure full visibility
+  transition: none; // Remove any fade or slide animations
+}
+
+.error-login {
+  color: $error-red;
+  margin-top: 5px;
+  transition: none; // Remove any animations
 }
 
 .form-group label {
@@ -99,14 +148,6 @@ $hover: rgba(255, 255, 255, 0.05);
   pointer-events: none;
 }
 
-.input-field {
-  width: 100%;
-  font-size: 16px;
-  padding: 10px 150px 10px 10px;
-  border: 1px solid $light-gray;
-  border-radius: 5px;
-  text-align: left;
-}
 
 .input-field:focus + label,
 .input-field:not(:placeholder-shown) + label {

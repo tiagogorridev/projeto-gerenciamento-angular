@@ -13,20 +13,38 @@
         <div class="divider">
           <span>ou</span>
         </div>
-
       </div>
 
       <form (ngSubmit)="onSubmit()" #signupForm="ngForm" novalidate>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'error-input': loginError}">
           <label for="email"></label>
-          <input type="email" id="email" [(ngModel)]="email" name="email" required placeholder="nome@empresa.com" class="input-field">
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="email"
+            name="email"
+            required
+            placeholder="nome@empresa.com"
+            class="input-field"
+            [ngClass]="{'input-error': loginError}"
+          >
           <small *ngIf="signupForm.submitted && !email" class="error-text">O email é obrigatório.</small>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'error-input': loginError}">
           <label for="password"></label>
-          <input type="password" id="password" [(ngModel)]="password" name="password" required placeholder="Digite sua senha" class="input-field">
-          <small *ngIf="signupForm.submitted && !password" clasas="error-text">A senha é obrigatória.</small>
+          <input
+            type="password"
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            placeholder="Digite sua senha"
+            class="input-field"
+            [ngClass]="{'input-error': loginError}"
+          >
+          <small *ngIf="signupForm.submitted && !password" class="error-text">A senha é obrigatória.</small>
+          <small *ngIf="loginError" class="error-text error-login">Email ou senha incorretos</small>
         </div>
 
         <div class="login-btn">
@@ -36,7 +54,6 @@
         <div class="extra-links">
           <a [routerLink]="'/forgot-password'" class="forgot-password">Esqueci minha senha</a>
         </div>
-
       </form>
     </div>
   </div>

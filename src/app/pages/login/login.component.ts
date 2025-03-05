@@ -11,6 +11,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
+  loginError: boolean = false;
 
   constructor(
     private router: Router,
@@ -18,6 +19,8 @@ export class LoginComponent {
   ) {}
 
   onSubmit() {
+    this.loginError = false;
+
     if (!this.email || !this.password) {
       this.errorMessage = 'Por favor, preencha todos os campos';
       return;
@@ -41,7 +44,8 @@ export class LoginComponent {
       },
       error: (error) => {
         console.error('Erro no login', error);
-        this.errorMessage = error.error?.message || 'Erro ao fazer login. Verifique suas credenciais.';
+        this.loginError = true;
+        this.errorMessage = error.error?.message || 'Email ou senha incorretos';
       }
     });
   }
