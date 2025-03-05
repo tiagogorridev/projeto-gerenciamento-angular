@@ -178,6 +178,10 @@ export class ProfileComponent implements OnInit {
         .subscribe({
           next: () => {
             this.successMessage = 'Senha atualizada com sucesso!';
+            setTimeout(() => {
+              this.successMessage = '';
+            }, 3000);
+
             this.securityForm.reset();
             this.senhaAtualInvalida = false;
             this.mensagemErroSenha = '';

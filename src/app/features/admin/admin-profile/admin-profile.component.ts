@@ -148,6 +148,11 @@ export class AdminProfileComponent implements OnInit {
         .subscribe({
           next: () => {
             this.successMessage = 'Senha atualizada com sucesso!';
+
+            setTimeout(() => {
+              this.successMessage = '';
+            }, 3000);
+
             this.securityForm.reset();
             this.erroSenhaIgual = false;
             this.senhaAtualInvalida = false;
