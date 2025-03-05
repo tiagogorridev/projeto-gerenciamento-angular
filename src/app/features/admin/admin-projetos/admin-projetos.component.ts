@@ -170,6 +170,15 @@ export class AdminProjetosComponent implements OnInit {
 
       this.projectsService.createProjeto(projetoParaEnviar).subscribe({
         next: (resposta) => {
+          this.projectsService.addMemberToProject(usuarioId, resposta.id).subscribe({
+            next: () => {
+              console.log('Admin adicionado como membro do projeto automaticamente');
+            },
+            error: (erro) => {
+              console.error('Erro ao adicionar admin como membro do projeto:', erro);
+            }
+          });
+
           this.closeModal();
 
           this.projects.push({
