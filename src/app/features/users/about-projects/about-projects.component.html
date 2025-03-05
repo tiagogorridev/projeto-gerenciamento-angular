@@ -4,8 +4,12 @@
 <div class="about-projects-container">
   <div *ngIf="projeto" class="project-content">
     <div class="project-header">
+      <div class="breadcrumb">
+      <span (click)="navigateToProjetos()">Projetos</span>
+      <span class="separator">/</span>
       <h2>{{ projeto.nome }}</h2>
-      <button class="add-hours-btn" (click)="openAddHoursModal()">Adicionar Horas</button>
+    </div>
+    <button class="add-hours-btn" (click)="openAddHoursModal()">Adicionar Horas</button>
     </div>
 
     <div class="project-details">
@@ -77,10 +81,6 @@
     </div>
   </div>
 
-  <div *ngIf="successMessage" class="success-message">
-    {{ successMessage }}
-  </div>
-
   <div class="modal" *ngIf="showModal">
     <div class="modal-content">
       <h3>Lançamento de Horas</h3>
@@ -89,48 +89,69 @@
         {{ errorMessage }}
       </div>
 
-      <div class="form-group">
-        <label>Data</label>
-        <input type="date" [ngModel]="timeTracking.startDate | date:'yyyy-MM-dd'"
-        (ngModelChange)="timeTracking.startDate = $event" class="form-input">      </div>
+      <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+      </div>
 
-      <div class="form-row">
+      <div *ngIf="!successMessage">
         <div class="form-group">
-          <label>Início</label>
-          <input type="time" [(ngModel)]="timeTracking.startTime" (change)="calculateDuration()" class="form-input">
+          <label>Data</label>
+          <input type="date" [ngModel]="timeTracking.startDate | date:'yyyy-MM-dd'"
+          (ngModelChange)="timeTracking.startDate = $event" class="form-input">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Início</label>
+            <input type="time"
+              [(ngModel)]="timeTracking.startTime"
+              (change)="calculateDuration()"
+              class="form-input"
+              [ngClass]="{'input-error': timeTracking.durationError}">
+          </div>
+
+          <div class="form-group">
+            <label>Fim</label>
+            <input type="time"
+              [(ngModel)]="timeTracking.endTime"
+              (change)="calculateDuration()"
+              class="form-input"
+              [ngClass]="{'input-error': timeTracking.durationError}">
+          </div>
+
+          <div class="form-group duration-group">
+            <label>Duração</label>
+            <input type="text"
+              [value]="timeTracking.duration"
+              readonly
+              class="form-input readonly-input"
+              [ngClass]="{'input-error': durationError}">
+            <div *ngIf="durationError" class="duration-error">
+              {{ durationError }}
+            </div>
+          </div>
         </div>
 
         <div class="form-group">
-          <label>Fim</label>
-          <input type="time" [(ngModel)]="timeTracking.endTime" (change)="calculateDuration()" class="form-input">
+          <label>Tarefa</label>
+          <select [(ngModel)]="timeTracking.selectedTask" class="form-select">
+            <option value="">Selecione uma tarefa</option>
+            <option *ngFor="let tarefa of tarefas" [value]="tarefa.id">{{tarefa.nome}}</option>
+          </select>
         </div>
 
         <div class="form-group">
-          <label>Duração</label>
-          <input type="text" [value]="timeTracking.duration" readonly class="form-input">
+          <label>Descrição</label>
+          <textarea [(ngModel)]="timeTracking.description" class="form-textarea" placeholder="Digite sua descrição"></textarea>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label>Tarefa</label>
-        <select [(ngModel)]="timeTracking.selectedTask" class="form-select">
-          <option value="">Selecione uma tarefa</option>
-          <option *ngFor="let tarefa of tarefas" [value]="tarefa.id">{{tarefa.nome}}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Descrição</label>
-        <textarea [(ngModel)]="timeTracking.description" class="form-textarea" placeholder="Digite sua descrição"></textarea>
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
-        <button class="btn-confirm" (click)="submitHours()">Enviar Lançamento</button>
+        <div class="modal-actions">
+          <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+          <button class="btn-confirm" (click)="submitHours()">Enviar Lançamento</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 <div *ngIf="!projeto" class="loading">
   <p>Carregando informações do projeto...</p>
