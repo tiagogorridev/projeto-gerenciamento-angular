@@ -5,6 +5,7 @@ import { TarefaService } from '../../../core/auth/services/tarefa.service';
 import { TimeTrackingService } from '../../../core/auth/services/time-tracking.service.ts.service';
 import { Projeto } from '../../../core/auth/services/projeto.model';
 import { Tarefa } from '../../../core/auth/services/tarefa.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-about-projects',
@@ -17,6 +18,7 @@ export class AboutProjectsComponent implements OnInit {
   showModal: boolean = false;
   usuarioId: number | null = null;
   errorMessage: string = '';
+  durationError: string = '';
   successMessage: string = '';
 
   timeTracking = {
@@ -24,6 +26,7 @@ export class AboutProjectsComponent implements OnInit {
     startTime: '',
     endTime: '',
     duration: '',
+    durationError: '',
     selectedTask: '',
     description: ''
   };
@@ -32,7 +35,8 @@ export class AboutProjectsComponent implements OnInit {
     private route: ActivatedRoute,
     private projectsService: ProjectsService,
     private tarefaService: TarefaService,
-    private timeTrackingService: TimeTrackingService
+    private timeTrackingService: TimeTrackingService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -58,6 +62,7 @@ export class AboutProjectsComponent implements OnInit {
   openAddHoursModal(): void {
     this.showModal = true;
     this.timeTracking.startDate = new Date();
+    this.resetTimeTracking();
   }
 
   closeModal(): void {
@@ -71,61 +76,18 @@ export class AboutProjectsComponent implements OnInit {
       startTime: '',
       endTime: '',
       duration: '',
+      durationError: '',
       selectedTask: '',
       description: ''
     };
   }
 
-  calculateDuration(): void {
-    if (this.timeTracking.startTime && this.timeTracking.endTime) {
-      const start = this.parseTime(this.timeTracking.startTime);
-      const end = this.parseTime(this.timeTracking.endTime);
 
-      if (start !== undefined && end !== undefined) {
-        let diff = end - start;
-        if (diff < 0) {
-          diff += 24 * 60;
-        }
-        this.timeTracking.duration = this.formatDuration(diff);
-      }
-    }
-  }
-
-  parseTime(time: string): number | undefined {
-    const [hours, minutes] = time.split(':').map(num => parseInt(num, 10));
-    if (isNaN(hours) || isNaN(minutes)) {
-      return undefined;
-    }
-    return hours * 60 + minutes;
-  }
-
-  formatDuration(minutes: number): string {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours}h ${mins}m`;
-  }
-
-  formatDate(date: Date | string): string {
-    if (typeof date === 'string') {
-      if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-        return date;
-      }
-      date = new Date(date);
-    }
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-
-  convertDurationToHours(duration: string): number {
-    if (!duration) return 0;
-    const [hours, minutes] = duration.replace('h', '').replace('m', '').trim().split(' ');
-    return Number(hours) + (Number(minutes) / 60);
-  }
 
   validateLaunchData(): boolean {
+    this.durationError = '';
+    this.errorMessage = '';
+
     if (!this.timeTracking.startDate) {
       this.errorMessage = 'Por favor, selecione uma data';
       return false;
@@ -134,8 +96,22 @@ export class AboutProjectsComponent implements OnInit {
       this.errorMessage = 'Por favor, preencha os horários de início e fim';
       return false;
     }
-    if (!this.projeto || !this.projeto.id) {
-      this.errorMessage = 'Projeto não identificado';
+
+    const start = this.parseTime(this.timeTracking.startTime);
+    const end = this.parseTime(this.timeTracking.endTime);
+
+    if (start === undefined || end === undefined) {
+      this.errorMessage = 'Horários inválidos';
+      return false;
+    }
+
+    if (end <= start) {
+      this.durationError = 'O horário final deve ser posterior ao horário inicial';
+      return false;
+    }
+
+    if (!this.projeto) {
+      this.errorMessage = 'Por favor, selecione um projeto';
       return false;
     }
     if (!this.timeTracking.selectedTask) {
@@ -147,6 +123,24 @@ export class AboutProjectsComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  isValidTimeRange(): boolean {
+    if (!this.timeTracking.startTime || !this.timeTracking.endTime) return false;
+
+    const start = this.parseTime(this.timeTracking.startTime);
+    const end = this.parseTime(this.timeTracking.endTime);
+
+    if (start === undefined || end === undefined) return false;
+
+    return end > start;
+  }
+
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   submitHours(): void {
@@ -176,10 +170,11 @@ export class AboutProjectsComponent implements OnInit {
       next: (response) => {
         console.log('Lançamento salvo com sucesso', response);
         this.successMessage = 'Lançamento salvo com sucesso!';
-        this.closeModal();
+
         setTimeout(() => {
           this.successMessage = '';
-        }, 3000);
+          this.closeModal();
+        }, 1000);
       },
       error: (error) => {
         console.error('Erro ao salvar lançamento', error);
@@ -187,4 +182,56 @@ export class AboutProjectsComponent implements OnInit {
       }
     });
   }
+
+  navigateToProjetos(): void {
+    this.router.navigate(['/user/projects']);
+  }
+
+  calculateDuration() {
+    this.durationError = '';
+
+    if (!this.timeTracking.startTime || !this.timeTracking.endTime) return;
+
+    const start = this.parseTime(this.timeTracking.startTime);
+    const end = this.parseTime(this.timeTracking.endTime);
+
+    if (start !== undefined && end !== undefined) {
+      let diff = end - start;
+
+      if (diff < 0) {
+        this.timeTracking.duration = `-${this.formatNegativeDuration(Math.abs(diff))}`;
+        this.durationError = 'O horário final deve ser posterior ao horário inicial';
+      } else {
+        this.timeTracking.duration = this.formatDuration(diff);
+        this.durationError = '';
+      }
+    }
+  }
+
+  parseTime(time: string): number | undefined {
+    const [hours, minutes] = time.split(':').map(num => parseInt(num, 10));
+    if (isNaN(hours) || isNaN(minutes)) {
+      return undefined;
+    }
+    return hours * 60 + minutes;
+  }
+
+  formatNegativeDuration(minutes: number): string {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}:${mins < 10 ? '0' : ''}${mins}`;
+  }
+
+  formatDuration(minutes: number): string {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}h ${mins}m`;
+  }
+
+  convertDurationToHours(duration: string): number {
+    if (!duration) return 0;
+    const [hours, minutes] = duration.replace('h', '').replace('m', '').trim().split(' ');
+    return Number(hours) + (Number(minutes) / 60);
+  }
+
 }
