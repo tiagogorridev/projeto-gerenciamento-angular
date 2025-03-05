@@ -1,4 +1,4 @@
-import { TimeTrackingService } from '../../..//core/auth/services/time-tracking.service.ts.service';
+import { TimeTrackingService } from '../../../core/auth/services/time-tracking.service.ts.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
@@ -16,6 +16,7 @@ export class TimeTrackingComponent implements OnInit {
   startTime: string = '';
   endTime: string = '';
   duration: string = '';
+  durationError: string = '';
   projects: Projeto[] = [];
   selectedProject: any;
   selectedTask: any;
@@ -93,6 +94,9 @@ export class TimeTrackingComponent implements OnInit {
   }
 
   validateLaunchData(): boolean {
+    this.durationError = '';
+    this.errorMessage = '';
+
     if (!this.startDate) {
       this.errorMessage = 'Por favor, selecione uma data';
       return false;
@@ -101,6 +105,20 @@ export class TimeTrackingComponent implements OnInit {
       this.errorMessage = 'Por favor, preencha os horários de início e fim';
       return false;
     }
+
+    const start = this.parseTime(this.startTime);
+    const end = this.parseTime(this.endTime);
+
+    if (start === undefined || end === undefined) {
+      this.errorMessage = 'Horários inválidos';
+      return false;
+    }
+
+    if (end <= start) {
+      this.durationError = 'O horário final deve ser posterior ao horário inicial';
+      return false;
+    }
+
     if (!this.selectedProject) {
       this.errorMessage = 'Por favor, selecione um projeto';
       return false;
@@ -169,7 +187,19 @@ export class TimeTrackingComponent implements OnInit {
     this.errorMessage = '';
   }
 
+  isValidTimeRange(): boolean {
+    if (!this.startTime || !this.endTime) return false;
+
+    const start = this.parseTime(this.startTime);
+    const end = this.parseTime(this.endTime);
+
+    if (start === undefined || end === undefined) return false;
+
+    return end > start;
+  }
   calculateDuration() {
+    this.durationError = '';
+
     if (!this.startTime || !this.endTime) return;
 
     const start = this.parseTime(this.startTime);
@@ -177,11 +207,14 @@ export class TimeTrackingComponent implements OnInit {
 
     if (start !== undefined && end !== undefined) {
       let diff = end - start;
-      // Se o horário final for menor que o inicial, assume que passou para o dia seguinte
+
       if (diff < 0) {
-        diff += 24 * 60; // Adiciona 24 horas em minutos
+        this.duration = `-${this.formatNegativeDuration(Math.abs(diff))}`;
+        this.durationError = 'O horário final deve ser posterior ao horário inicial';
+      } else {
+        this.duration = this.formatDuration(diff);
+        this.durationError = '';
       }
-      this.duration = this.formatDuration(diff);
     }
   }
 
@@ -191,6 +224,12 @@ export class TimeTrackingComponent implements OnInit {
       return undefined;
     }
     return hours * 60 + minutes;
+  }
+
+  formatNegativeDuration(minutes: number): string {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}:${mins < 10 ? '0' : ''}${mins}`;
   }
 
   formatDuration(minutes: number): string {
