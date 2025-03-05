@@ -26,8 +26,9 @@ export class DashboardComponent implements OnInit {
   prioridadeFiltro: string = 'all';
   dataAtualizacao: string = new Date().toLocaleDateString('pt-BR');
 
-    horasStatusChart: any;
-    horasTendenciaChart: any;
+  horasStatusChart: Chart | null = null;
+  horasTendenciaChart: Chart | null = null;
+  tendenciaHorasPorSemana: number[] = [];
 
   constructor(
     private timeTrackingService: TimeTrackingService,
@@ -50,7 +51,13 @@ export class DashboardComponent implements OnInit {
         this.carregarTodosLancamentos(usuariosAtivos);
       });
     });
-    this.criarGraficos();
+
+    this.projectsService.getProjetos().subscribe(projetos => {
+      this.topProjetos = projetos
+        .sort((a, b) => this.calcularProgresso(b) - this.calcularProgresso(a))
+        .slice(0, 5);
+      this.projetosFiltrados = [...this.topProjetos];
+    });
   }
 
   carregarTodosLancamentos(usuarios: Usuario[]): void {
@@ -65,8 +72,43 @@ export class DashboardComponent implements OnInit {
       this.horasReprovadas = this.calcularTotalHorasPorStatus(lancamentos, 'REPROVADO');
       this.mediaHorasUsuario = this.usuariosAtivos > 0 ?
         this.totalHorasMes / this.usuariosAtivos : 0;
+
+      this.calcularTendenciaHorasSemanas(lancamentos);
+
       this.calcularTopUsuarios(todosLancamentos, usuarios);
+
+      this.criarGraficos();
     });
+  }
+
+  calcularTendenciaHorasSemanas(lancamentos: any[]): void {
+    // Group lancamentos by week
+    const lancamentosPorSemana = [
+      lancamentos.filter(l => this.estaNavSemana(l, 0)),
+      lancamentos.filter(l => this.estaNavSemana(l, 1)),
+      lancamentos.filter(l => this.estaNavSemana(l, 2)),
+      lancamentos.filter(l => this.estaNavSemana(l, 3))
+    ];
+
+    // Calculate total hours for each week
+    this.tendenciaHorasPorSemana = lancamentosPorSemana.map(semanaDeLancamentos =>
+      this.calcularTotalHoras(semanaDeLancamentos)
+    );
+  }
+
+  estaNavSemana(lancamento: any, semanaIndex: number): boolean {
+    const dataLancamento = new Date(lancamento.data);
+    const hoje = new Date();
+    const primeiroDiaSemana = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() - hoje.getDay());
+
+    // Calcula a data do início da semana desejada
+    const inicioDaSemana = new Date(primeiroDiaSemana);
+    inicioDaSemana.setDate(primeiroDiaSemana.getDate() - (semanaIndex * 7));
+
+    const fimDaSemana = new Date(inicioDaSemana);
+    fimDaSemana.setDate(inicioDaSemana.getDate() + 6);
+
+    return dataLancamento >= inicioDaSemana && dataLancamento <= fimDaSemana;
   }
 
   calcularTotalHoras(lancamentos: any[]): number {
@@ -181,23 +223,38 @@ export class DashboardComponent implements OnInit {
       this.horasStatusChart.destroy();
     }
 
+    const dadosHoras = [this.horasAprovadas, this.horasReprovadas, this.horasEmAnalise];
+    const totalHoras = dadosHoras.reduce((a, b) => a + b, 0);
+
     this.horasStatusChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
         labels: ['Aprovadas', 'Reprovadas', 'Em Análise'],
         datasets: [{
-          data: [this.horasAprovadas, this.horasReprovadas, this.horasEmAnalise],
+          data: dadosHoras,
           backgroundColor: [
-            '#10b981',
-            '#ef4444',
-            '#f59e0b'
+            '#10b981',  // Green for approved
+            '#ef4444',  // Red for rejected
+            '#f59e0b'   // Amber for under analysis
           ],
           borderWidth: 1
         }]
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const value = context.parsed;
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = ((value / total) * 100).toFixed(1);
+                return `${context.label}: ${value.toFixed(1)}h (${percentage}%)`;
+              }
+            }
+          }
+        }
       }
     });
   }
@@ -210,8 +267,8 @@ export class DashboardComponent implements OnInit {
       this.horasTendenciaChart.destroy();
     }
 
-    const labels = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
-    const data = [10, 15, 13, this.totalHorasMes / 4];
+    const labels = ['Semana 4', 'Semana 3', 'Semana 2', 'Semana 1'].reverse(); // Inverter para mostrar da mais antiga para a mais recente
+    const data = [...this.tendenciaHorasPorSemana].reverse();
 
     this.horasTendenciaChart = new Chart(ctx, {
       type: 'line',
@@ -231,7 +288,20 @@ export class DashboardComponent implements OnInit {
         maintainAspectRatio: false,
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Horas'
+            }
+          }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `Horas: ${context.parsed.y.toFixed(1)}h`;
+              }
+            }
           }
         }
       }
