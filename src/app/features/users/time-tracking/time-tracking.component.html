@@ -44,16 +44,20 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="duration">Duração</label>
-          <input
-            id="duration"
-            type="text"
-            [(ngModel)]="duration"
-            readonly
-            class="readonly-input" />
+      <div class="form-group duration-group">
+        <label for="duration">Duração</label>
+        <input
+          id="duration"
+          type="text"
+          [(ngModel)]="duration"
+          readonly
+          [ngClass]="{'input-error': durationError}"
+          class="readonly-input" />
+        <div *ngIf="durationError" class="duration-error">
+          {{ durationError }}
         </div>
       </div>
+    </div>
 
       <div class="project-section">
         <div class="form-group">
@@ -94,7 +98,6 @@
         </textarea>
       </div>
 
-      <!-- Input oculto para enviar o idUsuario -->
       <input type="hidden" [(ngModel)]="usuarioId" name="usuarioId" />
 
       <div class="button-group">
