@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UsuarioService } from '../../../core/auth/services/usuario.service';
 import { Usuario } from '../../../core/auth/services/usuario.model';
 import { NgForm } from '@angular/forms';
+import { AuthService } from '../../../core/auth/services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -20,6 +21,8 @@ export class SignupComponent implements OnInit {
   selectedUser: Usuario | null = null;
   errorMessage: string = '';
   successMessage: string = '';
+  currentUserId: number | null = null;
+  showSelfDeleteErrorModal: boolean = false;
 
   user: Usuario = {
     nome: '',
@@ -32,11 +35,24 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.carregarUsuarios();
+    this.getCurrentUser();
+  }
+
+  getCurrentUser(): void {
+    this.authService.getCurrentUser().subscribe({
+      next: (currentUser) => {
+        this.currentUserId = currentUser.id ? Number(currentUser.id) : null;
+      },
+      error: (error) => {
+        console.error('Erro ao obter usuário atual:', error);
+      }
+    });
   }
 
   carregarUsuarios(): void {
@@ -89,8 +105,19 @@ export class SignupComponent implements OnInit {
   }
 
   openDeleteModal(usuario: Usuario): void {
+    if (usuario.id === this.currentUserId) {
+      // Abre o modal de erro de auto-exclusão em vez do modal de confirmação
+      this.showSelfDeleteErrorModal = true;
+      return;
+    }
+
     this.selectedUser = usuario;
     this.showDeleteModal = true;
+  }
+
+  // Adicione este novo método para fechar o modal de erro
+  closeSelfDeleteErrorModal(): void {
+    this.showSelfDeleteErrorModal = false;
   }
 
   closeDeleteModal(): void {
@@ -100,13 +127,27 @@ export class SignupComponent implements OnInit {
 
   deleteUser(): void {
     if (this.selectedUser && this.selectedUser.id) {
+      if (this.selectedUser.id === this.currentUserId) {
+        this.errorMessage = 'O administrador atual não pode se deletar.';
+        this.closeDeleteModal();
+        return;
+      }
+
       this.usuarioService.excluirUsuario(this.selectedUser.id).subscribe({
         next: () => {
+          this.successMessage = 'Usuário excluído com sucesso!';
+          setTimeout(() => {
+            this.successMessage = '';
+          }, 3000);
           this.closeDeleteModal();
           this.carregarUsuarios();
         },
         error: (error) => {
           console.error('Erro ao excluir usuário:', error);
+          this.errorMessage = 'Erro ao excluir usuário. Tente novamente.';
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 3000);
         }
       });
     }
@@ -127,6 +168,9 @@ export class SignupComponent implements OnInit {
         next: (response) => {
           this.successMessage = 'Usuário cadastrado com sucesso!';
           this.errorMessage = '';
+          setTimeout(() => {
+            this.successMessage = '';
+          }, 3000);
           this.closeModal();
           this.carregarUsuarios();
         },

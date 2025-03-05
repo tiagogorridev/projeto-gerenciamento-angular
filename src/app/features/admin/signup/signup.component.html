@@ -117,4 +117,15 @@
       </div>
     </div>
   </div>
+
+  <div class="modal" *ngIf="showSelfDeleteErrorModal">
+    <div class="modal-content error-modal">
+      <h2>Não é possível se auto excluir</h2>
+      <p>Um administrador não pode excluir sua própria conta.</p>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeSelfDeleteErrorModal()">Voltar</button>
+      </div>
+    </div>
+  </div>
 </div>
