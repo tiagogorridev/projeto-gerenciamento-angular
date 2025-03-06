@@ -34,6 +34,7 @@ export interface Membro {
   id: number;
   nome: string;
   email: string;
+
 }
 
 export interface Tarefa {
@@ -43,17 +44,4 @@ export interface Tarefa {
   status: string;
   dataInicio: string;
   dataFim: string;
-  usuariosAssociados?: Usuario[];  // Definição da propriedade usuariosAssociados
-}
-
-export interface Usuario {
-  id?: number;
-  nome: string;
-  email: string;
-  senha: string;
-  perfil: 'ADMIN' | 'USUARIO';
-  confirmPassword?: string;
-  ativo: 'ATIVO';
-  id_projeto?: number;
-  id_usuario?: number;
 }
