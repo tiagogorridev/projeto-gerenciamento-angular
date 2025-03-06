@@ -63,6 +63,7 @@ export class AdminTarefaComponent implements OnInit {
       (data) => {
         this.tarefa = { ...data, nomeOriginal: data.nome };
         this.horasOriginais = +this.tarefa.horasEstimadas || 0;
+        this.atualizarCustoRegistrado(); // Add this line
         this.converterDatas();
         this.carregarProjeto();
       },
@@ -159,6 +160,12 @@ export class AdminTarefaComponent implements OnInit {
   private converterDatas(): void {
     if (this.tarefa.dataInicio) this.tarefa.dataInicio = new Date(`${this.tarefa.dataInicio}T12:00:00`);
     if (this.tarefa.dataFim) this.tarefa.dataFim = new Date(`${this.tarefa.dataFim}T12:00:00`);
+  }
+
+  atualizarCustoRegistrado(): void {
+    if (this.tarefa.tempoRegistrado && this.tarefa.valorPorHora) {
+      this.tarefa.custoRegistrado = this.tarefa.tempoRegistrado * this.tarefa.valorPorHora;
+    }
   }
 
   carregarTempoRegistradoPorTarefa(tarefaId: number): void {
