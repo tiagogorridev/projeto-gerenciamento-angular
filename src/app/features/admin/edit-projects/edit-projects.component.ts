@@ -196,10 +196,7 @@ export class EditProjectsComponent implements OnInit {
         if (index !== -1) {
           this.tarefas[index] = tarefaAtualizada;
         }
-        this.carregarTempoRegistradoPorTarefa(tarefaId);
 
-        // Recalculate the total registered cost after time registration
-        this.calculateTotalRegisteredCost();
 
         // Auto-save the project with updated cost
         this.saveProjectDetails();
@@ -213,49 +210,6 @@ export class EditProjectsComponent implements OnInit {
       }
     });
   }
-
-  carregarTempoRegistradoPorTarefa(tarefaId: number): void {
-    if (!this.projectId) return;
-
-    this.tarefaService.getTarefaDetails(Number(this.projectId), tarefaId)
-      .subscribe(
-        (tarefa) => {
-          const tarefaIndex = this.tarefas.findIndex(t => t.id === tarefaId);
-          if (tarefaIndex !== -1) {
-            this.tarefas[tarefaIndex] = tarefa;
-
-            // Recalculate the total registered cost whenever a task is updated
-            this.calculateTotalRegisteredCost();
-          }
-        },
-        (error) => {
-          console.error(`Erro ao carregar detalhes da tarefa ${tarefaId}:`, error);
-        }
-      );
-  }
-
-  calculateRegisteredCost(tarefa: any): number {
-    return (tarefa.valorPorHora ?? 0) * (tarefa.tempoRegistrado ?? 0);
-  }
-
-  calculateTotalRegisteredCost(): void {
-    let totalCost = 0;
-
-    // Sum up the registered costs of all tasks
-    for (const tarefa of this.tarefas) {
-      // Calculate cost for each task if not already calculated
-      const taskCost = tarefa.custoRegistrado ||
-                      (tarefa.tempoRegistrado && tarefa.valorPorHora ?
-                       tarefa.tempoRegistrado * tarefa.valorPorHora : 0);
-
-      totalCost += taskCost;
-    }
-
-    // Update the project details with the calculated total cost
-    this.projectDetails.registeredCost = totalCost;
-  }
-
-
 
   loadCurrentUserInfo(): void {
     this.authService.getCurrentUser().subscribe(
@@ -326,9 +280,6 @@ export class EditProjectsComponent implements OnInit {
 
           // After loading the project data, calculate the registered cost from tasks
           // Only do this if we've already loaded the tasks
-          if (this.tarefas.length > 0) {
-            this.calculateTotalRegisteredCost();
-          }
         },
         (error: Error) => {
           console.error('Erro ao carregar dados do projeto', error);
@@ -395,12 +346,10 @@ export class EditProjectsComponent implements OnInit {
 
           this.tarefas.forEach(tarefa => {
             if (tarefa.id) {
-              this.carregarTempoRegistradoPorTarefa(tarefa.id);
             }
           });
 
           // Calculate and update the total registered cost
-          this.calculateTotalRegisteredCost();
         },
         error => {
           console.error('Erro ao carregar tarefas', error);
