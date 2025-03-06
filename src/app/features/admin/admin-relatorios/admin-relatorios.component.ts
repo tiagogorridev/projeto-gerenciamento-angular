@@ -128,14 +128,53 @@ carregarProjetos(): void {
   }
 
   carregarUsuariosAssociados(): void {
-    if (this.projetos.length === 0) {
-      this.projectsService.getProjetos().subscribe(projetos => {
-        this.projetos = projetos;
-        this.buscarMembrosDosProjetos(projetos);
+    this.projectsService.getProjetos().subscribe(projetos => {
+      this.projetos = projetos;
+
+      // Map para armazenar usuários únicos
+      const usuariosMap = new Map();
+
+      // Contador para rastrear projetos processados
+      let projetosProcessados = 0;
+
+      projetos.forEach(projeto => {
+        this.projectsService.getMembrosDoProjeto(projeto.id).subscribe(
+          (membros) => {
+            membros.forEach(membro => {
+              if (!membro.email) {
+                this.usuarioService.getUsuarioById(membro.id).subscribe(
+                  usuario => {
+                    membro.email = usuario.email;
+                    usuariosMap.set(membro.id, membro);
+                  }
+                );
+              } else {
+                usuariosMap.set(membro.id, membro);
+              }
+            });
+
+            // Se for o usuário responsável e não estiver na lista, adicioná-lo
+            if (projeto.usuarioResponsavel && !usuariosMap.has(projeto.usuarioResponsavel.id)) {
+              usuariosMap.set(projeto.usuarioResponsavel.id, projeto.usuarioResponsavel);
+            }
+
+            projetosProcessados++;
+
+            if (projetosProcessados === projetos.length) {
+              this.atualizarListaUsuarios(usuariosMap);
+            }
+          },
+          (error) => {
+            console.error(`Erro ao carregar membros do projeto ${projeto.id}:`, error);
+            projetosProcessados++;
+
+            if (projetosProcessados === projetos.length) {
+              this.atualizarListaUsuarios(usuariosMap);
+            }
+          }
+        );
       });
-    } else {
-      this.buscarMembrosDosProjetos(this.projetos);
-    }
+    });
   }
 
 
@@ -266,32 +305,70 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
       this.atualizarResumo();
     }
   }
-
   aplicarFiltrosTarefas(): void {
-    console.log('Usuário selecionado:', this.selectedUsuarioTarefa); // Depuração
-    this.tarefasFiltradas = this.tarefas.filter((tarefa) => {
-      console.log('Tarefa:', tarefa); // Verifique a estrutura da tarefa
+    console.log('Usuário selecionado para tarefas:', this.selectedUsuarioTarefa);
 
-      const dataInicioTarefa = new Date(tarefa.dataInicio);
-      const dataFimTarefa = new Date(tarefa.dataFim);
-      const dataInicioFiltro = this.selectedDataInicioTarefa ? new Date(this.selectedDataInicioTarefa) : null;
-      const dataFimFiltro = this.selectedDataFimTarefa ? new Date(this.selectedDataFimTarefa) : null;
+    if (this.selectedUsuarioTarefa) {
+      const usuarioId = Number(this.selectedUsuarioTarefa);
 
-      // Verificando se o campo 'usuario' existe na tarefa e fazendo a comparação corretamente
-      const usuarioCorreto = this.selectedUsuarioTarefa ? tarefa.usuario?.id === Number(this.selectedUsuarioTarefa) : true;
+      if (!isNaN(usuarioId)) {
+        // Primeiro, vamos obter todos os projetos que este usuário está associado
+        this.projectsService.getProjetosPorUsuario(usuarioId).subscribe(
+          (projetos) => {
+            const projetosIds = projetos.map(projeto => projeto.id);
 
-      return (
-        (!this.selectedProjetoTarefa || tarefa.projeto.id === Number(this.selectedProjetoTarefa)) &&
-        (!this.selectedClienteTarefa || (tarefa.projeto && this.getClienteByProjetoId(tarefa.projeto.id) === Number(this.selectedClienteTarefa))) &&
-        (!this.selectedStatusTarefa || tarefa.status === this.selectedStatusTarefa) &&
-        (!this.selectedPrioridadeTarefa || this.getTarefaPrioridade(tarefa) === this.selectedPrioridadeTarefa) &&
-        (!dataInicioFiltro || dataInicioTarefa >= dataInicioFiltro) &&
-        (!dataFimFiltro || dataFimTarefa <= dataFimFiltro) &&
-        usuarioCorreto // Aplicando o filtro de usuário
-      );
+            // Agora, filtramos as tarefas que pertencem a esses projetos
+            this.tarefasFiltradas = this.tarefas.filter((tarefa) => {
+              // Verificar se a tarefa pertence a algum dos projetos do usuário
+              return projetosIds.includes(tarefa.projeto.id) && this.aplicarOutrosFiltrosTarefa(tarefa);
+            });
+
+            this.atualizarResumoTarefas();
+          },
+          (error) => {
+            console.error('Erro ao carregar projetos do usuário:', error);
+          }
+        );
+      } else {
+        console.error('ID de usuário inválido');
+      }
+    } else {
+      // Se nenhum usuário for selecionado, aplicar apenas os outros filtros
+      this.tarefasFiltradas = this.tarefas.filter(tarefa => this.aplicarOutrosFiltrosTarefa(tarefa));
+      this.atualizarResumoTarefas();
+    }
+  }
+
+  // Método auxiliar para aplicar os outros filtros à tarefa
+  aplicarOutrosFiltrosTarefa(tarefa: Tarefa): boolean {
+    const dataInicioTarefa = new Date(tarefa.dataInicio);
+    const dataFimTarefa = new Date(tarefa.dataFim);
+    const dataInicioFiltro = this.selectedDataInicioTarefa ? new Date(this.selectedDataInicioTarefa) : null;
+    const dataFimFiltro = this.selectedDataFimTarefa ? new Date(this.selectedDataFimTarefa) : null;
+
+    return (
+      (!this.selectedProjetoTarefa || tarefa.projeto.id === Number(this.selectedProjetoTarefa)) &&
+      (!this.selectedClienteTarefa || (tarefa.projeto && this.getClienteByProjetoId(tarefa.projeto.id) === Number(this.selectedClienteTarefa))) &&
+      (!this.selectedStatusTarefa || tarefa.status === this.selectedStatusTarefa) &&
+      (!this.selectedPrioridadeTarefa || this.getTarefaPrioridade(tarefa) === this.selectedPrioridadeTarefa) &&
+      (!dataInicioFiltro || dataInicioTarefa >= dataInicioFiltro) &&
+      (!dataFimFiltro || dataFimTarefa <= dataFimFiltro) &&
+      (!this.selectedAdminTarefa || (tarefa.usuarioResponsavel &&
+                                   tarefa.usuarioResponsavel.id === Number(this.selectedAdminTarefa)))
+    );
+  }
+
+  ensureProjectsLoaded(): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.projetos.length === 0) {
+        this.projectsService.getProjetos().subscribe(projetos => {
+          this.projetos = projetos;
+          resolve();
+        });
+      } else {
+        resolve();
+      }
     });
-
-    this.atualizarResumoTarefas();
   }
 
   getClienteByProjetoId(projetoId: number): number | null {

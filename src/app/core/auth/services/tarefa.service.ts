@@ -78,4 +78,8 @@ export class TarefaService {
         })
       );
   }
+
+  getTarefasPorUsuario(usuarioId: number): Observable<Tarefa[]> {
+    return this.http.get<Tarefa[]>(`${this.apiUrl}/usuario/${usuarioId}`);
+  }
 }
