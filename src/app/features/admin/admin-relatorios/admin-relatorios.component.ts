@@ -24,7 +24,6 @@ export class AdminRelatoriosComponent implements OnInit {
   clientes: any[] = [];
   usuarios: any[] = [];
   administradores: any[] = [];
-  usuariosAssociados: Usuario[] = [];
 
   tarefas: Tarefa[] = [];
   tarefasFiltradas: Tarefa[] = [];

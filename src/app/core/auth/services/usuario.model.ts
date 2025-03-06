@@ -5,5 +5,7 @@ export interface Usuario {
   senha: string;
   perfil: 'ADMIN' | 'USUARIO';
   confirmPassword?: string;
-  ativo: 'ATIVO'
+  ativo: 'ATIVO';
+  id_projeto?: number;
+  id_usuario?: number;
 }
