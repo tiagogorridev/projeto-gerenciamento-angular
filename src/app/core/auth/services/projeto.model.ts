@@ -11,6 +11,7 @@ export interface Projeto {
   tempoRegistrado?: number;
   horasTrabalhadas?: number;
   custoTrabalhado?: number;
+  custoRegistrado?: number;
   usuarioResponsavel: {
       id: number;
       nome: string;

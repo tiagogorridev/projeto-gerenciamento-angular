@@ -80,12 +80,15 @@ export class AdminProjetosComponent implements OnInit {
             tempoRegistrado: tempoRegistradoResults[index].tempoRegistrado,
             percentualConcluido: tempoRegistradoResults[index].percentualConcluido,
             horasTrabalhadas: projeto.horasTrabalhadas || 0,
-            custoTrabalhado: projeto.custoTrabalhado || 0
+            custoTrabalhado: projeto.custoRegistrado || 0,
+            custoEstimado: projeto.custoEstimado || 0,
           }));
 
           this.filteredProjects = [...this.projects];
           this.hasProjects = this.projects.length > 0;
           this.loadingProjetos = false;
+          console.log('Projetos carregados:', this.projects);
+
         },
         error: (erro) => {
           console.error('Erro ao carregar os projetos:', erro);

@@ -36,50 +36,32 @@ export class ProjectsComponent implements OnInit {
     if (usuarioId) {
       this.isLoading = true;
       this.projetoService.getProjetosAssociados(+usuarioId).subscribe(projetos => {
+        console.log('Projetos recebidos da API:', projetos);
+
         this.projetos = projetos;
 
-        // Create an array of observables for all project data with proper mapping
         const tempoRequests = projetos.map(projeto =>
           this.projetoService.getTempoRegistradoProjeto(projeto.id).pipe(
             map(response => {
-              // Check if response is an object and extract the value
+              console.log('Resposta do tempo registrado:', response);
               if (response !== null && typeof response === 'object') {
-                // Log the response to see its structure
-                console.log('Tempo registrado response:', response);
-
-                // Depending on the response structure, extract the value
-                // Common patterns might be response.value, response.horasRegistradas, etc.
-                // This is a guess - adjust based on actual response structure
-                if ('horasRegistradas' in response) {
-                  return response.horasRegistradas;
-                } else if ('valor' in response) {
-                  return response.valor;
-                } else if ('horas' in response) {
-                  return response.horas;
-                } else {
-                  // If we can't identify a specific property, convert to string and use a numeric value
-                  const numValue = parseFloat(response.toString());
-                  return isNaN(numValue) ? 0 : numValue;
-                }
+                return response.tempoRegistrado || 0;
               }
               return typeof response === 'number' ? response : 0;
             }),
             catchError(error => {
               console.error(`Erro ao buscar tempo registrado para projeto ${projeto.id}:`, error);
-              return of(0); // Return 0 if there's an error
+              return of(0);
             })
           )
         );
 
-        // Execute all requests in parallel
         forkJoin(tempoRequests).subscribe(
           tempos => {
-            // Store tempo registrado for each project
+            console.log('Tempos registrados:', tempos);
             projetos.forEach((projeto, index) => {
               this.projetosComTempoRegistrado[projeto.id] = tempos[index];
-
-              // For this example, we'll use custoTrabalhado directly from the project
-              this.projetosComCustoRegistrado[projeto.id] = projeto.custoTrabalhado || 0;
+              this.projetosComCustoRegistrado[projeto.id] = projeto.custoRegistrado || 0;
             });
 
             this.filteredProjetos = projetos;
@@ -96,15 +78,13 @@ export class ProjectsComponent implements OnInit {
   }
 
   getProgresso(projeto: Projeto): string {
-    const tempoRegistrado = this.projetosComTempoRegistrado[projeto.id];
-    // Ensure we have a valid number, not an object
-    const tempoValue = typeof tempoRegistrado === 'number' ? tempoRegistrado : 0;
-    return `${tempoValue}h de ${projeto.horasEstimadas}h`;
+    const tempoRegistrado = this.projetosComTempoRegistrado[projeto.id] || 0;
+    return `${tempoRegistrado}h / ${projeto.horasEstimadas}h`;
   }
 
   getCusto(projeto: Projeto): string {
     const custoRegistrado = this.projetosComCustoRegistrado[projeto.id] || 0;
-    return `R$${custoRegistrado.toFixed(2)} de R$${projeto.custoEstimado.toFixed(2)}`;
+    return `R$${custoRegistrado.toFixed(2)} / R$${projeto.custoEstimado.toFixed(2)}`;
   }
 
   applyFilters(): void {
