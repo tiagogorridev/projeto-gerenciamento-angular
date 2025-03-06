@@ -24,6 +24,7 @@ export class AdminRelatoriosComponent implements OnInit {
   clientes: any[] = [];
   usuarios: any[] = [];
   administradores: any[] = [];
+  usuariosAssociados: Usuario[] = []; // Definindo a propriedade
 
   tarefas: Tarefa[] = [];
   tarefasFiltradas: Tarefa[] = [];
@@ -76,7 +77,6 @@ export class AdminRelatoriosComponent implements OnInit {
 
   carregarProjetos(): void {
     this.projectsService.getProjetos().subscribe((projetos) => {
-      console.log('Projetos recebidos:', projetos); // Verifique se o campo custoRegistrado está presente aqui
       this.projetos = projetos;
       this.aplicarFiltros();
     });
@@ -103,16 +103,16 @@ export class AdminRelatoriosComponent implements OnInit {
 
   carregarUsuarios(): void {
     this.usuarioService.getUsuarios().subscribe((usuarios) => {
-      this.usuarios = usuarios.filter(usuario => usuario.ativo === 'ATIVO');
-      this.administradores = this.usuarios.filter(usuario => usuario.perfil === 'ADMIN');
+      this.usuarios = usuarios;
+      this.administradores = usuarios.filter(usuario => usuario.perfil === 'ADMIN');
     });
   }
 
   carregarUsuariosAssociados(): void {
     this.projectsService.listarTodasAssociacoes().subscribe(
       (associacoes) => {
-        this.usuarios = associacoes.filter(associacao => associacao.ativo === 'ATIVO');
-        console.log(this.usuarios);
+        this.usuarios = associacoes; // Armazenando a resposta da API em 'usuarios'
+        console.log(this.usuarios); // Para verificar os dados
       },
       (error) => {
         console.error('Erro ao carregar associações:', error);
@@ -133,6 +133,7 @@ export class AdminRelatoriosComponent implements OnInit {
                        admin.id === Number(this.selectedAdmin)) :
                      true;
 
+      // Add this condition to check if the project is associated with the selected user
       const isUser = this.selectedUsuario ?
                    projeto.usuarioResponsavel.id === Number(this.selectedUsuario) :
                    true;
@@ -144,7 +145,7 @@ export class AdminRelatoriosComponent implements OnInit {
         (!dataInicioFiltro || dataInicioProjeto >= dataInicioFiltro) &&
         (!dataFimFiltro || dataFimProjeto <= dataFimFiltro) &&
         isAdmin &&
-        isUser
+        isUser  // Add this to the return statement
       );
     });
     this.atualizarResumo();
@@ -163,6 +164,7 @@ export class AdminRelatoriosComponent implements OnInit {
                       admin.id === Number(this.selectedAdminTarefa)) :
                     true;
 
+      // Add this condition for user filtering in tasks
       const isUser = this.selectedUsuario ?
                    tarefa.usuarioResponsavel.id === Number(this.selectedUsuario) :
                    true;
@@ -175,7 +177,7 @@ export class AdminRelatoriosComponent implements OnInit {
         (!this.selectedPrioridadeTarefa || this.getTarefaPrioridade(tarefa) === this.selectedPrioridadeTarefa) &&
         (!dataInicioFiltro || dataInicioTarefa >= dataInicioFiltro) &&
         (!dataFimFiltro || dataFimTarefa <= dataFimFiltro) &&
-        isUser
+        isUser  // Add this to the return statement
       );
     });
 
@@ -223,13 +225,7 @@ export class AdminRelatoriosComponent implements OnInit {
     this.horasEstimadas = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.horasEstimadas ?? 0), 0);
     this.tempoRegistrado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.tempoRegistrado ?? 0), 0);
     this.custoEstimado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoEstimado ?? 0), 0);
-
-    this.custoTrabalhado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoRegistrado ?? 0), 0);
-
-    this.tempoRegistrado = parseFloat(this.tempoRegistrado.toFixed(2));
-    this.horasEstimadas = parseFloat(this.horasEstimadas.toFixed(2));
-    this.custoEstimado = parseFloat(this.custoEstimado.toFixed(2));
-    this.custoTrabalhado = parseFloat(this.custoTrabalhado.toFixed(2));
+    this.custoTrabalhado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoTrabalhado ?? 0), 0);
   }
 
   atualizarResumoTarefas(): void {
@@ -242,9 +238,6 @@ export class AdminRelatoriosComponent implements OnInit {
       total + (tarefa.horasEstimadas ?? 0), 0);
     this.horasRegistradasTarefas = this.tarefasFiltradas.reduce((total, tarefa) =>
       total + (tarefa.tempoRegistrado ?? 0), 0);
-
-    this.horasEstimadasTarefas = parseFloat(this.horasEstimadasTarefas.toFixed(2));
-    this.horasRegistradasTarefas = parseFloat(this.horasRegistradasTarefas.toFixed(2));
   }
 
   changeTab(tab: string): void {

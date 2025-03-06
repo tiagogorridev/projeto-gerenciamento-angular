@@ -133,4 +133,8 @@ export class ProjectsService {
       const url = `${this.baseUrl}/associacoes`;
       return this.http.get<any[]>(url);
     }
+
+    listarUsuariosProjetos(): Observable<any> {
+      return this.http.get<any>(`$this.baseUrl)/usuarios-projetos`);
+    }
 }
