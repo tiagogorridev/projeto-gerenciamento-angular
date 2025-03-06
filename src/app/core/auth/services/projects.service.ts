@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { Tarefa } from './tarefa.model';
 import { Projeto } from './projeto.model';
 
@@ -76,9 +76,20 @@ export class ProjectsService {
     return this.http.get<Tarefa[]>(`http://localhost:8080/api/tarefas/projeto/${projectId}`);
   }
 
-  // Exemplo de método para buscar membros do projeto (se houver endpoint específico)
-  getMembrosByProjeto(projectId: string): Observable<any[]> {
-    return this.http.get<any[]>(`http://localhost:8080/api/projetos/${projectId}/membros`);
+  getMembrosDoProjeto(projetoId: number): Observable<any[]> {
+    const token = localStorage.getItem('auth_token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any[]>(`${this.baseUrl}/${projetoId}/membros`, { headers }).pipe(
+      map(response => {
+        // Transform the response to an array of users if needed
+        return response.map(usuario => ({
+          ...usuario,
+          email: usuario.email,
+          nome: usuario.nome
+        }));
+      }),
+      catchError(this.handleError)
+    );
   }
 
   addMemberToProject(userId: number, projectId: number): Observable<any> {
@@ -136,5 +147,43 @@ export class ProjectsService {
 
     listarUsuariosProjetos(): Observable<any> {
       return this.http.get<any>(`$this.baseUrl)/usuarios-projetos`);
+    }
+
+    getEmailsUsuariosComProjetos(): Observable<string[]> {
+      return this.http.get<string[]>(`http://localhost:8080/api/projetos/usuarios/emails`)
+        .pipe(
+          catchError(this.handleError)
+        );
+    }
+
+    private handleError(error: HttpErrorResponse) {
+      let errorMessage = 'Ocorreu um erro desconhecido';
+
+      if (error.error instanceof ErrorEvent) {
+        // Erro do lado do cliente
+        errorMessage = `Erro: ${error.error.message}`;
+      } else {
+        // Erro retornado pelo backend
+        errorMessage = `Código do erro: ${error.status}, mensagem: ${error.error?.message || error.message}`;
+      }
+
+      console.error(errorMessage);
+      return throwError(() => new Error(errorMessage));
+    }
+
+    getUsuariosAssociadosProjeto(projetoId: number): Observable<any[]> {
+      const token = localStorage.getItem('auth_token') || '';
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<any[]>(`http://localhost:8080/api/projetos/${projetoId}/usuarios`, { headers }).pipe(
+        map(response => {
+          // Transformando a resposta para um array de usuários
+          return response.map(usuario => ({
+            ...usuario,
+            email: usuario.email,
+            nome: usuario.nome
+          }));
+        }),
+        catchError(this.handleError)
+      );
     }
 }

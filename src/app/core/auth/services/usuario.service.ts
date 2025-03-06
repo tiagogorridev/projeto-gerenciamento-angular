@@ -10,6 +10,7 @@ import { tap } from 'rxjs/operators';
 })
 export class UsuarioService {
   private apiUrl = 'http://localhost:8080/api/usuarios';
+  private usuarios: Usuario[] = []; // Lista de usuários armazenada localmente
 
   constructor(private http: HttpClient) { }
 
@@ -55,6 +56,11 @@ export class UsuarioService {
 
   getEmails(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/emails`);
+  }
+
+  getEmailByUsuarioId(usuarioId: number): string | undefined {
+    const usuario = this.usuarios.find(usuario => usuario.id === usuarioId);
+    return usuario ? usuario.email : undefined;
   }
 
   getUserEmail(): string | null {

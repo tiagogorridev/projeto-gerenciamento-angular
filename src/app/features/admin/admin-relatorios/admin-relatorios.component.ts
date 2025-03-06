@@ -24,7 +24,7 @@ export class AdminRelatoriosComponent implements OnInit {
   clientes: any[] = [];
   usuarios: any[] = [];
   administradores: any[] = [];
-  usuariosAssociados: Usuario[] = []; // Definindo a propriedade
+  usuariosAssociados: Usuario[] = []; // Mantendo o nome original como estava no seu código
 
   tarefas: Tarefa[] = [];
   tarefasFiltradas: Tarefa[] = [];
@@ -71,13 +71,22 @@ export class AdminRelatoriosComponent implements OnInit {
   ngOnInit(): void {
     this.carregarProjetos();
     this.carregarClientes();
-    this.carregarUsuarios();
+    this.carregarUsuarios(); // Carrega administradores para o filtro de admin
+    this.carregarUsuariosAssociados(); // Carrega usuários associados aos projetos
     this.carregarTarefas();
   }
+
 
   carregarProjetos(): void {
     this.projectsService.getProjetos().subscribe((projetos) => {
       this.projetos = projetos;
+
+      // Iterar sobre os projetos para pegar o email de cada responsável
+      this.projetos.forEach((projeto) => {
+        const usuarioEmail = this.usuarioService.getEmailByUsuarioId(projeto.usuarioResponsavel.id);
+        console.log(usuarioEmail); // Exibe o email do responsável pelo projeto
+      });
+
       this.aplicarFiltros();
     });
   }
@@ -103,21 +112,115 @@ export class AdminRelatoriosComponent implements OnInit {
 
   carregarUsuarios(): void {
     this.usuarioService.getUsuarios().subscribe((usuarios) => {
-      this.usuarios = usuarios;
       this.administradores = usuarios.filter(usuario => usuario.perfil === 'ADMIN');
     });
   }
 
   carregarUsuariosAssociados(): void {
-    this.projectsService.listarTodasAssociacoes().subscribe(
-      (associacoes) => {
-        this.usuarios = associacoes; // Armazenando a resposta da API em 'usuarios'
-        console.log(this.usuarios); // Para verificar os dados
+    // Primeiro, buscar todos os projetos (se ainda não tivermos)
+    if (this.projetos.length === 0) {
+      this.projectsService.getProjetos().subscribe(projetos => {
+        this.projetos = projetos;
+        this.buscarMembrosDosProjetos(projetos);
+      });
+    } else {
+      this.buscarMembrosDosProjetos(this.projetos);
+    }
+  }
+
+
+buscarMembrosDosProjetos(projetos: Projeto[]): void {
+  // Mapa para armazenar usuários únicos
+  const usuariosMap = new Map();
+
+  // Contador para controlar quando todos os projetos foram processados
+  let projetosProcessados = 0;
+
+  // Para cada projeto, buscar seus membros
+  projetos.forEach(projeto => {
+    this.projectsService.getMembrosDoProjeto(projeto.id).subscribe(
+      (membros) => {
+        // Adicionar cada membro ao mapa usando o ID como chave
+        membros.forEach(membro => {
+          // Garantir que temos o email
+          if (!membro.email) {
+            this.usuarioService.getUsuarioById(membro.id).subscribe(
+              usuario => {
+                membro.email = usuario.email;
+                usuariosMap.set(membro.id, membro);
+              }
+            );
+          } else {
+            usuariosMap.set(membro.id, membro);
+          }
+        });
+
+        // Incrementar contador de projetos processados
+        projetosProcessados++;
+
+        // Se todos os projetos foram processados, atualizar a lista de usuários
+        if (projetosProcessados === projetos.length) {
+          this.atualizarListaUsuarios(usuariosMap);
+        }
       },
       (error) => {
-        console.error('Erro ao carregar associações:', error);
+        console.error(`Erro ao carregar membros do projeto ${projeto.id}:`, error);
+        projetosProcessados++;
+
+        if (projetosProcessados === projetos.length) {
+          this.atualizarListaUsuarios(usuariosMap);
+        }
       }
     );
+  });
+}
+
+atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
+  // Converter o mapa para array
+  this.usuariosAssociados = Array.from(usuariosMap.values());
+  // Atualizar a lista de usuários usada nos filtros
+  this.usuarios = this.usuariosAssociados;
+  console.log('Usuários associados a projetos com emails:', this.usuariosAssociados);
+}
+  // Método alternativo para extrair usuários dos projetos já carregados
+  obterUsuariosDosProjetos(): void {
+    // Aguardar o carregamento dos projetos antes de extrair usuários
+    if (this.projetos.length === 0) {
+      this.projectsService.getProjetos().subscribe((projetos) => {
+        this.extrairUsuariosDosProjetos(projetos);
+      });
+    } else {
+      this.extrairUsuariosDosProjetos(this.projetos);
+    }
+  }
+
+  // Extrair usuários associados dos projetos
+  extrairUsuariosDosProjetos(projetos: Projeto[]): void {
+    // Usar Map para garantir usuários únicos
+    const usuariosMap = new Map();
+
+    // Para cada projeto, obter membros associados
+    projetos.forEach(projeto => {
+      // Incluir o responsável principal
+      if (projeto.usuarioResponsavel && projeto.usuarioResponsavel.id) {
+        usuariosMap.set(projeto.usuarioResponsavel.id, projeto.usuarioResponsavel);
+      }
+
+      // Se o projeto tiver uma lista de membros associados, incluí-los também
+      if (projeto.membrosAssociados && Array.isArray(projeto.membrosAssociados)) {
+        projeto.membrosAssociados.forEach(membro => {
+          if (membro && membro.id) {
+            usuariosMap.set(membro.id, membro);
+          }
+        });
+      }
+    });
+
+    // Converter o Map para array
+    this.usuariosAssociados = Array.from(usuariosMap.values());
+    // Atualizar a lista de usuários usada nos filtros
+    this.usuarios = this.usuariosAssociados;
+    console.log('Usuários extraídos dos projetos:', this.usuariosAssociados);
   }
 
   aplicarFiltros(): void {
@@ -133,10 +236,19 @@ export class AdminRelatoriosComponent implements OnInit {
                        admin.id === Number(this.selectedAdmin)) :
                      true;
 
-      // Add this condition to check if the project is associated with the selected user
-      const isUser = this.selectedUsuario ?
-                   projeto.usuarioResponsavel.id === Number(this.selectedUsuario) :
-                   true;
+      // Verificar se o usuário selecionado está associado ao projeto
+      let isUser = true;
+      if (this.selectedUsuario) {
+        const userId = Number(this.selectedUsuario);
+
+        // Verificar no usuário responsável
+        isUser = projeto.usuarioResponsavel.id === userId;
+
+        // Se não for o responsável, verificar nos membros associados
+        if (!isUser && projeto.membrosAssociados && Array.isArray(projeto.membrosAssociados)) {
+          isUser = projeto.membrosAssociados.some(membro => membro.id === userId);
+        }
+      }
 
       return (
         (!this.selectedCliente || projeto.cliente.id === Number(this.selectedCliente)) &&
@@ -145,7 +257,7 @@ export class AdminRelatoriosComponent implements OnInit {
         (!dataInicioFiltro || dataInicioProjeto >= dataInicioFiltro) &&
         (!dataFimFiltro || dataFimProjeto <= dataFimFiltro) &&
         isAdmin &&
-        isUser  // Add this to the return statement
+        isUser
       );
     });
     this.atualizarResumo();
@@ -164,10 +276,19 @@ export class AdminRelatoriosComponent implements OnInit {
                       admin.id === Number(this.selectedAdminTarefa)) :
                     true;
 
-      // Add this condition for user filtering in tasks
-      const isUser = this.selectedUsuario ?
-                   tarefa.usuarioResponsavel.id === Number(this.selectedUsuario) :
-                   true;
+      // Verificar se o usuário selecionado está associado à tarefa
+      let isUser = true;
+      if (this.selectedUsuarioTarefa) {
+        const userId = Number(this.selectedUsuarioTarefa);
+
+        // Verificar no usuário responsável da tarefa
+        isUser = tarefa.usuarioResponsavel.id === userId;
+
+        // Se não for o responsável, verificar se existem outros associados à tarefa
+        if (!isUser && tarefa.usuariosAssociados && Array.isArray(tarefa.usuariosAssociados)) {
+          isUser = tarefa.usuariosAssociados.some(usuario => usuario.id === userId);
+        }
+      }
 
       return (
         (!this.selectedProjetoTarefa || tarefa.projeto.id === Number(this.selectedProjetoTarefa)) &&
@@ -177,7 +298,7 @@ export class AdminRelatoriosComponent implements OnInit {
         (!this.selectedPrioridadeTarefa || this.getTarefaPrioridade(tarefa) === this.selectedPrioridadeTarefa) &&
         (!dataInicioFiltro || dataInicioTarefa >= dataInicioFiltro) &&
         (!dataFimFiltro || dataFimTarefa <= dataFimFiltro) &&
-        isUser  // Add this to the return statement
+        isUser
       );
     });
 
@@ -227,6 +348,7 @@ export class AdminRelatoriosComponent implements OnInit {
     this.custoEstimado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoEstimado ?? 0), 0);
     this.custoTrabalhado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoTrabalhado ?? 0), 0);
   }
+
   atualizarResumoTarefas(): void {
     this.totalTarefas = this.tarefasFiltradas.length;
     this.tarefasConcluidas = this.tarefasFiltradas.filter(tarefa =>
@@ -247,6 +369,7 @@ export class AdminRelatoriosComponent implements OnInit {
     if (this.activeTab === 'projetos') {
       this.selectedCliente = '';
       this.selectedAdmin = '';
+      this.selectedUsuario = '';
       this.selectedStatus = '';
       this.selectedPrioridade = '';
       this.selectedDataInicio = '';
@@ -256,6 +379,7 @@ export class AdminRelatoriosComponent implements OnInit {
       this.selectedProjetoTarefa = '';
       this.selectedClienteTarefa = '';
       this.selectedAdminTarefa = '';
+      this.selectedUsuarioTarefa = '';
       this.selectedStatusTarefa = '';
       this.selectedPrioridadeTarefa = '';
       this.selectedDataInicioTarefa = '';

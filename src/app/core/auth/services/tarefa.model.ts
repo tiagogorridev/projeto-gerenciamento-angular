@@ -1,3 +1,5 @@
+import { Usuario } from './../../../core/auth/services/usuario.model';
+
 export interface Tarefa {
   id?: number;
   nome: string;
@@ -13,4 +15,5 @@ export interface Tarefa {
   tempoRegistrado?: number;
   valorPorHora: number;
   custoRegistrado: number;
+  usuariosAssociados: Usuario[]; // Aqui definimos que usuariosAssociados é um array de objetos do tipo Usuario
 }
