@@ -36,8 +36,21 @@ export class ProjectsComponent implements OnInit {
   }
 
   getProgresso(projeto: Projeto): string {
-    const horasTrabalhadas = projeto.horasTrabalhadas || 0;
-    return `${horasTrabalhadas}h de ${projeto.horasEstimadas}h`;
+    // Current incorrect code:
+    // return `${this.projetoService.getTempoRegistradoProjeto}h de ${projeto.horasEstimadas}h`;
+
+    // You need to call the method with the project ID and subscribe to the observable
+    let tempoRegistrado = 0;
+    this.projetoService.getTempoRegistradoProjeto(projeto.id).subscribe(
+      response => {
+        tempoRegistrado = response;
+      },
+      error => {
+        console.error('Erro ao buscar tempo registrado:', error);
+      }
+    );
+
+    return `${tempoRegistrado}h de ${projeto.horasEstimadas}h`;
   }
 
   getCusto(projeto: Projeto): string {
