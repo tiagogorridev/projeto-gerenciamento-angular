@@ -185,6 +185,20 @@ $light-white: #FEFEFE;
     }
   }
 }
+
 .sidebar {
-  padding-top: 80px; /* Adiciona um pouco de espaço no topo do item */
+  padding-top: 5px;
+}
+
+.sidebar-logo {
+  margin-left: 10px;
+}
+
+.sidebar-logo img {
+  width: 65px;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 }
