@@ -76,6 +76,7 @@ export class AdminRelatoriosComponent implements OnInit {
 
   carregarProjetos(): void {
     this.projectsService.getProjetos().subscribe((projetos) => {
+      console.log('Projetos recebidos:', projetos); // Verifique se o campo custoRegistrado está presente aqui
       this.projetos = projetos;
       this.aplicarFiltros();
     });
@@ -222,7 +223,8 @@ export class AdminRelatoriosComponent implements OnInit {
     this.horasEstimadas = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.horasEstimadas ?? 0), 0);
     this.tempoRegistrado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.tempoRegistrado ?? 0), 0);
     this.custoEstimado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoEstimado ?? 0), 0);
-    this.custoTrabalhado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoTrabalhado ?? 0), 0);
+
+    this.custoTrabalhado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoRegistrado ?? 0), 0);
 
     this.tempoRegistrado = parseFloat(this.tempoRegistrado.toFixed(2));
     this.horasEstimadas = parseFloat(this.horasEstimadas.toFixed(2));
