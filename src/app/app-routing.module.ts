@@ -29,9 +29,8 @@ import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/ad
 
 
 
-// Componentes de Usuário Comum
+// Componentes de Usuário
 import { Header } from 'primeng/api';
-import { ActivitiesComponent } from './features/users/activities/activities.component';
 import { UsersDashboardComponent } from './features/users/users-dashboard/users-dashboard.component';
 import { ProjectsComponent } from './features/users/projects/projects.component';
 import { TimeHistoryComponent } from './features/users/time-history/time-history.component';
@@ -75,7 +74,6 @@ const routes: Routes = [
     canActivate: [AuthGuard, UserGuard],
     children: [
       { path: 'dashboard', component: UsersDashboardComponent },
-      { path: 'activities', component: ActivitiesComponent },
       { path: 'projects', component: ProjectsComponent },
       { path: 'about-projects/:id', component: AboutProjectsComponent },
       { path: 'edit-projects/:nome', component: EditProjectsComponent },

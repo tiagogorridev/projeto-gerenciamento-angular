@@ -28,7 +28,6 @@ import { SignupComponent } from './features/admin/signup/signup.component';
 
 // Features -> Users
 import { AboutProjectsComponent } from './features/users/about-projects/about-projects.component';
-import { ActivitiesComponent } from './features/users/activities/activities.component';
 import { HelpPageComponent } from './features/users/help-page/help-page.component';
 import { ProfileComponent } from './features/users/profile/profile.component';
 import { ProjectsComponent } from './features/users/projects/projects.component';
@@ -92,7 +91,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 
     // Features -> Users
     ProjectsComponent,
-    ActivitiesComponent,
     ProfileComponent,
     TimeTrackingComponent,
     TimeHistoryComponent,
