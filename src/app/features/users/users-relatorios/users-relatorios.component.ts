@@ -18,22 +18,20 @@ import { UsuarioService } from 'src/app/core/auth/services/usuario.service';
 })
 
 export class UsersRelatoriosComponent implements OnInit {
-  // Dados principais
   usuarioAtual: Usuario | null = null;
   meusProjetos: Projeto[] = [];
   projetosFiltrados: Projeto[] = [];
   minhasTarefas: Tarefa[] = [];
   tarefasFiltradas: Tarefa[] = [];
   clientes: any[] = [];
+  tarefasDosProjetos: Tarefa[] = [];
 
-  // Filtros para projetos
   selectedCliente: string = '';
   selectedStatus: string = '';
   selectedPrioridade: string = '';
   selectedDataInicio: string = '';
   selectedDataFim: string = '';
 
-  // Filtros para tarefas
   selectedProjetoTarefa: string = '';
   selectedClienteTarefa: string = '';
   selectedStatusTarefa: string = '';
@@ -41,7 +39,6 @@ export class UsersRelatoriosComponent implements OnInit {
   selectedDataInicioTarefa: string = '';
   selectedDataFimTarefa: string = '';
 
-  // Resumos
   totalProjetos: number = 0;
   projetosEmAndamento: number = 0;
   projetosConcluidos: number = 0;
@@ -53,8 +50,6 @@ export class UsersRelatoriosComponent implements OnInit {
   tarefasEmAndamento: number = 0;
   horasEstimadasTarefas: number = 0;
   horasRegistradasTarefas: number = 0;
-  tarefasDosProjetos: Tarefa[] = [];
-
 
   activeTab: string = 'projetos';
 
@@ -67,7 +62,6 @@ export class UsersRelatoriosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Obter o usuário atual
     this.usuarioService.getUsuarioAtual().subscribe(usuario => {
       this.usuarioAtual = usuario;
       if (this.usuarioAtual && this.usuarioAtual.id) {
@@ -79,17 +73,14 @@ export class UsersRelatoriosComponent implements OnInit {
   }
 
   carregarDadosDoUsuario(usuarioId: number): void {
-    // Carregar projetos do usuário
     this.projectsService.getProjetosPorUsuario(usuarioId).subscribe(
       (projetos) => {
         this.meusProjetos = projetos;
         this.projetosFiltrados = [...projetos];
         this.atualizarResumoProjetos();
 
-        // Com os projetos carregados, agora podemos buscar as tarefas
         this.carregarTarefasDoUsuario(usuarioId);
 
-        // Também carregar tarefas dos projetos do usuário
         this.carregarTarefasDosProjetos(usuarioId);
       },
       (error) => {
@@ -118,24 +109,18 @@ export class UsersRelatoriosComponent implements OnInit {
     this.tarefaService.getTarefasPorProjetoDoUsuario(usuarioId).subscribe(
       (tarefas) => {
         console.log('Tarefas dos projetos recebidas:', tarefas);
-        // Você pode adicionar estas tarefas a uma nova lista ou mesclá-las com as existentes
-        // Opção 1: Criar uma nova lista
         this.tarefasDosProjetos = tarefas;
 
-        // Opção 2: Mesclar com as tarefas existentes (evitando duplicatas)
         const todasTarefasMap = new Map();
 
-        // Adicionar tarefas existentes ao mapa
         this.minhasTarefas.forEach(tarefa => {
           todasTarefasMap.set(tarefa.id, tarefa);
         });
 
-        // Adicionar novas tarefas (substituindo duplicatas)
         tarefas.forEach(tarefa => {
           todasTarefasMap.set(tarefa.id, tarefa);
         });
 
-        // Converter o mapa de volta para um array
         this.minhasTarefas = Array.from(todasTarefasMap.values());
         this.tarefasFiltradas = [...this.minhasTarefas];
 
@@ -183,7 +168,6 @@ export class UsersRelatoriosComponent implements OnInit {
       const dataInicioFiltro = this.selectedDataInicioTarefa ? new Date(this.selectedDataInicioTarefa) : null;
       const dataFimFiltro = this.selectedDataFimTarefa ? new Date(this.selectedDataFimTarefa) : null;
 
-      // Determinar o ID do cliente do projeto
       const clienteId = tarefa.projeto ? this.getClienteByProjetoId(tarefa.projeto.id) : null;
 
       return (
