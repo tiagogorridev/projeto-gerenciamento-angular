@@ -95,6 +95,20 @@
           <option value="PAUSADA">Pausada</option>
         </select>
       </div>
+
+      <div class="modal" *ngIf="showDeleteTarefaModal">
+        <div class="modal-content confirm-modal">
+          <h2>Confirmar Exclusão</h2>
+          <p>Tem certeza que deseja excluir a tarefa "{{ selectedTarefa?.nome }}"?</p>
+
+          <div class="modal-actions">
+            <button type="button" class="cancel-btn" (click)="closeDeleteTarefaModal()">Cancelar</button>
+            <button class="delete-btn" (click)="openDeleteTarefaModal(tarefa)">Excluir</button>
+          </div>
+        </div>
+      </div>
+
+
       <div class="modal-actions">
         <button type="button" (click)="closeModal()" class="cancel-btn">Cancelar</button>
         <button
@@ -236,7 +250,7 @@
           <div class="form-group">
             <label>Custo registrado</label>
             <div class="input-currency">
-              <input type="number" class="form-input" [value]="projectDetails.registeredCost" name="registeredCost" readonly>
+              <input type="number" class="form-input" [value]="projectDetails.registeredCost.toFixed(2)" name="registeredCost" readonly>
               <span class="currency-symbol">R$</span>
             </div>
           </div>

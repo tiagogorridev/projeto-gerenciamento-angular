@@ -80,6 +80,9 @@ export class EditProjectsComponent implements OnInit {
   showAddMemberModal: boolean = false;
   horasDisponiveis: number = 0;
 
+  showDeleteTarefaModal: boolean = false;
+  selectedTarefa: any = null;
+
   originalTarefas: Tarefa[] = [];
   originalMembers: Member[] = [];
 
@@ -116,6 +119,9 @@ export class EditProjectsComponent implements OnInit {
   selectedEmails: string[] = [];
   showErrorMessage: boolean = false;
   errorMessage: string = '';
+  successMessage: string = '';
+
+
 
   constructor(
     private route: ActivatedRoute,
@@ -150,6 +156,32 @@ export class EditProjectsComponent implements OnInit {
     this.loadClients();
   }
 
+  openDeleteTarefaModal(tarefa: any): void {
+    this.selectedTarefa = tarefa;
+    this.showDeleteTarefaModal = true;
+  }
+
+  closeDeleteTarefaModal(): void {
+    this.showDeleteTarefaModal = false;
+    this.selectedTarefa = null;
+  }
+
+  confirmDeleteTarefa(): void {
+    if (this.selectedTarefa && this.selectedTarefa.id) {
+      this.tarefaService.deleteTarefa(this.selectedTarefa.id).subscribe({
+        next: () => {
+          this.successMessage = 'Tarefa excluída com sucesso!';
+          this.closeDeleteTarefaModal();
+          this.loadProjectTarefas(); // Use the existing method to reload tasks
+        },
+        error: (error: any) => {
+          console.error('Erro ao excluir tarefa:', error);
+          this.errorMessage = 'Erro ao excluir tarefa. Tente novamente.';
+        }
+      });
+    }
+  }
+
   registrarTempo(tarefaId: number): void {
     if (this.horasRegistradas <= 0) {
       this.showError('Por favor, insira um valor válido de horas.');
@@ -165,6 +197,10 @@ export class EditProjectsComponent implements OnInit {
           this.tarefas[index] = tarefaAtualizada;
         }
         this.carregarTempoRegistradoPorTarefa(tarefaId);
+
+        // Recalculate the total registered cost after time registration
+        this.calculateTotalRegisteredCost();
+
         this.horasRegistradas = 0;
         this.showError('Tempo registrado com sucesso!');
       },
@@ -184,6 +220,9 @@ export class EditProjectsComponent implements OnInit {
           const tarefaIndex = this.tarefas.findIndex(t => t.id === tarefaId);
           if (tarefaIndex !== -1) {
             this.tarefas[tarefaIndex] = tarefa;
+
+            // Recalculate the total registered cost whenever a task is updated
+            this.calculateTotalRegisteredCost();
           }
         },
         (error) => {
@@ -195,6 +234,25 @@ export class EditProjectsComponent implements OnInit {
   calculateRegisteredCost(tarefa: any): number {
     return (tarefa.valorPorHora ?? 0) * (tarefa.tempoRegistrado ?? 0);
   }
+
+  calculateTotalRegisteredCost(): void {
+    let totalCost = 0;
+
+    // Sum up the registered costs of all tasks
+    for (const tarefa of this.tarefas) {
+      // Calculate cost for each task if not already calculated
+      const taskCost = tarefa.custoRegistrado ||
+                      (tarefa.tempoRegistrado && tarefa.valorPorHora ?
+                       tarefa.tempoRegistrado * tarefa.valorPorHora : 0);
+
+      totalCost += taskCost;
+    }
+
+    // Update the project details with the calculated total cost
+    this.projectDetails.registeredCost = totalCost;
+  }
+
+
 
   loadCurrentUserInfo(): void {
     this.authService.getCurrentUser().subscribe(
@@ -243,7 +301,7 @@ export class EditProjectsComponent implements OnInit {
             clientId: response.cliente ? response.cliente.id : undefined,
             estimatedHours: response.horasEstimadas,
             estimatedCost: response.custoEstimado,
-            registeredCost: response.custoRegistrado,
+            registeredCost: response.custoRegistrado || 0, // Default to 0 if not provided
             status: response.status,
             priority: response.prioridade,
             startDate: response.dataInicio ? new Date(response.dataInicio).toISOString().split('T')[0] : undefined,
@@ -253,7 +311,6 @@ export class EditProjectsComponent implements OnInit {
           if (this.projectDetails.startDate) {
             const startDateStr = this.projectDetails.startDate + 'T12:00:00';
             this.startDateCalendar = new Date(startDateStr);
-
           }
 
           if (this.projectDetails.endDate) {
@@ -263,6 +320,12 @@ export class EditProjectsComponent implements OnInit {
           }
 
           console.log('Projeto carregado:', this.projectDetails);
+
+          // After loading the project data, calculate the registered cost from tasks
+          // Only do this if we've already loaded the tasks
+          if (this.tarefas.length > 0) {
+            this.calculateTotalRegisteredCost();
+          }
         },
         (error: Error) => {
           console.error('Erro ao carregar dados do projeto', error);
@@ -332,6 +395,9 @@ export class EditProjectsComponent implements OnInit {
               this.carregarTempoRegistradoPorTarefa(tarefa.id);
             }
           });
+
+          // Calculate and update the total registered cost
+          this.calculateTotalRegisteredCost();
         },
         error => {
           console.error('Erro ao carregar tarefas', error);
@@ -339,7 +405,6 @@ export class EditProjectsComponent implements OnInit {
       );
     }
   }
-
   loadProjectMembers(): void {
     if (this.projectId) {
       this.projectMemberService.getProjectMembers(Number(this.projectId)).subscribe({
