@@ -8,4 +8,6 @@ export interface Usuario {
   ativo: 'ATIVO';
   id_projeto?: number;
   id_usuario?: number;
+  dataCriacao?: string;
+  ultimoLogin?: string;
 }

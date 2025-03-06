@@ -80,6 +80,22 @@ export class TarefaService {
   }
 
   getTarefasPorUsuario(usuarioId: number): Observable<Tarefa[]> {
-    return this.http.get<Tarefa[]>(`${this.apiUrl}/usuario/${usuarioId}`);
+    return this.http.get<Tarefa[]>(`${this.apiUrl}/usuario/${usuarioId}`).pipe(
+      tap(tarefas => console.log('Tarefas recuperadas:', tarefas)),
+      catchError(error => {
+        console.error('Erro ao obter tarefas do usuário:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  getTarefasPorProjetoDoUsuario(usuarioId: number): Observable<Tarefa[]> {
+    return this.http.get<Tarefa[]>(`${this.apiUrl}/projetos-usuario/${usuarioId}`).pipe(
+      tap(tarefas => console.log('Tarefas dos projetos do usuário recuperadas:', tarefas)),
+      catchError(error => {
+        console.error('Erro ao obter tarefas dos projetos do usuário:', error);
+        return throwError(() => error);
+      })
+    );
   }
 }

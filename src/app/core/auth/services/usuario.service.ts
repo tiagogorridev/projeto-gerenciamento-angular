@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, BehaviorSubject} from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { Usuario } from './usuario.model';
-import { tap } from 'rxjs/operators';
 import { Projeto } from './projeto.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ import { Projeto } from './projeto.model';
 export class UsuarioService {
   private apiUrl = 'http://localhost:8080/api/usuarios';
   private usuarios: Usuario[] = []; // Lista de usuários armazenada localmente
+  private usuarioAtualSubject = new BehaviorSubject<Usuario | null>(null);
+  usuarioAtual$ = this.usuarioAtualSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -102,6 +105,15 @@ export class UsuarioService {
     return this.http.delete<any>(`${this.apiUrl}/${id}`)
       .pipe(
         catchError(this.handleError)
+      );
+  }
+
+  getUsuarioAtual(): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.apiUrl}/atual`)
+      .pipe(
+        tap(usuario => {
+          this.usuarioAtualSubject.next(usuario);
+        })
       );
   }
 
