@@ -94,20 +94,7 @@
           <option value="CONCLUIDA">Concluída</option>
           <option value="PAUSADA">Pausada</option>
         </select>
-      </div>
-
-      <div class="modal" *ngIf="showDeleteTarefaModal">
-        <div class="modal-content confirm-modal">
-          <h2>Confirmar Exclusão</h2>
-          <p>Tem certeza que deseja excluir a tarefa "{{ selectedTarefa?.nome }}"?</p>
-
-          <div class="modal-actions">
-            <button type="button" class="cancel-btn" (click)="closeDeleteTarefaModal()">Cancelar</button>
-            <button class="delete-btn" (click)="openDeleteTarefaModal(tarefa)">Excluir</button>
-          </div>
-        </div>
-      </div>
-
+      </div>=
 
       <div class="modal-actions">
         <button type="button" (click)="closeModal()" class="cancel-btn">Cancelar</button>
@@ -143,7 +130,7 @@
       </div>
       <div class="tarefa-actions">
         <button class="btn btn-primary" [routerLink]="['/admin/edit-projects', projectId, tarefa.id]">Editar</button>
-        <button class="delete-btn" (click)="deleteTarefa(tarefa.id)">Excluir</button>
+        <button type="button" class="delete-confirm-btn" (click)="openDeleteTarefaModal(tarefa)">Excluir</button>
       </div>
     </div>
   </div>
@@ -305,4 +292,14 @@
         </div>
       </form>
     </div>
-  </main>
+  <div class="modal" *ngIf="showDeleteTarefaModal">
+    <div class="modal-content confirm-modal">
+      <h2>Confirmar Exclusão</h2>
+      <p>Tem certeza que deseja excluir a tarefa "{{ selectedTarefa?.nome }}"?</p>
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeDeleteTarefaModal()">Cancelar</button>
+        <button type="button" class="delete-confirm-btn" (click)="confirmDeleteTarefa()">Excluir</button>
+      </div>
+    </div>
+  </div>
+</main>

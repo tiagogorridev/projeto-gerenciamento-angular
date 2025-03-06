@@ -348,8 +348,6 @@ export class EditProjectsComponent implements OnInit {
             if (tarefa.id) {
             }
           });
-
-          // Calculate and update the total registered cost
         },
         error => {
           console.error('Erro ao carregar tarefas', error);
@@ -637,18 +635,10 @@ export class EditProjectsComponent implements OnInit {
   deleteTarefa(tarefaId: number | undefined): void {
     if (!tarefaId) return;
 
-    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
-      this.projectsService.deleteTarefa(tarefaId).subscribe({
-        next: () => {
-          console.log('Tarefa excluída com sucesso');
-          this.loadProjectTarefas();
-        },
-        error: (error) => {
-          console.error('Erro ao excluir tarefa:', error);
-          this.showError('Erro ao excluir tarefa');
-        }
-      });
-    }
+    // Find the tarefa to show its name in the modal
+    const tarefaToDelete = this.tarefas.find(t => t.id === tarefaId);
+    this.selectedTarefa = tarefaToDelete;
+    this.showDeleteTarefaModal = true;
   }
 
   carregarHorasDisponiveis() {
