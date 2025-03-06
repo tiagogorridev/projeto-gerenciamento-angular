@@ -100,11 +100,11 @@
       </div>
       <div class="summary-card">
         <div class="summary-title">Custo Estimado</div>
-        <div class="summary-value">R$ {{ custoEstimado }}</div>
+        <div class="summary-value">R$ {{ custoEstimado | number:'1.2-2' }}</div>
       </div>
       <div class="summary-card">
         <div class="summary-title">Custo Trabalhado</div>
-        <div class="summary-value">R$ {{ custoTrabalhado }}</div>
+        <div class="summary-value">R$ {{ custoTrabalhado| number:'1.2-2' }}</div>
       </div>
     </div>
 
@@ -131,7 +131,7 @@
             {{ projeto.tempoRegistrado }} de {{ projeto.horasEstimadas }}h
           </div>
           <div class="project-cost">
-            R$ {{ custoTrabalhado }} de R$ {{ projeto.custoEstimado }}
+            R$ {{ projeto.custoRegistrado | number:'1.2-2' }} de R$ {{ projeto.custoEstimado | number:'1.2-2' }}
           </div>
           <div class="project-status">
             <span class="status-pill {{ projeto.status }}">{{ projeto.status }}</span>
