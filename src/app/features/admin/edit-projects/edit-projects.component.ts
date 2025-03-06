@@ -201,6 +201,9 @@ export class EditProjectsComponent implements OnInit {
         // Recalculate the total registered cost after time registration
         this.calculateTotalRegisteredCost();
 
+        // Auto-save the project with updated cost
+        this.saveProjectDetails();
+
         this.horasRegistradas = 0;
         this.showError('Tempo registrado com sucesso!');
       },
@@ -429,7 +432,8 @@ export class EditProjectsComponent implements OnInit {
       status: this.projectDetails.status,
       prioridade: this.projectDetails.priority,
       dataInicio: this.projectDetails.startDate ? new Date(this.projectDetails.startDate).toISOString() : undefined,
-      dataFim: this.projectDetails.endDate ? new Date(this.projectDetails.endDate).toISOString() : undefined
+      dataFim: this.projectDetails.endDate ? new Date(this.projectDetails.endDate).toISOString() : undefined,
+      custoRegistrado: this.projectDetails.registeredCost // Add this line
     };
 
     if (this.projectId) {

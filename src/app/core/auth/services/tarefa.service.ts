@@ -66,15 +66,16 @@ export class TarefaService {
   }
 
   registrarTempo(tarefaId: number, horas: number): Observable<Tarefa> {
-    const url = `${this.apiUrl}/${tarefaId}/registrar-tempo`;
-    return this.http.put<Tarefa>(url, { horas }).pipe(
-      tap(response => {
-        console.log('Tempo registrado com sucesso:', response);
-      }),
-      catchError(error => {
-        console.error('Erro ao registrar tempo:', error);
-        return throwError(error);
-      })
-    );
+    const payload = {
+      horas: horas
+    };
+
+    return this.http.post<Tarefa>(`${this.apiUrl}/${tarefaId}/registrar-tempo`, payload)
+      .pipe(
+        tap((tarefaAtualizada: Tarefa) => {
+          // Log to verify the backend is returning the custoRegistrado correctly
+          console.log('Tarefa atualizada após registro de tempo:', tarefaAtualizada);
+        })
+      );
   }
 }

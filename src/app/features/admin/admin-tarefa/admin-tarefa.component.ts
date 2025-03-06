@@ -63,7 +63,7 @@ export class AdminTarefaComponent implements OnInit {
       (data) => {
         this.tarefa = { ...data, nomeOriginal: data.nome };
         this.horasOriginais = +this.tarefa.horasEstimadas || 0;
-        this.atualizarCustoRegistrado(); // Add this line
+        this.custoRegistrado = data.custoRegistrado ?? 0;
         this.converterDatas();
         this.carregarProjeto();
       },
@@ -150,39 +150,9 @@ export class AdminTarefaComponent implements OnInit {
     setTimeout(() => (this.sucessoMensagem = ''), 3000);
   }
 
-  carregarTempoRegistrado(): void {
-    this.tarefaService.getTempoRegistrado(this.idprojeto, this.idtarefa).subscribe(
-      (tempo) => (this.tarefa.tempoRegistrado = tempo),
-      (error) => console.error('Erro ao carregar tempo registrado:', error)
-    );
-  }
-
   private converterDatas(): void {
     if (this.tarefa.dataInicio) this.tarefa.dataInicio = new Date(`${this.tarefa.dataInicio}T12:00:00`);
     if (this.tarefa.dataFim) this.tarefa.dataFim = new Date(`${this.tarefa.dataFim}T12:00:00`);
-  }
-
-  atualizarCustoRegistrado(): void {
-    if (this.tarefa.tempoRegistrado && this.tarefa.valorPorHora) {
-      this.tarefa.custoRegistrado = this.tarefa.tempoRegistrado * this.tarefa.valorPorHora;
-    }
-  }
-
-  carregarTempoRegistradoPorTarefa(tarefaId: number): void {
-    if (!this.projectId) return;
-
-    this.tarefaService.getTarefaDetails(Number(this.projectId), tarefaId)
-      .subscribe(
-        (tarefa) => {
-          const tarefaIndex = this.tarefas.findIndex(t => t.id === tarefaId);
-          if (tarefaIndex !== -1) {
-            this.tarefas[tarefaIndex] = tarefa;
-          }
-        },
-        (error) => {
-          console.error(`Erro ao carregar detalhes da tarefa ${tarefaId}:`, error);
-        }
-      );
   }
 }
 
