@@ -4,9 +4,9 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { ClienteService } from '../../../core/auth/services/clients.service';
 import { TarefaService } from 'src/app/core/auth/services/tarefa.service';
-
 import { Projeto } from '../../../core/auth/services/projeto.model';
 import { Tarefa } from '../../../core/auth/services/tarefa.model';
+
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -76,19 +76,31 @@ export class AdminRelatoriosComponent implements OnInit {
     this.carregarTarefas();
   }
 
+carregarProjetos(): void {
+  if (this.selectedUsuario) {
+    // Convertendo selectedUsuario para número
+    const usuarioId = Number(this.selectedUsuario);
 
-  carregarProjetos(): void {
-    this.projectsService.getProjetos().subscribe((projetos) => {
-      this.projetos = projetos;
+    // Verificando se a conversão foi bem-sucedida
+    if (!isNaN(usuarioId)) {
+      // Passando o usuarioId para o método getProjetosPorUsuario
+      this.projectsService.getProjetosPorUsuario(usuarioId).subscribe((projetos) => {
+        this.projetos = projetos;
 
-      this.projetos.forEach((projeto) => {
-        const usuarioEmail = this.usuarioService.getEmailByUsuarioId(projeto.usuarioResponsavel.id);
-        console.log(usuarioEmail);
+        this.projetos.forEach((projeto) => {
+          const usuarioEmail = this.usuarioService.getEmailByUsuarioId(projeto.usuarioResponsavel.id);
+          console.log(usuarioEmail);
+        });
+
+        this.aplicarFiltros();
       });
-
-      this.aplicarFiltros();
-    });
+    } else {
+      console.error('ID de usuário inválido');
+    }
+  } else {
+    console.error('Nenhum usuário selecionado');
   }
+}
 
   carregarTarefas(): void {
     this.tarefaService.getTodasTarefas().subscribe(
@@ -204,73 +216,78 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
   }
 
   aplicarFiltros(): void {
-    this.projetosFiltrados = this.projetos.filter((projeto) => {
-      const dataInicioProjeto = new Date(projeto.dataInicio);
-      const dataFimProjeto = new Date(projeto.dataFim);
-      const dataInicioFiltro = this.selectedDataInicio ? new Date(this.selectedDataInicio) : null;
-      const dataFimFiltro = this.selectedDataFim ? new Date(this.selectedDataFim) : null;
+    console.log('Usuário selecionado:', this.selectedUsuario);
 
-      const isAdmin = this.selectedAdmin ?
-                     this.administradores.some(admin =>
-                       admin.id === projeto.usuarioResponsavel.id &&
-                       admin.id === Number(this.selectedAdmin)) :
-                     true;
+    if (this.selectedUsuario) {
+      const usuarioId = Number(this.selectedUsuario);
 
-                     let isUser = true;
-                     if (this.selectedUsuario) {
-                         const userId = Number(this.selectedUsuario);
-                         isUser = projeto.usuarioResponsavel.id === userId;
-                         if (!isUser && projeto.membrosAssociados && Array.isArray(projeto.membrosAssociados)) {
-                             isUser = projeto.membrosAssociados.some(membro => membro.id === userId);
-                         }
-                     }
+      this.projectsService.getProjetosPorUsuario(usuarioId).subscribe(projetos => {
 
-      return (
-        (!this.selectedCliente || projeto.cliente.id === Number(this.selectedCliente)) &&
-        (!this.selectedStatus || projeto.status === this.selectedStatus) &&
-        (!this.selectedPrioridade || projeto.prioridade === this.selectedPrioridade) &&
-        (!dataInicioFiltro || dataInicioProjeto >= dataInicioFiltro) &&
-        (!dataFimFiltro || dataFimProjeto <= dataFimFiltro) &&
-        isAdmin &&
-        isUser
-      );
-    });
-    this.atualizarResumo();
+        // Filtra projetos apenas para o usuário selecionado
+        this.projetosFiltrados = projetos.filter((projeto) => {
+          const dataInicioProjeto = new Date(projeto.dataInicio);
+          const dataFimProjeto = new Date(projeto.dataFim);
+          const dataInicioFiltro = this.selectedDataInicio ? new Date(this.selectedDataInicio) : null;
+          const dataFimFiltro = this.selectedDataFim ? new Date(this.selectedDataFim) : null;
+
+          return (
+            (!this.selectedCliente || projeto.cliente.id === Number(this.selectedCliente)) &&
+            (!this.selectedStatus || projeto.status === this.selectedStatus) &&
+            (!this.selectedPrioridade || projeto.prioridade === this.selectedPrioridade) &&
+            (!dataInicioFiltro || dataInicioProjeto >= dataInicioFiltro) &&
+            (!dataFimFiltro || dataFimProjeto <= dataFimFiltro)
+          );
+        });
+        this.atualizarResumo();
+      });
+    } else {
+      // Se nenhum usuário for selecionado, mostra os projetos normalmente
+      this.projetosFiltrados = this.projetos.filter((projeto) => {
+        const dataInicioProjeto = new Date(projeto.dataInicio);
+        const dataFimProjeto = new Date(projeto.dataFim);
+        const dataInicioFiltro = this.selectedDataInicio ? new Date(this.selectedDataInicio) : null;
+        const dataFimFiltro = this.selectedDataFim ? new Date(this.selectedDataFim) : null;
+
+        const isAdmin = this.selectedAdmin ?
+                           this.administradores.some(admin =>
+                             admin.id === projeto.usuarioResponsavel.id &&
+                             admin.id === Number(this.selectedAdmin)) :
+                           true;
+
+        return (
+          (!this.selectedCliente || projeto.cliente.id === Number(this.selectedCliente)) &&
+          (!this.selectedStatus || projeto.status === this.selectedStatus) &&
+          (!this.selectedPrioridade || projeto.prioridade === this.selectedPrioridade) &&
+          (!dataInicioFiltro || dataInicioProjeto >= dataInicioFiltro) &&
+          (!dataFimFiltro || dataFimProjeto <= dataFimFiltro) &&
+          isAdmin
+        );
+      });
+      this.atualizarResumo();
+    }
   }
 
   aplicarFiltrosTarefas(): void {
+    console.log('Usuário selecionado:', this.selectedUsuarioTarefa); // Depuração
     this.tarefasFiltradas = this.tarefas.filter((tarefa) => {
+      console.log('Tarefa:', tarefa); // Verifique a estrutura da tarefa
+
       const dataInicioTarefa = new Date(tarefa.dataInicio);
       const dataFimTarefa = new Date(tarefa.dataFim);
       const dataInicioFiltro = this.selectedDataInicioTarefa ? new Date(this.selectedDataInicioTarefa) : null;
       const dataFimFiltro = this.selectedDataFimTarefa ? new Date(this.selectedDataFimTarefa) : null;
 
-      const isAdmin = this.selectedAdminTarefa ?
-                    this.administradores.some(admin =>
-                      admin.id === tarefa.usuarioResponsavel.id &&
-                      admin.id === Number(this.selectedAdminTarefa)) :
-                    true;
-
-      let isUser = true;
-      if (this.selectedUsuarioTarefa) {
-        const userId = Number(this.selectedUsuarioTarefa);
-
-        isUser = tarefa.usuarioResponsavel.id === userId;
-
-        if (!isUser && tarefa.usuariosAssociados && Array.isArray(tarefa.usuariosAssociados)) {
-          isUser = tarefa.usuariosAssociados.some(usuario => usuario.id === userId);
-        }
-      }
+      // Verificando se o campo 'usuario' existe na tarefa e fazendo a comparação corretamente
+      const usuarioCorreto = this.selectedUsuarioTarefa ? tarefa.usuario?.id === Number(this.selectedUsuarioTarefa) : true;
 
       return (
         (!this.selectedProjetoTarefa || tarefa.projeto.id === Number(this.selectedProjetoTarefa)) &&
         (!this.selectedClienteTarefa || (tarefa.projeto && this.getClienteByProjetoId(tarefa.projeto.id) === Number(this.selectedClienteTarefa))) &&
-        (!this.selectedAdminTarefa || isAdmin) &&
         (!this.selectedStatusTarefa || tarefa.status === this.selectedStatusTarefa) &&
         (!this.selectedPrioridadeTarefa || this.getTarefaPrioridade(tarefa) === this.selectedPrioridadeTarefa) &&
         (!dataInicioFiltro || dataInicioTarefa >= dataInicioFiltro) &&
         (!dataFimFiltro || dataFimTarefa <= dataFimFiltro) &&
-        isUser
+        usuarioCorreto // Aplicando o filtro de usuário
       );
     });
 

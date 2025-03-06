@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Usuario } from './usuario.model';
 import { tap } from 'rxjs/operators';
+import { Projeto } from './projeto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -103,5 +104,6 @@ export class UsuarioService {
         catchError(this.handleError)
       );
   }
+
 }
 

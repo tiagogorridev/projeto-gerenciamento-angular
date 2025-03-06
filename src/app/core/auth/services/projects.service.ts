@@ -125,6 +125,12 @@ export class ProjectsService {
       return this.http.get<any>(`${this.baseUrl}/${projetoId}/tempo-registrado`);
     }
 
+    getProjetosPorUsuario(usuarioId: number): Observable<Projeto[]> {
+      const token = localStorage.getItem('auth_token') || '';
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<Projeto[]>(`${this.baseUrl}/usuarios/${usuarioId}/projetos`);
+    }
+
     getProjetos(): Observable<Projeto[]> {
       const token = localStorage.getItem('auth_token') || '';
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -146,7 +152,7 @@ export class ProjectsService {
     }
 
     listarUsuariosProjetos(): Observable<any> {
-      return this.http.get<any>(`$this.baseUrl)/usuarios-projetos`);
+      return this.http.get<any>(`$this.baseUrl/usuarios-projetos`);
     }
 
     getEmailsUsuariosComProjetos(): Observable<string[]> {
@@ -186,4 +192,5 @@ export class ProjectsService {
         catchError(this.handleError)
       );
     }
+
 }
