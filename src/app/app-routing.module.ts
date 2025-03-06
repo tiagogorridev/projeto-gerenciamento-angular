@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Páginas
 import { LoginComponent } from './pages/login/login.component';
-import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { SignupComponent } from './features/admin/signup/signup.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { HelpPageComponent } from './features/users/help-page/help-page.component';
@@ -17,37 +16,34 @@ import { UserGuard } from './core/auth/guards/user.guard';
 // Componentes de Admin
 import { DashboardComponent as AdminDashboardComponent } from './features/admin/dashboard/dashboard.component';
 import { HourApprovalComponent } from './features/admin/hour-approval/hour-approval.component';
-import { UserManagementComponent } from './features/admin/user-management/user-management.component';
 import { AdminSidebarComponent } from './features/admin/admin-sidebar/admin-sidebar.component';
 import { AdminRelatoriosComponent } from './features/admin/admin-relatorios/admin-relatorios.component';
 import { AdminProjetosComponent } from './features/admin/admin-projetos/admin-projetos.component';
 import { AdminAtividadesComponent } from './features/admin/admin-atividades/admin-atividades.component';
 import { HelpPageAdminComponent } from './features/admin/help-page-admin/help-page-admin.component';
+import { AdminTarefaComponent } from './features/admin/admin-tarefa/admin-tarefa.component';
+import { EditProjectsComponent } from './features/admin/edit-projects/edit-projects.component';
+import { AdminProfileComponent } from './features/admin/admin-profile/admin-profile.component';
+import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
+import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
+
 
 
 // Componentes de Usuário Comum
+import { Header } from 'primeng/api';
 import { ActivitiesComponent } from './features/users/activities/activities.component';
 import { UsersDashboardComponent } from './features/users/users-dashboard/users-dashboard.component';
 import { ProjectsComponent } from './features/users/projects/projects.component';
-import { EditProjectsComponent } from './features/admin/edit-projects/edit-projects.component';
 import { TimeHistoryComponent } from './features/users/time-history/time-history.component';
 import { TimeTrackingComponent } from './features/users/time-tracking/time-tracking.component';
 import { UsersRelatoriosComponent } from './features/users/users-relatorios/users-relatorios.component';
-import { AdminProfileComponent } from './features/admin/admin-profile/admin-profile.component';
 import { ProfileComponent } from './features/users/profile/profile.component';
-import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
-import { Header } from 'primeng/api';
-import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
 import { AboutProjectsComponent } from './features/users/about-projects/about-projects.component';
-import { AdminTarefaComponent } from './features/admin/admin-tarefa/admin-tarefa.component';
 
-// Rotas
+// Rotas Compartilhadas
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
-
-  // Rotas compartilhadas para usuários autenticados (tanto admin quanto usuário comum)
   { path: 'contact', component: ContactComponent, canActivate: [AuthGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard] },
 
@@ -59,7 +55,6 @@ const routes: Routes = [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'signup', component: SignupComponent },
       { path: 'hour-approval', component: HourApprovalComponent },
-      { path: 'user-management', component: UserManagementComponent },
       { path: 'admin-sidebar', component: AdminSidebarComponent },
       { path: 'admin-header', component: AdminHeaderComponent },
       { path: 'admin-atividades', component: AdminAtividadesComponent },
@@ -74,7 +69,7 @@ const routes: Routes = [
     ],
   },
 
-  // Rotas do Usuário Comum
+  // Rotas do Usuário
   {
     path: 'user',
     canActivate: [AuthGuard, UserGuard],
