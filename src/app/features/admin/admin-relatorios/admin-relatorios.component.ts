@@ -76,31 +76,13 @@ export class AdminRelatoriosComponent implements OnInit {
     this.carregarTarefas();
   }
 
-carregarProjetos(): void {
-  if (this.selectedUsuario) {
-    // Convertendo selectedUsuario para número
-    const usuarioId = Number(this.selectedUsuario);
-
-    // Verificando se a conversão foi bem-sucedida
-    if (!isNaN(usuarioId)) {
-      // Passando o usuarioId para o método getProjetosPorUsuario
-      this.projectsService.getProjetosPorUsuario(usuarioId).subscribe((projetos) => {
-        this.projetos = projetos;
-
-        this.projetos.forEach((projeto) => {
-          const usuarioEmail = this.usuarioService.getEmailByUsuarioId(projeto.usuarioResponsavel.id);
-          console.log(usuarioEmail);
-        });
-
-        this.aplicarFiltros();
-      });
-    } else {
-      console.error('ID de usuário inválido');
-    }
-  } else {
-    console.error('Nenhum usuário selecionado');
+  carregarProjetos(): void {
+    this.projectsService.getProjetos().subscribe((projetos) => {
+      this.projetos = projetos;
+      this.projetosFiltrados = projetos;
+      this.atualizarResumo();
+    });
   }
-}
 
   carregarTarefas(): void {
     this.tarefaService.getTodasTarefas().subscribe(
