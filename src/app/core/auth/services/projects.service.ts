@@ -14,7 +14,6 @@ export class ProjectsService {
 
   constructor(private http: HttpClient) { }
 
-  // Métodos utilitários privados
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('auth_token') || '';
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -24,10 +23,8 @@ export class ProjectsService {
     let errorMessage = 'Ocorreu um erro desconhecido';
 
     if (error.error instanceof ErrorEvent) {
-      // Erro do lado do cliente
       errorMessage = `Erro: ${error.error.message}`;
     } else {
-      // Erro retornado pelo backend
       errorMessage = `Código do erro: ${error.status}, mensagem: ${error.error?.message || error.message}`;
     }
 
@@ -35,7 +32,6 @@ export class ProjectsService {
     return throwError(() => new Error(errorMessage));
   }
 
-  // Métodos para gerenciar projetos
   getProjetos(): Observable<Projeto[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<Projeto[]>(`${this.baseUrl}/getProjetos`, { headers });
@@ -64,7 +60,6 @@ export class ProjectsService {
     });
   }
 
-  // Métodos relacionados a projetos de usuários
   getProjetosDoUsuario(usuarioId: number): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.baseUrl}/usuario/${usuarioId}/projetos`, { headers });
@@ -88,7 +83,6 @@ export class ProjectsService {
     return this.http.get<Projeto[]>(`${this.baseUrl}/usuarios/${usuarioId}/projetos`);
   }
 
-  // Métodos relacionados a membros e associações
   getMembrosDoProjeto(projetoId: number): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.baseUrl}/${projetoId}/membros`, { headers }).pipe(
@@ -138,7 +132,6 @@ export class ProjectsService {
       );
   }
 
-  // Métodos relacionados a clientes
   getNomeClienteById(clienteId: number): Observable<string> {
     const headers = this.getAuthHeaders();
     return this.http.get<{ nome: string }>(`${this.clientesUrl}/${clienteId}`, { headers })
@@ -147,7 +140,6 @@ export class ProjectsService {
       );
   }
 
-  // Métodos relacionados a tarefas
   createTarefa(tarefa: any): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.post(this.tarefasUrl, tarefa, { headers });
@@ -166,7 +158,6 @@ export class ProjectsService {
     return this.http.delete<void>(`${this.tarefasUrl}/${tarefaId}`, { headers });
   }
 
-  // Métodos relacionados a horas e tempo
   getHorasDisponiveis(projectId: string): Observable<number> {
     const headers = this.getAuthHeaders();
     return this.http.get<number>(`${this.baseUrl}/${projectId}/horas-disponiveis`, { headers })

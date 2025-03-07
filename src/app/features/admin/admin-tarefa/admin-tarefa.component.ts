@@ -112,14 +112,24 @@ export class AdminTarefaComponent implements OnInit {
 
 
   validarDatas(): boolean {
-    const { dataInicio, dataFim } = this.tarefa;
-    const { dataInicio: projInicio, dataFim: projFim } = this.projeto;
+    const tarefaInicio = new Date(this.tarefa.dataInicio);
+    const tarefaFim = new Date(this.tarefa.dataFim);
+    const projetoInicio = new Date(this.projeto.dataInicio + 'T00:00:00');
+    const projetoFim = new Date(this.projeto.dataFim + 'T00:00:00');
 
-    if (new Date(dataInicio) < new Date(projInicio) || new Date(dataFim) > new Date(projFim)) {
+    tarefaInicio.setHours(0, 0, 0, 0);
+    tarefaFim.setHours(0, 0, 0, 0);
+    projetoInicio.setHours(0, 0, 0, 0);
+    projetoFim.setHours(0, 0, 0, 0);
+
+    console.log('Tarefa: ', tarefaInicio, tarefaFim);
+    console.log('Projeto: ', projetoInicio, projetoFim);
+
+    if (tarefaInicio < projetoInicio || tarefaFim > projetoFim) {
       this.erro = `As datas devem estar dentro do período do projeto.`;
       return false;
     }
-    if (new Date(dataFim) < new Date(dataInicio)) {
+    if (tarefaFim < tarefaInicio) {
       this.erro = 'A data de fim não pode ser anterior à data de início.';
       return false;
     }

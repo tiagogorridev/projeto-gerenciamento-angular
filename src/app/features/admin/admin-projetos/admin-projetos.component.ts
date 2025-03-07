@@ -170,8 +170,17 @@ export class AdminProjetosComponent implements OnInit {
 
   onSubmit(projectForm: any): void {
     if (projectForm.valid) {
-      this.project.dataInicio = this.startDate;
-      this.project.dataFim = this.endDate;
+      if (this.startDate) {
+        const dataInicio = new Date(this.startDate);
+        dataInicio.setHours(12, 0, 0, 0);
+        this.project.dataInicio = dataInicio;
+      }
+
+      if (this.endDate) {
+        const dataFim = new Date(this.endDate);
+        dataFim.setHours(12, 0, 0, 0);
+        this.project.dataFim = dataFim;
+      }
 
       const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0', 10);
 

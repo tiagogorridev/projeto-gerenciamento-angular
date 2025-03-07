@@ -23,7 +23,7 @@ export interface ProjectDetails {
   estimatedCost: number;
   status: string;
   priority: string;
-  registeredCost: number; // Add this line
+  registeredCost: number;
   startDate?: string;
   endDate?: string;
 }
@@ -172,7 +172,7 @@ export class EditProjectsComponent implements OnInit {
         next: () => {
           this.successMessage = 'Tarefa excluída com sucesso!';
           this.closeDeleteTarefaModal();
-          this.loadProjectTarefas(); // Use the existing method to reload tasks
+          this.loadProjectTarefas();
         },
         error: (error: any) => {
           console.error('Erro ao excluir tarefa:', error);
@@ -198,7 +198,6 @@ export class EditProjectsComponent implements OnInit {
         }
 
 
-        // Auto-save the project with updated cost
         this.saveProjectDetails();
 
         this.horasRegistradas = 0;
@@ -258,7 +257,7 @@ export class EditProjectsComponent implements OnInit {
             clientId: response.cliente ? response.cliente.id : undefined,
             estimatedHours: response.horasEstimadas,
             estimatedCost: response.custoEstimado,
-            registeredCost: response.custoRegistrado || 0, // Default to 0 if not provided
+            registeredCost: response.custoRegistrado || 0,
             status: response.status,
             priority: response.prioridade,
             startDate: response.dataInicio ? new Date(response.dataInicio).toISOString().split('T')[0] : undefined,
@@ -266,20 +265,14 @@ export class EditProjectsComponent implements OnInit {
           };
 
           if (this.projectDetails.startDate) {
-            const startDateStr = this.projectDetails.startDate + 'T12:00:00';
-            this.startDateCalendar = new Date(startDateStr);
+            this.startDateCalendar = new Date(this.projectDetails.startDate + 'T00:00:00');
           }
 
           if (this.projectDetails.endDate) {
-            this.endDateCalendar = new Date(this.projectDetails.endDate);
-            const endDateStr = this.projectDetails.endDate + 'T12:00:00';
-            this.endDateCalendar = new Date(endDateStr);
+            this.endDateCalendar = new Date(this.projectDetails.endDate + 'T00:00:00');
           }
 
           console.log('Projeto carregado:', this.projectDetails);
-
-          // After loading the project data, calculate the registered cost from tasks
-          // Only do this if we've already loaded the tasks
         },
         (error: Error) => {
           console.error('Erro ao carregar dados do projeto', error);
@@ -380,7 +373,7 @@ export class EditProjectsComponent implements OnInit {
       prioridade: this.projectDetails.priority,
       dataInicio: this.projectDetails.startDate ? new Date(this.projectDetails.startDate).toISOString() : undefined,
       dataFim: this.projectDetails.endDate ? new Date(this.projectDetails.endDate).toISOString() : undefined,
-      custoRegistrado: this.projectDetails.registeredCost // Add this line
+      custoRegistrado: this.projectDetails.registeredCost
     };
 
     if (this.projectId) {
@@ -635,7 +628,6 @@ export class EditProjectsComponent implements OnInit {
   deleteTarefa(tarefaId: number | undefined): void {
     if (!tarefaId) return;
 
-    // Find the tarefa to show its name in the modal
     const tarefaToDelete = this.tarefas.find(t => t.id === tarefaId);
     this.selectedTarefa = tarefaToDelete;
     this.showDeleteTarefaModal = true;
