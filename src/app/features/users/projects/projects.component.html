@@ -43,7 +43,6 @@
           <th>Nome</th>
           <th>Cliente</th>
           <th>Progresso</th>
-          <th>Custo</th>
           <th>Status</th>
           <th>Prioridade</th>
           <th>Data de Início</th>
@@ -55,7 +54,6 @@
           <td>{{projeto.nome}}</td>
           <td>{{projeto.cliente.nome}}</td>
           <td>{{getProgresso(projeto)}}</td>
-          <td>{{getCusto(projeto)}}</td>
           <td>
             <span [ngClass]="{'status': true,
                             'status-em-andamento': projeto.status === 'EM ANDAMENTO',
