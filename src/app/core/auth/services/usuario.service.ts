@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject} from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { catchError } from 'rxjs/operators';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { Usuario } from './usuario.model';
 import { Projeto } from './projeto.model';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
   private apiUrl = 'http://localhost:8080/api/usuarios';
-  private usuarios: Usuario[] = []; // Lista de usuários armazenada localmente
+  private usuarios: Usuario[] = [];
   private usuarioAtualSubject = new BehaviorSubject<Usuario | null>(null);
   usuarioAtual$ = this.usuarioAtualSubject.asObservable();
 
@@ -48,6 +46,7 @@ export class UsuarioService {
         })
       );
   }
+
   updatePersonalInfo(usuario: Partial<Usuario>): Observable<Usuario> {
     return this.http.put<Usuario>(`${this.apiUrl}/usuarios/${usuario.id}`, usuario)
       .pipe(
@@ -85,7 +84,6 @@ export class UsuarioService {
   }
 
   getUsuarioById(id: number) {
-    console.log(`Buscando usuário com ID: ${id}`);
     return this.http.get<Usuario>(`${this.apiUrl}/usuarios/${id}`).pipe(
       tap((response) => {
         console.log('Resposta da API:', response);
@@ -116,6 +114,4 @@ export class UsuarioService {
         })
       );
   }
-
 }
-

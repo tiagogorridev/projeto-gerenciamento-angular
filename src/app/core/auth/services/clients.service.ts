@@ -20,8 +20,16 @@ export class ClienteService {
 
   constructor(private http: HttpClient) {}
 
+  getClientes(): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(`${this.apiUrl}/clientes`);
+  }
+
   listarClientes(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(`${this.apiUrl}/clientes`);
+  }
+
+  getClienteById(id: number): Observable<Cliente> {
+    return this.http.get<Cliente>(`${this.apiUrl}/clientes/${id}`);
   }
 
   cadastrarCliente(cliente: Omit<Cliente, 'id' | 'dataCadastro' | 'dataAtualizacao' | 'totalProjetos'>): Observable<Cliente> {
@@ -34,13 +42,5 @@ export class ClienteService {
 
   excluirCliente(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/clientes/${id}`);
-  }
-
-  getClienteById(id: number): Observable<Cliente> {
-    return this.http.get<Cliente>(`${this.apiUrl}/${id}`);
-  }
-
-  getClientes(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/clientes`);
   }
 }

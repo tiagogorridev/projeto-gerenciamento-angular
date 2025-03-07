@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class AssociarUsuarioService {
 
-  private apiUrl = '/api/associacoes/usuario-projeto';  // URL do backend
+  private apiUrl = '/api/associacoes/usuario-projeto';
 
   constructor(private http: HttpClient) { }
 

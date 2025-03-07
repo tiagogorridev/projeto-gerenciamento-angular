@@ -15,7 +15,6 @@ export interface Tarefa {
   tempoRegistrado?: number;
   valorPorHora: number;
   custoRegistrado: number;
-  usuario: Usuario; // Certifique-se de que esta propriedade exista
-
-  usuariosAssociados: Usuario[]; // Aqui definimos que usuariosAssociados é um array de objetos do tipo Usuario
+  usuario: Usuario;
+  usuariosAssociados: Usuario[];
 }

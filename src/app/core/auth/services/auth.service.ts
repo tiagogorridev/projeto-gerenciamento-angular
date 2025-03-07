@@ -32,18 +32,7 @@ export class AuthService {
     private router: Router
   ) { }
 
-  isAdmin(): boolean {
-    return this.getUserRole() === 'ADMIN';
-  }
-
-  getUserRole(): string | null {
-    return localStorage.getItem('perfil');
-  }
-
-  getUserId(): string | null {
-    return localStorage.getItem('usuario_id');
-  }
-
+  // Authentication methods
   login(email: string, senha: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, senha })
       .pipe(
@@ -85,6 +74,7 @@ export class AuthService {
     );
   }
 
+  // Session management
   private saveSession(token: string, perfil: string, usuarioId: string, email: string): void {
     localStorage.setItem('token', token);
     localStorage.setItem('perfil', perfil);
@@ -101,8 +91,21 @@ export class AuthService {
     this.isAuthenticatedSubject.next(false);
   }
 
+  // User information methods
   isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  isAdmin(): boolean {
+    return this.getUserRole() === 'ADMIN';
+  }
+
+  getUserRole(): string | null {
+    return localStorage.getItem('perfil');
+  }
+
+  getUserId(): string | null {
+    return localStorage.getItem('usuario_id');
   }
 
   getToken(): string | null {

@@ -147,6 +147,19 @@ export class AdminProjetosComponent implements OnInit {
 
   closeModal(): void {
     this.showNewProjectModal = false;
+    this.project = {
+      nome: '',
+      descricao: '',
+      cliente: '',
+      horasEstimadas: 0,
+      custoEstimado: 0,
+      dataInicio: null,
+      dataFim: null,
+      status: 'PLANEJADO',
+      prioridade: 'ALTA'
+    };
+    this.startDate = new Date();
+    this.endDate = new Date();
   }
 
   navegarParaEdicao(projetoId: string, projetoNome: string): void {
