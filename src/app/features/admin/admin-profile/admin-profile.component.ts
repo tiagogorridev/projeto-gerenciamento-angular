@@ -24,6 +24,12 @@ export class AdminProfileComponent implements OnInit {
   erroSenhaIgual = false;
   senhaIgualAtual = false;
 
+  showPassword: { [key: string]: boolean } = {
+    senhaAtual: false,
+    novaSenha: false,
+    confirmPassword: false
+  };
+
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
@@ -32,6 +38,10 @@ export class AdminProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserData();
+  }
+
+  togglePasswordVisibility(field: string): void {
+    this.showPassword[field] = !this.showPassword[field];
   }
 
   private initializePersonalForm(): FormGroup {
