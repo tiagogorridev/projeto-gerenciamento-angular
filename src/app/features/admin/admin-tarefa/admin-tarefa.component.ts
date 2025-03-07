@@ -93,13 +93,15 @@ export class AdminTarefaComponent implements OnInit {
   }
 
   validarHoras(): boolean {
-    if (+this.tarefa.horasEstimadas > this.horasDisponiveis) {
+    if (+this.tarefa.horasEstimadas !== this.horasOriginais &&
+        +this.tarefa.horasEstimadas > this.horasDisponiveis) {
       this.erro = `Horas excedidas. O projeto possui apenas ${this.horasDisponiveis} horas disponíveis.`;
       return false;
     }
     this.erro = '';
     return true;
   }
+
 
   validarValorPorHora(): boolean {
     if (this.tarefa.valorPorHora <= 0) {
@@ -146,6 +148,7 @@ export class AdminTarefaComponent implements OnInit {
       () => {
         this.horasOriginais = +this.tarefa.horasEstimadas || 0;
         this.carregarHorasDisponiveisProjeto();
+        this.carregarTarefa();
         this.exibirMensagemSucesso();
       },
       (error) => {
