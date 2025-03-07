@@ -1,9 +1,9 @@
 <div class="sidebar">
 
   <div class="sidebar-logo">
-    <img src="assets/logo-2.png" alt="Logo da aplicação">
+    <img src="/assets/logo-nome.png" alt="Nome da aplicação">
   </div>
-  
+
   <div class="nav-group">
     <div class="section-title">Principal</div>
     <nav>
@@ -88,7 +88,7 @@
       </a>
     </div>
     <div class="user-details">
-      <a routerLink="/logout" class="logout-link">
+      <a routerLink="/login" class="logout-link">
         <button *ngIf="isAuthenticated$ | async" (click)="logout()">Logout</button>
       </a>
     </div>
