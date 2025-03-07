@@ -137,7 +137,6 @@ export class TimeHistoryComponent implements OnInit {
   filterLancamentos(): void {
     let filtered = this.lancamentos;
 
-    // Filter by search query
     if (this.searchQuery.trim() !== '') {
       const query = this.searchQuery.toLowerCase();
       filtered = filtered.filter(lancamento =>
@@ -146,7 +145,6 @@ export class TimeHistoryComponent implements OnInit {
       );
     }
 
-    // Filter by status
     if (this.selectedStatus !== 'todos') {
       filtered = filtered.filter(lancamento =>
         lancamento.status.toLowerCase() === this.selectedStatus.toLowerCase()

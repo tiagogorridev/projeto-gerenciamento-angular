@@ -106,7 +106,6 @@ export class SignupComponent implements OnInit {
 
   openDeleteModal(usuario: Usuario): void {
     if (usuario.id === this.currentUserId) {
-      // Abre o modal de erro de auto-exclusão em vez do modal de confirmação
       this.showSelfDeleteErrorModal = true;
       return;
     }
@@ -115,7 +114,6 @@ export class SignupComponent implements OnInit {
     this.showDeleteModal = true;
   }
 
-  // Adicione este novo método para fechar o modal de erro
   closeSelfDeleteErrorModal(): void {
     this.showSelfDeleteErrorModal = false;
   }

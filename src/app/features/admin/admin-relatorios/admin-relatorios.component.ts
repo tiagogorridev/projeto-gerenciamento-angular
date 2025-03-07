@@ -1,11 +1,13 @@
-import { Usuario } from './../../../core/auth/services/usuario.model';
-import { UsuarioService } from './../../../core/auth/services/usuario.service';
+import { LancamentoHoras } from './../../../core/auth/services/lancamento.model';
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { ClienteService } from '../../../core/auth/services/clients.service';
+import { UsuarioService } from '../../../core/auth/services/usuario.service';
 import { TarefaService } from 'src/app/core/auth/services/tarefa.service';
+import { TimeTrackingService } from '../../../core/auth/services/time-tracking.service.ts.service';
 import { Projeto } from '../../../core/auth/services/projeto.model';
 import { Tarefa } from '../../../core/auth/services/tarefa.model';
+import { Usuario } from './../../../core/auth/services/usuario.model';
 
 
 import jsPDF from 'jspdf';
@@ -29,6 +31,9 @@ export class AdminRelatoriosComponent implements OnInit {
   tarefas: Tarefa[] = [];
   tarefasFiltradas: Tarefa[] = [];
 
+  lancamentos: LancamentoHoras[] = [];
+  lancamentosFiltrados: LancamentoHoras[] = [];
+
   selectedCliente: string = '';
   selectedUsuario: string = '';
   selectedStatus: string = '';
@@ -45,11 +50,18 @@ export class AdminRelatoriosComponent implements OnInit {
   selectedDataInicioTarefa: string = '';
   selectedDataFimTarefa: string = '';
 
+  selectedProjetoLancamento: string = '';
+  selectedClienteLancamento: string = '';
+  selectedUsuarioLancamento: string = '';
+  selectedStatusLancamento: string = '';
+  selectedDataInicioLancamento: string = '';
+  selectedDataFimLancamento: string = '';
+
   totalProjetos: number = 0;
   horasEstimadas: number = 0;
   tempoRegistrado: number = 0;
   custoEstimado: number = 0;
-  custoTrabalhado: number = 0;
+  custoRegistrado: number = 0;
 
   totalTarefas: number = 0;
   tarefasConcluidas: number = 0;
@@ -57,15 +69,22 @@ export class AdminRelatoriosComponent implements OnInit {
   horasEstimadasTarefas: number = 0;
   horasRegistradasTarefas: number = 0;
 
+  totalLancamentos: number = 0;
+  lancamentosAprovados: number = 0;
+  lancamentosEmAnalise: number = 0;
+  lancamentosReprovados: number = 0;
+  horasRegistradasLancamentos: number = 0;
+
   selectedAdmin: string = '';
 
-  activeTab: string = 'projetos';
+  activeTab: 'projetos' | 'tarefas' | 'lancamentos' = 'projetos';
 
   constructor(
     private projectsService: ProjectsService,
     private clienteService: ClienteService,
     private usuarioService: UsuarioService,
     private tarefaService: TarefaService,
+    private timeTrackingService: TimeTrackingService
   ) {}
 
   ngOnInit(): void {
@@ -74,7 +93,9 @@ export class AdminRelatoriosComponent implements OnInit {
     this.carregarUsuarios();
     this.carregarUsuariosAssociados();
     this.carregarTarefas();
+    this.carregarLancamentos();
   }
+
 
   carregarProjetos(): void {
     this.projectsService.getProjetos().subscribe((projetos) => {
@@ -96,6 +117,18 @@ export class AdminRelatoriosComponent implements OnInit {
       }
     );
   }
+  carregarLancamentos(): void {
+    this.timeTrackingService.getTodosLancamentos().subscribe(
+      (lancamentos: LancamentoHoras[]) => {
+        this.lancamentos = lancamentos;
+        this.lancamentosFiltrados = lancamentos;
+        this.atualizarResumoLancamentos();
+      },
+      (error: any) => {
+        console.error('Erro ao carregar lançamentos:', error);
+      }
+    );
+  }
 
   carregarClientes(): void {
     this.clienteService.getClientes().subscribe((clientes) => {
@@ -106,6 +139,7 @@ export class AdminRelatoriosComponent implements OnInit {
   carregarUsuarios(): void {
     this.usuarioService.getUsuarios().subscribe((usuarios) => {
       this.administradores = usuarios.filter(usuario => usuario.perfil === 'ADMIN');
+      this.usuarios = usuarios;
     });
   }
 
@@ -113,10 +147,8 @@ export class AdminRelatoriosComponent implements OnInit {
     this.projectsService.getProjetos().subscribe(projetos => {
       this.projetos = projetos;
 
-      // Map para armazenar usuários únicos
       const usuariosMap = new Map();
 
-      // Contador para rastrear projetos processados
       let projetosProcessados = 0;
 
       projetos.forEach(projeto => {
@@ -135,7 +167,6 @@ export class AdminRelatoriosComponent implements OnInit {
               }
             });
 
-            // Se for o usuário responsável e não estiver na lista, adicioná-lo
             if (projeto.usuarioResponsavel && !usuariosMap.has(projeto.usuarioResponsavel.id)) {
               usuariosMap.set(projeto.usuarioResponsavel.id, projeto.usuarioResponsavel);
             }
@@ -244,7 +275,6 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
 
       this.projectsService.getProjetosPorUsuario(usuarioId).subscribe(projetos => {
 
-        // Filtra projetos apenas para o usuário selecionado
         this.projetosFiltrados = projetos.filter((projeto) => {
           const dataInicioProjeto = new Date(projeto.dataInicio);
           const dataFimProjeto = new Date(projeto.dataFim);
@@ -262,7 +292,6 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
         this.atualizarResumo();
       });
     } else {
-      // Se nenhum usuário for selecionado, mostra os projetos normalmente
       this.projetosFiltrados = this.projetos.filter((projeto) => {
         const dataInicioProjeto = new Date(projeto.dataInicio);
         const dataFimProjeto = new Date(projeto.dataFim);
@@ -294,14 +323,11 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
       const usuarioId = Number(this.selectedUsuarioTarefa);
 
       if (!isNaN(usuarioId)) {
-        // Primeiro, vamos obter todos os projetos que este usuário está associado
         this.projectsService.getProjetosPorUsuario(usuarioId).subscribe(
           (projetos) => {
             const projetosIds = projetos.map(projeto => projeto.id);
 
-            // Agora, filtramos as tarefas que pertencem a esses projetos
             this.tarefasFiltradas = this.tarefas.filter((tarefa) => {
-              // Verificar se a tarefa pertence a algum dos projetos do usuário
               return projetosIds.includes(tarefa.projeto.id) && this.aplicarOutrosFiltrosTarefa(tarefa);
             });
 
@@ -315,13 +341,98 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
         console.error('ID de usuário inválido');
       }
     } else {
-      // Se nenhum usuário for selecionado, aplicar apenas os outros filtros
       this.tarefasFiltradas = this.tarefas.filter(tarefa => this.aplicarOutrosFiltrosTarefa(tarefa));
       this.atualizarResumoTarefas();
     }
   }
 
-  // Método auxiliar para aplicar os outros filtros à tarefa
+  aplicarFiltrosLancamentos(): void {
+    this.lancamentosFiltrados = this.lancamentos.filter((lancamento) => {
+      const dataLancamento = new Date(lancamento.data);
+      const dataInicioFiltro = this.selectedDataInicioLancamento ? new Date(this.selectedDataInicioLancamento) : null;
+      const dataFimFiltro = this.selectedDataFimLancamento ? new Date(this.selectedDataFimLancamento) : null;
+
+      return (
+        (!this.selectedProjetoLancamento || lancamento.projeto.id === Number(this.selectedProjetoLancamento)) &&
+        (!this.selectedClienteLancamento || this.getClienteByProjetoId(lancamento.projeto.id) === Number(this.selectedClienteLancamento)) &&
+        (!this.selectedUsuarioLancamento || lancamento.usuario.id === Number(this.selectedUsuarioLancamento)) &&
+        (!this.selectedStatusLancamento || lancamento.status === this.selectedStatusLancamento) &&
+        (!dataInicioFiltro || dataLancamento >= dataInicioFiltro) &&
+        (!dataFimFiltro || dataLancamento <= dataFimFiltro)
+      );
+    });
+
+    this.atualizarResumoLancamentos();
+  }
+
+  limparFiltrosLancamentos(): void {
+    this.selectedProjetoLancamento = '';
+    this.selectedClienteLancamento = '';
+    this.selectedUsuarioLancamento = '';
+    this.selectedStatusLancamento = '';
+    this.selectedDataInicioLancamento = '';
+    this.selectedDataFimLancamento = '';
+    this.lancamentosFiltrados = this.lancamentos;
+    this.atualizarResumoLancamentos();
+  }
+
+  atualizarResumoLancamentos(): void {
+    this.totalLancamentos = this.lancamentosFiltrados.length;
+    this.lancamentosAprovados = this.lancamentosFiltrados.filter(lancamento =>
+      lancamento.status === 'APROVADO').length;
+    this.lancamentosEmAnalise = this.lancamentosFiltrados.filter(lancamento =>
+      lancamento.status === 'EM_ANALISE').length;
+    this.lancamentosReprovados = this.lancamentosFiltrados.filter(lancamento =>
+      lancamento.status === 'REPROVADO').length;
+    this.horasRegistradasLancamentos = this.lancamentosFiltrados.reduce((total, lancamento) =>
+      total + (lancamento.horas || 0), 0);
+  }
+
+  formatDate(date: string): string {
+    return new Date(date).toLocaleDateString('pt-BR');
+  }
+
+  formatStatus(status: string): string {
+    switch(status) {
+      case 'EM_ANALISE':
+        return 'Em Análise';
+      case 'APROVADO':
+        return 'Aprovado';
+      case 'REPROVADO':
+        return 'Reprovado';
+      default:
+        return status;
+    }
+  }
+
+  formatDuration(horas: number): string {
+    const horasInteiras = Math.floor(horas);
+    const minutos = (horas - horasInteiras) * 60;
+    const minutosInteiros = Math.round(minutos);
+    const minutosFinal = minutosInteiros > 59 ? 59 : minutosInteiros;
+
+    return `${horasInteiras}h ${minutosFinal < 10 ? '0' + minutosFinal : minutosFinal}min`;
+  }
+
+  getClienteNomePorProjetoId(projetoId: number): string {
+    const projeto = this.projetos.find(p => p.id === projetoId);
+    return projeto && projeto.cliente ? projeto.cliente.nome : '-';
+  }
+
+  getClienteByProjetoId(projetoId: number): number | null {
+    const projeto = this.projetos.find(p => p.id === projetoId);
+    return projeto && projeto.cliente ? projeto.cliente.id : null;
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'EM_ANALISE': return 'status-em-analise';
+      case 'APROVADO': return 'status-aprovado';
+      case 'REPROVADO': return 'status-reprovado';
+      default: return 'status-padrao';
+    }
+  }
+
   aplicarOutrosFiltrosTarefa(tarefa: Tarefa): boolean {
     const dataInicioTarefa = new Date(tarefa.dataInicio);
     const dataFimTarefa = new Date(tarefa.dataFim);
@@ -353,30 +464,12 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
     });
   }
 
-  getClienteByProjetoId(projetoId: number): number | null {
-    const projeto = this.projetos.find(p => p.id === projetoId);
-    return projeto ? projeto.cliente.id : null;
-  }
-
   getTarefaPrioridade(tarefa: Tarefa): string {
     if ('prioridade' in tarefa) {
       return (tarefa as any).prioridade;
     } else {
       const projeto = this.projetos.find(p => p.id === tarefa.projeto.id);
       return projeto ? projeto.prioridade : '';
-    }
-  }
-
-  getStatusClass(status: string): string {
-    switch (status) {
-      case 'PLANEJADO':
-      case 'ABERTA': return 'status-planejado';
-      case 'EM_ANDAMENTO': return 'status-em-andamento';
-      case 'CONCLUIDO':
-      case 'CONCLUIDA': return 'status-concluido';
-      case 'CANCELADO':
-      case 'PAUSADA': return 'status-cancelado';
-      default: return 'status-padrao';
     }
   }
 
@@ -394,7 +487,7 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
     this.horasEstimadas = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.horasEstimadas ?? 0), 0);
     this.tempoRegistrado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.tempoRegistrado ?? 0), 0);
     this.custoEstimado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoEstimado ?? 0), 0);
-    this.custoTrabalhado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoTrabalhado ?? 0), 0);
+    this.custoRegistrado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoRegistrado ?? 0), 0);
   }
 
   atualizarResumoTarefas(): void {
@@ -409,7 +502,7 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
       total + (tarefa.tempoRegistrado ?? 0), 0);
   }
 
-  changeTab(tab: string): void {
+  changeTab(tab: 'projetos' | 'tarefas' | 'lancamentos'): void {
     this.activeTab = tab;
   }
 
@@ -423,7 +516,7 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
       this.selectedDataInicio = '';
       this.selectedDataFim = '';
       this.aplicarFiltros();
-    } else {
+    } else if (this.activeTab === 'tarefas') {
       this.selectedProjetoTarefa = '';
       this.selectedClienteTarefa = '';
       this.selectedAdminTarefa = '';
@@ -434,13 +527,26 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
       this.selectedDataFimTarefa = '';
       this.tarefasFiltradas = this.tarefas;
       this.atualizarResumoTarefas();
-    }
+    } else if (this.activeTab === 'lancamentos') {
+      this.limparFiltrosLancamentos();
   }
+}
 
-  exportarPDF() {
-    const elemento = document.querySelector(this.activeTab === 'projetos' ? '.projects-table' : '.tasks-table');
-    const titulo = this.activeTab === 'projetos' ? 'Relatório de Projetos' : 'Relatório de Tarefas';
 
+exportarPDF() {
+  let elemento: HTMLElement | null;
+  let titulo: string;
+
+  if (this.activeTab === 'projetos') {
+    elemento = document.querySelector('.projects-table');
+    titulo = 'Relatório de Projetos';
+  } else if (this.activeTab === 'tarefas') {
+    elemento = document.querySelector('.tasks-table');
+    titulo = 'Relatório de Tarefas';
+  } else {
+    elemento = document.querySelector('.lancamentos-table');
+    titulo = 'Relatório de Lançamentos';
+  }
     if (!elemento) return;
 
     html2canvas(elemento as HTMLElement).then(canvas => {

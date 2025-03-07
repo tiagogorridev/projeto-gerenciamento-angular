@@ -18,7 +18,6 @@ export class ProjectsComponent implements OnInit {
   selectedPrioridade: string = '';
   selectedCliente: string = '';
 
-  // Track loaded project data
   projetosComTempoRegistrado: { [key: number]: number } = {};
   projetosComCustoRegistrado: { [key: number]: number } = {};
   isLoading: boolean = true;

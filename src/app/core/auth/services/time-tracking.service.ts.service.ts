@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { LancamentoHoras } from './lancamento.model';
 
 @Injectable({
   providedIn: 'root'
@@ -112,5 +113,10 @@ export class TimeTrackingService {
     }).pipe(
       catchError(this.handleError)
     );
+  }
+
+    // In time-tracking.service.ts
+  getTodosLancamentos(): Observable<LancamentoHoras[]> {
+    return this.http.get<LancamentoHoras[]>(`${this.apiUrl}/lancamentos`);
   }
 }

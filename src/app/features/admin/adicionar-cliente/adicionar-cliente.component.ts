@@ -63,7 +63,7 @@ export class AdicionarClienteComponent implements OnInit {
 
   openNewClientModal(): void {
     this.showNewClientModal = true;
-    this.errorMessage = ''; // Reset error message
+    this.errorMessage = '';
     this.client = {
       nome: '',
       email: '',
@@ -73,7 +73,7 @@ export class AdicionarClienteComponent implements OnInit {
 
   closeModal(): void {
     this.showNewClientModal = false;
-    this.errorMessage = ''; // Ensure error message is cleared
+    this.errorMessage = '';
     this.client = {
       nome: '',
       email: '',

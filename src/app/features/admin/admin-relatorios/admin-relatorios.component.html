@@ -13,6 +13,9 @@
     <button class="tab-button" [ngClass]="{'active': activeTab === 'tarefas'}" (click)="changeTab('tarefas')">
       Tarefas
     </button>
+    <button class="tab-button" [ngClass]="{'active': activeTab === 'lancamentos'}" (click)="changeTab('lancamentos')">
+      Lançamentos
+    </button>
   </div>
 
   <div *ngIf="activeTab === 'projetos'">
@@ -104,7 +107,7 @@
       </div>
       <div class="summary-card">
         <div class="summary-title">Custo Trabalhado</div>
-        <div class="summary-value">R$ {{ custoTrabalhado| number:'1.2-2' }}</div>
+        <div class="summary-value">R$ {{ custoRegistrado| number:'1.2-2' }}</div>
       </div>
     </div>
 

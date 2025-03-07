@@ -103,22 +103,22 @@ export class ProfileComponent implements OnInit {
 
 
     novaSenhaDiferenteValidator(control: AbstractControl): { [key: string]: boolean } | null {
-      if (!control.value) return null; // Se não tiver valor, não valida
+      if (!control.value) return null;
 
       const senhaAtual = this.securityForm?.get('senhaAtual')?.value;
       if (senhaAtual && control.value === senhaAtual) {
         this.senhaIgualAtual = true;
-        return { 'senhaIgual': true };  // Retorna erro se a senha for igual
+        return { 'senhaIgual': true };
       }
       this.senhaIgualAtual = false;
-      return null;  // Se não for igual, não há erro
+      return null;
     }
 
     private passwordMatchValidator(formGroup: FormGroup): { [key: string]: boolean } | null {
       const novaSenha = formGroup.get('novaSenha')?.value;
       const confirmPassword = formGroup.get('confirmPassword')?.value;
       if (novaSenha && confirmPassword && novaSenha !== confirmPassword) {
-        return { 'passwordMismatch': true };  // Erro se as senhas não coincidirem
+        return { 'passwordMismatch': true };
       }
       return null;
     }
@@ -160,11 +160,10 @@ export class ProfileComponent implements OnInit {
       this.senhaAtualInvalida = false;
       this.mensagemErroSenha = '';
 
-      // Verifica se a nova senha é igual à antiga
       if (this.securityForm.hasError('senhaIgual') || this.senhaIgualAtual) {
         this.erroSenhaIgual = true;
         this.saving = false;
-        return; // Impede o envio se as senhas forem iguais
+        return;
       }
 
       const updatedUser = {
@@ -201,16 +200,13 @@ export class ProfileComponent implements OnInit {
     const control = form.get(controlName);
     if (!control) return false;
 
-    // Para erros normais
     if (errorName !== 'senhaIgual') {
       return control.hasError(errorName) && control.touched;
     }
 
-    // Específico para o erro de senha igual
     return control.hasError(errorName);
   }
 
-    // Método para limpar os erros quando mudar de aba
     private clearMessages(): void {
       this.errorMessage = '';
       this.successMessage = '';
