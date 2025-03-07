@@ -40,7 +40,7 @@ export class AdicionarClienteComponent implements OnInit {
   loadClients(): void {
     this.clienteService.listarClientes().subscribe({
       next: (response: Cliente[]) => {
-        this.clients = response.filter(cliente => cliente.status === 'ATIVO');
+        this.clients = response;
         this.hasClients = this.clients.length > 0;
         this.filterClients();
       },
@@ -56,7 +56,7 @@ export class AdicionarClienteComponent implements OnInit {
                             cliente.email.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesStatus = this.statusFilter === '' ||
                             this.statusFilter === 'Todos' ||
-                            cliente.status === this.statusFilter;
+                            cliente.status === this.statusFilter.toUpperCase();
       return matchesSearch && matchesStatus;
     });
   }
