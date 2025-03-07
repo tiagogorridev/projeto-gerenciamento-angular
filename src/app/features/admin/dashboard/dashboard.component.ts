@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
 
   carregarDados(): void {
     this.usuarioService.getUsuarios().subscribe(usuarios => {
-      const usuariosAtivos = usuarios.filter(u => u.ativo === 'ATIVO');
+      const usuariosAtivos = usuarios.filter(u => u.ativo === 'ATIVO' && u.perfil !== 'ADMIN');
       this.usuariosAtivos = usuariosAtivos.length;
 
       this.timeTrackingService.getLancamentosEmAnalise().subscribe(lancamentosEmAnalise => {
@@ -161,6 +161,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.topUsuarios = horasPorUsuario
+      .filter(item => item.usuario.perfil !== 'ADMIN')
       .sort((a, b) => b.horas - a.horas)
       .slice(0, 5)
       .map(item => ({
