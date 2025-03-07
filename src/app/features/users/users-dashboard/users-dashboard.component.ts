@@ -284,45 +284,35 @@ export class UsersDashboardComponent implements OnInit {
       this.horasTendenciaChart.destroy();
     }
 
+    const tendenciaHorasPorSemana: number[] = [];
+    const semanasLabels: string[] = [];
+
     const hoje = new Date();
-    const ano = hoje.getFullYear();
-    const mes = hoje.getMonth();
-
-    const primeiroDiaMes = new Date(ano, mes, 1);
-    const ultimoDiaMes = new Date(ano, mes + 1, 0);
-
-    const numeroSemanas = Math.ceil((ultimoDiaMes.getDate() - primeiroDiaMes.getDate() + 1) / 7);
-
-    const labels = Array.from({ length: numeroSemanas }, (_, i) => `Semana ${i + 1}`);
-    const data = Array(numeroSemanas).fill(0);
+    const primeiroDiaDoMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+    const semanas = this.obterSemanasDentroDeMes(primeiroDiaDoMes);
 
     this.timeTrackingService.getLancamentosByUsuario(this.usuarioId).subscribe(lancamentos => {
-      const lancamentosMes = lancamentos.filter(l => {
-        const dataLancamento = new Date(l.data);
-        return dataLancamento >= primeiroDiaMes && dataLancamento <= ultimoDiaMes;
+      const lancamentosPorSemana = semanas.map(semana =>
+        lancamentos.filter(l => this.estaNoIntervalo(l, semana.inicio, semana.fim))
+      );
+
+      const tendenciaHorasPorSemana = lancamentosPorSemana.map(semanaDeLancamentos =>
+        this.calcularTotalHoras(semanaDeLancamentos)
+      );
+
+      const semanasLabels = semanas.map((semana, index) => {
+        const inicio = semana.inicio.getDate().toString().padStart(2, '0');
+        const fim = semana.fim.getDate().toString().padStart(2, '0');
+        return `Semana ${index + 1} (${inicio}-${fim}/${(semana.inicio.getMonth() + 1).toString().padStart(2, '0')})`;
       });
-
-      lancamentosMes.forEach(lancamento => {
-        const dataLancamento = new Date(lancamento.data);
-        const diaMes = dataLancamento.getDate();
-        const semanaIndex = Math.floor((diaMes - 1) / 7);
-
-        const duracao = this.calcularDuracao(lancamento.horaInicio, lancamento.horaFim);
-
-        if (semanaIndex < numeroSemanas) {
-          data[semanaIndex] += duracao;
-        }
-      });
-
-      const roundedData = data.map(value => Math.round(value * 10) / 10);
 
       this.horasTendenciaChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: labels,
+          labels: semanasLabels,
           datasets: [{
             label: 'Horas Lançadas',
-            data: roundedData,
+            data: tendenciaHorasPorSemana,
             borderColor: '#8b5cf6',
             backgroundColor: 'rgba(139, 92, 246, 0.1)',
             tension: 0.3,
@@ -334,11 +324,55 @@ export class UsersDashboardComponent implements OnInit {
           maintainAspectRatio: false,
           scales: {
             y: {
-              beginAtZero: true
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Horas'
+              }
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `Horas: ${context.parsed.y.toFixed(1)}h`;
+                }
+              }
             }
           }
         }
       });
     });
+  }
+
+  obterSemanasDentroDeMes(primeiroDiaDoMes: Date): { inicio: Date, fim: Date }[] {
+    const semanas: { inicio: Date, fim: Date }[] = [];
+    const ultimoDiaDoMes = new Date(primeiroDiaDoMes.getFullYear(), primeiroDiaDoMes.getMonth() + 1, 0);
+
+    let diaAtual = new Date(primeiroDiaDoMes);
+
+    while (diaAtual <= ultimoDiaDoMes) {
+      const inicioDaSemana = new Date(diaAtual);
+
+      const fimDaSemana = new Date(inicioDaSemana);
+      fimDaSemana.setDate(inicioDaSemana.getDate() + 6);
+
+      if (fimDaSemana > ultimoDiaDoMes) {
+        semanas.push({ inicio: inicioDaSemana, fim: new Date(ultimoDiaDoMes) });
+        break;
+      } else {
+        semanas.push({ inicio: inicioDaSemana, fim: fimDaSemana });
+      }
+
+      diaAtual = new Date(fimDaSemana);
+      diaAtual.setDate(diaAtual.getDate() + 1);
+    }
+
+    return semanas;
+  }
+
+  estaNoIntervalo(lancamento: any, dataInicio: Date, dataFim: Date): boolean {
+    const dataLancamento = new Date(lancamento.data);
+    return dataLancamento >= dataInicio && dataLancamento <= dataFim;
   }
 }

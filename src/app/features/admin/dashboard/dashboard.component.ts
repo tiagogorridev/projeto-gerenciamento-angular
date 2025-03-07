@@ -29,6 +29,7 @@ export class DashboardComponent implements OnInit {
   horasStatusChart: Chart | null = null;
   horasTendenciaChart: Chart | null = null;
   tendenciaHorasPorSemana: number[] = [];
+  semanasLabels: string[] = [];
 
   constructor(
     private timeTrackingService: TimeTrackingService,
@@ -39,7 +40,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.carregarDados();
   }
-
 
   carregarDados(): void {
     this.usuarioService.getUsuarios().subscribe(usuarios => {
@@ -82,33 +82,54 @@ export class DashboardComponent implements OnInit {
   }
 
   calcularTendenciaHorasSemanas(lancamentos: any[]): void {
-    // Group lancamentos by week
-    const lancamentosPorSemana = [
-      lancamentos.filter(l => this.estaNavSemana(l, 0)),
-      lancamentos.filter(l => this.estaNavSemana(l, 1)),
-      lancamentos.filter(l => this.estaNavSemana(l, 2)),
-      lancamentos.filter(l => this.estaNavSemana(l, 3))
-    ];
+    const hoje = new Date();
+    const primeiroDiaDoMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+    const semanas = this.obterSemanasDentroDeMes(primeiroDiaDoMes);
 
-    // Calculate total hours for each week
+    const lancamentosPorSemana = semanas.map(semana =>
+      lancamentos.filter(l => this.estaNoIntervalo(l, semana.inicio, semana.fim))
+    );
+
     this.tendenciaHorasPorSemana = lancamentosPorSemana.map(semanaDeLancamentos =>
       this.calcularTotalHoras(semanaDeLancamentos)
     );
+
+    this.semanasLabels = semanas.map((semana, index) => {
+      const inicio = semana.inicio.getDate().toString().padStart(2, '0');
+      const fim = semana.fim.getDate().toString().padStart(2, '0');
+      return `Semana ${index + 1} (${inicio}-${fim}/${(semana.inicio.getMonth() + 1).toString().padStart(2, '0')})`;
+    });
   }
 
-  estaNavSemana(lancamento: any, semanaIndex: number): boolean {
+  obterSemanasDentroDeMes(primeiroDiaDoMes: Date): { inicio: Date, fim: Date }[] {
+    const semanas: { inicio: Date, fim: Date }[] = [];
+    const ultimoDiaDoMes = new Date(primeiroDiaDoMes.getFullYear(), primeiroDiaDoMes.getMonth() + 1, 0);
+
+    let diaAtual = new Date(primeiroDiaDoMes);
+
+    while (diaAtual <= ultimoDiaDoMes) {
+      const inicioDaSemana = new Date(diaAtual);
+
+      const fimDaSemana = new Date(inicioDaSemana);
+      fimDaSemana.setDate(inicioDaSemana.getDate() + 6);
+
+      if (fimDaSemana > ultimoDiaDoMes) {
+        semanas.push({ inicio: inicioDaSemana, fim: new Date(ultimoDiaDoMes) });
+        break;
+      } else {
+        semanas.push({ inicio: inicioDaSemana, fim: fimDaSemana });
+      }
+
+      diaAtual = new Date(fimDaSemana);
+      diaAtual.setDate(diaAtual.getDate() + 1);
+    }
+
+    return semanas;
+  }
+
+  estaNoIntervalo(lancamento: any, dataInicio: Date, dataFim: Date): boolean {
     const dataLancamento = new Date(lancamento.data);
-    const hoje = new Date();
-    const primeiroDiaSemana = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() - hoje.getDay());
-
-    // Calcula a data do início da semana desejada
-    const inicioDaSemana = new Date(primeiroDiaSemana);
-    inicioDaSemana.setDate(primeiroDiaSemana.getDate() - (semanaIndex * 7));
-
-    const fimDaSemana = new Date(inicioDaSemana);
-    fimDaSemana.setDate(inicioDaSemana.getDate() + 6);
-
-    return dataLancamento >= inicioDaSemana && dataLancamento <= fimDaSemana;
+    return dataLancamento >= dataInicio && dataLancamento <= dataFim;
   }
 
   calcularTotalHoras(lancamentos: any[]): number {
@@ -233,9 +254,9 @@ export class DashboardComponent implements OnInit {
         datasets: [{
           data: dadosHoras,
           backgroundColor: [
-            '#10b981',  // Green for approved
-            '#ef4444',  // Red for rejected
-            '#f59e0b'   // Amber for under analysis
+            '#10b981',
+            '#ef4444',
+            '#f59e0b'
           ],
           borderWidth: 1
         }]
@@ -267,16 +288,13 @@ export class DashboardComponent implements OnInit {
       this.horasTendenciaChart.destroy();
     }
 
-    const labels = ['Semana 4', 'Semana 3', 'Semana 2', 'Semana 1'].reverse(); // Inverter para mostrar da mais antiga para a mais recente
-    const data = [...this.tendenciaHorasPorSemana].reverse();
-
     this.horasTendenciaChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: labels,
+        labels: this.semanasLabels,
         datasets: [{
           label: 'Horas Lançadas',
-          data: data,
+          data: this.tendenciaHorasPorSemana,
           borderColor: '#8b5cf6',
           backgroundColor: 'rgba(139, 92, 246, 0.1)',
           tension: 0.3,
