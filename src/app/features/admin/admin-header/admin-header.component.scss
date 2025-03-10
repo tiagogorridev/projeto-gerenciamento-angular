@@ -40,6 +40,28 @@ $light-white: #FEFEFE;
     margin-left: auto; /* Move os itens da nav para a direita */
   }
 
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: $strong-purple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    i {
+      color: $white;
+      font-size: 18px;
+    }
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+    }
+  }
+
   .user-profile {
     position: relative;
     display: flex;
@@ -118,6 +140,47 @@ $light-white: #FEFEFE;
       height: 1px;
       background-color: $light-gray;
       margin: 4px 0;
+    }
+  }
+}
+
+:root {
+  --background: #{$white};
+  --text: #{$dark};
+  --card-bg: #{$white};
+  --border: #{$light-gray};
+}
+
+body.dark-theme {
+  --background: #{$dark};
+  --text: #{$white};
+  --card-bg: #2a2b36;
+  --border: #3f4152;
+
+  background-color: var(--background);
+  color: var(--text);
+
+  .header {
+    color: var(--text);
+  }
+
+  .profile-menu {
+    background-color: var(--card-bg);
+
+    .menu-item {
+      color: var(--text);
+
+      i {
+        color: $light-gray;
+      }
+
+      &:hover {
+        background-color: rgba(139, 92, 246, 0.2);
+      }
+    }
+
+    .divider {
+      background-color: var(--border);
     }
   }
 }

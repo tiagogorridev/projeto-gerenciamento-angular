@@ -1,6 +1,9 @@
 <header class="header">
-
   <div class="nav-actions">
+    <div class="theme-toggle" (click)="toggleTheme()">
+      <i class="pi" [ngClass]="isDarkTheme ? 'pi-sun' : 'pi-moon'"></i>
+    </div>
+
     <div class="user-profile">
       <div class="user-avatar" (click)="toggleProfileMenu()">
         <i class="pi pi-user"></i>

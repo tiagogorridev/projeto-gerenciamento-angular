@@ -10,6 +10,7 @@ import { AuthService } from '../../../core/auth/services/auth.service';
 export class AdminHeaderComponent implements OnInit {
   showProfileMenu: boolean = false;
   isAuthenticated$ = this.authService.isAuthenticated$;
+  isDarkTheme: boolean = false;
 
   constructor(
     private router: Router,
@@ -17,8 +18,24 @@ export class AdminHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.isDarkTheme = true;
+      document.body.classList.add('dark-theme');
+    }
   }
 
+  toggleTheme(): void {
+    this.isDarkTheme = !this.isDarkTheme;
+
+    if (this.isDarkTheme) {
+      document.body.classList.add('dark-theme');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-theme');
+      localStorage.setItem('theme', 'light');
+    }
+  }
 
   logout() {
     this.authService.logout().subscribe();
