@@ -22,6 +22,10 @@
       <i class="pi pi-chevron-down dropdown-icon"></i>
     </div>
 
+    <button class="new-user-btn" (click)="openReactivateModal()">
+      Reativar Usuário
+    </button>
+
     <button class="new-user-btn" (click)="openNewUserModal()">
       Novo Usuário
     </button>
@@ -56,10 +60,10 @@
 
   <!-- Modal de novo usuário -->
   <div class="modal" *ngIf="showNewUserModal">
-  <div class="modal-content">
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
+    <div class="modal-content">
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
       <h2>Novo Usuário</h2>
 
       <form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm">
@@ -118,6 +122,7 @@
     </div>
   </div>
 
+  <!-- Modal de erro de auto-exclusão -->
   <div class="modal" *ngIf="showSelfDeleteErrorModal">
     <div class="modal-content error-modal">
       <h2>Não é possível se auto excluir</h2>
@@ -125,6 +130,55 @@
 
       <div class="modal-actions">
         <button type="button" class="cancel-btn" (click)="closeSelfDeleteErrorModal()">Voltar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de reativação de usuários -->
+  <div class="modal" *ngIf="showReactivateModal">
+    <div class="modal-content">
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <h2>Reativar Usuários</h2>
+
+      <div class="input-group" style="margin-bottom: 16px;">
+        <input type="text" placeholder="Pesquisar usuários inativos..." class="input-field"
+               [(ngModel)]="inactiveSearchTerm" (ngModelChange)="filterInactiveUsers()">
+        <i class="pi pi-search search-icon"></i>
+      </div>
+
+      <div *ngIf="loadingInactiveUsers" class="loading-indicator">
+        <p>Carregando usuários inativos...</p>
+      </div>
+
+      <div *ngIf="!loadingInactiveUsers && !hasInactiveUsers" class="empty-state-small">
+        <p>Nenhum usuário inativo encontrado</p>
+      </div>
+
+      <div class="inactive-users-list" *ngIf="!loadingInactiveUsers && hasInactiveUsers">
+        <div class="usuario-row headers">
+          <div class="usuario-name">Nome</div>
+          <div class="usuario-email">Email</div>
+          <div class="usuario-status">Perfil</div>
+          <div class="usuario-actions">Ações</div>
+        </div>
+
+        <div class="usuario-row" *ngFor="let usuario of filteredInactiveUsers">
+          <div class="usuario-name">{{ usuario.nome }}</div>
+          <div class="usuario-email">{{ usuario.email }}</div>
+          <div class="usuario-status">{{ usuario.perfil === 'ADMIN' ? 'Administrador' : 'Usuário' }}</div>
+          <div class="usuario-actions">
+            <button class="reactivate-btn" (click)="reactivateUser(usuario)">
+              <i class="pi pi-refresh"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeReactivateModal()">Fechar</button>
       </div>
     </div>
   </div>

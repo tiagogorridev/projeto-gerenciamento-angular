@@ -114,4 +114,12 @@ export class UsuarioService {
         })
       );
   }
+
+  listarInativos(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.apiUrl}/inativos`);
+  }
+
+  reativarUsuario(id: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/reativar`, {});
+  }
 }

@@ -5,9 +5,7 @@
     <h1>Clientes</h1>
   </div>
 
-  <div *ngIf="successMessage" class="success-message">
-    {{ successMessage }}
-  </div>
+
 
   <div class="search-filter-container">
     <div class="input-group">
@@ -17,10 +15,9 @@
 
     <div class="input-group">
       <select class="input-field" [(ngModel)]="statusFilter" (ngModelChange)="filterClients()">
-        <option value="">Status</option>
-        <option>Ativo</option>
-        <option>Inativo</option>
-        <option>Todos</option>
+        <option value="Ativo">Ativo</option>
+        <option value="Inativo">Inativo</option>
+        <option value="Todos">Todos</option>
       </select>
       <i class="pi pi-chevron-down dropdown-icon"></i>
     </div>

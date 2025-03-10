@@ -18,11 +18,18 @@ export class SignupComponent implements OnInit {
   users: Usuario[] = [];
   showNewUserModal: boolean = false;
   showDeleteModal: boolean = false;
+  showReactivateModal: boolean = false;
   selectedUser: Usuario | null = null;
   errorMessage: string = '';
   successMessage: string = '';
   currentUserId: number | null = null;
   showSelfDeleteErrorModal: boolean = false;
+
+  inactiveUsers: Usuario[] = [];
+  hasInactiveUsers: boolean = false;
+  filteredInactiveUsers: Usuario[] = [];
+  inactiveSearchTerm: string = '';
+  loadingInactiveUsers: boolean = false;
 
   user: Usuario = {
     nome: '',
@@ -194,4 +201,66 @@ export class SignupComponent implements OnInit {
       this.errorMessage = 'Por favor, preencha todos os campos corretamente.';
     }
   }
+
+  openReactivateModal(): void {
+    this.showReactivateModal = true;
+    this.errorMessage = '';
+    this.inactiveSearchTerm = '';
+    this.loadInactiveUsers();
+  }
+
+  closeReactivateModal(): void {
+    this.showReactivateModal = false;
+    this.inactiveUsers = [];
+    this.filteredInactiveUsers = [];
+  }
+
+  loadInactiveUsers(): void {
+    this.loadingInactiveUsers = true;
+    this.usuarioService.listarInativos().subscribe({
+      next: (response: Usuario[]) => {
+        this.inactiveUsers = response;
+        this.filteredInactiveUsers = [...this.inactiveUsers];
+        this.hasInactiveUsers = this.inactiveUsers.length > 0;
+        this.loadingInactiveUsers = false;
+      },
+      error: (error: Error) => {
+        console.error('Erro ao carregar usuários inativos:', error);
+        this.loadingInactiveUsers = false;
+        this.errorMessage = 'Erro ao carregar usuários inativos.';
+      }
+    });
+  }
+
+  filterInactiveUsers(): void {
+    this.filteredInactiveUsers = this.inactiveUsers.filter(usuario =>
+      usuario.nome.toLowerCase().includes(this.inactiveSearchTerm.toLowerCase()) ||
+      usuario.email.toLowerCase().includes(this.inactiveSearchTerm.toLowerCase())
+    );
+  }
+reactivateUser(usuario: Usuario): void {
+  if (usuario && usuario.id) {
+    this.usuarioService.reativarUsuario(usuario.id).subscribe({
+      next: (response) => {
+        this.closeReactivateModal();
+
+        this.successMessage = 'Usuário reativado com sucesso!';
+
+        setTimeout(() => {
+          this.successMessage = '';
+        }, 3000);
+
+        this.carregarUsuarios();
+      },
+      error: (error) => {
+        console.error('Erro ao reativar usuário:', error);
+        this.errorMessage = 'Erro ao reativar usuário. Tente novamente.';
+
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 3000);
+      }
+    });
+  }
+}
 }

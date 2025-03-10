@@ -12,7 +12,6 @@ export class AdicionarClienteComponent implements OnInit {
   filteredClients: Cliente[] = [];
   hasClients: boolean = false;
 
-  // Clientes inativos para o modal de reativação
   inactiveClients: Cliente[] = [];
   hasInactiveClients: boolean = false;
   filteredInactiveClients: Cliente[] = [];
@@ -20,7 +19,7 @@ export class AdicionarClienteComponent implements OnInit {
   loadingInactiveClients: boolean = false;
 
   searchTerm: string = '';
-  statusFilter: string = '';
+  statusFilter: string = 'Ativo';
 
   showNewClientModal: boolean = false;
   showDeleteModal: boolean = false;
@@ -64,9 +63,12 @@ export class AdicionarClienteComponent implements OnInit {
                             cliente.email.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesStatus = this.statusFilter === '' ||
                             this.statusFilter === 'Todos' ||
-                            cliente.status === this.statusFilter.toUpperCase();
+                            (this.statusFilter === 'Ativo' && cliente.status === 'ATIVO') ||
+                            (this.statusFilter === 'Inativo' && cliente.status === 'INATIVO');
       return matchesSearch && matchesStatus;
     });
+
+    this.hasClients = this.filteredClients.length > 0;
   }
 
   openNewClientModal(): void {
@@ -92,11 +94,17 @@ export class AdicionarClienteComponent implements OnInit {
   onSubmit(form: any): void {
     if (form.valid) {
       this.clienteService.cadastrarCliente(this.client).subscribe({
-        next: (response) => {
+        next: (response: Cliente) => {
           this.successMessage = 'Cliente criado com sucesso!';
           this.errorMessage = '';
           this.closeModal();
-          this.loadClients();
+
+          if (response) {
+            this.clients.push(response);
+            this.filterClients();
+          } else {
+            this.loadClients();
+          }
         },
         error: (error: any) => {
           if (error.status === 400) {
@@ -136,8 +144,11 @@ export class AdicionarClienteComponent implements OnInit {
       this.clienteService.excluirCliente(this.selectedClient.id).subscribe({
         next: () => {
           this.successMessage = 'Cliente excluído com sucesso!';
+
+          this.clients = this.clients.filter(c => c.id !== this.selectedClient?.id);
+          this.filterClients();
+
           this.closeDeleteModal();
-          this.loadClients();
         },
         error: (error) => {
           console.error('Erro ao excluir cliente:', error);
@@ -147,7 +158,6 @@ export class AdicionarClienteComponent implements OnInit {
     }
   }
 
-  // Métodos para o modal de reativação de clientes
   openReactivateModal(): void {
     this.showReactivateModal = true;
     this.errorMessage = '';
@@ -188,21 +198,12 @@ export class AdicionarClienteComponent implements OnInit {
   reactivateClient(cliente: Cliente): void {
     if (cliente && cliente.id) {
       this.clienteService.reativarCliente(cliente.id).subscribe({
-        next: () => {
-          // Remove o cliente da lista de inativos
-          this.inactiveClients = this.inactiveClients.filter(c => c.id !== cliente.id);
-          this.filteredInactiveClients = this.filteredInactiveClients.filter(c => c.id !== cliente.id);
-          this.hasInactiveClients = this.inactiveClients.length > 0;
-
-          // Recarregar a lista de clientes ativos
-          this.loadClients();
+        next: (reactivatedClient: Cliente) => {
+          this.closeReactivateModal();
 
           this.successMessage = `Cliente ${cliente.nome} reativado com sucesso!`;
 
-          // Fechar o modal se não houver mais clientes inativos
-          if (this.inactiveClients.length === 0) {
-            this.closeReactivateModal();
-          }
+          this.loadClients();
         },
         error: (error) => {
           console.error('Erro ao reativar cliente:', error);
