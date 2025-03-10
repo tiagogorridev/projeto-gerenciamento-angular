@@ -348,11 +348,11 @@ export class EditProjectsComponent implements OnInit {
       );
     }
   }
+
   loadProjectMembers(): void {
     if (this.projectId) {
       this.projectMemberService.getProjectMembers(Number(this.projectId)).subscribe({
         next: (members) => {
-          // Os membros já vêm filtrados do serviço (apenas ativos)
           this.originalMembers = members;
           this.members = [...this.originalMembers];
           console.log('Membros ativos:', this.members);
@@ -430,7 +430,7 @@ export class EditProjectsComponent implements OnInit {
     let successCount = 0;
 
     this.selectedEmails.forEach(email => {
-      this.projectMemberService.getUserIdByEmail(email).subscribe({
+      this.usuarioService.getUserIdByEmail(email).subscribe({
         next: (userId) => {
           if (userId) {
             this.projectsService.addMemberToProject(userId, projectId).subscribe({
@@ -592,7 +592,7 @@ export class EditProjectsComponent implements OnInit {
   removeMember(email: string): void {
     if (!this.projectId) return;
 
-    this.projectMemberService.getUserIdByEmail(email).subscribe({
+    this.usuarioService.getUserIdByEmail(email).subscribe({
       next: (userId) => {
         if (userId) {
           this.projectMemberService.removeProjectMember(Number(this.projectId), userId).subscribe({

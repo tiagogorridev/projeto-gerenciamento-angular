@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { Usuario } from './usuario.model';
-import { Projeto } from './projeto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +24,14 @@ export class UsuarioService {
       .pipe(
         catchError(this.handleError)
       );
+  }
+
+  getUserIdByEmail(email: string): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/by-email`, {
+      params: { email }
+    }).pipe(
+      catchError(this.handleError)
+    );
   }
 
   getUsuarios(): Observable<Usuario[]> {

@@ -10,13 +10,7 @@ export class ProjectMemberService {
 
   constructor(private http: HttpClient) {}
 
-  getUserIdByEmail(email: string): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/usuarios/by-email`, {
-      params: { email }
-    }).pipe(
-      catchError(this.handleError)
-    );
-  }
+
 
   getProjectMembers(projectId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/projetos/${projectId}/membros`).pipe(
