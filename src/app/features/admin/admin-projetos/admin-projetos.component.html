@@ -67,7 +67,7 @@
       <div class="project-name">{{ projeto.nome }}</div>
       <div class="project-client">{{ projeto.cliente?.nome }}</div>
       <div class="project-progress" [ngClass]="{'text-danger': (projeto.tempoRegistrado || 0) > (projeto.horasEstimadas || 0)}">
-        {{ projeto.tempoRegistrado || 0 }}h de {{ projeto.horasEstimadas || 0 }}h
+        {{ formatTime(projeto.tempoRegistrado || 0) }} de {{ formatTime(projeto.horasEstimadas || 0) }}
       </div>
       <div class="project-cost" [ngClass]="{'text-danger': (projeto.custoRegistrado || 0) > (projeto.custoEstimado || 0)}">
         {{ projeto.custoRegistrado || 0 | currency:'BRL' }} de

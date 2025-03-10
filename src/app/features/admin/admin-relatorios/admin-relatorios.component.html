@@ -100,11 +100,12 @@
       </div>
       <div class="summary-card">
         <div class="summary-title">Custo Estimado</div>
-        <div class="summary-value">R$ {{ custoEstimado | number:'1.2-2' }}</div>
+        <div class="summary-value">{{ formatarMoeda(custoEstimado) }}</div>
       </div>
+
       <div class="summary-card">
         <div class="summary-title">Custo Trabalhado</div>
-        <div class="summary-value">R$ {{ custoRegistrado| number:'1.2-2' }}</div>
+        <div class="summary-value">{{ formatarMoeda(custoRegistrado) }}</div>
       </div>
     </div>
 
@@ -130,8 +131,10 @@
           <div class="project-progress" [ngClass]="{'text-danger': (projeto.tempoRegistrado || 0) > (projeto.horasEstimadas || 0)}">
             {{ projeto.tempoRegistrado }} de {{ projeto.horasEstimadas }}h
           </div>
-          <div class="project-cost">
-            R$ {{ projeto.custoRegistrado | number:'1.2-2' }} de R$ {{ projeto.custoEstimado | number:'1.2-2' }}
+          <div *ngIf="projeto.custoRegistrado != undefined && projeto.custoEstimado != undefined">
+            <div class="project-cost">
+              {{ formatarMoeda(projeto.custoRegistrado) }} de {{ formatarMoeda(projeto.custoEstimado) }}
+            </div>
           </div>
           <div class="project-status">
             <span class="status-pill {{ projeto.status }}">{{ projeto.status }}</span>

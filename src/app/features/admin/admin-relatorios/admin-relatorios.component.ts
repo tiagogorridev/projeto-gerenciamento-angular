@@ -6,6 +6,7 @@ import { ClienteService } from '../../../core/auth/services/clients.service';
 import { TarefaService } from 'src/app/core/auth/services/tarefa.service';
 import { Projeto } from '../../../core/auth/services/projeto.model';
 import { Tarefa } from '../../../core/auth/services/tarefa.model';
+import { CurrencyPipe } from '@angular/common';
 
 
 import jsPDF from 'jspdf';
@@ -14,7 +15,8 @@ import html2canvas from 'html2canvas';
 @Component({
   selector: 'app-admin-relatorios',
   templateUrl: './admin-relatorios.component.html',
-  styleUrls: ['./admin-relatorios.component.scss']
+  styleUrls: ['./admin-relatorios.component.scss'],
+  providers: [CurrencyPipe]
 })
 
 export class AdminRelatoriosComponent implements OnInit {
@@ -66,6 +68,7 @@ export class AdminRelatoriosComponent implements OnInit {
     private clienteService: ClienteService,
     private usuarioService: UsuarioService,
     private tarefaService: TarefaService,
+    private currencyPipe: CurrencyPipe
   ) {}
 
   ngOnInit(): void {
@@ -197,6 +200,10 @@ buscarMembrosDosProjetos(projetos: Projeto[]): void {
       }
     );
   });
+}
+
+formatarMoeda(valor: number): string {
+  return `R$ ${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 atualizarListaUsuarios(usuariosMap: Map<number, any>): void {

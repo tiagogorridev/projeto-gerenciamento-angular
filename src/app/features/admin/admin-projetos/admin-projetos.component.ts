@@ -109,6 +109,17 @@ export class AdminProjetosComponent implements OnInit {
     });
   }
 
+  formatTime(totalHoras: number): string {
+    const horas = Math.floor(totalHoras);
+    const minutos = Math.round((totalHoras - horas) * 60);
+
+    if (minutos > 0) {
+      return `${horas}h e ${minutos}m`;
+    } else {
+      return `${horas}h`;
+    }
+  }
+
   filterProjects(): void {
     let filtered = this.projects;
 
