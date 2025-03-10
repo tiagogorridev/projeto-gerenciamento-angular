@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
-import { Projeto } from '../../../core/auth/services/projeto.model';
+import { Projeto } from '../../../core/auth/model/projeto.model';
 import { forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -40,7 +40,7 @@ export class ProjectsComponent implements OnInit {
         this.projetos = projetos;
 
         const tempoRequests = projetos.map(projeto =>
-          this.projetoService.getTempoRegistradoProjeto(projeto.id).pipe(
+          this.projetoService.getTempoRegistradoProjeto(projeto.id || 0).pipe(
             map(response => {
               console.log('Resposta do tempo registrado:', response);
               if (response !== null && typeof response === 'object') {
@@ -59,8 +59,8 @@ export class ProjectsComponent implements OnInit {
           tempos => {
             console.log('Tempos registrados:', tempos);
             projetos.forEach((projeto, index) => {
-              this.projetosComTempoRegistrado[projeto.id] = tempos[index];
-              this.projetosComCustoRegistrado[projeto.id] = projeto.custoRegistrado || 0;
+              this.projetosComTempoRegistrado[projeto.id || 0] = tempos[index];
+              this.projetosComCustoRegistrado[projeto.id || 0] = projeto.custoRegistrado || 0;
             });
 
             this.filteredProjetos = projetos;
@@ -77,12 +77,12 @@ export class ProjectsComponent implements OnInit {
   }
 
   getProgresso(projeto: Projeto): string {
-    const tempoRegistrado = this.projetosComTempoRegistrado[projeto.id] || 0;
+    const tempoRegistrado = this.projetosComTempoRegistrado[projeto.id || 0] || 0;
     return `${tempoRegistrado}h / ${projeto.horasEstimadas}h`;
   }
 
   getCusto(projeto: Projeto): string {
-    const custoRegistrado = this.projetosComCustoRegistrado[projeto.id] || 0;
+    const custoRegistrado = this.projetosComCustoRegistrado[projeto.id || 0] || 0;
     return `R$${custoRegistrado.toFixed(2)} / R$${projeto.custoEstimado.toFixed(2)}`;
   }
 

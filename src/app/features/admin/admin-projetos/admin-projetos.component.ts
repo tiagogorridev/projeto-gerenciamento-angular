@@ -1,8 +1,9 @@
+import { AssociarUsuarioService } from './../../../core/auth/services/associar-usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { ClienteService } from '../../../core/auth/services/clients.service';
 import { Router } from '@angular/router';
-import { Cliente } from '../../../core/auth/services/clients.service';
+import { Cliente } from '../../../core/auth/model/clients.model';
 import { forkJoin, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 
@@ -45,6 +46,7 @@ export class AdminProjetosComponent implements OnInit {
   constructor(
     private projectsService: ProjectsService,
     private clienteService: ClienteService,
+    private associarUsuarioService: AssociarUsuarioService,
     private router: Router
   ) {}
 
@@ -200,8 +202,7 @@ export class AdminProjetosComponent implements OnInit {
       const usuarioId = parseInt(localStorage.getItem('usuario_id') || '0', 10);
 
       const clienteId = this.project.cliente;
-      const clienteCompleto = this.clientes.find(c => c.id.toString() === clienteId.toString());
-
+      const clienteCompleto = this.clientes.find(c => c.id !== undefined && c.id.toString() === clienteId.toString());
       const projetoParaEnviar = {
         ...this.project,
         usuarioResponsavel: { id: usuarioId },
@@ -210,7 +211,7 @@ export class AdminProjetosComponent implements OnInit {
 
       this.projectsService.createProjeto(projetoParaEnviar).subscribe({
         next: (resposta) => {
-          this.projectsService.addMemberToProject(usuarioId, resposta.id).subscribe({
+          this.associarUsuarioService.addMemberToProject(usuarioId, resposta.id).subscribe({
             next: () => {
               console.log('Admin adicionado como membro do projeto automaticamente');
             },

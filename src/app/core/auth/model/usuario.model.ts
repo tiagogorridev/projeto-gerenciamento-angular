@@ -3,11 +3,9 @@ export interface Usuario {
   nome: string;
   email: string;
   senha: string;
-  perfil: 'ADMIN' | 'USUARIO';
-  confirmPassword?: string;
-  ativo: 'ATIVO';
-  id_projeto?: number;
-  id_usuario?: number;
+  perfil: string;
+  ativo: 'ATIVO' | 'INATIVO';
   dataCriacao?: string;
   ultimoLogin?: string;
+  confirmPassword?: string;
 }

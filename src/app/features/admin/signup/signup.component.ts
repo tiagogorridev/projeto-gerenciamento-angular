@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../../core/auth/services/usuario.service';
-import { Usuario } from '../../../core/auth/services/usuario.model';
+import { Usuario } from '../../../core/auth/model/usuario.model';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../../core/auth/services/auth.service';
 
@@ -158,19 +158,22 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  onSubmit(form: any): void {
-    if (form.valid) {
+  onSubmit(userForm: NgForm) {
+    if (this.user.senha !== this.user.confirmPassword) {
+      return;
+    }
+
+    if (userForm.valid) {
       const novoUsuario: Usuario = {
         nome: this.user.nome,
         email: this.user.email,
         senha: this.user.senha,
         perfil: this.user.perfil,
-        confirmPassword: this.user.confirmPassword,
         ativo: 'ATIVO'
       };
 
       this.usuarioService.cadastrarUsuario(novoUsuario).subscribe({
-        next: (response) => {
+        next: () => {
           this.successMessage = 'Usuário cadastrado com sucesso!';
           this.errorMessage = '';
           setTimeout(() => {

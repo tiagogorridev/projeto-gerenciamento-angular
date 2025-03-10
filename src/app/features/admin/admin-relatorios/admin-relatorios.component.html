@@ -275,7 +275,7 @@
         <div class="task-row" *ngFor="let tarefa of tarefasFiltradas">
           <div class="task-name">{{ tarefa.nome }}</div>
           <div class="task-project">{{ tarefa.projeto.nome }}</div>
-          <div class="task-user">{{ tarefa.usuarioResponsavel.nome }}</div>
+          <div class="task-user">{{ tarefa.usuarioResponsavel?.nome }}</div>
           <div class="task-status">
             <span class="status-pill {{ tarefa.status }}">{{ tarefa.status }}</span>
           </div>

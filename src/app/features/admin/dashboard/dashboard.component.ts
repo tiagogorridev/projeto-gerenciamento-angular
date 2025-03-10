@@ -3,8 +3,8 @@ import { TimeTrackingService } from '../../../core/auth/services/time-tracking.s
 import { UsuarioService } from '../../../core/auth/services/usuario.service';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { forkJoin } from 'rxjs';
-import { Usuario } from '../../../core/auth/services/usuario.model';
-import { Projeto } from '../../../core/auth/services/projeto.model';
+import { Usuario } from '../../../core/auth/model/usuario.model';
+import { Projeto } from '../../../core/auth/model/projeto.model';
 import Chart from 'chart.js/auto';
 
 @Component({

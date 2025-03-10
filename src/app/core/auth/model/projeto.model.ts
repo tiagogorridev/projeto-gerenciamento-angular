@@ -1,26 +1,22 @@
+import { Usuario } from './usuario.model';
 import { Tarefa } from './tarefa.model';
 
 export interface Projeto {
-  id: number;
+  id?: number;
   nome: string;
   descricao: string;
   horasEstimadas: number;
   custoEstimado: number;
   dataInicio: string;
   dataFim: string;
-  status: string;
-  prioridade: string;
+  status: 'PLANEJADO' | 'EM_ANDAMENTO' | 'CONCLUIDO' | 'CANCELADO';
+  prioridade: 'ALTA' | 'MEDIA' | 'BAIXA';
   tempoRegistrado?: number;
-  horasTrabalhadas?: number;
-  custoTrabalhado?: number;
   custoRegistrado?: number;
-  membrosAssociados?: Membro[];
+  membrosAssociados?: Usuario[];
   usuarioResponsavel: {
     id: number;
     nome: string;
-    email: string;
-    dataCriacao: string;
-    perfil: string;
   };
   cliente: {
     id: number;
@@ -30,10 +26,6 @@ export interface Projeto {
   };
   dataCriacao: string;
   tarefas?: Tarefa[];
-}
-
-export interface Membro {
-  id: number;
-  nome: string;
-  email: string;
+  horasTrabalhadas?: number;
+  custoTrabalhado?: number;
 }

@@ -50,13 +50,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let projeto of filteredProjetos" (click)="navegarParaProjeto(projeto.id, projeto.nome)">
+        <tr *ngFor="let projeto of filteredProjetos" (click)="navegarParaProjeto(projeto.id || 0, projeto.nome)">
           <td>{{projeto.nome}}</td>
           <td>{{projeto.cliente.nome}}</td>
           <td>{{getProgresso(projeto)}}</td>
           <td>
             <span [ngClass]="{'status': true,
-                            'status-em-andamento': projeto.status === 'EM ANDAMENTO',
+                            'status-em-andamento': projeto.status === 'EM_ANDAMENTO',
                             'status-concluido': projeto.status === 'CONCLUIDO',
                             'status-cancelado': projeto.status === 'CANCELADO',
                             'status-planejado': projeto.status === 'PLANEJADO'}">

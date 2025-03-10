@@ -1,16 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Cliente {
-  id: number;
-  nome: string;
-  email: string;
-  status: string;
-  totalProjetos: number;
-  dataCadastro: Date;
-  dataAtualizacao: Date;
-}
+import { Cliente } from '../model/clients.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +39,7 @@ export class ClienteService {
     return this.http.get<Cliente[]>(`${this.apiUrl}/inativos`);
   }
 
-  reativarCliente(id: number): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}/reativar`, {});
+  reativarCliente(id: number): Observable<Cliente> {
+    return this.http.patch<Cliente>(`${this.apiUrl}/${id}/reativar`, {});
   }
 }

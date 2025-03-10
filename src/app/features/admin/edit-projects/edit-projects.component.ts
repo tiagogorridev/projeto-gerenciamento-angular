@@ -1,3 +1,4 @@
+import { AssociarUsuarioService } from './../../../core/auth/services/associar-usuario.service';
 import { TarefaService } from './../../../core/auth/services/tarefa.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,14 +8,10 @@ import { ClienteService } from '../../../core/auth/services/clients.service';
 import { ProjectMemberService } from '../../../core/auth/services/project-member.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../../core/auth/services/auth.service';
+import { Tarefa } from 'src/app/core/auth/model/tarefa.model';
+import { Cliente } from 'src/app/core/auth/model/clients.model';
 
 
-export interface Cliente {
-  id: number;
-  nome: string;
-  email: string;
-  status?: string;
-}
 export interface ProjectDetails {
   name: string;
   client: string;
@@ -27,25 +24,7 @@ export interface ProjectDetails {
   startDate?: string;
   endDate?: string;
 }
-export interface Tarefa {
-  id?: number;
-  nome: string;
-  descricao: string;
-  dataInicio: string;
-  dataFim: string;
-  responsavel: string;
-  status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA';
-  projeto: { id: number };
-  horasEstimadas: number;
-  tempoRegistrado?: number;
-  usuarioResponsavel?: {
-    id: number;
-    nome?: string;
-    email?: string;
-  };
-  valorPorHora: number;
-  custoRegistrado: number;
-}
+
 
 interface Member {
   email: string;
@@ -131,7 +110,9 @@ export class EditProjectsComponent implements OnInit {
     private projectMemberService: ProjectMemberService,
     private router: Router,
     private authService: AuthService,
-    private tarefaService: TarefaService
+    private tarefaService: TarefaService,
+    private associarUsuarioService: AssociarUsuarioService
+
   ) {
   }
 
@@ -327,7 +308,7 @@ export class EditProjectsComponent implements OnInit {
 
   loadProjectTarefas(): void {
     if (this.projectId) {
-      this.projectsService.getTarefasByProjeto(this.projectId).subscribe(
+      this.tarefaService.getTarefasByProjeto(this.projectId).subscribe(
         (response: Tarefa[]) => {
           this.originalTarefas = response.map(tarefa => {
             return {
@@ -433,7 +414,7 @@ export class EditProjectsComponent implements OnInit {
       this.usuarioService.getUserIdByEmail(email).subscribe({
         next: (userId) => {
           if (userId) {
-            this.projectsService.addMemberToProject(userId, projectId).subscribe({
+            this.associarUsuarioService.addMemberToProject(userId, projectId).subscribe({
               next: () => {
                 processedCount++;
                 successCount++;
@@ -495,7 +476,7 @@ export class EditProjectsComponent implements OnInit {
     };
 
     if (this.startDate && this.endDate) {
-      if (this.endDate < this.startDate) {
+      if (this.endDate < this.startDate && !areDatesEqual(this.startDate, this.endDate)) {
         this.endDateError = 'Data final deve ser posterior à data inicial';
         return;
       }
@@ -541,7 +522,7 @@ export class EditProjectsComponent implements OnInit {
     this.tarefa.dataInicio = this.startDate.toISOString();
     this.tarefa.dataFim = this.endDate.toISOString();
 
-    this.projectsService.createTarefa(this.tarefa).subscribe(
+    this.tarefaService.createTarefa(this.tarefa).subscribe(
       response => {
         console.log('Tarefa salva com sucesso:', response);
         this.closeModal();

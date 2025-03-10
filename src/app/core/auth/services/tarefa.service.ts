@@ -1,15 +1,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { Tarefa } from './tarefa.model';
+import { Tarefa } from '../model/tarefa.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TarefaService {
   private apiUrl = 'http://localhost:8080/api/tarefas';
+  private projetosUrl = 'http://localhost:8080/api/projetos';
 
   constructor(private http: HttpClient) {}
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('auth_token') || '';
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  createTarefa(tarefa: any): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post(this.apiUrl, tarefa, { headers });
+  }
+
+  getTarefaById(projetoId: number, id: number): Observable<Tarefa> {
+    return this.http.get<Tarefa>(`${this.apiUrl}/projeto/${projetoId}/tarefa/${id}`);
+  }
+
+  deleteTarefa(tarefaId: number): Observable<void> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete<void>(`${this.apiUrl}/${tarefaId}`, { headers });
+  }
+
+  getTarefasByProjeto(projectId: string): Observable<Tarefa[]> {
+    return this.http.get<Tarefa[]>(`${this.apiUrl}/projeto/${projectId}`);
+  }
 
   getProjectTasks(projectId: string) {
     return this.http.get<Tarefa[]>(`/api/projetos/${projectId}/tarefas`);
@@ -42,16 +66,8 @@ export class TarefaService {
     );
   }
 
-  deleteTarefa(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-
   getTempoRegistrado(idProjeto: number, idTarefa: number) {
     return this.http.get<{ tempoRegistrado: number }>(`${this.apiUrl}/${idTarefa}/tempo-registrado`);
-  }
-
-  getTodasTarefas(): Observable<Tarefa[]> {
-    return this.http.get<Tarefa[]>(this.apiUrl);
   }
 
   registrarTempo(tarefaId: number, horas: number): Observable<Tarefa> {
@@ -60,6 +76,10 @@ export class TarefaService {
     };
 
     return this.http.post<Tarefa>(`${this.apiUrl}/${tarefaId}/registrar-tempo`, payload);
+  }
+
+  getTodasTarefas(): Observable<Tarefa[]> {
+    return this.http.get<Tarefa[]>(this.apiUrl);
   }
 
   getTarefasPorUsuario(usuarioId: number): Observable<Tarefa[]> {

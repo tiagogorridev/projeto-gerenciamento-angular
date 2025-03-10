@@ -8,8 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { AuthInterceptor } from './core/auth/interceptors/auth.interceptor';
 
 // Core -> Layout
-import { HeaderComponent } from './core/layout/header/header.component';
-import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
+import { HeaderComponent } from './features/users/header/header.component';
+import { SidebarComponent } from './features/users/sidebar/sidebar.component';
 
 // Features -> Admin
 import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';

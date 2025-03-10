@@ -10,8 +10,6 @@ export class ProjectMemberService {
 
   constructor(private http: HttpClient) {}
 
-
-
   getProjectMembers(projectId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/projetos/${projectId}/membros`).pipe(
       catchError(this.handleError)

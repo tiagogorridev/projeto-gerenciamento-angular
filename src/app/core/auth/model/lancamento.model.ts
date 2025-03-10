@@ -1,12 +1,11 @@
-
 export interface LancamentoHoras {
-  id: number;
+  id?: number;
   data: string;
   horaInicio: string;
   horaFim: string;
   horas: number;
   descricao: string;
-  status: 'EM_ANALISE' | 'APROVADO' | 'REPROVADO';
+  status: string;
   projeto: {
     id: number;
     nome: string;

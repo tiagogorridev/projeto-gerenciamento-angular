@@ -27,8 +27,6 @@ import { AdminProfileComponent } from './features/admin/admin-profile/admin-prof
 import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
 import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
 
-
-
 // Componentes de Usuário
 import { Header } from 'primeng/api';
 import { UsersDashboardComponent } from './features/users/users-dashboard/users-dashboard.component';

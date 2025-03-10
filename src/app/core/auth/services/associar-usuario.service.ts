@@ -7,8 +7,8 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AssociarUsuarioService {
-
-  private apiUrl = '/api/associacoes/usuario-projeto';
+  private apiUrl = 'http://localhost:8080/api/associacoes/usuario-projeto';
+  private projetosUrl = 'http://localhost:8080/api/projetos';
 
   constructor(private http: HttpClient) { }
 
@@ -21,6 +21,12 @@ export class AssociarUsuarioService {
     }).pipe(
       catchError(this.handleError)
     );
+  }
+
+  addMemberToProject(userId: number, projectId: number): Observable<any> {
+    return this.http.post(`${this.projetosUrl}/${projectId}/associar-usuario/${userId}`, {}, {
+      responseType: 'text'
+    });
   }
 
   private handleError(error: HttpErrorResponse) {

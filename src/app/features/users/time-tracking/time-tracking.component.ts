@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
-import { Projeto } from '../../../core/auth/services/projeto.model';
+import { Projeto } from '../../../core/auth/model/projeto.model';
 import { TarefaService } from '../../../core/auth/services/tarefa.service';
-import { Tarefa } from '../../../core/auth/services/tarefa.model';
+import { Tarefa } from '../../../core/auth/model/tarefa.model';
 import { TimeTrackingService } from '../../../core/auth/services/time-tracking.service.ts.service';
 
 @Component({

@@ -3,21 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { catchError, tap, finalize } from 'rxjs/operators';
-
-export interface LoginResponse {
-  token: string;
-  perfil: string;
-  id: string;
-  email: string;
-}
-
-export interface CurrentUser {
-  id?: string;
-  nome?: string;
-  nomeCompleto?: string;
-  email?: string;
-  perfil?: string | null;
-}
+import { LoginResponse } from '../model/login-response.model';
+import { CurrentUser } from '../model/current-user.modal';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +19,6 @@ export class AuthService {
     private router: Router
   ) { }
 
-  // Authentication methods
   login(email: string, senha: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, senha })
       .pipe(
@@ -74,7 +60,6 @@ export class AuthService {
     );
   }
 
-  // Session management
   private saveSession(token: string, perfil: string, usuarioId: string, email: string): void {
     localStorage.setItem('token', token);
     localStorage.setItem('perfil', perfil);
@@ -91,7 +76,6 @@ export class AuthService {
     this.isAuthenticatedSubject.next(false);
   }
 
-  // User information methods
   isLoggedIn(): boolean {
     return !!this.getToken();
   }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { UsuarioService } from '../../../core/auth/services/usuario.service';
 import { AuthService } from '../../../core/auth/services/auth.service';
-import { Usuario } from '../../../core/auth/services/usuario.model';
+import { Usuario } from '../../../core/auth/model/usuario.model';
 import { finalize } from 'rxjs/operators';
 
 @Component({

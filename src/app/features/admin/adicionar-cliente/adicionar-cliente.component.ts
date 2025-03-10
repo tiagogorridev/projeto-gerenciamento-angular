@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClienteService, Cliente } from '../../../core/auth/services/clients.service';
-
+import { ClienteService } from '../../../core/auth/services/clients.service';
+import { Cliente } from 'src/app/core/auth/model/clients.model';
 @Component({
   selector: 'app-adicionar-cliente',
   templateUrl: './adicionar-cliente.component.html',

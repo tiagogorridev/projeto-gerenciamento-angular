@@ -3,9 +3,9 @@ import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { ClienteService } from '../../../core/auth/services/clients.service';
 import { TarefaService } from 'src/app/core/auth/services/tarefa.service';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
-import { Projeto } from '../../../core/auth/services/projeto.model';
-import { Tarefa } from '../../../core/auth/services/tarefa.model';
-import { Usuario } from './../../../core/auth/services/usuario.model';
+import { Projeto } from '../../../core/auth/model/projeto.model';
+import { Tarefa } from '../../../core/auth/model/tarefa.model';
+import { Usuario } from '../../../core/auth/model/usuario.model';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';

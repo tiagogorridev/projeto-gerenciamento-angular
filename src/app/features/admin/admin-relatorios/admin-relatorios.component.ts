@@ -1,11 +1,11 @@
-import { Usuario } from './../../../core/auth/services/usuario.model';
+import { Usuario } from '../../../core/auth/model/usuario.model';
 import { UsuarioService } from './../../../core/auth/services/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { ClienteService } from '../../../core/auth/services/clients.service';
 import { TarefaService } from 'src/app/core/auth/services/tarefa.service';
-import { Projeto } from '../../../core/auth/services/projeto.model';
-import { Tarefa } from '../../../core/auth/services/tarefa.model';
+import { Projeto } from '../../../core/auth/model/projeto.model';
+import { Tarefa } from '../../../core/auth/model/tarefa.model';
 import { CurrencyPipe } from '@angular/common';
 
 
@@ -123,7 +123,7 @@ export class AdminRelatoriosComponent implements OnInit {
       let projetosProcessados = 0;
 
       projetos.forEach(projeto => {
-        this.projectsService.getMembrosDoProjeto(projeto.id).subscribe(
+        this.projectsService.getMembrosDoProjeto(projeto.id || 0).subscribe(
           (membros) => {
             membros.forEach(membro => {
               if (!membro.email) {
@@ -138,7 +138,6 @@ export class AdminRelatoriosComponent implements OnInit {
               }
             });
 
-            // Se for o usuário responsável e não estiver na lista, adicioná-lo
             if (projeto.usuarioResponsavel && !usuariosMap.has(projeto.usuarioResponsavel.id)) {
               usuariosMap.set(projeto.usuarioResponsavel.id, projeto.usuarioResponsavel);
             }
@@ -169,7 +168,7 @@ buscarMembrosDosProjetos(projetos: Projeto[]): void {
   let projetosProcessados = 0;
 
   projetos.forEach(projeto => {
-    this.projectsService.getMembrosDoProjeto(projeto.id).subscribe(
+    this.projectsService.getMembrosDoProjeto(projeto.id || 0).subscribe(
       (membros) => {
           membros.forEach(membro => {
               if (!membro.email) {
@@ -301,14 +300,11 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
       const usuarioId = Number(this.selectedUsuarioTarefa);
 
       if (!isNaN(usuarioId)) {
-        // Primeiro, vamos obter todos os projetos que este usuário está associado
         this.projectsService.getProjetosPorUsuario(usuarioId).subscribe(
           (projetos) => {
             const projetosIds = projetos.map(projeto => projeto.id);
 
-            // Agora, filtramos as tarefas que pertencem a esses projetos
             this.tarefasFiltradas = this.tarefas.filter((tarefa) => {
-              // Verificar se a tarefa pertence a algum dos projetos do usuário
               return projetosIds.includes(tarefa.projeto.id) && this.aplicarOutrosFiltrosTarefa(tarefa);
             });
 
@@ -322,13 +318,11 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
         console.error('ID de usuário inválido');
       }
     } else {
-      // Se nenhum usuário for selecionado, aplicar apenas os outros filtros
       this.tarefasFiltradas = this.tarefas.filter(tarefa => this.aplicarOutrosFiltrosTarefa(tarefa));
       this.atualizarResumoTarefas();
     }
   }
 
-  // Método auxiliar para aplicar os outros filtros à tarefa
   aplicarOutrosFiltrosTarefa(tarefa: Tarefa): boolean {
     const dataInicioTarefa = new Date(tarefa.dataInicio);
     const dataFimTarefa = new Date(tarefa.dataFim);
@@ -342,8 +336,7 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
       (!this.selectedPrioridadeTarefa || this.getTarefaPrioridade(tarefa) === this.selectedPrioridadeTarefa) &&
       (!dataInicioFiltro || dataInicioTarefa >= dataInicioFiltro) &&
       (!dataFimFiltro || dataFimTarefa <= dataFimFiltro) &&
-      (!this.selectedAdminTarefa || (tarefa.usuarioResponsavel &&
-                                   tarefa.usuarioResponsavel.id === Number(this.selectedAdminTarefa)))
+      (!this.selectedAdminTarefa || (tarefa.usuarioResponsavel?.id === Number(this.selectedAdminTarefa)))
     );
   }
 

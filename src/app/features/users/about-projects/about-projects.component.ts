@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { TarefaService } from '../../../core/auth/services/tarefa.service';
 import { TimeTrackingService } from '../../../core/auth/services/time-tracking.service.ts.service';
-import { Projeto } from '../../../core/auth/services/projeto.model';
-import { Tarefa } from '../../../core/auth/services/tarefa.model';
+import { Projeto } from '../../../core/auth/model/projeto.model';
+import { Tarefa } from '../../../core/auth/model/tarefa.model';
 import { Router } from '@angular/router';
 
 @Component({

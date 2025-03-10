@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
-import { Tarefa } from './tarefa.model';
-import { Projeto } from './projeto.model';
+import { Projeto } from '../model/projeto.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectsService {
   private baseUrl: string = 'http://localhost:8080/api/projetos';
-  private tarefasUrl: string = 'http://localhost:8080/api/tarefas';
   private clientesUrl: string = 'http://localhost:8080/api/clientes';
 
   constructor(private http: HttpClient) { }
@@ -32,6 +30,7 @@ export class ProjectsService {
     return throwError(() => new Error(errorMessage));
   }
 
+  // Projeto CRUD operations
   getProjetos(): Observable<Projeto[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<Projeto[]>(`${this.baseUrl}/getProjetos`, { headers });
@@ -60,6 +59,23 @@ export class ProjectsService {
     });
   }
 
+  // Projeto análise endpoints
+  getHorasDisponiveis(projectId: string): Observable<number> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<number>(`${this.baseUrl}/${projectId}/horas-disponiveis`, { headers })
+      .pipe(
+        catchError(error => {
+          console.error('Erro ao obter horas disponíveis:', error);
+          throw error;
+        })
+      );
+  }
+
+  getTempoRegistradoProjeto(projetoId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/${projetoId}/tempo-registrado`);
+  }
+
+  // Usuarios associados a projetos
   getProjetosDoUsuario(usuarioId: number): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.baseUrl}/usuario/${usuarioId}/projetos`, { headers });
@@ -83,6 +99,16 @@ export class ProjectsService {
     return this.http.get<Projeto[]>(`${this.baseUrl}/usuarios/${usuarioId}/projetos`);
   }
 
+  // Cliente integration
+  getNomeClienteById(clienteId: number): Observable<string> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<{ nome: string }>(`${this.clientesUrl}/${clienteId}`, { headers })
+      .pipe(
+        map(response => response.nome)
+      );
+  }
+
+  // Usuários em projetos
   getMembrosDoProjeto(projetoId: number): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.baseUrl}/${projetoId}/membros`, { headers }).pipe(
@@ -111,20 +137,6 @@ export class ProjectsService {
     );
   }
 
-  addMemberToProject(userId: number, projectId: number): Observable<any> {
-    return this.http.post(`${this.baseUrl}/${projectId}/associar-usuario/${userId}`, {}, {
-      responseType: 'text'
-    });
-  }
-
-  listarTodasAssociacoes(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/associacoes`);
-  }
-
-  listarUsuariosProjetos(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/usuarios-projetos`);
-  }
-
   getEmailsUsuariosComProjetos(): Observable<string[]> {
     return this.http.get<string[]>(`${this.baseUrl}/usuarios/emails`)
       .pipe(
@@ -132,44 +144,12 @@ export class ProjectsService {
       );
   }
 
-  getNomeClienteById(clienteId: number): Observable<string> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<{ nome: string }>(`${this.clientesUrl}/${clienteId}`, { headers })
-      .pipe(
-        map(response => response.nome)
-      );
+  // Associações
+  listarTodasAssociacoes(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/associacoes`);
   }
 
-  createTarefa(tarefa: any): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post(this.tarefasUrl, tarefa, { headers });
-  }
-
-  getTarefasByProjeto(projectId: string): Observable<Tarefa[]> {
-    return this.http.get<Tarefa[]>(`${this.tarefasUrl}/projeto/${projectId}`);
-  }
-
-  getTarefaById(projetoId: number, id: number): Observable<Tarefa> {
-    return this.http.get<Tarefa>(`${this.tarefasUrl}/projeto/${projetoId}/tarefa/${id}`);
-  }
-
-  deleteTarefa(tarefaId: number): Observable<void> {
-    const headers = this.getAuthHeaders();
-    return this.http.delete<void>(`${this.tarefasUrl}/${tarefaId}`, { headers });
-  }
-
-  getHorasDisponiveis(projectId: string): Observable<number> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<number>(`${this.baseUrl}/${projectId}/horas-disponiveis`, { headers })
-      .pipe(
-        catchError(error => {
-          console.error('Erro ao obter horas disponíveis:', error);
-          throw error;
-        })
-      );
-  }
-
-  getTempoRegistradoProjeto(projetoId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${projetoId}/tempo-registrado`);
+  listarUsuariosProjetos(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/usuarios-projetos`);
   }
 }
