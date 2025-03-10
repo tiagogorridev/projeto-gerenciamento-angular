@@ -64,6 +64,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
+import { ThemeService } from './core/auth/services/theme.service';
 
 
 @NgModule({
@@ -102,7 +103,7 @@ import { CurrencyPipe } from '@angular/common';
     // Pages
     ContactComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
   ],
 
   imports: [
@@ -136,7 +137,8 @@ import { CurrencyPipe } from '@angular/common';
       useClass: AuthInterceptor,
       multi: true
     },
-    [CurrencyPipe]
+    CurrencyPipe,
+    ThemeService
   ],
   bootstrap: [AppComponent]
 })

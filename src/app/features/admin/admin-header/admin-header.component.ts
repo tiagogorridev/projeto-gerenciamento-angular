@@ -1,3 +1,4 @@
+import { ThemeService } from './../../../core/auth/services/theme.service';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/services/auth.service';
@@ -14,26 +15,22 @@ export class AdminHeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    this.isDarkTheme = savedTheme === 'dark';
-
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    // Inscrever-se no estado do tema
+    this.themeService.isDarkMode$.subscribe(isDark => {
+      this.isDarkTheme = isDark;
+    });
   }
 
   toggleTheme(): void {
-    this.isDarkTheme = !this.isDarkTheme;
-    const theme = this.isDarkTheme ? 'dark' : 'light';
-
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-
-    console.log('Tema alterado para:', theme);
+    console.log('Antes:', document.documentElement.getAttribute('data-theme'));
+    this.themeService.toggleDarkMode();
+    console.log('Depois:', document.documentElement.getAttribute('data-theme'));
   }
-
 
   logout() {
     this.authService.logout().subscribe();
