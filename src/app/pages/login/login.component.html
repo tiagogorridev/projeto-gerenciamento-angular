@@ -6,14 +6,6 @@
     </div>
 
     <div class="signup-form">
-      <div class="login-btn">
-        <button type="button" class="google-fake-btn">
-          <i class="pi pi-google"></i> Continuar com Google
-        </button>
-        <div class="divider">
-          <span>ou</span>
-        </div>
-      </div>
 
       <form (ngSubmit)="onSubmit()" #signupForm="ngForm" novalidate>
         <div class="form-group" [ngClass]="{'error-input': loginError}">

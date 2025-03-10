@@ -352,9 +352,10 @@ export class EditProjectsComponent implements OnInit {
     if (this.projectId) {
       this.projectMemberService.getProjectMembers(Number(this.projectId)).subscribe({
         next: (members) => {
-          this.originalMembers = [...members];
+          // Os membros já vêm filtrados do serviço (apenas ativos)
+          this.originalMembers = members;
           this.members = [...this.originalMembers];
-          console.log('Membros atualizados:', this.members);
+          console.log('Membros ativos:', this.members);
         },
         error: (error) => {
           console.error('Erro ao carregar membros do projeto:', error);
