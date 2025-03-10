@@ -120,6 +120,10 @@ export class AdminProjetosComponent implements OnInit {
     }
   }
 
+  formatarMoeda(valor: number): string {
+    return `R$ ${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
   filterProjects(): void {
     let filtered = this.projects;
 

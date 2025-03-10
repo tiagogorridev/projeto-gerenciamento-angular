@@ -70,8 +70,8 @@
         {{ formatTime(projeto.tempoRegistrado || 0) }} de {{ formatTime(projeto.horasEstimadas || 0) }}
       </div>
       <div class="project-cost" [ngClass]="{'text-danger': (projeto.custoRegistrado || 0) > (projeto.custoEstimado || 0)}">
-        {{ projeto.custoRegistrado || 0 | currency:'BRL' }} de
-        {{ projeto.custoEstimado || 0 | currency:'BRL' }}
+        {{ formatarMoeda(projeto.custoRegistrado || 0) }} de
+        {{ formatarMoeda(projeto.custoEstimado || 0) }}
       </div>
       <div class="project-status">
         <span [class]="projeto.status">{{ projeto.status.replace('_', ' ') }}</span>
