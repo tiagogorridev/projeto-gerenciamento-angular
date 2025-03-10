@@ -80,7 +80,7 @@ export class AdminProjetosComponent implements OnInit {
             tempoRegistrado: tempoRegistradoResults[index].tempoRegistrado,
             percentualConcluido: tempoRegistradoResults[index].percentualConcluido,
             horasTrabalhadas: projeto.horasTrabalhadas || 0,
-            custoTrabalhado: projeto.custoRegistrado || 0,
+            custoRegistrado: projeto.custoRegistrado || 0,
             custoEstimado: projeto.custoEstimado || 0,
           }));
 
@@ -101,7 +101,7 @@ export class AdminProjetosComponent implements OnInit {
   carregarClientes(): void {
     this.clienteService.listarClientes().subscribe({
       next: (clientes) => {
-        this.clientes = clientes;
+        this.clientes = clientes.filter(cliente => cliente.status === 'ATIVO');
       },
       error: (erro) => {
         console.error('Erro ao carregar os clientes:', erro);
