@@ -18,24 +18,22 @@ export class AdminHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      this.isDarkTheme = true;
-      document.body.classList.add('dark-theme');
-    }
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    this.isDarkTheme = savedTheme === 'dark';
+
+    document.documentElement.setAttribute('data-theme', savedTheme);
   }
 
   toggleTheme(): void {
     this.isDarkTheme = !this.isDarkTheme;
+    const theme = this.isDarkTheme ? 'dark' : 'light';
 
-    if (this.isDarkTheme) {
-      document.body.classList.add('dark-theme');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-theme');
-      localStorage.setItem('theme', 'light');
-    }
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+
+    console.log('Tema alterado para:', theme);
   }
+
 
   logout() {
     this.authService.logout().subscribe();
