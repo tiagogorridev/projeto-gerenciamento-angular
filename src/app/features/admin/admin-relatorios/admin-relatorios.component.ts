@@ -49,7 +49,7 @@ export class AdminRelatoriosComponent implements OnInit {
   horasEstimadas: number = 0;
   tempoRegistrado: number = 0;
   custoEstimado: number = 0;
-  custoTrabalhado: number = 0;
+  custoRegistrado: number = 0;
 
   totalTarefas: number = 0;
   tarefasConcluidas: number = 0;
@@ -394,7 +394,7 @@ atualizarListaUsuarios(usuariosMap: Map<number, any>): void {
     this.horasEstimadas = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.horasEstimadas ?? 0), 0);
     this.tempoRegistrado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.tempoRegistrado ?? 0), 0);
     this.custoEstimado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoEstimado ?? 0), 0);
-    this.custoTrabalhado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoTrabalhado ?? 0), 0);
+    this.custoRegistrado = this.projetosFiltrados.reduce((total, projeto) => total + (projeto.custoRegistrado ?? 0), 0);
   }
 
   atualizarResumoTarefas(): void {
