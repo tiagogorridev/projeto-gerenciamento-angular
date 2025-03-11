@@ -40,53 +40,53 @@ body {
 }
 
 html[data-theme='dark'] body .sidebar {
-  background-color: var(--sidebar-bg);
-  color: var(--secondary-color);
+  background-color: var(--sidebar-bg) !important;
+  color: var(--secondary-color) !important;
 
   .section-title {
-    color: var(--text-color);
+    color: var(--text-color) !important;
   }
 
   nav ul li a {
-    color: var(--text-color);
+    color: var(--text-color) !important;
 
     &:hover {
-      background-color: var(--hover-color);
-      color: var(--accent-color);
+      background-color: var(--hover-color) !important;
+      color: var(--accent-color) !important;
     }
 
     &.active {
-      color: var(--accent-color);
-      background-color: var(--hover-color);
-      border-left: 2px solid var(--primary-color);
+      color: var(--accent-color) !important;
+      background-color: var(--hover-color) !important;
+      border-left: 2px solid var(--primary-color) !important;
 
       i {
-        color: var(--primary-color);
+        color: var(--primary-color) !important;
       }
     }
 
     i {
-      color: var(--secondary-color);
+      color: var(--secondary-color) !important;
     }
   }
 
   .submenu {
-    background-color: var(--sidebar-bg);
+    background-color: var(--sidebar-bg) !important;
   }
 
   .user-info {
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color) !important;
 
     .user-avatar {
-      background-color: var(--hover-color);
+      background-color: var(--hover-color) !important;
 
       i {
-        color: var(--text-color);
+        color: var(--text-color) !important;
       }
     }
 
     .user-name {
-      color: var(--text-color);
+      color: var(--text-color) !important;
     }
   }
 }
