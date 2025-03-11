@@ -1,4 +1,4 @@
-import { ThemeService } from './../../../core/auth/services/theme.service';
+import { ThemeService } from '../../../core/auth/services/theme.service';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/services/auth.service';

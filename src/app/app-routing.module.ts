@@ -3,9 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Páginas
 import { LoginComponent } from './pages/login/login.component';
-import { SignupComponent } from './features/admin/signup/signup.component';
+import { SignupComponent } from './features/admin/admin-adicionar-usuario/signup.component';
 import { ContactComponent } from './pages/contact/contact.component';
-import { HelpPageComponent } from './features/users/help-page/help-page.component';
+import { HelpPageComponent } from './features/users/user-help-page/help-page.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 
 // Core -> Auth -> Guards
@@ -14,27 +14,27 @@ import { AdminGuard } from './core/auth/guards/admin.guard';
 import { UserGuard } from './core/auth/guards/user.guard';
 
 // Componentes de Admin
-import { DashboardComponent as AdminDashboardComponent } from './features/admin/dashboard/dashboard.component';
-import { HourApprovalComponent } from './features/admin/hour-approval/hour-approval.component';
+import { DashboardComponent as AdminDashboardComponent } from './features/admin/admin-dashboard/dashboard.component';
+import { HourApprovalComponent } from './features/admin/admin-aprovar-horas/hour-approval.component';
 import { AdminSidebarComponent } from './features/admin/admin-sidebar/admin-sidebar.component';
 import { AdminRelatoriosComponent } from './features/admin/admin-relatorios/admin-relatorios.component';
 import { AdminProjetosComponent } from './features/admin/admin-projetos/admin-projetos.component';
-import { HelpPageAdminComponent } from './features/admin/help-page-admin/help-page-admin.component';
+import { HelpPageAdminComponent } from './features/admin/admin-help-page/help-page-admin.component';
 import { AdminTarefaComponent } from './features/admin/admin-tarefa/admin-tarefa.component';
-import { EditProjectsComponent } from './features/admin/edit-projects/edit-projects.component';
+import { EditProjectsComponent } from './features/admin/admin-editar-projeto/edit-projects.component';
 import { AdminProfileComponent } from './features/admin/admin-profile/admin-profile.component';
 import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
-import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
+import { AdicionarClienteComponent } from './features/admin/admin-adicionar-cliente/adicionar-cliente.component';
 
 // Componentes de Usuário
 import { Header } from 'primeng/api';
-import { UsersDashboardComponent } from './features/users/users-dashboard/users-dashboard.component';
-import { ProjectsComponent } from './features/users/projects/projects.component';
-import { TimeHistoryComponent } from './features/users/time-history/time-history.component';
-import { TimeTrackingComponent } from './features/users/time-tracking/time-tracking.component';
-import { UsersRelatoriosComponent } from './features/users/users-relatorios/users-relatorios.component';
-import { ProfileComponent } from './features/users/profile/profile.component';
-import { AboutProjectsComponent } from './features/users/about-projects/about-projects.component';
+import { UsersDashboardComponent } from './features/users/user-dashboard/users-dashboard.component';
+import { ProjectsComponent } from './features/users/user-projetos/projects.component';
+import { TimeHistoryComponent } from './features/users/user-historico-horas/time-history.component';
+import { TimeTrackingComponent } from './features/users/user-lancar-horas/time-tracking.component';
+import { UsersRelatoriosComponent } from './features/users/user-relatorio/users-relatorios.component';
+import { ProfileComponent } from './features/users/user-profile/profile.component';
+import { AboutProjectsComponent } from './features/users/user-sobre-projetos/about-projects.component';
 
 // Rotas Compartilhadas
 const routes: Routes = [

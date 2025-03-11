@@ -8,32 +8,32 @@ import { FormsModule } from '@angular/forms';
 import { AuthInterceptor } from './core/auth/interceptors/auth.interceptor';
 
 // Core -> Layout
-import { HeaderComponent } from './features/users/header/header.component';
-import { SidebarComponent } from './features/users/sidebar/sidebar.component';
+import { HeaderComponent } from './features/users/user-header/header.component';
+import { SidebarComponent } from './features/users/user-sidebar/sidebar.component';
 
 // Features -> Admin
-import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
+import { AdicionarClienteComponent } from './features/admin/admin-adicionar-cliente/adicionar-cliente.component';
 import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
 import { AdminProfileComponent } from './features/admin/admin-profile/admin-profile.component';
 import { AdminProjetosComponent } from './features/admin/admin-projetos/admin-projetos.component';
 import { AdminRelatoriosComponent } from './features/admin/admin-relatorios/admin-relatorios.component';
 import { AdminSidebarComponent } from './features/admin/admin-sidebar/admin-sidebar.component';
 import { AdminTarefaComponent } from './features/admin/admin-tarefa/admin-tarefa.component';
-import { DashboardComponent } from './features/admin/dashboard/dashboard.component';
-import { EditProjectsComponent } from './features/admin/edit-projects/edit-projects.component';
-import { HelpPageAdminComponent } from './features/admin/help-page-admin/help-page-admin.component';
-import { HourApprovalComponent } from './features/admin/hour-approval/hour-approval.component';
-import { SignupComponent } from './features/admin/signup/signup.component';
+import { DashboardComponent } from './features/admin/admin-dashboard/dashboard.component';
+import { EditProjectsComponent } from './features/admin/admin-editar-projeto/edit-projects.component';
+import { HelpPageAdminComponent } from './features/admin/admin-help-page/help-page-admin.component';
+import { HourApprovalComponent } from './features/admin/admin-aprovar-horas/hour-approval.component';
+import { SignupComponent } from './features/admin/admin-adicionar-usuario/signup.component';
 
 // Features -> Users
-import { AboutProjectsComponent } from './features/users/about-projects/about-projects.component';
-import { HelpPageComponent } from './features/users/help-page/help-page.component';
-import { ProfileComponent } from './features/users/profile/profile.component';
-import { ProjectsComponent } from './features/users/projects/projects.component';
-import { TimeHistoryComponent } from './features/users/time-history/time-history.component';
-import { TimeTrackingComponent } from './features/users/time-tracking/time-tracking.component';
-import { UsersDashboardComponent } from './features/users/users-dashboard/users-dashboard.component';
-import { UsersRelatoriosComponent } from './features/users/users-relatorios/users-relatorios.component';
+import { AboutProjectsComponent } from './features/users/user-sobre-projetos/about-projects.component';
+import { HelpPageComponent } from './features/users/user-help-page/help-page.component';
+import { ProfileComponent } from './features/users/user-profile/profile.component';
+import { ProjectsComponent } from './features/users/user-projetos/projects.component';
+import { TimeHistoryComponent } from './features/users/user-historico-horas/time-history.component';
+import { TimeTrackingComponent } from './features/users/user-lancar-horas/time-tracking.component';
+import { UsersDashboardComponent } from './features/users/user-dashboard/users-dashboard.component';
+import { UsersRelatoriosComponent } from './features/users/user-relatorio/users-relatorios.component';
 
 // Pages
 import { ContactComponent } from './pages/contact/contact.component';

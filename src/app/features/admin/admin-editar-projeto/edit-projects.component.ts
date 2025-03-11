@@ -1,5 +1,5 @@
-import { AssociarUsuarioService } from './../../../core/auth/services/associar-usuario.service';
-import { TarefaService } from './../../../core/auth/services/tarefa.service';
+import { AssociarUsuarioService } from '../../../core/auth/services/associar-usuario.service';
+import { TarefaService } from '../../../core/auth/services/tarefa.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
