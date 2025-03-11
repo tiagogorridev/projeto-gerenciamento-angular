@@ -1,3 +1,4 @@
+@ -1,306 +1,306 @@
 <app-admin-sidebar></app-admin-sidebar>
 <app-admin-header></app-admin-header>
 
@@ -23,6 +24,7 @@
   </nav>
 
   <main class="content">
+    <!-- Tarefas Tab -->
     <div class="tab-content" *ngIf="activeTab === 'tasks'">
       <div class="actions-bar">
         <div class="search-container">
@@ -31,104 +33,111 @@
         <button class="new-task-button" (click)="openModal()">+ Nova Tarefa</button>
       </div>
 
-      <div class="modal" *ngIf="showNewTarefaModal">
-        <div class="modal-content">
-          <h2>Nova Tarefa</h2>
-          <form (ngSubmit)="onSubmit()" #tarefaForm="ngForm">
-            <div class="form-group">
-              <label>Nome</label>
-              <input type="text" class="input-field" [(ngModel)]="tarefa.nome" name="nome" required>
-            </div>
-            <div class="form-group">
-              <label>Descrição</label>
-              <textarea class="input-field" [(ngModel)]="tarefa.descricao" name="descricao" required></textarea>
-            </div>
-            <div class="form-group">
-              <label>Valor por Hora</label>
-              <input
-                type="number"
-                class="input-field"
-                [(ngModel)]="tarefa.valorPorHora"
-                name="valorPorHora"
-                min="0"
-                step="0.01"
-                required
-              >
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>Data de Início</label>
-                <p-calendar [(ngModel)]="startDate" (ngModelChange)="onStartDateChange($event)" name="dataInicio" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"
-                           [ngClass]="{'error-input': startDateError}"></p-calendar>
-                <small class="error-text" *ngIf="startDateError">{{ startDateError }}</small>
-              </div>
-              <div class="form-group">
-                <label>Data de Fim</label>
-                <p-calendar [(ngModel)]="endDate" (ngModelChange)="onEndDateChange($event)" name="dataFim" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"
-                           [ngClass]="{'error-input': endDateError}"></p-calendar>
-                <small class="error-text" *ngIf="endDateError">{{ endDateError }}</small>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Horas Estimadas (Disponível: {{ horasDisponiveis }} horas)</label>
-              <input
-                type="number"
-                class="input-field"
-                [(ngModel)]="tarefa.horasEstimadas"
-                name="horasEstimadas"
-                [max]="horasDisponiveis"
-                [min]="0"
-                required>
-              <small class="error-text" *ngIf="tarefa.horasEstimadas > horasDisponiveis">
-                As horas estimadas não podem exceder as horas disponíveis do projeto
-              </small>
-            </div>
-            <div class="form-group">
-              <label>Status</label>
-              <select class="input-field" [(ngModel)]="tarefa.status" name="status" required>
-                <option value="ABERTA">Aberta</option>
-                <option value="EM_ANDAMENTO">Em Andamento</option>
-                <option value="CONCLUIDA">Concluída</option>
-                <option value="PAUSADA">Pausada</option>
-              </select>
-            </div>
-            <div class="modal-actions">
-              <button type="button" (click)="closeModal()" class="cancel-btn">Cancelar</button>
-              <button
-                type="submit"
-                [disabled]="!tarefaForm.form.valid || tarefa.horasEstimadas > horasDisponiveis || startDateError || endDateError"
-                class="submit-btn">
-                Salvar
-              </button>
-            </div>
-          </form>
+<!-- Modal de Nova Tarefa -->
+<div class="modal" *ngIf="showNewTarefaModal">
+  <div class="modal-content">
+    <h2>Nova Tarefa</h2>
+    <form (ngSubmit)="onSubmit()" #tarefaForm="ngForm">
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" class="input-field" [(ngModel)]="tarefa.nome" name="nome" required>
+      </div>
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea class="input-field" [(ngModel)]="tarefa.descricao" name="descricao" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Valor por Hora</label>
+        <input
+          type="number"
+          class="input-field"
+          [(ngModel)]="tarefa.valorPorHora"
+          name="valorPorHora"
+          min="0"
+          step="0.01"
+          required
+        >
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data de Início</label>
+          <p-calendar [(ngModel)]="startDate" (ngModelChange)="onStartDateChange($event)" name="dataInicio" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"
+                     [ngClass]="{'error-input': startDateError}"></p-calendar>
+          <small class="error-text" *ngIf="startDateError">{{ startDateError }}</small>
+        </div>
+        <div class="form-group">
+          <label>Data de Fim</label>
+          <p-calendar [(ngModel)]="endDate" (ngModelChange)="onEndDateChange($event)" name="dataFim" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"
+                     [ngClass]="{'error-input': endDateError}"></p-calendar>
+          <small class="error-text" *ngIf="endDateError">{{ endDateError }}</small>
         </div>
       </div>
+      <!-- Novo campo de horas -->
+      <div class="form-group">
+        <label>Horas Estimadas (Disponível: {{ horasDisponiveis }} horas)</label>
+        <input
+          type="number"
+          class="input-field"
+          [(ngModel)]="tarefa.horasEstimadas"
+          name="horasEstimadas"
+          [max]="horasDisponiveis"
+          [min]="0"
+          required>
+        <small class="error-text" *ngIf="tarefa.horasEstimadas > horasDisponiveis">
+          As horas estimadas não podem exceder as horas disponíveis do projeto
+        </small>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select class="input-field" [(ngModel)]="tarefa.status" name="status" required>
+          <option value="ABERTA">Aberta</option>
+          <option value="EM_ANDAMENTO">Em Andamento</option>
+          <option value="CONCLUIDA">Concluída</option>
+          <option value="PAUSADA">Pausada</option>
+        </select>
+      </div>
 
-      <div class="tasks-table">
-        <div class="tarefas-list">
-          <div class="tarefa-row headers">
-            <div class="tarefa-name">Nome</div>
-            <div class="tarefa-client">Responsável</div>
-            <div class="tarefa-status">Status</div>
-            <div class="tarefa-hours">Progresso</div>
-            <div class="tarefa-actions">Ações</div>
-          </div>
-          <div class="tarefas-row" *ngFor="let tarefa of tarefas">
-            <div class="tarefa-name">{{ tarefa.nome }}</div>
-            <div class="tarefa-client">{{ tarefa.usuarioResponsavel?.nome || tarefa.responsavel || 'Não atribuído' }}</div>
-            <div class="tarefa-status">
-              <span class="status-pill {{ tarefa.status }}">{{ tarefa.status }}</span>
-            </div>
-            <div class="tarefa-hours" [ngClass]="{'text-danger': (tarefa.tempoRegistrado || 0) > (tarefa.horasEstimadas || 0)}">
-              {{ tarefa.tempoRegistrado || 0 }}h/{{ tarefa.horasEstimadas || 0 }}h
-            </div>
-            <div class="tarefa-actions">
-              <button class="btn btn-primary" [routerLink]="['/admin/edit-projects', projectId, tarefa.id]">Editar</button>
-              <button type="button" class="delete-confirm-btn" (click)="openDeleteTarefaModal(tarefa)">Excluir</button>
-            </div>
-          </div>
-        </div>
+      <div class="modal-actions">
+        <button type="button" (click)="closeModal()" class="cancel-btn">Cancelar</button>
+        <button
+          type="submit"
+          [disabled]="!tarefaForm.form.valid || tarefa.horasEstimadas > horasDisponiveis || startDateError || endDateError"
+          class="submit-btn">
+          Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="tasks-table">
+  <div class="tarefas-list">
+    <div class="tarefa-row headers">
+      <div class="tarefa-name">Nome</div>
+      <div class="tarefa-client">Responsável</div>
+      <div class="tarefa-status">Status</div>
+      <div class="tarefa-hours">Progresso</div>
+      <div class="tarefa-actions">Ações</div>
+    </div>
+
+    <div class="tarefas-row" *ngFor="let tarefa of tarefas">
+      <div class="tarefa-name">{{ tarefa.nome }}</div>
+      <div class="tarefa-client">{{ tarefa.usuarioResponsavel?.nome || tarefa.responsavel || 'Não atribuído' }}</div>
+      <div class="tarefa-status">
+        <span class="status-pill {{ tarefa.status }}">{{ tarefa.status }}</span>
+      </div>
+      <div class="tarefa-hours" [ngClass]="{'text-danger': (tarefa.tempoRegistrado || 0) > (tarefa.horasEstimadas || 0)}">
+        {{ tarefa.tempoRegistrado || 0 }}h/{{ tarefa.horasEstimadas || 0 }}h
+      </div>
+      <div class="tarefa-actions">
+        <button class="btn btn-primary" [routerLink]="['/admin/edit-projects', projectId, tarefa.id]">Editar</button>
+        <button type="button" class="delete-confirm-btn" (click)="openDeleteTarefaModal(tarefa)">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+
+        <!-- Estado vazio -->
         <ng-template #emptyTasks>
           <div class="empty-state">
             <p class="empty-title">Nenhuma tarefa disponível</p>
@@ -138,6 +147,7 @@
       </div>
     </div>
 
+    <!-- Time Tab -->
     <div class="tab-content" *ngIf="activeTab === 'time'">
       <div class="actions-bar">
         <div class="search-container">
@@ -146,6 +156,7 @@
         <button class="new-task-button" (click)="openAddMemberModal()">+ Adicionar Membro</button>
       </div>
 
+      <!-- Modal para Adicionar Membro -->
       <div class="modal" *ngIf="showAddMemberModal">
         <div class="modal-content">
           <div class="error-message" *ngIf="showErrorMessage">
@@ -153,24 +164,30 @@
           </div>
           <h2>Adicionar Membro ao Projeto</h2>
           <form #addMemberForm="ngForm" (ngSubmit)="addMembers()">
-            <mat-form-field appearance="fill" class="w-full">
-              <mat-label>Selecione membros</mat-label>
-              <mat-select [(ngModel)]="selectedEmails" multiple name="emails">
-                <mat-option *ngFor="let email of usuariosEmails" [value]="email">
-                  {{ email }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div class="form-field">
+              <label for="memberSelect">Selecione membros</label>
+              <div class="custom-dropdown" (click)="toggleDropdown()">
+                <div class="dropdown-placeholder">{{ selectedEmails.length ? selectedEmails.length + ' emails selecionados' : 'Clique para selecionar' }}</div>
+                <div class="dropdown-options" [class.show]="dropdownOpen">
+                  <div *ngFor="let email of usuariosEmails" class="dropdown-option" [class.selected]="isSelected(email)" (click)="toggleSelection(email, $event)">
+                    <span class="email-text">{{ email }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="modal-actions">
               <button type="button" class="cancel-btn" (click)="closeAddMemberModal()">
                 Cancelar
               </button>
-              <button class="submit-btn" (click)="addUserToProject()">Adicionar Membro</button>
+              <button type="button" class="submit-btn" (click)="addUserToProject()">
+                Adicionar Membro
+              </button>
             </div>
           </form>
         </div>
       </div>
 
+      <!-- Tabela de Membros -->
       <div class="members-table" *ngIf="members.length > 0">
         <div class="table-header">
           <div class="header-email">Membros</div>
@@ -192,8 +209,11 @@
         <p class="empty-title">Nenhum membro atribuído</p>
         <p class="empty-subtitle">Adicione membros ao projeto</p>
       </div>
+
+
     </div>
 
+    <!-- Detalhes Tab -->
     <div class="tab-content" *ngIf="activeTab === 'details'">
       <form class="details-form">
         <div class="form-section">
@@ -222,6 +242,7 @@
           <div class="form-group">
             <label>Custo registrado</label>
             <div class="input-currency">
+              <input type="number" class="form-input" [value]="projectDetails.registeredCost.toFixed(2)" name="registeredCost" readonly>
               <input type="number" class="form-input" [value]="projectDetails.registeredCost.toFixed(2)" name="registeredCost" disabled>
               <span class="currency-symbol">R$</span>
             </div>
@@ -277,16 +298,14 @@
         </div>
       </form>
     </div>
-
-    <div class="modal" *ngIf="showDeleteTarefaModal">
-      <div class="modal-content confirm-modal">
-        <h2>Confirmar Exclusão</h2>
-        <p>Tem certeza que deseja excluir a tarefa "{{ selectedTarefa?.nome }}"?</p>
-        <div class="modal-actions">
-          <button type="button" class="cancel-btn" (click)="closeDeleteTarefaModal()">Cancelar</button>
-          <button type="button" class="delete-confirm-btn" (click)="confirmDeleteTarefa()">Excluir</button>
-        </div>
+  <div class="modal" *ngIf="showDeleteTarefaModal">
+    <div class="modal-content confirm-modal">
+      <h2>Confirmar Exclusão</h2>
+      <p>Tem certeza que deseja excluir a tarefa "{{ selectedTarefa?.nome }}"?</p>
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeDeleteTarefaModal()">Cancelar</button>
+        <button type="button" class="delete-confirm-btn" (click)="confirmDeleteTarefa()">Excluir</button>
       </div>
     </div>
-  </main>
-</div>
+  </div>
+</main>

@@ -11,7 +11,6 @@ import { AuthService } from '../../../core/auth/services/auth.service';
 import { Tarefa } from 'src/app/core/auth/model/tarefa.model';
 import { Cliente } from 'src/app/core/auth/model/clients.model';
 
-
 export interface ProjectDetails {
   name: string;
   client: string;
@@ -53,6 +52,7 @@ export class EditProjectsComponent implements OnInit {
     status: 'EM_ANDAMENTO',
     priority: 'ALTA',
   };
+
 
   clients: Cliente[] = [];
   showNewTarefaModal: boolean = false;
@@ -99,8 +99,7 @@ export class EditProjectsComponent implements OnInit {
   showErrorMessage: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
-
-
+  dropdownOpen = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -160,6 +159,26 @@ export class EditProjectsComponent implements OnInit {
           this.errorMessage = 'Erro ao excluir tarefa. Tente novamente.';
         }
       });
+    }
+  }
+
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  isSelected(email: string): boolean {
+    return this.selectedEmails.includes(email);
+  }
+
+  toggleSelection(email: string, event: Event) {
+    event.stopPropagation();
+
+    const index = this.selectedEmails.indexOf(email);
+    if (index === -1) {
+      this.selectedEmails.push(email);
+    } else {
+      this.selectedEmails.splice(index, 1);
     }
   }
 
@@ -385,8 +404,11 @@ export class EditProjectsComponent implements OnInit {
   openAddMemberModal(): void {
     this.usuarioService.getEmails().subscribe(
       (emails: string[]) => {
+        console.log('Emails recebidos:', emails);
         const existingMemberEmails = this.members.map(member => member.email.toLowerCase());
+        console.log('Existing members:', this.members);
         this.usuariosEmails = emails.filter(email => !existingMemberEmails.includes(email.toLowerCase()));
+        console.log('Emails filtrados:', this.usuariosEmails);
         this.showAddMemberModal = true;
         this.selectedEmails = [];
       },
