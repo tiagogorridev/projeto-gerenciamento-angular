@@ -10,7 +10,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 .settings-container {
   margin: 0 24px;
   padding: 60px 24px 0 260px;
-  animation: fadeIn 0.3s ease-out;
 }
 
 .page-title {
@@ -85,7 +84,7 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 .form-actions {
   display: flex;
   gap: 16px;
-  margin-top: 32px;
+  padding: 32px;
   button {
     display: flex;
     align-items: center;
@@ -133,7 +132,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   padding: 12px 24px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  animation: slideIn 0.3s ease-out;
   i {
     font-size: 20px;
   }

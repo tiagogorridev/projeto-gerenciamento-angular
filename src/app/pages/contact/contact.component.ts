@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { trigger, transition, style, animate } from '@angular/animations';
 import { AuthService } from '../../core/auth/services/auth.service';
 import { UsuarioService } from '../../core/auth/services/usuario.service';
 import { ContactService } from '../../core/auth/services/contact.service';
@@ -9,14 +8,6 @@ import { ContactService } from '../../core/auth/services/contact.service';
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-10px)' }),
-        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-      ])
-    ])
-  ]
 })
 
 export class ContactComponent implements OnInit {

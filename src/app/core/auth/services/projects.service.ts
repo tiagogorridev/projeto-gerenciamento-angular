@@ -30,7 +30,6 @@ export class ProjectsService {
     return throwError(() => new Error(errorMessage));
   }
 
-  // Projeto CRUD operations
   getProjetos(): Observable<Projeto[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<Projeto[]>(`${this.baseUrl}/getProjetos`, { headers });
@@ -59,7 +58,6 @@ export class ProjectsService {
     });
   }
 
-  // Projeto análise endpoints
   getHorasDisponiveis(projectId: string): Observable<number> {
     const headers = this.getAuthHeaders();
     return this.http.get<number>(`${this.baseUrl}/${projectId}/horas-disponiveis`, { headers })
@@ -75,7 +73,6 @@ export class ProjectsService {
     return this.http.get<any>(`${this.baseUrl}/${projetoId}/tempo-registrado`);
   }
 
-  // Usuarios associados a projetos
   getProjetosDoUsuario(usuarioId: number): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.baseUrl}/usuario/${usuarioId}/projetos`, { headers });
@@ -99,7 +96,6 @@ export class ProjectsService {
     return this.http.get<Projeto[]>(`${this.baseUrl}/usuarios/${usuarioId}/projetos`);
   }
 
-  // Cliente integration
   getNomeClienteById(clienteId: number): Observable<string> {
     const headers = this.getAuthHeaders();
     return this.http.get<{ nome: string }>(`${this.clientesUrl}/${clienteId}`, { headers })
@@ -108,7 +104,6 @@ export class ProjectsService {
       );
   }
 
-  // Usuários em projetos
   getMembrosDoProjeto(projetoId: number): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.baseUrl}/${projetoId}/membros`, { headers }).pipe(
@@ -142,11 +137,6 @@ export class ProjectsService {
       .pipe(
         catchError(this.handleError)
       );
-  }
-
-  // Associações
-  listarTodasAssociacoes(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/associacoes`);
   }
 
   listarUsuariosProjetos(): Observable<any> {
