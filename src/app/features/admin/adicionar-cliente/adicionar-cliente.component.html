@@ -4,15 +4,11 @@
   <div class="clientes-header">
     <h1>Clientes</h1>
   </div>
-
-
-
   <div class="search-filter-container">
     <div class="input-group">
       <input type="text" placeholder="Pesquisar clientes..." class="input-field" [(ngModel)]="searchTerm" (ngModelChange)="filterClients()">
       <i class="pi pi-search search-icon"></i>
     </div>
-
     <div class="input-group">
       <select class="input-field" [(ngModel)]="statusFilter" (ngModelChange)="filterClients()">
         <option value="Ativo">Ativo</option>
@@ -21,30 +17,21 @@
       </select>
       <i class="pi pi-chevron-down dropdown-icon"></i>
     </div>
-
-    <button class="new-client-btn" (click)="openReactivateModal()">
-      Reativar Cliente
-    </button>
-
-    <button class="new-client-btn" (click)="openNewClientModal()">
-      Novo Cliente
-    </button>
+    <button class="new-client-btn" (click)="openReactivateModal()">Reativar Cliente</button>
+    <button class="new-client-btn" (click)="openNewClientModal()">Novo Cliente</button>
   </div>
-
   <div class="empty-state" *ngIf="!hasClients">
     <div class="empty-state-content">
       <img src="../../../../assets/no-project.png" alt="Nenhum cliente disponível" class="empty-image">
       <p class="empty-text">Nenhum cliente disponível</p>
     </div>
   </div>
-
   <div class="clients-list" *ngIf="hasClients">
     <div class="client-row headers">
       <div class="client-name">Nome</div>
       <div class="client-email">Email</div>
       <div class="actions">Ações</div>
     </div>
-
     <div class="client-row" *ngFor="let cliente of filteredClients">
       <div class="client-name">{{ cliente.nome }}</div>
       <div class="client-email">{{ cliente.email }}</div>
@@ -55,28 +42,21 @@
       </div>
     </div>
   </div>
-
   <div class="modal" *ngIf="showNewClientModal">
     <div class="modal-content">
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
-      </div>
-
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
       <h2>Novo Cliente</h2>
-
       <form (ngSubmit)="onSubmit(clientForm)" #clientForm="ngForm">
         <div class="form-group">
           <label>Nome</label>
           <input type="text" class="input-field" [(ngModel)]="client.nome" name="nome" required>
           <div *ngIf="clientForm.submitted && !client.nome" class="error-text">Nome é obrigatório</div>
         </div>
-
         <div class="form-group">
           <label>Email</label>
           <input type="email" class="input-field" [(ngModel)]="client.email" name="email" required>
           <div *ngIf="clientForm.submitted && !client.email" class="error-text">Email é obrigatório</div>
         </div>
-
         <div class="form-group">
           <label>Status</label>
           <select class="input-field" [(ngModel)]="client.status" name="status" required>
@@ -84,7 +64,6 @@
             <option value="INATIVO">Inativo</option>
           </select>
         </div>
-
         <div class="modal-actions">
           <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
           <button type="submit" class="create-btn" [disabled]="!clientForm.form.valid">Criar</button>
@@ -92,48 +71,36 @@
       </form>
     </div>
   </div>
-
   <div class="modal" *ngIf="showDeleteModal">
     <div class="modal-content confirm-modal">
       <h2>Confirmar Exclusão</h2>
       <p>Tem certeza que deseja excluir o cliente "{{ selectedClient?.nome }}"?</p>
-
       <div class="modal-actions">
         <button type="button" class="cancel-btn" (click)="closeDeleteModal()">Cancelar</button>
         <button type="button" class="delete-confirm-btn" (click)="deleteClient()">Excluir</button>
       </div>
     </div>
   </div>
-
   <div class="modal" *ngIf="showReactivateModal">
     <div class="modal-content">
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
-      </div>
-
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
       <h2>Reativar Clientes</h2>
-
       <div class="input-group" style="margin-bottom: 16px;">
-        <input type="text" placeholder="Pesquisar clientes inativos..." class="input-field"
-               [(ngModel)]="inactiveSearchTerm" (ngModelChange)="filterInactiveClients()">
+        <input type="text" placeholder="Pesquisar clientes inativos..." class="input-field" [(ngModel)]="inactiveSearchTerm" (ngModelChange)="filterInactiveClients()">
         <i class="pi pi-search search-icon"></i>
       </div>
-
       <div *ngIf="loadingInactiveClients" class="loading-indicator">
         <p>Carregando clientes inativos...</p>
       </div>
-
       <div *ngIf="!loadingInactiveClients && !hasInactiveClients" class="empty-state-small">
         <p>Nenhum cliente inativo encontrado</p>
       </div>
-
       <div class="inactive-clients-list" *ngIf="!loadingInactiveClients && hasInactiveClients">
         <div class="client-row headers">
           <div class="client-name">Nome</div>
           <div class="client-email">Email</div>
           <div class="actions">Ações</div>
         </div>
-
         <div class="client-row" *ngFor="let cliente of filteredInactiveClients">
           <div class="client-name">{{ cliente.nome }}</div>
           <div class="client-email">{{ cliente.email }}</div>
@@ -144,7 +111,6 @@
           </div>
         </div>
       </div>
-
       <div class="modal-actions">
         <button type="button" class="cancel-btn" (click)="closeReactivateModal()">Fechar</button>
       </div>

@@ -7,12 +7,8 @@
   </div>
 
   <div class="report-tabs">
-    <button class="tab-button" [ngClass]="{'active': activeTab === 'projetos'}" (click)="changeTab('projetos')">
-      Projetos
-    </button>
-    <button class="tab-button" [ngClass]="{'active': activeTab === 'tarefas'}" (click)="changeTab('tarefas')">
-      Tarefas
-    </button>
+    <button class="tab-button" [ngClass]="{'active': activeTab === 'projetos'}" (click)="changeTab('projetos')">Projetos</button>
+    <button class="tab-button" [ngClass]="{'active': activeTab === 'tarefas'}" (click)="changeTab('tarefas')">Tarefas</button>
   </div>
 
   <div *ngIf="activeTab === 'projetos'">
@@ -32,7 +28,6 @@
             </div>
           </div>
         </div>
-
         <div class="form-group">
           <label>Administrador</label>
           <select class="input-field" [(ngModel)]="selectedAdmin" (ngModelChange)="aplicarFiltros()">
@@ -40,7 +35,6 @@
             <option *ngFor="let admin of administradores" [value]="admin.id">{{ admin.nome }}</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Usuário</label>
           <select class="input-field" [(ngModel)]="selectedUsuario" (ngModelChange)="aplicarFiltros()">
@@ -48,7 +42,6 @@
             <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.email || usuario.nome }}</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Cliente</label>
           <select class="input-field" [(ngModel)]="selectedCliente" (ngModelChange)="aplicarFiltros()">
@@ -56,7 +49,6 @@
             <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Status</label>
           <select class="input-field" [(ngModel)]="selectedStatus" (ngModelChange)="aplicarFiltros()">
@@ -67,7 +59,6 @@
             <option value="CANCELADO">Cancelado</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Prioridade</label>
           <select class="input-field" [(ngModel)]="selectedPrioridade" (ngModelChange)="aplicarFiltros()">
@@ -78,7 +69,6 @@
           </select>
         </div>
       </div>
-
       <div class="filter-actions">
         <button class="btn-secondary" (click)="limparFiltros()">Limpar Filtros</button>
         <button class="btn-primary" (click)="aplicarFiltros()">Aplicar Filtros</button>
@@ -102,7 +92,6 @@
         <div class="summary-title">Custo Estimado</div>
         <div class="summary-value">{{ formatarMoeda(custoEstimado) }}</div>
       </div>
-
       <div class="summary-card">
         <div class="summary-title">Custo Trabalhado</div>
         <div class="summary-value">{{ formatarMoeda(custoRegistrado) }}</div>
@@ -113,7 +102,6 @@
       <div class="export-actions">
         <button class="export-btn" (click)="exportarPDF()"><i class="pi pi-file-pdf"></i> Exportar PDF</button>
       </div>
-
       <div class="projects-table">
         <div class="project-row headers">
           <div class="project-name">Projeto</div>
@@ -124,7 +112,6 @@
           <div class="project-priority">Prioridade</div>
           <div class="project-dates">Período</div>
         </div>
-
         <div class="project-row" *ngFor="let projeto of projetosFiltrados">
           <div class="project-name">{{ projeto.nome }}</div>
           <div class="project-client">{{ projeto.cliente.nome }}</div>
@@ -144,7 +131,6 @@
           </div>
           <div class="project-dates">{{ projeto.dataInicio }} a {{ projeto.dataFim }}</div>
         </div>
-
         <div class="empty-state" *ngIf="projetosFiltrados.length === 0">
           <div class="empty-state-content">
             <img src="../../../../assets/no-project.png" alt="Sem dados" class="empty-image">
@@ -173,7 +159,6 @@
             </div>
           </div>
         </div>
-
         <div class="form-group">
           <label>Projeto</label>
           <select class="input-field" [(ngModel)]="selectedProjetoTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
@@ -181,7 +166,6 @@
             <option *ngFor="let projeto of projetos" [value]="projeto.id">{{ projeto.nome }}</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Cliente</label>
           <select class="input-field" [(ngModel)]="selectedClienteTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
@@ -189,7 +173,6 @@
             <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Administrador</label>
           <select class="input-field" [(ngModel)]="selectedAdminTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
@@ -197,7 +180,6 @@
             <option *ngFor="let admin of administradores" [value]="admin.id">{{ admin.nome }}</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Usuário</label>
           <select class="input-field" [(ngModel)]="selectedUsuarioTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
@@ -205,7 +187,6 @@
             <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.email }}</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Status</label>
           <select class="input-field" [(ngModel)]="selectedStatusTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
@@ -216,7 +197,6 @@
             <option value="PAUSADA">Pausada</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Prioridade</label>
           <select class="input-field" [(ngModel)]="selectedPrioridadeTarefa" (ngModelChange)="aplicarFiltrosTarefas()">
@@ -227,7 +207,6 @@
           </select>
         </div>
       </div>
-
       <div class="filter-actions">
         <button class="btn-secondary" (click)="limparFiltros()">Limpar Filtros</button>
         <button class="btn-primary" (click)="aplicarFiltrosTarefas()">Aplicar Filtros</button>
@@ -261,7 +240,6 @@
       <div class="export-actions">
         <button class="export-btn"><i class="pi pi-file-pdf"></i> Exportar PDF</button>
       </div>
-
       <div class="tasks-table">
         <div class="task-row headers">
           <div class="task-name">Tarefa</div>
@@ -271,7 +249,6 @@
           <div class="task-hours">Horas</div>
           <div class="task-dates">Período</div>
         </div>
-
         <div class="task-row" *ngFor="let tarefa of tarefasFiltradas">
           <div class="task-name">{{ tarefa.nome }}</div>
           <div class="task-project">{{ tarefa.projeto.nome }}</div>
@@ -284,7 +261,6 @@
           </div>
           <div class="task-dates">{{ tarefa.dataInicio }} a {{ tarefa.dataFim }}</div>
         </div>
-
         <div class="empty-state" *ngIf="tarefasFiltradas.length === 0">
           <div class="empty-state-content">
             <img src="../../../../assets/no-project.png" alt="Sem dados" class="empty-image">

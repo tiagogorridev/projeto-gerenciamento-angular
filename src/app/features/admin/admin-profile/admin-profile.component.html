@@ -5,17 +5,11 @@
 
   <div class="settings-content">
     <div class="settings-nav">
-      <button
-        class="nav-item"
-        [class.active]="activeTab === 'personal'"
-        (click)="setActiveTab('personal')">
+      <button class="nav-item" [class.active]="activeTab === 'personal'" (click)="setActiveTab('personal')">
         <i class="pi pi-user"></i>
         Informações Pessoais
       </button>
-      <button
-        class="nav-item"
-        [class.active]="activeTab === 'security'"
-        (click)="setActiveTab('security')">
+      <button class="nav-item" [class.active]="activeTab === 'security'" (click)="setActiveTab('security')">
         <i class="pi pi-lock"></i>
         Segurança
       </button>
@@ -44,13 +38,9 @@
           <div class="form-group">
             <label>Senha Atual</label>
             <div class="password-field">
-              <input
-              [type]="showPassword['senhaAtual'] ? 'text' : 'password'"
-                class="input-field"
-                formControlName="senhaAtual"
-                [class.error]="senhaAtualInvalida || (hasError(securityForm, 'senhaAtual', 'required') && securityForm.get('senhaAtual')?.touched)">
-                <i class="pi" [class.pi-eye]="!showPassword['senhaAtual']" [class.pi-eye-slash]="showPassword['senhaAtual']" (click)="togglePasswordVisibility('senhaAtual')"></i>
-              </div>
+              <input [type]="showPassword['senhaAtual'] ? 'text' : 'password'" class="input-field" formControlName="senhaAtual" [class.error]="senhaAtualInvalida || (hasError(securityForm, 'senhaAtual', 'required') && securityForm.get('senhaAtual')?.touched)">
+              <i class="pi" [class.pi-eye]="!showPassword['senhaAtual']" [class.pi-eye-slash]="showPassword['senhaAtual']" (click)="togglePasswordVisibility('senhaAtual')"></i>
+            </div>
             <div class="error-message" *ngIf="hasError(securityForm, 'senhaAtual', 'required') && securityForm.get('senhaAtual')?.touched">
               Senha atual é obrigatória
             </div>
@@ -59,13 +49,9 @@
           <div class="form-group">
             <label>Nova Senha</label>
             <div class="password-field">
-              <input
-              [type]="showPassword['novaSenha'] ? 'text' : 'password'"
-                class="input-field"
-                formControlName="novaSenha"
-                [class.error]="hasError(securityForm, 'novaSenha', 'required') || hasError(securityForm, 'novaSenha', 'minlength') || senhaIgualAtual">
-                <i class="pi" [class.pi-eye]="!showPassword['novaSenha']" [class.pi-eye-slash]="showPassword['novaSenha']" (click)="togglePasswordVisibility('novaSenha')"></i>
-              </div>
+              <input [type]="showPassword['novaSenha'] ? 'text' : 'password'" class="input-field" formControlName="novaSenha" [class.error]="hasError(securityForm, 'novaSenha', 'required') || hasError(securityForm, 'novaSenha', 'minlength') || senhaIgualAtual">
+              <i class="pi" [class.pi-eye]="!showPassword['novaSenha']" [class.pi-eye-slash]="showPassword['novaSenha']" (click)="togglePasswordVisibility('novaSenha')"></i>
+            </div>
             <div class="error-message" *ngIf="hasError(securityForm, 'novaSenha', 'required')">
               Nova senha é obrigatória
             </div>
@@ -80,12 +66,9 @@
           <div class="form-group">
             <label>Confirmar Nova Senha</label>
             <div class="password-field">
-              <input
-              [type]="showPassword['confirmPassword'] ? 'text' : 'password'"
-                class="input-field"
-                formControlName="confirmPassword"
-                [class.error]="hasError(securityForm, 'confirmPassword', 'required') || securityForm.hasError('passwordMismatch')">
-                <i class="pi" [class.pi-eye]="!showPassword['confirmPassword']" [class.pi-eye-slash]="showPassword['confirmPassword']" (click)="togglePasswordVisibility('confirmPassword')"></i>            </div>
+              <input [type]="showPassword['confirmPassword'] ? 'text' : 'password'" class="input-field" formControlName="confirmPassword" [class.error]="hasError(securityForm, 'confirmPassword', 'required') || securityForm.hasError('passwordMismatch')">
+              <i class="pi" [class.pi-eye]="!showPassword['confirmPassword']" [class.pi-eye-slash]="showPassword['confirmPassword']" (click)="togglePasswordVisibility('confirmPassword')"></i>
+            </div>
             <div class="error-message" *ngIf="hasError(securityForm, 'confirmPassword', 'required')">
               Confirmação de senha é obrigatória
             </div>
@@ -101,7 +84,6 @@
           <div *ngIf="erroSenhaIgual" class="alert alert-danger">
             A nova senha não pode ser igual à senha atual.
           </div>
-
         </form>
       </div>
 

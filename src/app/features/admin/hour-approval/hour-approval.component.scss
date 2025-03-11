@@ -5,7 +5,6 @@ $text-gray: #64748b;
 $gray: #6b7280;
 $white: #ffffff;
 $hover-color: #7c3aed;
-$input-bg: #f8fafc;
 $success-color: #10b981;
 $danger-color: #ef4444;
 $warning-color: #f59e0b;
@@ -22,10 +21,166 @@ $warning-color: #f59e0b;
   margin-bottom: 32px;
 }
 
+.alert-error, .alert-success {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  position: relative;
+
+  i {
+    margin-right: 12px;
+    font-size: 18px;
+  }
+
+  .close-btn {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.alert-error {
+  background-color: rgba($danger-color, 0.1);
+  color: $danger-color;
+  border: 1px solid rgba($danger-color, 0.2);
+}
+
+.alert-success {
+  background-color: rgba($success-color, 0.1);
+  color: $success-color;
+  border: 1px solid rgba($success-color, 0.2);
+}
+
+.filters-section {
+  background: $white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid $border-color;
+
+  .filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    align-items: end;
+
+    .filter-item {
+      label {
+        display: block;
+        color: $text-gray;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+    }
+
+    select {
+      width: 100%;
+      padding: 13px 12px;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      color: $text-gray;
+      font-size: 14px;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+      }
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 10px;
+      margin-left: auto;
+      align-self: flex-end;
+    }
+
+    .btn-filter,
+    .btn-clear {
+      padding: 8px 16px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-filter {
+      background-color: #7047eb;
+      color: white;
+      border: none;
+    }
+
+    .btn-filter:hover {
+      background-color: #5a35c9;
+    }
+
+    .btn-clear {
+      background-color: #f0f0f0;
+      color: #555;
+      border: 1px solid #ddd;
+    }
+
+    .btn-clear:hover {
+      background-color: #e5e5e5;
+    }
+  }
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  font-size: 16px;
+  color: $text-gray;
+
+  i {
+    font-size: 24px;
+    color: $primary-color;
+  }
+}
+
 .time-entries-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.no-entries {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: $white;
+  border-radius: 12px;
+  border: 1px solid $border-color;
+  text-align: center;
+  color: $text-gray;
+
+  i {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  span {
+    font-size: 16px;
+  }
 }
 
 .time-entry-card {
@@ -75,6 +230,30 @@ $warning-color: #f59e0b;
     border-radius: 20px;
     font-weight: 500;
     font-size: 14px;
+  }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+
+  &.pendente {
+    background: #fef3c7;
+    color: #d97706;
+  }
+
+  &.aprovado {
+    background: #d1fae5;
+    color: #059669;
+  }
+
+  &.reprovado {
+    background: #fee2e2;
+    color: #dc2626;
   }
 }
 
@@ -183,202 +362,6 @@ $warning-color: #f59e0b;
   }
 }
 
-.filters-section {
-  background: $white;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 24px;
-  border: 1px solid $border-color;
-
-  .filters-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    align-items: end;
-
-    .filter-item {
-      label {
-        display: block;
-        color: $text-gray;
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 8px;
-      }
-    }
-
-    select {
-      width: 100%;
-      padding: 13px 12px;
-      border: 1px solid $border-color;
-      border-radius: 6px;
-      color: white;
-      color: $text-gray;
-      font-size: 14px;
-
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
-      }
-    }
-
-    .filter-actions {
-      display: flex;
-      gap: 10px;
-      margin-left: auto;
-      align-self: flex-end;
-    }
-
-    .btn-filter,
-    .btn-clear {
-      padding: 8px 16px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .btn-filter {
-      background-color: #7047eb;
-      color: white;
-      border: none;
-    }
-
-    .btn-filter:hover {
-      background-color: #5a35c9;
-    }
-
-    .btn-clear {
-      background-color: #f0f0f0;
-      color: #555;
-      border: 1px solid #ddd;
-    }
-
-    .btn-clear:hover {
-      background-color: #e5e5e5;
-    }
-
-    @media (max-width: 768px) {
-      .filters-grid {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .filter-item {
-        max-width: 100%;
-      }
-
-      .filter-actions {
-        margin-left: 0;
-        margin-top: 10px;
-      }
-    }
-  }
-}
-
-.alert-error, .alert-success {
-  display: flex;
-  align-items: center;
-  padding: 16px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-  position: relative;
-
-  i {
-    margin-right: 12px;
-    font-size: 18px;
-  }
-
-  .close-btn {
-    position: absolute;
-    right: 16px;
-    top: 16px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: inherit;
-    opacity: 0.7;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-}
-
-.alert-error {
-  background-color: rgba($danger-color, 0.1);
-  color: $danger-color;
-  border: 1px solid rgba($danger-color, 0.2);
-}
-
-.alert-success {
-  background-color: rgba($success-color, 0.1);
-  color: $success-color;
-  border: 1px solid rgba($success-color, 0.2);
-}
-
-.loading-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 32px;
-  font-size: 16px;
-  color: $text-gray;
-
-  i {
-    font-size: 24px;
-    color: $primary-color;
-  }
-}
-
-.no-entries {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 48px;
-  background: $white;
-  border-radius: 12px;
-  border: 1px solid $border-color;
-  text-align: center;
-  color: $text-gray;
-
-  i {
-    font-size: 48px;
-    margin-bottom: 16px;
-  }
-
-  span {
-    font-size: 16px;
-  }
-}
-
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-
-  &.pendente {
-    background: #fef3c7;
-    color: #d97706;
-  }
-
-  &.aprovado {
-    background: #d1fae5;
-    color: #059669;
-  }
-
-  &.reprovado {
-    background: #fee2e2;
-    color: #dc2626;
-  }
-}
 ::ng-deep {
   .p-calendar {
     width: 100%;

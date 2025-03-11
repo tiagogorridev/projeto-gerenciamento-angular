@@ -7,10 +7,8 @@ $white: #ffffff;
 .projects-container {
   margin: 0 24px;
   padding: 60px 24px 0 260px;
-
   .projects-header {
     margin-bottom: 24px;
-
     h1 {
       font-size: 20px;
       color: #111827;
@@ -28,16 +26,13 @@ $white: #ffffff;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
   min-height: 400px;
-
   .empty-state-content {
     text-align: center;
-
     .empty-image {
       width: 160px;
       height: 160px;
       margin-bottom: 16px;
     }
-
     .empty-text {
       color: #6b7280;
       font-size: 16px;
@@ -51,13 +46,11 @@ $white: #ffffff;
   margin-bottom: 24px;
   align-items: center;
   flex-wrap: wrap;
-
   .input-group {
     position: relative;
     min-width: 180px;
     flex: 1;
     max-width: 250px;
-
     .input-field {
       width: 100%;
       height: 40px;
@@ -66,24 +59,20 @@ $white: #ffffff;
       border-radius: 6px;
       font-size: 14px;
       background: #F9FAFB;
-
       &::placeholder {
         color: #9CA3AF;
       }
-
       &:focus {
         outline: none;
         border-color: #6366F1;
         box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
       }
     }
-
     select.input-field {
       appearance: none;
       padding-right: 36px;
       cursor: pointer;
     }
-
     .search-icon,
     .dropdown-icon {
       position: absolute;
@@ -108,7 +97,6 @@ $white: #ffffff;
   transition: background-color 0.2s;
   margin-left: auto;
   white-space: nowrap;
-
   &:hover {
     background-color: $hover-color;
   }
@@ -125,7 +113,6 @@ $white: #ffffff;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-
   .modal-content {
     background: $white;
     padding: 24px;
@@ -133,7 +120,6 @@ $white: #ffffff;
     width: 100%;
     max-width: 600px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
     h2 {
       margin-bottom: 24px;
       font-size: 18px;
@@ -144,21 +130,18 @@ $white: #ffffff;
 
 .form-group {
   margin-bottom: 16px;
-
   label {
     display: block;
     margin-bottom: 8px;
     color: #6b7280;
     font-size: 14px;
   }
-
   .input-field {
     width: 100%;
     padding: 8px 12px;
     border: 1px solid #e5e7eb;
     border-radius: 4px;
     font-size: 14px;
-
     &:focus {
       outline: none;
       border-color: $primary-color;
@@ -170,7 +153,6 @@ $white: #ffffff;
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-
   .form-group {
     flex: 1;
     min-width: 200px;
@@ -182,36 +164,29 @@ $white: #ffffff;
   justify-content: flex-end;
   gap: 12px;
   margin-top: 24px;
-
   button {
     padding: 8px 24px;
     border-radius: 4px;
     font-size: 14px;
     cursor: pointer;
-
     &.cancel-btn {
       background: $white;
       border: 1px solid #e5e7eb;
       color: #6b7280;
-
       &:hover {
         background: #f9fafb;
       }
     }
-
     &.create-btn, &.delete-confirm-btn {
       background: $primary-color;
       border: none;
       color: $white;
-
       &:hover {
         background: $hover-color;
       }
     }
-
     &.delete-confirm-btn {
       background-color: #dc3545;
-
       &:hover {
         background-color: #c82333;
       }
@@ -226,30 +201,25 @@ $white: #ffffff;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-
   .project-row {
     display: grid;
     grid-template-columns: 2fr 1.5fr 1.5fr 2fr 1fr 1fr 1fr 1fr 0.5fr;
     padding: 12px 24px;
     align-items: center;
     border-bottom: 1px solid #E5E7EB;
-
     &:last-child {
       border-bottom: none;
     }
-
     &:hover:not(.headers) {
       background: #F9FAFB;
       cursor: pointer;
     }
-
     &.headers {
       background: #F9FAFB;
       font-weight: 500;
       color: #4B5563;
       border-bottom: 2px solid #E5E7EB;
     }
-
     > div {
       font-size: 14px;
       color: #374151;
@@ -279,22 +249,18 @@ $white: #ffffff;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
-
   &.PLANEJADO {
     background: #EEF2FF;
     color: #4F46E5;
   }
-
   &.EM_ANDAMENTO {
     background: #F0F9FF;
     color: #0284C7;
   }
-
   &.CONCLUIDO {
     background: #F0FDF4;
     color: #16A34A;
   }
-
   &.CANCELADO {
     background: #FEF2F2;
     color: #DC2626;
@@ -306,17 +272,14 @@ $white: #ffffff;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
-
   &.ALTA {
     background: #FEF2F2;
     color: #DC2626;
   }
-
   &.MEDIA {
     background: #FFFBEB;
     color: #D97706;
   }
-
   &.BAIXA {
     background: #F0FDF4;
     color: #16A34A;
@@ -335,11 +298,9 @@ $white: #ffffff;
   color: #ef4444;
   cursor: pointer;
   padding: 8px;
-
   &:hover {
     background-color: #ffebee;
   }
-
   i {
     font-size: 1.2rem;
   }
@@ -362,26 +323,22 @@ $white: #ffffff;
 ::ng-deep {
   .p-calendar {
     width: 100%;
-
     .p-inputtext {
       width: 100%;
       padding: 10px 12px;
       border: 1px solid $border-color;
       border-radius: 6px;
       font-size: 14px;
-
       &:focus {
         outline: none;
         border-color: $primary-color;
         box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
       }
     }
-
     .p-button {
       background-color: $primary-color;
       border: 1px solid $border-color;
       color: $white;
-
       &:hover {
         background-color: $hover-color;
       }

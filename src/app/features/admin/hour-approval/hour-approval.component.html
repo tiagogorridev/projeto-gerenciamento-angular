@@ -4,7 +4,6 @@
 <div class="approval-container">
   <h1 class="page-title">Aprovação de Horas</h1>
 
-  <!-- Mensagens de erro e sucesso -->
   <div *ngIf="errorMessage" class="alert-error">
     <i class="pi pi-exclamation-triangle"></i>
     <span>{{ errorMessage }}</span>
@@ -21,7 +20,6 @@
     </button>
   </div>
 
-  <!-- Filtros -->
   <div class="filters-section">
     <div class="filters-grid">
       <div class="filter-item">
@@ -60,13 +58,11 @@
     </div>
   </div>
 
-  <!-- Loader -->
   <div *ngIf="loading" class="loading-indicator">
     <i class="pi pi-spin pi-spinner"></i>
     <span>Carregando...</span>
   </div>
 
-  <!-- Lista de lançamentos -->
   <div class="time-entries-container" *ngIf="!loading">
     <div *ngIf="lancamentos.length === 0 && !loading && !successMessage" class="no-entries">
       <i class="pi pi-info-circle"></i>
@@ -78,7 +74,7 @@
         <div class="user-info">
           <h3>{{ lancamento.usuario.nome || 'Usuário não identificado' }}</h3>
           <span class="user-email">{{ lancamento.usuario.email || 'Email não disponível' }}</span>
-                </div>
+        </div>
         <div class="entry-details">
           <span class="time-logged">{{ formatarHoras(lancamento.horas) }}</span>
           <span class="status-badge" [ngClass]="getStatusClass(lancamento.status)">

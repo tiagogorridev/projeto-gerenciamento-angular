@@ -4,7 +4,6 @@
   <div class="projects-header">
     <h1>Projetos</h1>
   </div>
-
   <div class="search-filter-container">
     <div class="input-group">
       <input
@@ -15,7 +14,6 @@
         (input)="filterProjects()">
       <i class="pi pi-search search-icon"></i>
     </div>
-
     <div class="input-group">
       <select class="input-field" [(ngModel)]="selectedStatus" (change)="filterProjects()">
         <option value="" disabled selected>Status</option>
@@ -27,7 +25,6 @@
       </select>
       <i class="pi pi-chevron-down dropdown-icon"></i>
     </div>
-
     <div class="input-group">
       <select class="input-field" [(ngModel)]="selectedPriority" (change)="filterProjects()">
         <option value="" disabled selected>Prioridade</option>
@@ -42,14 +39,12 @@
       Novo Projeto
     </button>
   </div>
-
   <div class="empty-state" *ngIf="!hasProjects">
     <div class="empty-state-content">
       <img src="assets/no-project.png" alt="Nenhum projeto disponível" class="empty-image">
       <p class="empty-text">Nenhum projeto disponível</p>
     </div>
   </div>
-
   <div class="projects-list" *ngIf="hasProjects">
     <div class="project-row headers">
       <div class="project-name">Nome</div>
@@ -62,7 +57,6 @@
       <div class="project-end">Data de Fim</div>
       <div class="project-actions">Ações</div>
     </div>
-
     <div class="project-row" *ngFor="let projeto of filteredProjects" (click)="navegarParaEdicao(projeto.id, projeto.nome)">
       <div class="project-name">{{ projeto.nome }}</div>
       <div class="project-client">{{ projeto.cliente?.nome }}</div>
@@ -88,23 +82,19 @@
       </div>
    </div>
   </div>
-
   <div class="modal" *ngIf="showNewProjectModal">
     <div class="modal-content">
       <h2>Novo Projeto</h2>
-
       <form (ngSubmit)="onSubmit(projectForm)" #projectForm="ngForm">
         <div class="form-group">
           <label>Nome</label>
           <input type="text" class="input-field" [(ngModel)]="project.nome" name="nome" required>
           <div *ngIf="projectForm.submitted && !project.nome" class="error-text">Nome é obrigatório</div>
         </div>
-
         <div class="form-group">
           <label>Descrição</label>
           <input type="text" class="input-field" [(ngModel)]="project.descricao" name="descricao" required>
         </div>
-
         <div class="form-group">
           <label>Cliente</label>
           <select class="input-field" [(ngModel)]="project.cliente" name="cliente" required>
@@ -112,29 +102,24 @@
             <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Horas estimadas</label>
           <input type="number" class="input-field" [(ngModel)]="project.horasEstimadas" name="horasEstimadas" required>
         </div>
-
         <div class="form-group">
           <label>Custo estimado</label>
           <input type="number" class="input-field" [(ngModel)]="project.custoEstimado" name="custoEstimado" required>
         </div>
-
         <div class="form-row">
           <div class="form-group">
             <label>Data de Início</label>
             <p-calendar [(ngModel)]="startDate" name="dataInicio" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
           </div>
-
           <div class="form-group">
             <label>Data de Fim</label>
             <p-calendar [(ngModel)]="endDate" name="dataFim" [showIcon]="true" [showButtonBar]="true" [touchUI]="false" dateFormat="dd/mm/yy" [required]="true"></p-calendar>
           </div>
         </div>
-
         <div class="form-group">
           <label>Status</label>
           <select class="input-field" [(ngModel)]="project.status" name="status" required>
@@ -144,7 +129,6 @@
             <option value="CANCELADO">Cancelado</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Prioridade</label>
           <select class="input-field" [(ngModel)]="project.prioridade" name="prioridade" required>
@@ -153,7 +137,6 @@
             <option value="BAIXA">Baixa</option>
           </select>
         </div>
-
         <div class="modal-actions">
           <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
           <button type="submit" class="create-btn" [disabled]="!projectForm.form.valid">Criar</button>
@@ -161,13 +144,11 @@
       </form>
     </div>
   </div>
-
   <div class="modal" *ngIf="showDeleteConfirmModal">
     <div class="modal-content confirm-modal">
       <h2>Confirmar Exclusão</h2>
       <p>Tem certeza que deseja excluir o projeto "{{ projetoParaExcluir?.nome }}"?</p>
       <p class="warning-text">Esta ação não pode ser desfeita.</p>
-
       <div class="modal-actions">
         <button type="button" class="cancel-btn" (click)="cancelarExclusao()">Cancelar</button>
         <button type="button" class="delete-confirm-btn" (click)="excluirProjeto()">Excluir</button>
