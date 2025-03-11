@@ -13,7 +13,6 @@ import { SidebarComponent } from './features/users/sidebar/sidebar.component';
 
 // Features -> Admin
 import { AdicionarClienteComponent } from './features/admin/adicionar-cliente/adicionar-cliente.component';
-import { AdminAtividadesComponent } from './features/admin/admin-atividades/admin-atividades.component';
 import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
 import { AdminProfileComponent } from './features/admin/admin-profile/admin-profile.component';
 import { AdminProjetosComponent } from './features/admin/admin-projetos/admin-projetos.component';
@@ -80,7 +79,6 @@ import { ThemeService } from './core/auth/services/theme.service';
     AdminSidebarComponent,
     AdminHeaderComponent,
     AdminProfileComponent,
-    AdminAtividadesComponent,
     AdminRelatoriosComponent,
     AdminProjetosComponent,
     AdminTarefaComponent,

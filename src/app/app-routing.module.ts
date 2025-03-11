@@ -19,7 +19,6 @@ import { HourApprovalComponent } from './features/admin/hour-approval/hour-appro
 import { AdminSidebarComponent } from './features/admin/admin-sidebar/admin-sidebar.component';
 import { AdminRelatoriosComponent } from './features/admin/admin-relatorios/admin-relatorios.component';
 import { AdminProjetosComponent } from './features/admin/admin-projetos/admin-projetos.component';
-import { AdminAtividadesComponent } from './features/admin/admin-atividades/admin-atividades.component';
 import { HelpPageAdminComponent } from './features/admin/help-page-admin/help-page-admin.component';
 import { AdminTarefaComponent } from './features/admin/admin-tarefa/admin-tarefa.component';
 import { EditProjectsComponent } from './features/admin/edit-projects/edit-projects.component';
@@ -54,7 +53,6 @@ const routes: Routes = [
       { path: 'hour-approval', component: HourApprovalComponent },
       { path: 'admin-sidebar', component: AdminSidebarComponent },
       { path: 'admin-header', component: AdminHeaderComponent },
-      { path: 'admin-atividades', component: AdminAtividadesComponent },
       { path: 'admin-projetos', component: AdminProjetosComponent },
       { path: 'admin-relatorios', component: AdminRelatoriosComponent },
       { path: 'admin-profile', component: AdminProfileComponent },

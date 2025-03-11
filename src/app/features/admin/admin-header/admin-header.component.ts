@@ -20,7 +20,6 @@ export class AdminHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Inscrever-se no estado do tema
     this.themeService.isDarkMode$.subscribe(isDark => {
       this.isDarkTheme = isDark;
     });

@@ -59,7 +59,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     background: $input-bg;
     color: $text-gray;
     font-size: 14px;
-    transition: all 0.2s ease;
 
     &::placeholder {
       color: lighten($text-gray, 20%);
