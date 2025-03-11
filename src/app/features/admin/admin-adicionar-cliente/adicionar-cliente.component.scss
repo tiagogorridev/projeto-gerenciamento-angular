@@ -44,6 +44,30 @@ $success-color: #10b981;
   gap: 12px;
   margin-bottom: 24px;
   flex-wrap: wrap;
+  justify-content: space-between; // Isso criará espaço entre os elementos de filtro e os botões
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-left: auto; // Isso empurra o grupo de botões para a direita
+}
+
+.new-client-btn {
+  height: 40px;
+  padding: 0 24px;
+  background-color: $primary-color;
+  color: $white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+  &:hover {
+    background-color: $hover-color;
+  }
+  // Removemos o margin-left: auto daqui
 }
 
 .input-group {

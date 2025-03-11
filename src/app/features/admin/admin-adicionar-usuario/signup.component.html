@@ -22,13 +22,15 @@
       <i class="pi pi-chevron-down dropdown-icon"></i>
     </div>
 
-    <button class="new-user-btn" (click)="openReactivateModal()">
-      Reativar Usuário
-    </button>
+    <div class="button-group">
+      <button class="new-user-btn" (click)="openReactivateModal()">
+        Reativar Usuário
+      </button>
 
-    <button class="new-user-btn" (click)="openNewUserModal()">
-      Novo Usuário
-    </button>
+      <button class="new-user-btn" (click)="openNewUserModal()">
+        Novo Usuário
+      </button>
+    </div>
   </div>
 
   <div class="empty-state" *ngIf="!hasUsers">
