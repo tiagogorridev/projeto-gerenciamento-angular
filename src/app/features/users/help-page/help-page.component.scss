@@ -93,6 +93,15 @@
   }
 }
 
+.quick-link-card-link {
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
 .category-filters {
   display: flex;
   gap: 12px;
@@ -132,7 +141,6 @@
     background: #8b5cf6;
     color: white;
   }
-
 }
 
 .faq-container {
@@ -215,32 +223,4 @@
       color: #e5e7eb;
     }
   }
-}
-
-@media (max-width: 768px) {
-  .help-center-container {
-    padding: 24px;
-  }
-
-  .quick-links {
-    grid-template-columns: 1fr;
-  }
-
-  .contact-options {
-    flex-direction: column;
-    gap: 16px;
-
-    .divider {
-      display: none;
-    }
-  }
-}
-
-.quick-link-card-link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.quick-link-card-link:hover {
-  opacity: 0.8;
 }

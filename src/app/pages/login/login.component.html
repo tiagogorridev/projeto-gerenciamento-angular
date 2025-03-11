@@ -4,9 +4,7 @@
       <h1>Bem-vindo de volta à timetracker.com</h1>
       <h2>Comece a gerenciar suas horas de projeto agora!</h2>
     </div>
-
     <div class="signup-form">
-
       <form (ngSubmit)="onSubmit()" #signupForm="ngForm" novalidate>
         <div class="form-group" [ngClass]="{'error-input': loginError}">
           <label for="email"></label>
@@ -22,7 +20,6 @@
           >
           <small *ngIf="signupForm.submitted && !email" class="error-text">O email é obrigatório.</small>
         </div>
-
         <div class="form-group" [ngClass]="{'error-input': loginError}">
           <label for="password"></label>
           <input
@@ -38,13 +35,11 @@
           <small *ngIf="signupForm.submitted && !password" class="error-text">A senha é obrigatória.</small>
           <small *ngIf="loginError" class="error-text error-login">Email ou senha incorretos</small>
         </div>
-
         <div class="login-btn">
           <button pButton label="Entrar" type="submit" [disabled]="!signupForm.valid" class="signup-btn"></button>
         </div>
       </form>
     </div>
   </div>
-
   <div class="signup-background"></div>
 </div>

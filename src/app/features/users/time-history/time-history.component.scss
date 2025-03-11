@@ -168,37 +168,3 @@
   padding: 20px;
   color: #6c757d;
 }
-
-.contact-section {
-  text-align: center;
-  padding: 24px;
-
-  h3 {
-    color: #374151;
-    font-size: 20px;
-    margin-bottom: 16px;
-  }
-
-  .contact-options {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    align-items: center;
-
-    a {
-      color: #6b7280;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      &:hover {
-        color: #8b5cf6;
-      }
-    }
-
-    .divider {
-      color: #e5e7eb;
-    }
-  }
-}

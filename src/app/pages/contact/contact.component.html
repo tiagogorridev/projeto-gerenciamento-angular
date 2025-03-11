@@ -6,10 +6,8 @@
   <app-sidebar></app-sidebar>
   <app-header></app-header>
 </ng-template>
-
 <section class="settings-container" @fadeInOut>
   <h1 class="page-title">Fale Conosco</h1>
-
   <div class="contact-container">
     <div class="contact-form-wrapper">
       <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
@@ -27,7 +25,6 @@
             {{ getErrorMessage('name') }}
           </span>
         </div>
-
         <div class="form-group">
           <label for="email">Email</label>
           <input
@@ -43,7 +40,6 @@
             {{ getErrorMessage('email') }}
           </span>
         </div>
-
         <div class="form-group">
           <label for="subject">Assunto</label>
           <input
@@ -58,7 +54,6 @@
             {{ getErrorMessage('subject') }}
           </span>
         </div>
-
         <div class="form-group">
           <label for="message">Mensagem</label>
           <textarea
@@ -72,7 +67,6 @@
             {{ getErrorMessage('message') }}
           </span>
         </div>
-
         <div class="form-actions">
           <button type="button" class="cancel-btn" (click)="onCancel()" aria-label="Cancelar">
             <i class="pi pi-times"></i>
@@ -84,16 +78,13 @@
           </button>
         </div>
       </form>
-
       <div class="success-message" *ngIf="showSuccessMessage" @fadeInOut>
         <i class="pi pi-check-circle"></i>
         <p>{{ showSuccessMessage }}</p>
       </div>
     </div>
-
     <section class="contact-info">
       <h2>Outras formas de contato</h2>
-
       <div class="contact-methods">
         <div class="contact-method">
           <div class="icon-wrapper">
@@ -104,7 +95,6 @@
             <a href="mailto:contato@timetracker.com">contato@timetracker.com</a>
           </div>
         </div>
-
         <div class="contact-method">
           <div class="icon-wrapper">
             <i class="pi pi-whatsapp"></i>
@@ -114,7 +104,6 @@
             <a href="https://wa.me/5541999999999" target="_blank">(41) 99999-9999</a>
           </div>
         </div>
-
         <div class="contact-method">
           <div class="icon-wrapper">
             <i class="pi pi-phone"></i>
@@ -124,14 +113,13 @@
             <a href="tel:+554133333333">(41) 3333-3333</a>
           </div>
         </div>
-
         <div class="contact-method">
           <div class="icon-wrapper">
             <i class="pi pi-map-marker"></i>
           </div>
           <div class="method-details">
             <h3>Endereço</h3>
-            <p>Rua Exemplo, 123, Curitiba, PR</p>
+            <p>Rua Jardim, 123, Curitiba, PR</p>
           </div>
         </div>
       </div>

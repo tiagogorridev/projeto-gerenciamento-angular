@@ -7,7 +7,6 @@ $hover-color: #7c3aed;
 $input-bg: #f8fafc;
 $modal-overlay: rgba(0, 0, 0, 0.5);
 
-
 .settings-container {
   margin: 0 24px;
   padding: 60px 24px 0 260px;
@@ -42,7 +41,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
 
 .form-group {
   margin-bottom: 24px;
-
   label {
     display: block;
     color: $text-gray;
@@ -50,7 +48,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     font-weight: 500;
     margin-bottom: 8px;
   }
-
   input, textarea {
     width: 100%;
     padding: 12px;
@@ -59,23 +56,19 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     background: $input-bg;
     color: $text-gray;
     font-size: 14px;
-
     &::placeholder {
       color: lighten($text-gray, 20%);
     }
-
     &:focus {
       outline: none;
       border-color: $primary-color;
       box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
     }
-
     &.error {
       border-color: #ef4444;
       background-color: #fff5f5;
     }
   }
-
   textarea {
     min-height: 120px;
     resize: vertical;
@@ -93,7 +86,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   display: flex;
   gap: 16px;
   margin-top: 32px;
-
   button {
     display: flex;
     align-items: center;
@@ -103,32 +95,26 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     border-radius: 8px;
     font-weight: 500;
     transition: all 0.2s ease;
-
     i {
       font-size: 16px;
     }
-
     &:disabled {
       opacity: 0.7;
       cursor: not-allowed;
     }
   }
-
   .cancel-btn {
     background: transparent;
     color: $gray;
     border: 1px solid $border-color;
-
     &:hover:not(:disabled) {
       background: $input-bg;
     }
   }
-
   .submit-btn {
     background: $primary-color;
     color: $white;
     border: none;
-
     &:hover:not(:disabled) {
       background: $hover-color;
     }
@@ -148,7 +134,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   animation: slideIn 0.3s ease-out;
-
   i {
     font-size: 20px;
   }
@@ -173,7 +158,6 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   display: flex;
   gap: 16px;
   align-items: flex-start;
-
   .icon-wrapper {
     width: 44px;
     height: 44px;
@@ -185,13 +169,11 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
     color: $primary-color;
     font-size: 20px;
     transition: all 0.2s ease;
-
     &:hover {
       transform: scale(1.05);
       background: lighten($primary-color, 32%);
     }
   }
-
   .method-details {
     h3 {
       color: #374151;
@@ -199,13 +181,11 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
       font-weight: 500;
       margin-bottom: 4px;
     }
-
     a {
       color: $gray;
       font-size: 14px;
       text-decoration: none;
       transition: color 0.2s ease;
-
       &:hover {
         color: $primary-color;
       }
@@ -237,25 +217,5 @@ $modal-overlay: rgba(0, 0, 0, 0.5);
   to {
     opacity: 1;
     transform: translateX(0);
-  }
-}
-
-@media (max-width: 1024px) {
-  .contact-container {
-    grid-template-columns: 1fr;
-  }
-
-  .settings-container {
-    padding: 24px;
-  }
-}
-
-@media (max-width: 640px) {
-  .form-actions {
-    flex-direction: column;
-
-    button {
-      width: 100%;
-    }
   }
 }

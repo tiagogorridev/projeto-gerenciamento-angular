@@ -4,7 +4,6 @@ $strong-purple: #8b5cf6;
 $gray: #6b7280;
 $hover: rgba(139, 92, 246, 0.1);
 $white: #FFFFFF;
-$light-white: #FEFEFE;
 
 .header {
   width: 100%;
@@ -107,18 +106,18 @@ $light-white: #FEFEFE;
           }
         }
 
+        .divider {
+          height: 1px;
+          background-color: $light-gray;
+          margin: 4px 0;
+        }
+
         .logout-btn {
           color: #ef4444;
 
           i {
             color: #ef4444;
           }
-        }
-
-        .divider {
-          height: 1px;
-          background-color: $light-gray;
-          margin: 4px 0;
         }
       }
     }
