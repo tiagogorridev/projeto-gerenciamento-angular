@@ -13,7 +13,18 @@ $input-bg: #f8fafc;
 $error-red: #dc3545;
 $success-green: #16a34a;
 
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+}
+
 .signup-container {
+  overflow: hidden;
+
   display: flex;
   height: 100vh;
   width: 100%;

@@ -23,7 +23,7 @@
   body, main, .container, .dashboard-container,
   .projects-container, .help-center-container,
   .settings-container, .about-projects-container,
-  .reports-container, .users-container, .project-page, .signup-content {
+  .reports-container, .users-container, .project-page, .signup-content, .time-entry-card, .project-details {
     background-color: var(--background-color) !important;
     color: var(--text-color) !important;
   }
@@ -34,8 +34,7 @@
   }
 
   // Cards
-  .card-background, .content-card, .info-sidebar,
-  .project-details, .tasks-card, .filter-section,
+  .card-background, .content-card, .info-sidebar, .tasks-card, .filter-section,
   .stat-card, .chart-section, .quick-link-card,
   .faq-container, .settings-form, .contact-form,
   .clients-list, .inactive-clients-list, .empty-state, .no-entries,
