@@ -13,7 +13,7 @@
 }
 
 [data-theme='dark'] {
-  --background-color: #121212;
+  --background-color: #1a1b21;
   --text-color: #e5e7eb;
   --card-background: #1e1f26;
   --border-color: #2d3748;
@@ -27,8 +27,66 @@
 }
 
 body {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--background-color) !important;
+  color: var(--text-color !important);
 }
 
+.stat-card {
+  background-color: var(--card-background) !important;
+
+  a {
+    color: var(--text-color) !important;
+  }
+}
+
+html[data-theme='dark'] body .sidebar {
+  background-color: var(--sidebar-bg);
+  color: var(--secondary-color);
+
+  .section-title {
+    color: var(--text-color);
+  }
+
+  nav ul li a {
+    color: var(--text-color);
+
+    &:hover {
+      background-color: var(--hover-color);
+      color: var(--accent-color);
+    }
+
+    &.active {
+      color: var(--accent-color);
+      background-color: var(--hover-color);
+      border-left: 2px solid var(--primary-color);
+
+      i {
+        color: var(--primary-color);
+      }
+    }
+
+    i {
+      color: var(--secondary-color);
+    }
+  }
+
+  .submenu {
+    background-color: var(--sidebar-bg);
+  }
+
+  .user-info {
+    border-top: 1px solid var(--border-color);
+
+    .user-avatar {
+      background-color: var(--hover-color);
+
+      i {
+        color: var(--text-color);
+      }
+    }
+
+    .user-name {
+      color: var(--text-color);
+    }
+  }
+}
