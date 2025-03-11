@@ -187,6 +187,12 @@ CREATE TABLE usuarios_projetos (
 ```bash
 git clone https://github.com/tiagogorridev/projeto-gerenciamento-angular.git
 cd projeto-gerenciamento-angular
+
+# Instale as dependências
+npm install
+
+# Execute o servidor de desenvolvimento
+ng s -o
 ```
 
 2. Clone o repositório do backend:
@@ -201,13 +207,13 @@ export DB_URL=jdbc:mysql://localhost:3306/sistema_gerenciamento_bd
 export DB_USERNAME=seu_usuario
 export DB_PASSWORD=sua_senha
 
-# Alternativa: Crie um arquivo application.properties na pasta src/main/resources com o conteúdo:
-# spring.datasource.url=jdbc:mysql://localhost:3306/sistema_gerenciamento_bd
-# spring.datasource.username=seu_usuario
-# spring.datasource.password=sua_senha
-# spring.jpa.hibernate.ddl-auto=validate
-# jwt.secret=sua_chave_secreta_para_jwt
-# jwt.expiration=86400000
+- Alternativa: Crie um arquivo application.properties na pasta src/main/resources com o conteúdo:
+- spring.datasource.url=jdbc:mysql://localhost:3306/sistema_gerenciamento_bd
+- spring.datasource.username=seu_usuario
+- spring.datasource.password=sua_senha
+- spring.jpa.hibernate.ddl-auto=validate
+- jwt.secret=sua_chave_secreta_para_jwt
+- jwt.expiration=86400000
 
 
 # Compile e execute o backend
@@ -216,19 +222,7 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-3. Configure e execute o frontend:
-
-```bash
-cd ../frontend
-
-# Instale as dependências
-npm install
-
-# Execute o servidor de desenvolvimento
-ng serve
-```
-
-4. Acesse a aplicação em seu navegador:
+3. Acesse a aplicação em seu navegador:
    - Frontend: http://localhost:4200
    - Documentação da API: http://localhost:8080/swagger-ui.html
 
