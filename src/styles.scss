@@ -1,24 +1,3 @@
-// Temas
-:root {
-  --background-color: #FEFEFE;
-  --text-color: #1e1f26;
-  --card-background: #ffffff;
-  --border-color: #e5e7eb;
-  --primary-color: #8b5cf6;
-  --secondary-color: #a9b0bb;
-  --accent-color: #8b5cf6;
-  --hover-color: rgba(139, 92, 246, 0.1);
-  --sidebar-bg: #f7f8fa;
-  --header-bg: #ffffff;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --input-bg: #f8fafc;
-  --error-color: #ef4444;
-  --success-color: #10b981;
-  --success-bg: #dcfce7;
-  --danger-bg: #fee2e2;
-  --accent-bg: #f3e8ff;
-}
-
 [data-theme='dark'] {
   --background-color: #1a1b21;
   --text-color: #e5e7eb;
@@ -39,7 +18,8 @@
   --accent-bg: rgba(147, 51, 234, 0.2);
 }
 
-// Estilos Globais
+[data-theme='dark'] {
+  // Estilos Globais
   body, main, .container, .dashboard-container,
   .projects-container, .help-center-container,
   .settings-container, .about-projects-container,
@@ -53,9 +33,7 @@
     color: var(--text-color) !important;
   }
 
-// Componentes em Comum
-
-// Cards
+  // Cards
   .card-background, .content-card, .info-sidebar,
   .project-details, .tasks-card, .filter-section,
   .stat-card, .chart-section, .quick-link-card,
@@ -68,7 +46,7 @@
     box-shadow: 0 1px 3px var(--shadow-color) !important;
   }
 
-// Botoes
+  // Botoes
   .btn-primary, .new-client-btn, .new-user-btn,
   .add-hours-btn, .empty-action, .new-project-btn,
   .create-btn {
@@ -93,7 +71,7 @@
     background-color: var(--background-color) !important;
   }
 
-// Forms
+  // Forms
   .form-group label {
     color: var(--secondary-color) !important;
   }
@@ -124,18 +102,18 @@
     color: var(--error-color) !important;
   }
 
-// Placeholders
+  // Placeholders
   .input-field::placeholder, .search-input::placeholder {
     color: var(--secondary-color) !important;
   }
 
-// Select
+  // Select
   select.form-control option {
     background-color: var(--background-color) !important;
     color: var(--text-color) !important;
   }
 
-// Modal
+  // Modal
   .modal {
     background-color: rgba(0, 0, 0, 0.7) !important;
   }
@@ -152,7 +130,7 @@
     margin-top: 20px;
   }
 
-// Tabelas
+  // Tabelas
   .table-headers, .client-row.headers,
   .usuario-row.headers, .project-row.headers,
   .tarefa-row.headers, .task-row.headers,
@@ -179,7 +157,7 @@
     background-color: var(--card-background) !important;
   }
 
-// Sidebar
+  // Sidebar
   .sidebar {
     background-color: var(--sidebar-bg) !important;
     color: var(--secondary-color) !important;
@@ -240,9 +218,9 @@
     color: var(--secondary-color) !important;
   }
 
-// Header
+  // Header
   .header {
-    background-color: var(--backgroung-color) !important;
+    background-color: var(--background-color) !important; // Fixed typo from --backgroung-color
     color: var(--text-color) !important;
   }
 
@@ -293,8 +271,7 @@
     background-color: var(--border-color) !important;
   }
 
-// Dashboard
-
+  // Dashboard
   .button-group {
     border-top: 1px solid var(--border-color) !important;
   }
@@ -351,7 +328,7 @@
     background-color: var(--primary-color) !important;
   }
 
-// Clientes
+  // Clientes
   .clientes-container h1,
   .usuarios-container h1, .summary-value, .project-name, .project-client, .project-progress,
   .project-cost, .project-status, .project-priority, .project-dates, .task-name, .task-project,
@@ -372,7 +349,7 @@
     color: var(--secondary-color) !important;
   }
 
-// Projetos
+  // Projetos
   .detail-grid .detail-item, .usuario-row {
     background-color: var(--background-color) !important;
   }
@@ -410,7 +387,7 @@
     color: var(--secondary-color) !important;
   }
 
-// Configuracoes
+  // Configuracoes
   .settings-nav .nav-item {
     color: var(--text-color) !important;
   }
@@ -436,7 +413,7 @@
     color: var(--secondary-color) !important;
   }
 
-// Central de Ajuda
+  // Central de Ajuda
   .help-header {
     border-bottom: 1px solid var(--border-color) !important;
   }
@@ -525,7 +502,7 @@
     color: var(--border-color) !important;
   }
 
-// Relatorios
+  // Relatorios
   .reports-header {
     border-bottom: 1px solid var(--border-color) !important;
   }
@@ -568,7 +545,7 @@
     filter: brightness(0.8) !important;
   }
 
-// Status
+  // Status
   .status-badge.status-aprovado {
     background-color: var(--success-bg) !important;
     color: var(--success-color) !important;
@@ -585,7 +562,7 @@
     color: var(--accent-color) !important;
   }
 
-// Calendarios
+  // Calendarios
   .p-datatable .p-datatable-thead > tr > th {
     background-color: var(--header-bg) !important;
     color: var(--text-color) !important;
@@ -626,3 +603,4 @@
   .p-calendar .p-button:hover {
     background-color: var(--accent-color) !important;
   }
+}
