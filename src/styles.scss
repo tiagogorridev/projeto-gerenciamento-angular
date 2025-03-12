@@ -39,19 +39,10 @@
   .faq-container, .settings-form, .contact-form,
   .clients-list, .inactive-clients-list, .empty-state, .no-entries,
   .modal-content, .report-summary .summary-card,
-  .table-container, .top-users-section, .top-projects-section, .usuarios-list, .project-details, .dropdown-placeholder, .dropdown-option  {
+  .table-container, .top-users-section, .top-projects-section, .usuarios-list, .projects-list, .project-details, .dropdown-placeholder, .dropdown-option  {
     background-color: var(--card-background) !important;
-    box-shadow: 0 1px 4px var(--shadow-color) !important;
-    border: none !important;
-  }
-
-  table {
-    border: none !important;
-  }
-
-  .projects-list {
-    background-color: var(--card-background) !important;
-    border: none !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 1px 3px var(--shadow-color) !important;
   }
 
   // Botoes
@@ -156,7 +147,7 @@
 
   .table-row, .client-row:not(.headers),
   .usuario-row:not(.headers), .project-row:not(.headers),
-  .tarefas-row:not(.headers), .task-row:not(.headers), .tab-navigation, .project-header, .p-datepicker-month, .p-datepicker-year {
+  .tarefa-row, .task-row:not(.headers), .tab-navigation, .project-header, .p-datepicker-month, .p-datepicker-year {
     border-bottom: 1px solid var(--border-color) !important;
     color: var(--text-color) !important;
   }
@@ -306,7 +297,7 @@
     color: var(--secondary-color) !important;
   }
 
-  .top-users-section .user-item, .detail-item,
+  .top-users-section .user-item,
   .top-projects-section .project-card {
     background-color: var(--input-bg) !important;
     border: 1px solid var(--border-color) !important;
@@ -340,15 +331,10 @@
 
   // Clientes
   .clientes-container h1,
-  .usuarios-container h1, .summary-value, .table-header, th, td {
-    color: var(--text-color) !important;
-    border-bottom: 1px solid var(--border-color) !important;
-  }
-
-  .project-name, .project-client, .project-progress,
+  .usuarios-container h1, .summary-value, .project-name, .project-client, .project-progress,
   .project-cost, .project-status, .project-priority, .project-dates, .task-name, .task-project,
   .task-user, .task-status, .task-hours, .task-dates, .project-start, .project-end, .project-actions,
-  .tarefa-name, .tarefa-client, .tarefa-status, .tarefa-hours, .tarefa-actions {
+  .tarefa-name, .tarefa-client, .tarefa-status, .tarefa-hours, .tarefa-actions, .table-header, th, td {
     color: var(--text-color) !important;
   }
 
@@ -362,6 +348,11 @@
 
   .empty-state-small p {
     color: var(--secondary-color) !important;
+  }
+
+  // Projetos
+  .detail-grid .detail-item, .usuario-row {
+    background-color: var(--background-color) !important;
   }
 
   .detail-grid .detail-item strong {
@@ -424,6 +415,9 @@
   }
 
   // Central de Ajuda
+  .help-header {
+    border-bottom: 1px solid var(--border-color) !important;
+  }
 
   .search-container .fas {
     color: var(--secondary-color) !important;
@@ -622,31 +616,5 @@
 
   .project-hours  {
     color: var(--secondary-color) !important;
-  }
-
-  ::-webkit-scrollbar {
-    width: 12px !important;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #2d2d2d !important;
-    border-radius: 10px !important;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #555 !important;
-    border-radius: 10px !important;
-    border: 3px solid #2d2d2d !important;
-  }
-
-  /* Estilo para o polegar ao passar o mouse */
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: #888 !important;
-  }
-
-  .projects-list .projects-row {
-    &:hover:not(.headers) {
-      background-color: #F9FAFB !important;
-    }
   }
 }

@@ -316,6 +316,9 @@ $white: #ffffff;
   margin-top: 10px;
 }
 
+.project-row > div:not(.project-actions) {
+  cursor: pointer;
+}
 
 ::ng-deep {
   .p-calendar {
