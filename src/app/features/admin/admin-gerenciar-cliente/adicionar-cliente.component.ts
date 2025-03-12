@@ -144,10 +144,11 @@ export class AdicionarClienteComponent implements OnInit {
       this.clienteService.excluirCliente(this.selectedClient.id).subscribe({
         next: () => {
           this.successMessage = 'Cliente excluído com sucesso!';
-
-          this.clients = this.clients.filter(c => c.id !== this.selectedClient?.id);
+          const clientIndex = this.clients.findIndex(c => c.id === this.selectedClient?.id);
+          if (clientIndex !== -1) {
+            this.clients[clientIndex].status = 'INATIVO';
+          }
           this.filterClients();
-
           this.closeDeleteModal();
         },
         error: (error) => {
