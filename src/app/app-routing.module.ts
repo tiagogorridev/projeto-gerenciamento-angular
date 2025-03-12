@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Páginas
 import { LoginComponent } from './pages/login/login.component';
-import { SignupComponent } from './features/admin/admin-adicionar-usuario/signup.component';
+import { SignupComponent } from './features/admin/admin-gerenciar-usuario/signup.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { HelpPageComponent } from './features/users/user-help-page/help-page.component';
 import { LogoutComponent } from './pages/logout/logout.component';
@@ -24,7 +24,7 @@ import { AdminTarefaComponent } from './features/admin/admin-tarefa/admin-tarefa
 import { EditProjectsComponent } from './features/admin/admin-editar-projeto/edit-projects.component';
 import { AdminProfileComponent } from './features/admin/admin-profile/admin-profile.component';
 import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
-import { AdicionarClienteComponent } from './features/admin/admin-adicionar-cliente/adicionar-cliente.component';
+import { AdicionarClienteComponent } from './features/admin/admin-gerenciar-cliente/adicionar-cliente.component';
 
 // Componentes de Usuário
 import { Header } from 'primeng/api';

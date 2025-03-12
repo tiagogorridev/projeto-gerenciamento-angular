@@ -54,13 +54,13 @@ export class HelpPageAdminComponent implements OnInit {
     {
       category: 'account',
       question: 'Como adicionar um novo usuário?',
-      answer: 'Clique em "Usuários" e depois em "Adicionar Novo". Preencha as informações necessárias e defina as permissões apropriadas.',
+      answer: 'Clique em "Gerenciar Usuários" e depois em "Adicionar Novo". Preencha as informações necessárias e defina as permissões apropriadas.',
       isOpen: false
     },
     {
       category: 'projects',
       question: 'Como criar um novo projeto?',
-      answer: 'Clique em "Projeto" e depois em "Novo Projeto", preencha as informações básicas como nome e descrição, e adicione os membros da equipe.',
+      answer: 'Clique em "Projetos" e depois em "Novo Projeto", preencha as informações básicas como nome e descrição, e adicione os membros da equipe.',
       isOpen: false
     },
     {

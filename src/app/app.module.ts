@@ -12,7 +12,7 @@ import { HeaderComponent } from './features/users/user-header/header.component';
 import { SidebarComponent } from './features/users/user-sidebar/sidebar.component';
 
 // Features -> Admin
-import { AdicionarClienteComponent } from './features/admin/admin-adicionar-cliente/adicionar-cliente.component';
+import { AdicionarClienteComponent } from './features/admin/admin-gerenciar-cliente/adicionar-cliente.component';
 import { AdminHeaderComponent } from './features/admin/admin-header/admin-header.component';
 import { AdminProfileComponent } from './features/admin/admin-profile/admin-profile.component';
 import { AdminProjetosComponent } from './features/admin/admin-projetos/admin-projetos.component';
@@ -23,7 +23,7 @@ import { DashboardComponent } from './features/admin/admin-dashboard/dashboard.c
 import { EditProjectsComponent } from './features/admin/admin-editar-projeto/edit-projects.component';
 import { HelpPageAdminComponent } from './features/admin/admin-help-page/help-page-admin.component';
 import { HourApprovalComponent } from './features/admin/admin-aprovar-horas/hour-approval.component';
-import { SignupComponent } from './features/admin/admin-adicionar-usuario/signup.component';
+import { SignupComponent } from './features/admin/admin-gerenciar-usuario/signup.component';
 
 // Features -> Users
 import { AboutProjectsComponent } from './features/users/user-sobre-projetos/about-projects.component';
