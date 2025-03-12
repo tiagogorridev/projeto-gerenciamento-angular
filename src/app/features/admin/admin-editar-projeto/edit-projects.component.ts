@@ -1,6 +1,6 @@
 import { AssociarUsuarioService } from '../../../core/auth/services/associar-usuario.service';
 import { TarefaService } from '../../../core/auth/services/tarefa.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from '../../../core/auth/services/projects.service';
 import { UsuarioService } from '../../../core/auth/services/usuario.service';
@@ -110,10 +110,11 @@ export class EditProjectsComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private tarefaService: TarefaService,
-    private associarUsuarioService: AssociarUsuarioService
+    private associarUsuarioService: AssociarUsuarioService,
+    private elementRef: ElementRef
 
-  ) {
-  }
+
+  ) {}
 
   ngOnInit(): void {
     const navigation = history.state;
@@ -160,11 +161,6 @@ export class EditProjectsComponent implements OnInit {
         }
       });
     }
-  }
-
-
-  toggleDropdown() {
-    this.dropdownOpen = !this.dropdownOpen;
   }
 
   isSelected(email: string): boolean {
@@ -399,6 +395,19 @@ export class EditProjectsComponent implements OnInit {
     this.carregarHorasDisponiveis();
     this.tarefa.responsavel = this.currentUserName;
     this.showNewTarefaModal = true;
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (this.dropdownOpen && !this.elementRef.nativeElement.querySelector('.custom-dropdown').contains(event.target)) {
+      this.dropdownOpen = false;
+    }
+  }
+
+
+  toggleDropdown(event: Event) {
+    event.stopPropagation();
+    this.dropdownOpen = !this.dropdownOpen;
   }
 
   openAddMemberModal(): void {

@@ -166,7 +166,7 @@
           <form #addMemberForm="ngForm" (ngSubmit)="addMembers()">
             <div class="form-field">
               <label for="memberSelect">Selecione membros</label>
-              <div class="custom-dropdown" (click)="toggleDropdown()">
+              <div class="custom-dropdown" (click)="toggleDropdown($event)">
                 <div class="dropdown-placeholder">{{ selectedEmails.length ? selectedEmails.length + ' emails selecionados' : 'Clique para selecionar' }}</div>
                 <div class="dropdown-options" [class.show]="dropdownOpen">
                   <div *ngFor="let email of usuariosEmails" class="dropdown-option" [class.selected]="isSelected(email)" (click)="toggleSelection(email, $event)">
