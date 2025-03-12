@@ -76,6 +76,7 @@ h2 {
   .input-readonly {
     background-color: #f8f8f8;
     min-height: 24px;
+    cursor: not-allowed;
   }
   .form-control {
     &:focus {
@@ -172,3 +173,4 @@ h2 {
     }
   }
 }
+

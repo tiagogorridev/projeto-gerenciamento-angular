@@ -547,7 +547,7 @@ $success-green: #16a34a;
         }
 
         &:disabled {
-          background-color: $input-bg;
+          background-color: #f8f8f8;
           cursor: not-allowed;
         }
       }
