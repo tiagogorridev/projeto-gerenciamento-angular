@@ -345,3 +345,36 @@ $white: #ffffff;
     }
   }
 }
+.error-text {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+  font-weight: 400;
+  text-align: left;
+}
+
+.input-field.ng-invalid.ng-touched,
+select.input-field.ng-invalid.ng-touched,
+.input-field.ng-invalid.ng-dirty,
+select.input-field.ng-invalid.ng-dirty {
+  border-color: #f44336;
+  border-width: 1px;
+  box-shadow: none;
+}
+
+.error-text {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.form-group {
+  position: relative;
+}
+
+/* Estilo para os inputs que são inválidos após submissão */
+.ng-invalid.ng-dirty {
+  border-color: #f44336;
+}

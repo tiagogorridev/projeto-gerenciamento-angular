@@ -25,7 +25,7 @@ export class AdminProjetosComponent implements OnInit {
   selectedStatus: string = '';
   selectedPriority: string = '';
   loadingProjetos: boolean = true;
-
+  formSubmitted: boolean = false;
   searchQuery: string = '';
 
   project = {
@@ -164,6 +164,7 @@ export class AdminProjetosComponent implements OnInit {
 
   closeModal(): void {
     this.showNewProjectModal = false;
+
     this.project = {
       nome: '',
       descricao: '',
@@ -175,8 +176,11 @@ export class AdminProjetosComponent implements OnInit {
       status: 'PLANEJADO',
       prioridade: 'ALTA'
     };
+
     this.startDate = new Date();
     this.endDate = new Date();
+
+    this.formSubmitted = false;
   }
 
   navegarParaEdicao(projetoId: string, projetoNome: string): void {
@@ -186,6 +190,7 @@ export class AdminProjetosComponent implements OnInit {
   }
 
   onSubmit(projectForm: any): void {
+    this.formSubmitted = true;
     if (projectForm.valid) {
       if (this.startDate) {
         const dataInicio = new Date(this.startDate);

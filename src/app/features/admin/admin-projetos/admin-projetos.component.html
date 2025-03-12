@@ -85,22 +85,26 @@
   <div class="modal" *ngIf="showNewProjectModal">
     <div class="modal-content">
       <h2>Novo Projeto</h2>
-      <form (ngSubmit)="onSubmit(projectForm)" #projectForm="ngForm">
+      <form #projectForm="ngForm" (ngSubmit)="onSubmit(projectForm)" novalidate>
         <div class="form-group">
           <label>Nome</label>
-          <input type="text" class="input-field" [(ngModel)]="project.nome" name="nome" required>
-          <div *ngIf="projectForm.submitted && !project.nome" class="error-text">Nome é obrigatório</div>
+          <input type="text" class="input-field" [(ngModel)]="project.nome" name="nome" required #nomeInput="ngModel">
+          <div *ngIf="formSubmitted && !project.nome" class="error-text">Nome é obrigatório</div>
         </div>
+
         <div class="form-group">
           <label>Descrição</label>
-          <input type="text" class="input-field" [(ngModel)]="project.descricao" name="descricao" required>
+          <input type="text" class="input-field" [(ngModel)]="project.descricao" name="descricao" required #descricaoInput="ngModel">
+          <div *ngIf="formSubmitted && !project.descricao" class="error-text">Descrição é obrigatória</div>
         </div>
+
         <div class="form-group">
           <label>Cliente</label>
-          <select class="input-field" [(ngModel)]="project.cliente" name="cliente" required>
+          <select class="input-field" [(ngModel)]="project.cliente" name="cliente" required #clienteInput="ngModel">
             <option value="" disabled selected>Selecione o cliente</option>
             <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
           </select>
+          <div *ngIf="formSubmitted && !project.cliente" class="error-text">Cliente é obrigatório</div>
         </div>
         <div class="form-group">
           <label>Horas estimadas</label>
@@ -139,7 +143,7 @@
         </div>
         <div class="modal-actions">
           <button type="button" class="cancel-btn" (click)="closeModal()">Cancelar</button>
-          <button type="submit" class="create-btn" [disabled]="!projectForm.form.valid">Criar</button>
+          <button type="submit" class="create-btn">Criar</button>
         </div>
       </form>
     </div>
