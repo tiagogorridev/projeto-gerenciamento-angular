@@ -82,11 +82,11 @@
       </div>
       <div class="summary-card">
         <div class="summary-title">Horas Estimadas</div>
-        <div class="summary-value">{{ horasEstimadas }}h</div>
+        <div class="summary-value">{{ formatTime(horasEstimadas) }}</div>
       </div>
       <div class="summary-card">
         <div class="summary-title">Horas Trabalhadas</div>
-        <div class="summary-value">{{ tempoRegistrado }}h</div>
+        <div class="summary-value">{{ formatTime(tempoRegistrado) }}</div>
       </div>
       <div class="summary-card">
         <div class="summary-title">Custo Estimado</div>
@@ -116,7 +116,7 @@
           <div class="project-name">{{ projeto.nome }}</div>
           <div class="project-client">{{ projeto.cliente.nome }}</div>
           <div class="project-progress" [ngClass]="{'text-danger': (projeto.tempoRegistrado || 0) > (projeto.horasEstimadas || 0)}">
-            {{ projeto.tempoRegistrado }} de {{ projeto.horasEstimadas }}h
+            {{ formatTime(projeto.tempoRegistrado || 0) }} de {{ formatTime(projeto.horasEstimadas || 0) }}
           </div>
           <div *ngIf="projeto.custoRegistrado != undefined && projeto.custoEstimado != undefined">
             <div class="project-cost">
@@ -228,11 +228,11 @@
       </div>
       <div class="summary-card">
         <div class="summary-title">Horas Estimadas</div>
-        <div class="summary-value">{{ horasEstimadasTarefas }}h</div>
+        <div class="summary-value">{{ formatTime(horasEstimadasTarefas) }}</div>
       </div>
       <div class="summary-card">
         <div class="summary-title">Horas Registradas</div>
-        <div class="summary-value">{{ horasRegistradasTarefas }}h</div>
+        <div class="summary-value">{{ formatTime(horasRegistradasTarefas) }}</div>
       </div>
     </div>
 
@@ -257,7 +257,7 @@
             <span class="status-pill {{ tarefa.status }}">{{ tarefa.status }}</span>
           </div>
           <div class="task-hours" [ngClass]="{'text-danger': (tarefa.tempoRegistrado || 0) > (tarefa.horasEstimadas || 0)}">
-            {{ tarefa.horasEstimadas }}h / {{ tarefa.tempoRegistrado }}h
+            {{ formatTime(tarefa.horasEstimadas || 0) }} / {{ formatTime(tarefa.tempoRegistrado || 0) }}
           </div>
           <div class="task-dates">{{ tarefa.dataInicio }} a {{ tarefa.dataFim }}</div>
         </div>

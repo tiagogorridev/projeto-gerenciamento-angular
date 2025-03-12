@@ -127,7 +127,7 @@
         <span class="status-pill {{ tarefa.status }}">{{ tarefa.status }}</span>
       </div>
       <div class="tarefa-hours" [ngClass]="{'text-danger': (tarefa.tempoRegistrado || 0) > (tarefa.horasEstimadas || 0)}">
-        {{ tarefa.tempoRegistrado || 0 }}h/{{ tarefa.horasEstimadas || 0 }}h
+        {{ formatTime(tarefa.tempoRegistrado || 0) }}/{{ formatTime(tarefa.horasEstimadas || 0) }}
       </div>
       <div class="tarefa-actions">
         <button class="btn btn-primary" [routerLink]="['/admin/edit-projects', projectId, tarefa.id]">Editar</button>

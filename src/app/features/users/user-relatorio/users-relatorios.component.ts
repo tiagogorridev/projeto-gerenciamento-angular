@@ -89,6 +89,17 @@ export class UsersRelatoriosComponent implements OnInit {
     );
   }
 
+  formatTime(totalHoras: number): string {
+    const horas = Math.floor(totalHoras);
+    const minutos = Math.round((totalHoras - horas) * 60);
+
+    if (minutos > 0) {
+      return `${horas}h ${minutos}m`;
+    } else {
+      return `${horas}h`;
+    }
+  }
+
   carregarTarefasDoUsuario(usuarioId: number): void {
     console.log('Buscando tarefas para o usuário ID:', usuarioId);
     this.tarefaService.getTarefasPorUsuario(usuarioId).subscribe(

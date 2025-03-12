@@ -76,9 +76,20 @@ export class ProjectsComponent implements OnInit {
     }
   }
 
+  formatTime(totalHoras: number): string {
+    const horas = Math.floor(totalHoras);
+    const minutos = Math.round((totalHoras - horas) * 60);
+
+    if (minutos > 0) {
+      return `${horas}h ${minutos}m`;
+    } else {
+      return `${horas}h`;
+    }
+  }
+
   getProgresso(projeto: Projeto): string {
     const tempoRegistrado = this.projetosComTempoRegistrado[projeto.id || 0] || 0;
-    return `${tempoRegistrado}h / ${projeto.horasEstimadas}h`;
+    return `${this.formatTime(tempoRegistrado)} / ${this.formatTime(projeto.horasEstimadas)}`;
   }
 
   getCusto(projeto: Projeto): string {

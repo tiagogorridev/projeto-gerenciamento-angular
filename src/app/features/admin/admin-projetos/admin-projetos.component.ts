@@ -116,7 +116,7 @@ export class AdminProjetosComponent implements OnInit {
     const minutos = Math.round((totalHoras - horas) * 60);
 
     if (minutos > 0) {
-      return `${horas}h e ${minutos}m`;
+      return `${horas}h ${minutos}m`;
     } else {
       return `${horas}h`;
     }

@@ -48,7 +48,6 @@ export class AdminTarefaComponent implements OnInit {
     this.router.navigate([`/admin/edit-projects`, this.idprojeto]);
   }
 
-
   getStatusDisplay(status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA' | 'PAUSADA'): string {
     return this.statusMap[status] || status;
   }

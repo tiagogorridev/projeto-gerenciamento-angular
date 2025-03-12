@@ -79,6 +79,17 @@ export class AdminRelatoriosComponent implements OnInit {
     this.carregarTarefas();
   }
 
+  formatTime(totalHoras: number): string {
+    const horas = Math.floor(totalHoras);
+    const minutos = Math.round((totalHoras - horas) * 60);
+
+    if (minutos > 0) {
+      return `${horas}h ${minutos}m`;
+    } else {
+      return `${horas}h`;
+    }
+  }
+
   carregarProjetos(): void {
     this.projectsService.getProjetos().subscribe((projetos) => {
       this.projetos = projetos;

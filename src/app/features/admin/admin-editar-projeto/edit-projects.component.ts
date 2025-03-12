@@ -404,6 +404,16 @@ export class EditProjectsComponent implements OnInit {
     }
   }
 
+  formatTime(totalHoras: number): string {
+    const horas = Math.floor(totalHoras);
+    const minutos = Math.round((totalHoras - horas) * 60);
+
+    if (minutos > 0) {
+      return `${horas}h ${minutos}m`;
+    } else {
+      return `${horas}h`;
+    }
+  }
 
   toggleDropdown(event: Event) {
     event.stopPropagation();
