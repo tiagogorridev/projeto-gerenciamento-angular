@@ -133,7 +133,7 @@
   .table-headers, .client-row.headers,
   .usuario-row.headers, .project-row.headers,
   .tarefa-row.headers, .task-row.headers,
-  .table-header, .filters-section, .project-row, .tarefas-row, .table-row, .lancamentos-container, .projects-users {
+  .table-header, .filters-section, .project-row, .tarefas-row, .table-row, .lancamentos-container, .projects-users, .ng-trigger, .p-datepicker-header {
     background-color: var(--background-color) !important;
     color: var(--secondary-color) !important;
     border: 1px solid var(--border-color) !important;
@@ -145,7 +145,7 @@
 
   .table-row, .client-row:not(.headers),
   .usuario-row:not(.headers), .project-row:not(.headers),
-  .tarefa-row, .task-row:not(.headers), .tab-navigation, .project-header {
+  .tarefa-row, .task-row:not(.headers), .tab-navigation, .project-header, .p-datepicker-month, .p-datepicker-year {
     border-bottom: 1px solid var(--border-color) !important;
     color: var(--text-color) !important;
   }
