@@ -1,11 +1,14 @@
+$gray: #6b7280;
+
 .settings-container {
   margin: 0 24px;
   padding: 60px 24px 0 260px;
 
   h1 {
-    color: #6b7280;
-    font-weight: 400;
-    margin-bottom: 32px;
+    margin: 0;
+    color: $gray;
+    font-weight: 500;
+    padding-bottom: 24px
   }
 }
 

@@ -36,7 +36,7 @@ export class LoginComponent {
         if (response.perfil === 'ADMIN') {
           this.router.navigate(['/admin/dashboard']);
         } else if (response.perfil === 'USUARIO') {
-          this.router.navigate(['/user/profile']);
+          this.router.navigate(['/user/dashboard']);
         } else {
           console.warn('Perfil não reconhecido:', response.perfil);
           this.router.navigate(['/login']);

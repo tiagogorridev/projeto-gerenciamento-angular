@@ -10,6 +10,13 @@ $input-bg: #f8fafc;
   padding: 60px 24px 0 260px;
 }
 
+h1 {
+  margin: 0;
+  color: $gray;
+  font-weight: 500;
+  padding-bottom: 24px
+}
+
 .filters-container {
   margin-bottom: 24px;
 }

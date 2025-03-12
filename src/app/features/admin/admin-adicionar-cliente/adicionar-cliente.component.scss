@@ -14,8 +14,10 @@ $success-color: #10b981;
   margin: 0 24px;
   padding: 60px 24px 0 260px;
   h1 {
+    margin: 0;
     color: $gray;
-    font-weight: 400;
+    font-weight: 500;
+    padding-bottom: 24px
   }
 }
 

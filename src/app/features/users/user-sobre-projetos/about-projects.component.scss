@@ -19,21 +19,28 @@ $success-green: #16a34a;
     gap: 8px;
 
     span {
-      color: $gray;
+      font-size: 32px;
+      margin: 0;
+      color: $primary-color;
+      font-weight: 500;
+      padding-bottom: 24px;
       &.separator {
         color: $text-gray;
       }
     }
 
     span:hover {
+      color: $hover-color;
       cursor: pointer;
     }
   }
 
   h2 {
-    font-size: 24px;
-    color: #1f2937;
-    margin-bottom: 24px;
+    font-size: 32px;
+    margin: 0;
+    color: $gray;
+    font-weight: 500;
+    padding-bottom: 24px;
   }
 
   h3 {

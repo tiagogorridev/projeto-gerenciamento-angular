@@ -36,20 +36,26 @@ $success-green: #16a34a;
     gap: 8px;
 
     span {
-      color: $gray;
+      font-size: 32px;
+      margin: 0;
+      color: $primary-color;
+      font-weight: 500;
+      padding-bottom: 24px;
       &.separator {
         color: $text-gray;
       }
     }
 
     span:hover {
+      color: $hover-color;
       cursor: pointer;
     }
 
     h1 {
-      font-size: 20px;
-      font-weight: 600;
-      color: #1f2937;
+      margin: 0;
+      color: $gray;
+      font-weight: 500;
+      padding-bottom: 24px
     }
   }
 }

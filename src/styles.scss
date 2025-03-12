@@ -23,7 +23,7 @@
   body, main, .container, .dashboard-container,
   .projects-container, .help-center-container,
   .settings-container, .about-projects-container,
-  .reports-container, .users-container, .project-page, .signup-content, .time-entry-card, .project-details {
+  .reports-container, .users-container, .project-page, .signup-content, .time-entry-card {
     background-color: var(--background-color) !important;
     color: var(--text-color) !important;
   }
@@ -39,7 +39,7 @@
   .faq-container, .settings-form, .contact-form,
   .clients-list, .inactive-clients-list, .empty-state, .no-entries,
   .modal-content, .report-summary .summary-card,
-  .table-container, .top-users-section, .top-projects-section, .usuarios-list, .projects-list {
+  .table-container, .top-users-section, .top-projects-section, .usuarios-list, .projects-list, .project-details  {
     background-color: var(--card-background) !important;
     border: 1px solid var(--border-color) !important;
     box-shadow: 0 1px 3px var(--shadow-color) !important;
@@ -601,5 +601,14 @@
 
   .p-calendar .p-button:hover {
     background-color: var(--accent-color) !important;
+  }
+
+  .container .breadcrumb a, .project-page .project-header .breadcrumb .projeto-dark-theme,
+  .about-projects-container .project-content .project-header .breadcrumb .projeto-dark-theme{
+    color: var(--accent-color) !important;
+
+    &:hover {
+      color: var(--primary-color) !important;
+    }
   }
 }

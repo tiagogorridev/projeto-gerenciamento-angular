@@ -16,9 +16,10 @@ $warning-color: #f59e0b;
 }
 
 .page-title {
-  color: #6b7280;
-  font-weight: 400;
-  margin-bottom: 32px;
+  margin: 0;
+  color: $gray;
+  font-weight: 500;
+  padding-bottom: 24px
 }
 
 .alert-error, .alert-success {

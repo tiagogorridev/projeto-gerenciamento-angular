@@ -15,14 +15,30 @@ $success-green: #16a34a;
 }
 
 .breadcrumb {
-  margin-bottom: 20px;
-  font-size: 14px;
-  a {
-    color: #666;
-    text-decoration: none;
-    &:hover {
-      cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+    a {
+      font-size: 32px;
+      margin: 0;
+      color: $primary-color;
+      font-weight: 500;
+      padding-bottom: 24px;
+      &.separator {
+        color: $text-gray;
+      }
+      &:hover {
+        color: $hover-color;
+        cursor: pointer;
+      }
     }
+
+  span {
+    font-size: 32px;
+    margin: 0;
+    color: $gray;
+    font-weight: 500;
+    padding-bottom: 24px;
   }
 }
 
