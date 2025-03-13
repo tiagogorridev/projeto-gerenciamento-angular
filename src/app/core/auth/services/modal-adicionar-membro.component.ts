@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AssociarUsuarioService } from './associar-usuario.service';
-import { environment } from './../../../../../environments/environment';
+import { environment } from './../../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-modal-adicionar-membro',

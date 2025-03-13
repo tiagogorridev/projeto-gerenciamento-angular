@@ -5,7 +5,7 @@ import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { catchError, tap, finalize } from 'rxjs/operators';
 import { LoginResponse } from '../model/login-response.model';
 import { CurrentUser } from '../model/current-user.modal';
-import { environment } from './../../../../../environments/environment';
+import { environment } from './../../../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'

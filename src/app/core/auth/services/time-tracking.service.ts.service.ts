@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LancamentoHoras } from '../model/lancamento.model';
+import { environment } from './../../../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimeTrackingService {
-  private apiUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/lancamento';
+  private apiUrl = `${environment.apiUrl}/lancamento`;
 
   constructor(private http: HttpClient) { }
 
