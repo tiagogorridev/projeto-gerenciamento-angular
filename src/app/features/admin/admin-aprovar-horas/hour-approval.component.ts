@@ -181,11 +181,12 @@ export class HourApprovalComponent implements OnInit {
 
             if (this.startDate) {
               const dataLancamento = new Date(lancamento.data);
+              const dataFormatada = dataLancamento.toISOString().split('T')[0];
+
               const dataInicio = new Date(this.startDate);
-              passaFiltro = passaFiltro &&
-                dataLancamento.getFullYear() === dataInicio.getFullYear() &&
-                dataLancamento.getMonth() === dataInicio.getMonth() &&
-                dataLancamento.getDate() === dataInicio.getDate();
+              const dataInicioFormatada = dataInicio.toISOString().split('T')[0];
+
+              passaFiltro = passaFiltro && dataFormatada === dataInicioFormatada;
             }
 
             return passaFiltro;

@@ -6,10 +6,7 @@
 - [Tecnologias utilizadas](#tecnologias-utilizadas)
   - [Dependências do Backend](#dependências-do-backend)
   - [Dependências do Frontend](#dependências-do-frontend)
-- [Como rodar o projeto](#como-rodar-o-projeto)
-  - [Pré-requisitos](#pré-requisitos)
-  - [Configuração do Banco de Dados](#configuração-do-banco-de-dados)
-  - [Instalação e execução](#instalação-e-execução)
+- [Como acessar o sistema](#como-acessar-o-sistema)
 - [Estrutura do Banco de Dados](#estrutura-do-banco-de-dados)
 - [Contato](#contato)
 
@@ -42,7 +39,7 @@ Este sistema foi desenvolvido para automatizar e otimizar o processo de gerencia
 
 ## **Tecnologias utilizadas**
 ### **Backend**:
-- Java 23
+- Java 17
 - Spring Boot 3.4.2
 - JWT para autenticação
 
@@ -53,6 +50,7 @@ Este sistema foi desenvolvido para automatizar e otimizar o processo de gerencia
 
 ### **Banco de Dados**:
 - MySQL
+- Gerenciado via DBeaver
 
 ### **Gerenciamento de pacotes**:
 - npm 10.8.2
@@ -76,155 +74,21 @@ Este sistema foi desenvolvido para automatizar e otimizar o processo de gerencia
 - **Angular Material**: Componentes UI
 - **NgRx**: Gerenciamento de estado
 
-## **Como rodar o projeto**
-### **Pré-requisitos**
-Para executar o projeto localmente, é necessário ter instalado:
+## **Como acessar o sistema**
+O sistema está hospedado no Heroku e pode ser acessado pelos seguintes links:
 
-- [Java 23](https://openjdk.org/projects/jdk/23/)
-- [Node.js](https://nodejs.org/) (versão 18.20.6)
-- [MySQL](https://www.mysql.com/)
-- [Angular CLI](https://angular.io/cli) (versão 16.2.16)
-- [Maven](https://maven.apache.org/)
+- **Frontend**: [Sistema de Horas - Frontend](https://sistema-horas-front-c24bebf44baf.herokuapp.com/admin/admin-projetos)
+- **Backend (API)**: [Sistema de Horas - Backend](https://sistema-horas-a6e4955506b7.herokuapp.com/)
+- **Documentação da API**: [Swagger UI](https://sistema-horas-a6e4955506b7.herokuapp.com/swagger-ui/index.html)
 
-### **Configuração do Banco de Dados**
-1. Abra o MySQL Workbench ou terminal MySQL
-2. Execute os seguintes comandos SQL:
+### **Credenciais de acesso**
+- **Login de Administrador:**
+  - Email: tiagogorri@gmail.com
+  - Senha: tiago123
 
-```sql
-CREATE DATABASE sistema_gerenciamento_bd;
-USE sistema_gerenciamento_bd;
-
-CREATE TABLE usuarios (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    senha VARCHAR(255) NOT NULL,
-    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
-    ultimo_login DATETIME,
-    perfil ENUM('ADMIN', 'USUARIO') NOT NULL,
-    ativo ENUM('ATIVO', 'INATIVO') DEFAULT 'ATIVO',
-    deleted_at DATETIME NULL
-);
-
-CREATE TABLE clientes (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    status ENUM('ATIVO', 'INATIVO') NOT NULL DEFAULT 'ATIVO',
-    deleted_at DATETIME NULL
-);
-
-CREATE TABLE projetos (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    descricao TEXT,
-    data_inicio DATE NOT NULL,
-    data_fim DATE NOT NULL,
-    status ENUM('PLANEJADO', 'EM_ANDAMENTO', 'CONCLUIDO', 'CANCELADO') NOT NULL,
-    id_usuario_responsavel BIGINT,
-    horas_estimadas INT NOT NULL DEFAULT 0,
-    custo_estimado DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    tempo_registrado DECIMAL(10,2) NOT NULL DEFAULT 0,
-    custo_registrado DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
-    prioridade ENUM('ALTA', 'MEDIA', 'BAIXA') NOT NULL,
-    id_cliente BIGINT,
-    deleted_at DATETIME NULL,
-    FOREIGN KEY (id_usuario_responsavel) REFERENCES usuarios(id),
-    FOREIGN KEY (id_cliente) REFERENCES clientes(id)
-);
-
-CREATE TABLE tarefas (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    id_projeto BIGINT,
-    nome VARCHAR(255) NOT NULL,
-    descricao TEXT,
-    data_inicio DATE NOT NULL,
-    data_fim DATE NOT NULL,
-    status ENUM('ABERTA', 'EM_ANDAMENTO', 'CONCLUIDA', 'PAUSADA') NOT NULL,
-    id_usuario_responsavel BIGINT,
-    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
-    horas_estimadas DECIMAL(10,2) NOT NULL DEFAULT 0,
-    tempo_registrado DECIMAL(10,2) NOT NULL DEFAULT 0,
-    valor_por_hora DECIMAL(10, 2),
-    custo_registrado DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    deleted_at DATETIME NULL,
-    FOREIGN KEY (id_projeto) REFERENCES projetos(id),
-    FOREIGN KEY (id_usuario_responsavel) REFERENCES usuarios(id)
-);
-
-CREATE TABLE lancamentos_horas (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    id_tarefa BIGINT NOT NULL,
-    id_usuario BIGINT NOT NULL,
-    id_projeto BIGINT NOT NULL,
-    horas DECIMAL(5,2) NOT NULL,
-    data DATE NOT NULL,
-    hora_inicio TIME NOT NULL,
-    hora_fim TIME NOT NULL,
-    descricao TEXT,
-    status ENUM('EM_ANALISE', 'APROVADO', 'REPROVADO') NOT NULL DEFAULT 'EM_ANALISE',
-    FOREIGN KEY (id_tarefa) REFERENCES tarefas(id),
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
-    FOREIGN KEY (id_projeto) REFERENCES projetos(id)
-);
-
-CREATE TABLE usuarios_projetos (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario BIGINT,
-    id_projeto BIGINT,
-    data_associacao DATETIME DEFAULT CURRENT_TIMESTAMP,
-    deleted_at DATETIME NULL,
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
-    FOREIGN KEY (id_projeto) REFERENCES projetos(id),
-    UNIQUE (id_usuario, id_projeto)
-);
-```
-
-### **Instalação e execução**
-1. Clone o repositório:
-
-```bash
-git clone https://github.com/tiagogorridev/projeto-gerenciamento-angular.git
-cd projeto-gerenciamento-angular
-
-# Instale as dependências
-npm install
-
-# Execute o servidor de desenvolvimento
-ng s -o
-```
-
-2. Clone o repositório do backend:
-
-```bash
-git clone https://github.com/tiagogorridev/backend.git
-cd backend
-```
-
-# Configure as variáveis de ambiente
-export DB_URL=jdbc:mysql://localhost:3306/sistema_gerenciamento_bd
-export DB_USERNAME=seu_usuario
-export DB_PASSWORD=sua_senha
-
-- Alternativa: Crie um arquivo application.properties na pasta src/main/resources com o conteúdo:
-- spring.datasource.url=jdbc:mysql://localhost:3306/sistema_gerenciamento_bd
-- spring.datasource.username=seu_usuario
-- spring.datasource.password=sua_senha
-- spring.jpa.hibernate.ddl-auto=validate
-- jwt.secret=sua_chave_secreta_para_jwt
-- jwt.expiration=86400000
-
-
-# Compile e execute o backend
-```bash
-mvn clean install
-mvn spring-boot:run
-```
-
-3. Acesse a aplicação em seu navegador:
-   - Frontend: http://localhost:4200
-   - Documentação da API: http://localhost:8080/swagger-ui.html
+- **Login de Usuário:**
+  - Email: pedrosilva@gmail.com
+  - Senha: pedro123
 
 ## **Estrutura do Banco de Dados**
 
@@ -241,3 +105,4 @@ O sistema utiliza um banco de dados relacional com as seguintes entidades princi
 Para mais informações, entre em contato:
 - Email: tiagogorri@gmail.com
 - GitHub: [tiagogorridev](https://github.com/tiagogorridev)
+
