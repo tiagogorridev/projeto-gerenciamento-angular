@@ -240,7 +240,7 @@
             <span class="status-pill {{ tarefa.status }}">{{ tarefa.status }}</span>
           </div>
           <div class="task-hours" [ngClass]="{'text-danger': (tarefa.tempoRegistrado || 0) > (tarefa.horasEstimadas || 0)}">
-            {{ formatTime(tarefa.horasEstimadas || 0) }} / {{ formatTime(tarefa.tempoRegistrado  || 0) }}
+            {{ formatTime(tarefa.tempoRegistrado || 0) }} / {{ formatTime(tarefa.horasEstimadas  || 0) }}
           </div>
           <div class="task-priority">
             <span class="priority-pill {{ getTarefaPrioridade(tarefa) }}">{{ getTarefaPrioridade(tarefa) }}</span>
