@@ -79,10 +79,6 @@ export class ContactComponent implements OnInit {
     this.contactForm.patchValue({
       email: userEmail
     });
-
-    Object.keys(this.contactForm.controls).forEach(key => {
-      this.contactForm.get(key)?.markAsUntouched();
-    });
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {
