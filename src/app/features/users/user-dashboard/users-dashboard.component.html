@@ -14,13 +14,13 @@
   <div class="dashboard-statistics">
     <div class="stat-card">
       <div class="stat-title">Total de Horas Lançadas no Mês</div>
-      <div class="stat-value">{{ totalHorasMes | number:'1.1-1' }}h</div>
+      <div class="stat-value">{{ formatTime(totalHorasMes) }}</div>
       <div class="stat-footer">Atualizado em {{ dataAtualizacao }}</div>
     </div>
 
     <div class="stat-card">
       <div class="stat-title">Horas Aprovadas</div>
-      <div class="stat-value">{{ horasAprovadas | number:'1.1-1' }}h</div>
+      <div class="stat-value">{{ formatTime(horasAprovadas) }}</div>
       <div class="stat-percentage">{{ calcularPorcentagem(horasAprovadas, totalHorasMes) | number:'1.1-1' }}%</div>
     </div>
 
@@ -89,7 +89,7 @@
               <div class="progress-fill" [style.width.%]="projeto.progresso"></div>
             </div>
           </div>
-          <div class="project-hours">Total de horas: {{ projeto.horasLancadas }}h</div>
+          <div class="project-hours">Total de horas: {{ formatTime(projeto.horasLancadas) }}</div>
         </div>
       </div>
     </div>
@@ -110,7 +110,7 @@
               <div class="progress-fill" [style.width.%]="tarefa.progresso"></div>
             </div>
           </div>
-          <div class="project-hours">Total de horas: {{ tarefa.horasLancadas }}h</div>
+          <div class="project-hours">Total de horas: {{ formatTime(tarefa.horasLancadas) }}</div>
         </div>
       </div>
     </div>

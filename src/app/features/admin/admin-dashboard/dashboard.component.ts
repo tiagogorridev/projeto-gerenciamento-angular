@@ -81,6 +81,21 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  formatarMoeda(valor: number): string {
+    return `R$ ${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  formatTime(totalHoras: number): string {
+    const horas = Math.floor(totalHoras);
+    const minutos = Math.round((totalHoras - horas) * 60);
+
+    if (minutos > 0) {
+      return `${horas}h ${minutos}m`;
+    } else {
+      return `${horas}h`;
+    }
+  }
+
   calcularTendenciaHorasSemanas(lancamentos: any[]): void {
     const hoje = new Date();
     const primeiroDiaDoMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
