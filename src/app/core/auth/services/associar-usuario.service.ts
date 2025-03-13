@@ -7,8 +7,8 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AssociarUsuarioService {
-  private apiUrl = 'http://localhost:8080/api/associacoes/usuario-projeto';
-  private projetosUrl = 'http://localhost:8080/api/projetos';
+  private apiUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/usuario-projeto';
+  private projetosUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/projetos';
 
   constructor(private http: HttpClient) { }
 

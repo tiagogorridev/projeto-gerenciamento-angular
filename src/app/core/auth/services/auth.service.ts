@@ -10,7 +10,7 @@ import { CurrentUser } from '../model/current-user.modal';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/auth';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
