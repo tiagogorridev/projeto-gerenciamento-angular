@@ -80,6 +80,7 @@ O sistema está hospedado no Heroku e pode ser acessado pelos seguintes links:
 - **Frontend**: [Sistema de Horas - Frontend](https://sistema-horas-front-c24bebf44baf.herokuapp.com/admin/admin-projetos)
 - **Backend (API)**: [Sistema de Horas - Backend](https://sistema-horas-a6e4955506b7.herokuapp.com/)
 - **Documentação da API**: [Swagger UI](https://sistema-horas-a6e4955506b7.herokuapp.com/swagger-ui/index.html)
+- Dica: Para pegar um Bear Token, basta acessar o console!
 
 ### **Credenciais de acesso**
 - **Login de Administrador:**
