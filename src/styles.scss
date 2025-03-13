@@ -237,10 +237,6 @@
     background-color: var(--sidebar-bg) !important;
   }
 
-  .sidebar .user-info {
-    border-top: 1px solid var(--border-color) !important;
-  }
-
   .sidebar .user-info .user-avatar {
     background-color: var(--hover-color) !important;
   }
@@ -259,6 +255,10 @@
 
   .sidebar .user-info .logout-link:hover {
     color: var(--secondary-color) !important;
+  }
+
+  .sidebar .user-info {
+    border: none !important;
   }
 
   // Header
@@ -654,5 +654,23 @@
 
   .project-hours  {
     color: var(--secondary-color) !important;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--background-color);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--hover-color);
   }
 }
