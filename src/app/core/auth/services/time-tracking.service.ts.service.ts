@@ -13,10 +13,7 @@ export class TimeTrackingService {
   constructor(private http: HttpClient) { }
 
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      throw new Error('Token de autenticação não encontrado');
-    }
+    const token = localStorage.getItem('auth_token') || '';
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
@@ -34,7 +31,7 @@ export class TimeTrackingService {
     }
 
     console.error('Erro na requisição:', error);
-    return throwError(() => new Error(errorMessage));
+    return throwError(() => errorMessage);
   }
 
   saveLancamento(lancamento: any): Observable<any> {
