@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ContactService {
-  private apiUrl = 'http://localhost:8080/email/send';
+  private apiUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/send';
 
   constructor(private http: HttpClient) {}
 

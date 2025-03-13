@@ -8,7 +8,7 @@ import { Usuario } from '../model/usuario.model';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = 'http://localhost:8080/api/usuarios';
+  private apiUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/usuarios';
   private usuarios: Usuario[] = [];
   private usuarioAtualSubject = new BehaviorSubject<Usuario | null>(null);
   usuarioAtual$ = this.usuarioAtualSubject.asObservable();

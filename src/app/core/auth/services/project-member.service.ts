@@ -6,7 +6,7 @@ import { catchError, Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class ProjectMemberService {
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api';
 
   constructor(private http: HttpClient) {}
 

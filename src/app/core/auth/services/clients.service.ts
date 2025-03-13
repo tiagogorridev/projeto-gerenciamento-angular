@@ -7,7 +7,7 @@ import { Cliente } from '../model/clients.model';
   providedIn: 'root'
 })
 export class ClienteService {
-  private apiUrl = 'http://localhost:8080/api/clientes';
+  private apiUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/clientes';
 
   constructor(private http: HttpClient) {}
 

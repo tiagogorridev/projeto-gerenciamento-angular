@@ -8,7 +8,7 @@ import { LancamentoHoras } from '../model/lancamento.model';
   providedIn: 'root'
 })
 export class TimeTrackingService {
-  private apiUrl = 'http://localhost:8080/api/lancamento';
+  private apiUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/lancamento';
 
   constructor(private http: HttpClient) { }
 

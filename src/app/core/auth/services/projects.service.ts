@@ -7,8 +7,8 @@ import { Projeto } from '../model/projeto.model';
   providedIn: 'root'
 })
 export class ProjectsService {
-  private baseUrl: string = 'http://localhost:8080/api/projetos';
-  private clientesUrl: string = 'http://localhost:8080/api/clientes';
+  private baseUrl: string = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/projetos';
+  private clientesUrl: string = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/clientes';
 
   constructor(private http: HttpClient) { }
 

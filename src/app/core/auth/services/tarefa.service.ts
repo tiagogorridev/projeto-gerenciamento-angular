@@ -7,8 +7,8 @@ import { Tarefa } from '../model/tarefa.model';
   providedIn: 'root'
 })
 export class TarefaService {
-  private apiUrl = 'http://localhost:8080/api/tarefas';
-  private projetosUrl = 'http://localhost:8080/api/projetos';
+  private apiUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/tarefas';
+  private projetosUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/projetos';
 
   constructor(private http: HttpClient) {}
 
