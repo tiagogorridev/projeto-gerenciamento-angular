@@ -5,12 +5,13 @@ import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { catchError, tap, finalize } from 'rxjs/operators';
 import { LoginResponse } from '../model/login-response.model';
 import { CurrentUser } from '../model/current-user.modal';
+import { environment } from './../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 

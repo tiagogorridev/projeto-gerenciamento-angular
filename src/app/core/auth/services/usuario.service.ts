@@ -3,12 +3,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { Usuario } from '../model/usuario.model';
+import { environment } from './../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/usuarios';
+  private apiUrl = `${environment.apiUrl}/usuarios`;
   private usuarios: Usuario[] = [];
   private usuarioAtualSubject = new BehaviorSubject<Usuario | null>(null);
   usuarioAtual$ = this.usuarioAtualSubject.asObservable();

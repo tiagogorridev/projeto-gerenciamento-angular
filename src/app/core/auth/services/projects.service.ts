@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { Projeto } from '../model/projeto.model';
+import { environment } from './../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectsService {
-  private baseUrl: string = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/projetos';
-  private clientesUrl: string = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/clientes';
+  private baseUrl: string = `${environment.apiUrl}/projetos`;
+  private clientesUrl: string = `${environment.apiUrl}/clientes`;
 
   constructor(private http: HttpClient) { }
 

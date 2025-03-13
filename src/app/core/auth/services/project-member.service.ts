@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from './../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectMemberService {
-  private baseUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api';
+  private baseUrl = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) {}
 
