@@ -8,7 +8,7 @@ import { LancamentoHoras } from '../model/lancamento.model';
   providedIn: 'root'
 })
 export class TimeTrackingService {
-  private apiUrl = 'http://sistema-horas-a6e4955506b7.herokuapp.com/api/lancamento';
+  private apiUrl = 'https://sistema-horas-a6e4955506b7.herokuapp.com/api/lancamento';
 
   constructor(private http: HttpClient) { }
 
@@ -34,7 +34,7 @@ export class TimeTrackingService {
     }
 
     console.error('Erro na requisição:', error);
-    return throwError(() => errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 
   saveLancamento(lancamento: any): Observable<any> {
