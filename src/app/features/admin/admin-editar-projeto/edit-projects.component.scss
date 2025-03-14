@@ -238,6 +238,7 @@ $success-green: #16a34a;
       }
     }
 
+
     // Progresso das horas - explicitly center this column
     .tarefa-hours {
       font-size: 14px;
@@ -625,6 +626,19 @@ $success-green: #16a34a;
   margin: 16px 0;
   text-align: center;
   font-size: 14px;
+}
+
+
+.success-message {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  background-color: #e6f7ee;
+  border: 1px solid #c3e6cb;
+  color: $success-green;
+  max-width: fit-content; /* Make it only as wide as the content */
+  margin-left: auto; /* Center or align right if preferred */
+  margin-right: auto;
 }
 
 // Calendar Component Overrides

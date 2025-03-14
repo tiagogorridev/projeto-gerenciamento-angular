@@ -98,6 +98,7 @@ export class EditProjectsComponent implements OnInit {
   selectedEmails: string[] = [];
   showErrorMessage: boolean = false;
   errorMessage: string = '';
+  showSuccessMessage: boolean = false;
   successMessage: string = '';
   dropdownOpen = false;
 
@@ -379,9 +380,16 @@ export class EditProjectsComponent implements OnInit {
           console.log('Projeto atualizado com sucesso', response);
           this.projectName = this.projectDetails.name;
           this.loadProjectData();
+
+          this.successMessage = 'Alterações salvas com sucesso!';
+          this.showSuccessMessage = true;
+          setTimeout(() => {
+            this.showSuccessMessage = false;
+          }, 3000);
         },
         error => {
           console.error('Erro ao atualizar projeto', error);
+          this.showError('Erro ao salvar alterações. Tente novamente.');
         }
       );
     }
@@ -498,6 +506,7 @@ export class EditProjectsComponent implements OnInit {
   onSubmit(): void {
     this.carregarHorasDisponiveis();
 
+
     const areDatesEqual = (date1: Date, date2: Date): boolean => {
       return (
         date1.getFullYear() === date2.getFullYear() &&
@@ -517,10 +526,12 @@ export class EditProjectsComponent implements OnInit {
     };
 
     if (this.startDate && this.endDate) {
-      if (this.endDate < this.startDate && !areDatesEqual(this.startDate, this.endDate)) {
+      if (this.endDate < this.startDate) {
         this.endDateError = 'Data final deve ser posterior à data inicial';
         return;
       }
+      this.endDateError = 'Data final deve ser posterior à data inicial';
+
 
       if (this.startDateCalendar && this.endDateCalendar) {
         const projectStart = new Date(this.startDateCalendar);
