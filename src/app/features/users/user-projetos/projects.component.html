@@ -14,15 +14,15 @@
       >
 
       <select
-        [(ngModel)]="selectedStatus"
-        (ngModelChange)="applyFilters()"
-        class="filter-select"
-      >
-        <option value="">Status</option>
-        <option *ngFor="let status of statusOptions" [value]="status">
-          {{status}}
-        </option>
-      </select>
+      [(ngModel)]="selectedStatus"
+      (ngModelChange)="applyFilters()"
+      class="filter-select"
+    >
+      <option value="">Status</option>
+      <option *ngFor="let status of statusOptions" [value]="status">
+        {{formatStatus(status)}}
+      </option>
+    </select>
 
       <select
         [(ngModel)]="selectedPrioridade"
@@ -61,7 +61,7 @@
                             'status-concluido': projeto.status === 'CONCLUIDO',
                             'status-cancelado': projeto.status === 'CANCELADO',
                             'status-planejado': projeto.status === 'PLANEJADO'}">
-              {{projeto.status}}
+              {{formatStatus(projeto.status)}}
             </span>
           </td>
           <td>

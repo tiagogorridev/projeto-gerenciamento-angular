@@ -66,7 +66,7 @@ export class HelpPageComponent implements OnInit {
     {
       category: 'reports',
       question: 'Como exportar relatórios?',
-      answer: 'Na seção de relatórios, selecione o período desejado e clique em "Exportar". Você pode escolher entre formatos PDF, Excel ou CSV.',
+      answer: 'Na seção de relatórios, selecione o período desejado e clique em "Exportar". Você pode escolher entre formatos PDF.',
       isOpen: false
     }
   ];

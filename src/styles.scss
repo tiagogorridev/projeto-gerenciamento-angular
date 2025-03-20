@@ -20,13 +20,29 @@
 
 [data-theme='dark'] {
   // Estilos Globais
-  body, main, .container, .dashboard-container,
-  .projects-container, .help-center-container,
-  .settings-container, .about-projects-container,
-  .reports-container, .users-container, .project-page, .signup-content, .time-entry-card {
+  body, main, .container, .about-projects-container, .users-container, .project-page, .signup-content, .time-entry-card {
     background-color: var(--background-color) !important;
     color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
   }
+
+  body, main, .settings-container, .help-center-container {
+    border: none !important;
+  }
+
+  .reports-container {
+    background-color: var(--background-color) !important;
+    color: var(--text-color) !important;
+    border: none !important;
+  }
+
+
+  .dashboard-container, .projects-container {
+    background-color: var(--background-color) !important;
+    color: var(--text-color) !important;
+    border: none !important;
+  }
+
 
   h1, h2, h3, a, p, .subtitle, label, .faq-answer,
   .section-title, .info-label, .breadcrumb span {
@@ -39,10 +55,20 @@
   .faq-container, .settings-form, .contact-form,
   .clients-list, .inactive-clients-list, .empty-state, .no-entries,
   .modal-content, .report-summary .summary-card,
-  .table-container, .top-users-section, .top-projects-section, .usuarios-list, .projects-list, .project-details, .dropdown-placeholder, .dropdown-option  {
+  .table-container, .top-users-section, .top-projects-section, .usuarios-list, .dropdown-placeholder, .dropdown-option  {
     background-color: var(--card-background) !important;
     border: 1px solid var(--border-color) !important;
     box-shadow: 0 1px 3px var(--shadow-color) !important;
+  }
+
+  .project-details {
+    background-color: var(--background-color) !important;
+    box-shadow: 0 1px 3px var(--shadow-color) !important;
+  }
+
+  .projects-list {
+    background-color: var(--card-background) !important;
+    border: none !important;
   }
 
   // Botoes
@@ -130,19 +156,35 @@
   }
 
   // Tabelas
+
+
   .table-headers, .client-row.headers,
   .usuario-row.headers, .project-row.headers,
   .tarefa-row.headers, .task-row.headers,
-  .table-header, .filters-section, .project-row, .tarefas-row, .table-row, .lancamentos-container, .projects-users, .ng-trigger, .p-datepicker-header {
+  .table-header, .filters-section, .project-row, .tarefas-row, .table-row, .lancamentos-container, .projects-users, .ng-trigger, .p-datepicker-header,
+  span.user-email, .task-description {
     background-color: var(--card-background) !important;
     color: var(--secondary-color) !important;
     border: none !important;
   }
 
+  .task-description {
+    background-color: var(--background-color) !important;
+    color: var(--secondary-color) !important;
+    border: none !important;
+  }
+
+  i.pi.pi-eye, i.pi.pi-eye-slash::before {
+    color: var(--secondary-color) !important;
+  }
+
   th {
     background-color: var(--card-background) !important;
     border: none !important;
+  }
 
+  .tarefas-row {
+    border-bottom: 1px solid var(--border-color) !important;
   }
 
   .table-row, .client-row:not(.headers),
@@ -195,10 +237,6 @@
     background-color: var(--sidebar-bg) !important;
   }
 
-  .sidebar .user-info {
-    border-top: 1px solid var(--border-color) !important;
-  }
-
   .sidebar .user-info .user-avatar {
     background-color: var(--hover-color) !important;
   }
@@ -217,6 +255,10 @@
 
   .sidebar .user-info .logout-link:hover {
     color: var(--secondary-color) !important;
+  }
+
+  .sidebar .user-info {
+    border: none !important;
   }
 
   // Header
@@ -277,10 +319,6 @@
     border-top: 1px solid var(--border-color) !important;
   }
 
-  .dashboard-header {
-    border-bottom: 1px solid var(--border-color) !important;
-  }
-
   .dashboard-statistics .stat-card .stat-title {
     color: var(--secondary-color) !important;
   }
@@ -299,7 +337,7 @@
 
   .top-users-section .user-item,
   .top-projects-section .project-card {
-    background-color: var(--input-bg) !important;
+    background-color: var(--card-backgroung) !important;
     border: 1px solid var(--border-color) !important;
   }
 
@@ -351,8 +389,12 @@
   }
 
   // Projetos
-  .detail-grid .detail-item, .usuario-row {
+  .detail-grid .detail-item {
     background-color: var(--background-color) !important;
+  }
+
+  .usuario-row {
+    background-color: var(--card-background) !important;
   }
 
   .detail-grid .detail-item strong {
@@ -415,10 +457,6 @@
   }
 
   // Central de Ajuda
-  .help-header {
-    border-bottom: 1px solid var(--border-color) !important;
-  }
-
   .search-container .fas {
     color: var(--secondary-color) !important;
   }
@@ -616,5 +654,23 @@
 
   .project-hours  {
     color: var(--secondary-color) !important;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--background-color);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--hover-color);
   }
 }

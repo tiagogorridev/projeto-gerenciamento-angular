@@ -20,10 +20,10 @@
           >
           <small *ngIf="signupForm.submitted && !email" class="error-text">O email é obrigatório.</small>
         </div>
-        <div class="form-group" [ngClass]="{'error-input': loginError}">
+        <div class="form-group password-group" [ngClass]="{'error-input': loginError}">
           <label for="password"></label>
           <input
-            type="password"
+            [type]="showPassword ? 'text' : 'password'"
             id="password"
             [(ngModel)]="password"
             name="password"
@@ -32,6 +32,9 @@
             class="input-field"
             [ngClass]="{'input-error': loginError}"
           >
+          <span class="password-toggle" (click)="togglePasswordVisibility()">
+            <i class="pi" [ngClass]="showPassword ? 'pi-eye-slash' : 'pi-eye'"></i>
+          </span>
           <small *ngIf="signupForm.submitted && !password" class="error-text">A senha é obrigatória.</small>
           <small *ngIf="loginError" class="error-text error-login">Email ou senha incorretos</small>
         </div>

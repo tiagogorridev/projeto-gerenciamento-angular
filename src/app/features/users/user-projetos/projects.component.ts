@@ -22,7 +22,7 @@ export class ProjectsComponent implements OnInit {
   projetosComCustoRegistrado: { [key: number]: number } = {};
   isLoading: boolean = true;
 
-  statusOptions = ['EM ANDAMENTO', 'CANCELADO', 'CONCLUIDO', 'PLANEJADO'];
+  statusOptions = ['EM_ANDAMENTO', 'CANCELADO', 'CONCLUIDO', 'PLANEJADO'];
   prioridadeOptions = ['ALTA', 'MEDIA', 'BAIXA'];
 
   constructor(
@@ -85,6 +85,14 @@ export class ProjectsComponent implements OnInit {
     } else {
       return `${horas}h`;
     }
+  }
+
+  formatStatus(status: string): string {
+    return status.replace('_', ' ');
+  }
+
+  getSelectStatus(displayStatus: string): string {
+    return displayStatus.replace(' ', '_');
   }
 
   getProgresso(projeto: Projeto): string {

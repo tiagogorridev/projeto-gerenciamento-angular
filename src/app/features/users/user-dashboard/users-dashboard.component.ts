@@ -345,6 +345,17 @@ export class UsersDashboardComponent implements OnInit {
     });
   }
 
+  formatTime(totalHoras: number): string {
+    const horas = Math.floor(totalHoras);
+    const minutos = Math.round((totalHoras - horas) * 60);
+
+    if (minutos > 0) {
+      return `${horas}h ${minutos}m`;
+    } else {
+      return `${horas}h`;
+    }
+  }
+
   obterSemanasDentroDeMes(primeiroDiaDoMes: Date): { inicio: Date, fim: Date }[] {
     const semanas: { inicio: Date, fim: Date }[] = [];
     const ultimoDiaDoMes = new Date(primeiroDiaDoMes.getFullYear(), primeiroDiaDoMes.getMonth() + 1, 0);
